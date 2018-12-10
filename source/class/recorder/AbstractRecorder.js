@@ -16,6 +16,7 @@
 
 /**
  * This is a qooxdoo class
+ * @require(qx.bom.Element)
  */
 qx.Class.define("recorder.AbstractRecorder",
 {
@@ -28,9 +29,19 @@ qx.Class.define("recorder.AbstractRecorder",
    */
   construct : function() {
     this.base(arguments);
-    qx.core.Id.getInstance().addListener("domevent",e => {
-      let [id, event, target] = e.getData();
-      if (this.__running) this._recordEvent(id, event, target);
+    qx.event.Manager.setGlobalEventMonitor((target, event) => {
+      if (!this.__running) return;
+      let id;
+      if (typeof target.getAttribute == "function" ){
+        id = target.getAttribute("data-qx-object-id");
+      } else if (target instanceof qx.core.Object ){
+        id = qx.core.Id.getAbsoluteIdOf(target,true);
+      } else {
+        return;
+      }
+      if (id) {
+        this._recordEvent(id, event, target);
+      }
     });
   },
 
