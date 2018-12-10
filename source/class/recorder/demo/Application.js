@@ -48,22 +48,33 @@ qx.Class.define("recorder.demo.Application",
       -------------------------------------------------------------------------
       */
 
-      // Create a button
+      // button
       var button1 = new qx.ui.form.Button("Click me", "recorder/test.png");
-
-      // Document is the application root
       var doc = this.getRoot();
-
-      // Add button to document at fixed coordinates
       doc.add(button1, {left: 100, top: 50});
 
-      // Add an event listener
-      button1.addListener("execute", function(e) {
-        alert("Hello World!");
+      // window
+      let win = new qx.ui.window.Window("New window");
+      win.set({
+        width: 200,
+        height: 50,
+        showMinimize: false,
+        showMaximize: false,
+      });
+      doc.add(win);
+
+      // event listeners
+      win.addListener("appear", ()=>{
+        win.center();
+      });
+      button1.addListener("execute", ()=>{
+        win.show();
       });
 
+      // id registration
       qx.core.Id.getInstance().register(button1,"button");
       button1.setObjectId("button");
+      button1.addOwnedObject(win,"window");
 
       let controller = new recorder.UiController(new recorder.type.TestCafe());
 

@@ -74,24 +74,25 @@ qx.Class.define("recorder.UiController",
         if (this._recorder.isPaused()){
           this._recorder.resume();
         } else {
+          this._codeEditor.setValue("");
           this._recorder.start();
         }
         this._startButton.setLabel("Pause");
+        this._stopButton.setEnabled(true);
       } else {
         this._recorder.pause();
         this._startButton.setLabel("Continue");
       }
-      this._stopButton.setEnabled(true);
     },
 
     stop() {
-      this._recorder.stop();
-      this._stopButton.setEnabled(false);
       this._startButton.set({
         enabled: true,
         value: false,
         label: "Start"
       });
+      this._stopButton.setEnabled(false);
+      this._recorder.stop();
       let script = this._recorder.generateScript(this._recorder.getLines());
       this._codeEditor.setValue(script);
     }

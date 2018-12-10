@@ -60,11 +60,12 @@ qx.Class.define("recorder.AbstractRecorder",
 
     resume() {
       this.__running = true;
-      this.__paused =false;
+      this.__paused = false;
     },
 
     stop() {
-      this.pause();
+      this.__running = false;
+      this.__paused = false;
     },
 
     _recordEvent(id, event, target){
