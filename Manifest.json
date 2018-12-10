@@ -1,32 +1,25 @@
 {
-  "info" : 
-  {
-    "name" : "UI Event Recorder",
-
-    "summary" : "",
-    "description" : "",
-    
-    "homepage" : "",
-
-    "license" : "MIT license",
-    "authors" : [
-  {
-    "name": "Christian Boulanger (cboulanger)",
-    "email": "info@bibliograph.org"
-  }
-],
-
-    "version" : "0.1.0",
+  "info": {
+    "name": "UI Event Recorder",
+    "summary": "",
+    "description": "",
+    "homepage": "",
+    "license": "MIT license",
+    "authors": [
+      {
+        "name": "Christian Boulanger (cboulanger)",
+        "email": "info@bibliograph.org"
+      }
+    ],
+    "version": "0.1.1",
     "qooxdoo-range": "^6.0.0-alpha"
   },
-  
-  "provides" : 
-  {
-    "namespace"   : "recorder",
-    "encoding"    : "utf-8",
-    "class"       : "source/class",
-    "resource"    : "source/resource",
-    "translation" : "source/translation",
-    "type"        : "contribution"
+  "provides": {
+    "namespace": "recorder",
+    "encoding": "utf-8",
+    "class": "source/class",
+    "resource": "source/resource",
+    "translation": "source/translation",
+    "type": "contribution"
   }
 }
