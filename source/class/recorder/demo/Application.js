@@ -62,6 +62,9 @@ qx.Class.define("recorder.demo.Application",
         alert("Hello World!");
       });
 
+      qx.core.Id.getInstance().register(button1,"button");
+      button1.setObjectId("button");
+
       let controller = new recorder.UiController(new recorder.type.TestCafe());
 
       doc.add(controller, {right:0});

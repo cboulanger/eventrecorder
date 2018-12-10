@@ -26,35 +26,76 @@ qx.Class.define("recorder.AbstractRecorder",
   /**
    * Constructor
    */
-  // construct : function() {
-  //   this.base(arguments);
-  // },
-
+  construct : function() {
+    this.base(arguments);
+    qx.core.Id.getInstance().addListener("domevent",e => {
+      let [id, event, target] = e.getData();
+      if (this.__running) this._recordEvent(id, event, target);
+    });
+  },
 
   /**
    * The methods and simple properties of this class
    */
   members :
   {
-    _running : false,
-    _script : null,
+    __running : false,
+    __lines : null,
+    __paused : false,
 
     start() {
-      this._running = true;
+      this.__lines = [];
+      this.__running = true;
+      this.__paused = false;
     },
 
     pause() {
-      this._running = false;
+      this.__running = false;
+      this.__paused = true;
+    },
+
+    isPaused() {
+      return this.__paused;
+    },
+
+    resume() {
+      this.__running = true;
+      this.__paused =false;
     },
 
     stop() {
       this.pause();
-      let script = this.generateScript();
-      this.
     },
 
-    generateScript(){
-      this.error("writeScript() must be implemented in subclass.");
+    _recordEvent(id, event, target){
+      this.__lines = this.__lines.concat(this.recordEvent(id, event, target));
+    },
+
+    getLines(){
+      return this.__lines;
+    },
+
+    /**
+     * Given an id, the event and (optionally) the even target, return one or more
+     * pieces of code that can replay the user action that lead to this event.
+     * Return an array, each element is one line of code
+     * @param {String} id The id of the DOM node
+     * @param {qx.event.Event} event The event that was fired
+     * @param {qx.bom.Element} target The event target
+     * @return {String[]} An array of script lines
+     */
+    recordEvent(id, event, target) {
+      this.error("recordEvent() must be implemented by subclass.");
+    },
+
+    /**
+     * Given an array of script lines, return a piece of code that can be
+     * pasted into a test suite.
+     * @param {String[]} lines Array of script lines
+     * @return {String}
+     */
+    generateScript(lines){
+      this.error("generateScript() must be implemented by subclass.");
     }
   }
 });

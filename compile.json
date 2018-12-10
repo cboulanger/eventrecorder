@@ -16,6 +16,12 @@
   "defaultTarget": "source",
   "locales": ["en"],
 
+  "environment": {
+    "qx.debug": true,
+    "module.objectid" : true,
+    "module.objectid.monitorevents" : true
+  },
+
   "applications": [
     {
       "class": "recorder.demo.Application",

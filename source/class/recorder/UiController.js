@@ -31,7 +31,9 @@ qx.Class.define("recorder.UiController",
       width: 200,
       height: 400,
       modal: false,
-      layout : new qx.ui.layout.VBox(5)
+      showMinimize: false,
+      showMaximize: false,
+      layout: new qx.ui.layout.VBox(5)
     });
 
     if (! recorderImplementation instanceof recorder.AbstractRecorder){
@@ -40,16 +42,10 @@ qx.Class.define("recorder.UiController",
     }
     this._recorder = recorderImplementation;
 
-    let startButton = new qx.ui.form.Button("Start",null);
-    startButton.addListener("execute", this.start, this);
+    let startButton = new qx.ui.form.ToggleButton("Start",null);
+    startButton.addListener("changeValue", this.toggle, this);
     this._startButton = startButton;
     this.add(startButton);
-
-    let pauseButton = new qx.ui.form.Button("Pause",null);
-    pauseButton.set({ enabled: false });
-    pauseButton.addListener("execute", this.pause, this);
-    this._pauseButton = pauseButton;
-    this.add(pauseButton);
 
     let stopButton = new qx.ui.form.Button("Stop",null);
     stopButton.set({enabled:false});
@@ -70,29 +66,34 @@ qx.Class.define("recorder.UiController",
   {
     _recorder : null,
     _startButton : null,
-    _pauseButton : null,
     _stopButton : null,
     _codeEditor : null,
 
-    start() {
-      console.log(this);
-      this._recorder.start();
-      this._startButton.setEnabled(false);
-      this._pauseButton.setEnabled(true);
+    toggle(e) {
+      if (e.getData()) {
+        if (this._recorder.isPaused()){
+          this._recorder.resume();
+        } else {
+          this._recorder.start();
+        }
+        this._startButton.setLabel("Pause");
+      } else {
+        this._recorder.pause();
+        this._startButton.setLabel("Continue");
+      }
       this._stopButton.setEnabled(true);
-    },
-
-    pause() {
-      this._recorder.pause();
-      this._startButton.setEnabled(true);
-      this._pauseButton.setEnabled(false);
     },
 
     stop() {
       this._recorder.stop();
       this._stopButton.setEnabled(false);
-      this._pauseButton.setEnabled(false);
-      this._startButton.setEnabled(true);
+      this._startButton.set({
+        enabled: true,
+        value: false,
+        label: "Start"
+      });
+      let script = this._recorder.generateScript(this._recorder.getLines());
+      this._codeEditor.setValue(script);
     }
   }
 });
