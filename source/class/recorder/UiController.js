@@ -54,6 +54,9 @@ qx.Class.define("recorder.UiController",
     this.add(stopButton);
 
     let codeEditor = new qx.ui.form.TextArea();
+    codeEditor.set({
+      wrap: false
+    })
     this._codeEditor = codeEditor;
     this.add(codeEditor, {flex:1});
   },

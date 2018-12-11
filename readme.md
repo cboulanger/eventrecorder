@@ -1,9 +1,15 @@
 # UI Event Recorder
 
+> NOTE: this is a very simple proof-of-concept which relies on a patched 
+  version of the qooxdoo library and doesn't do very much at the moment.
+  
 This contrib allows to record user interaction for replay during tests. 
-Currently, this is a very simple proof-of-concept which relies on a patched 
-version of the qooxdoo library and generates scripts for the the web testing 
-framework [TestCafé](https://devexpress.github.io/testcafe/documentation/test-api/). 
+
+It currently supports:
+ - [qooxdoo unit tests](https://www.qooxdoo.org/current/pages/development/unit_testing.html)
+ - [TestCafé](https://devexpress.github.io/testcafe/documentation/test-api/) 
+
+## Example
 
 Minimal example:
 ````javascript
@@ -33,12 +39,21 @@ Minimal example:
   button1.addOwnedObject(win,"window");
 
   // recorder
-  let controller = new recorder.UiController(new recorder.type.TestCafe());
+  let controller = new recorder.UiController(new recorder.type.Qooxdoo());
   doc.add(controller, {right:0});
   controller.show();
 ````
 
+## Demo
+
+```bash
+cd /path/to/qx-contrib-recorder
+qx contrib install
+qx serve
+```
+
+1. Open localhost:8080
 1. In the window that appears in the top right corner, click on "Start".
-2. Click on the "Click me" button.
-3. Click on "Stop"
-4. A snippet of TestCafé code should appear in the text box. 
+1. Click on the "Click me" button.
+1. Click on "Stop"
+1. A snippet of test code should appear in the text box. 
