@@ -1,0 +1,35 @@
+{
+  "version": 3,
+  "sources": [
+    "/home/travis/build/cboulanger/qx-contrib-recorder/source/class/recorder/type/Qooxdoo.js"
+  ],
+  "names": [
+    "qx",
+    "Bootstrap",
+    "executePendingDefers",
+    "$$dbClassInfo",
+    "Class",
+    "define",
+    "extend",
+    "recorder",
+    "AbstractRecorder",
+    "members",
+    "recordEvent",
+    "id",
+    "event",
+    "target",
+    "line",
+    "getType",
+    "generateScript",
+    "lines",
+    "unshift",
+    "join",
+    "type",
+    "Qooxdoo"
+  ],
+  "mappings": ";;;;;;;;;;;;AAAAA,KAAGC,SAAH,CAAaC,oBAAb,CAAkCC,aAAlC,EAmBAH,GAAGI,KAAH,CAASC,MAAT,CAAgB,uBAAhB,EACA;;AAEEC,YAASC,SAASC,gBAFpB;;AAIEC,aACA;AACE;;;;;;;;;AASAC,iBAVF,uBAUcC,EAVd,EAUkBC,KAVlB,EAUyBC,MAVzB,EAUiC;AAC7B,YAAIC,aAAJ;AACA,gBAAQF,MAAMG,OAAN,EAAR;AACE,eAAK,SAAL;AACED,uCAAwBH,EAAxB;AACA;AACF,eAAK,QAAL;AACEG,iEAAkDH,EAAlD;AACA;AACF,eAAK,WAAL;AACEG,kEAAmDH,EAAnD;AACA;AACF;AACE,mBAAO,EAAP;AACF;AAZF;AAcA,eAAO,CAACG,IAAD,CAAP;AACD,OA3BH;;;AA6BE;;;;;;AAMAE,oBAnCF,0BAmCiBC,KAnCjB,EAmCwB;AACpBA,cAAMC,OAAN,CAAc,sBAAd;AACA,eAAOD,MAAME,IAAN,CAAW,IAAX,CAAP;AACD;AAtCH;AALF,GADA,C;AAnBAZ,WAASa,IAAT,CAAcC,OAAd,CAAsBlB,aAAtB,GAAsCA,aAAtC",
+  "file": "Qooxdoo.js",
+  "sourcesContent": [
+    "/* ************************************************************************\n\n  UI Event Recorder\n\n  Copyright: \n    2018 Christian Boulanger\n\n  License: \n    MIT license\n    See the LICENSE file in the project's top-level directory for details.\n\n  Authors: Christian Boulanger\n    \n\n************************************************************************ */\n\n/**\n * This is a qooxdoo class\n */\nqx.Class.define(\"recorder.type.Qooxdoo\",\n{\n  \n  extend : recorder.AbstractRecorder,\n\n  members :\n  {\n    /**\n     * Given an id, the event and (optionally) the even target, return one or more\n     * pieces of code that can replay the user action that lead to this event.\n     * Return an array, each element is one line of code\n     * @param {String} id The id of the DOM node\n     * @param {qx.event.Event} event The event that was fired\n     * @param {qx.bom.Element} target The event target\n     * @return {String[]} An array of script lines\n     */\n    recordEvent(id, event, target) {\n      let line;\n      switch (event.getType()) {\n        case \"execute\":\n          line = `id.getObject(\"${id}\").fireEvent('execute');`;\n          break;\n        case \"appear\":\n          line = `qx.core.Assert.assertTrue(id.getObject(\"${id}\").isVisible());`;\n          break;\n        case \"disappear\":\n          line = `qx.core.Assert.assertFalse(id.getObject(\"${id}\").isVisible());`;\n          break;\n        default:\n          return [];\n        //console.log(`//${id}: ${event.getType()}`);\n      }\n      return [line];\n    },\n\n    /**\n     * Given an array of script lines, return a piece of code that can be\n     * pasted into a test suite.\n     * @param {String[]} lines Array of script lines\n     * @return {String}\n     */\n    generateScript(lines) {\n      lines.unshift(\"let id = qx.core.Id;\");\n      return lines.join(\"\\n\");\n    }\n  }\n});"
+  ]
+}

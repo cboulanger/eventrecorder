@@ -1,0 +1,539 @@
+{
+  "className": "qx.core.MObjectId",
+  "packageName": "qx.core",
+  "name": "MObjectId",
+  "superClass": null,
+  "interfaces": [],
+  "mixins": [],
+  "functionName": null,
+  "clazz": {
+    "location": {
+      "start": {
+        "line": 26,
+        "column": 0
+      },
+      "end": {
+        "line": 298,
+        "column": 3
+      }
+    },
+    "jsdoc": {
+      "@description": [
+        {
+          "name": "@description",
+          "body": "***********************************************************************\n\nqooxdoo - the new era of web development\n\nhttp://qooxdoo.org\n\nCopyright:\n2017 Zenesis Limited, http://www.zenesis.com\n\nLicense:\nMIT: https://opensource.org/licenses/MIT\nSee the LICENSE file in the project's top-level directory for details.\n\nAuthors:\nJohn Spackman (john.spackman@zenesis.com, @johnspackman)\n\n***********************************************************************"
+        },
+        {
+          "name": "@description",
+          "body": "A mixin providing objects by ID and owners.\n\nThe typical use of IDs is to override the `_createObjectImpl` method and create\nnew instances on demand; all code should access these instances by calling\n`getObject`."
+        }
+      ]
+    }
+  },
+  "type": "mixin",
+  "properties": {
+    "owner": {
+      "type": "property",
+      "name": "owner",
+      "abstract": false,
+      "mixin": true,
+      "access": "public"
+    },
+    "objectId": {
+      "type": "property",
+      "name": "objectId",
+      "abstract": false,
+      "mixin": true,
+      "access": "public"
+    }
+  },
+  "members": {
+    "__ownedObjects": {
+      "location": {
+        "start": {
+          "line": 62,
+          "column": 4
+        },
+        "end": {
+          "line": 62,
+          "column": 24
+        }
+      },
+      "type": "variable",
+      "access": "private"
+    },
+    "__changingOwner": {
+      "location": {
+        "start": {
+          "line": 63,
+          "column": 4
+        },
+        "end": {
+          "line": 63,
+          "column": 26
+        }
+      },
+      "type": "variable",
+      "access": "private"
+    },
+    "_applyOwner": {
+      "location": {
+        "start": {
+          "line": 68,
+          "column": 4
+        },
+        "end": {
+          "line": 72,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Apply owner"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "protected",
+      "applyFor": [
+        "owner"
+      ]
+    },
+    "_applyObjectId": {
+      "location": {
+        "start": {
+          "line": 77,
+          "column": 4
+        },
+        "end": {
+          "line": 85,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Apply objectId"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "protected",
+      "applyFor": [
+        "objectId"
+      ]
+    },
+    "__onOwnedObjectIdChange": {
+      "location": {
+        "start": {
+          "line": 90,
+          "column": 4
+        },
+        "end": {
+          "line": 93,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Called when a child's objectId changes"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "private"
+    },
+    "_cascadeObjectIdChanges": {
+      "location": {
+        "start": {
+          "line": 98,
+          "column": 4
+        },
+        "end": {
+          "line": 110,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Reflect changes to IDs or owners"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "protected"
+    },
+    "getObject": {
+      "location": {
+        "start": {
+          "line": 119,
+          "column": 4
+        },
+        "end": {
+          "line": 169,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Returns the object with the specified ID"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id\n{String} ID of the object",
+            "paramName": "id",
+            "description": " ID of the object",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{qx.core.Object?} the found object",
+            "type": "qx.core.Object?",
+            "description": " the found object"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "_createObject": {
+      "location": {
+        "start": {
+          "line": 178,
+          "column": 4
+        },
+        "end": {
+          "line": 184,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Creates the object and adds it to a list; most classes are expected to\noverride `_createObjectImpl` NOT this method."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String} ID of the object",
+            "paramName": "id",
+            "description": " ID of the object",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{qx.core.Object?} the created object",
+            "type": "qx.core.Object?",
+            "description": " the created object"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "protected"
+    },
+    "_createObjectImpl": {
+      "location": {
+        "start": {
+          "line": 195,
+          "column": 4
+        },
+        "end": {
+          "line": 197,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Creates the object, intended to be overridden. Null is a valid return\nvalue and will be cached by `getObject`, however `undefined` is NOT a\nvalid value and so will not be cached meaning that `_createObjectImpl`\nwill be called multiple times until a valid value is returned."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String} ID of the object",
+            "paramName": "id",
+            "description": " ID of the object",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{qx.core.Object?} the created object",
+            "type": "qx.core.Object?",
+            "description": " the created object"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "protected"
+    },
+    "addOwnedObject": {
+      "location": {
+        "start": {
+          "line": 205,
+          "column": 4
+        },
+        "end": {
+          "line": 237,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Adds an object as owned by this object"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "obj {qx.core.Object} the object to register",
+            "paramName": "obj",
+            "description": " the object to register",
+            "type": "qx.core.Object"
+          },
+          {
+            "name": "@param",
+            "body": "id {String?} the id to set when registering the object",
+            "paramName": "id",
+            "description": " the id to set when registering the object",
+            "optional": true,
+            "type": "String"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "removeOwnedObject": {
+      "location": {
+        "start": {
+          "line": 245,
+          "column": 4
+        },
+        "end": {
+          "line": 278,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Discards an object from the list of owned objects; note that this does\nnot dispose of the object, simply forgets it if it exists."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "args {String|Object} the ID of the object to discard, or the object itself",
+            "paramName": "args",
+            "description": " the ID of the object to discard, or the object itself",
+            "type": [
+              "String",
+              "Object"
+            ]
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "__removeOwnedObjectImpl": {
+      "location": {
+        "start": {
+          "line": 280,
+          "column": 4
+        },
+        "end": {
+          "line": 286,
+          "column": 5
+        }
+      },
+      "type": "function",
+      "access": "private"
+    },
+    "getOwnedObjects": {
+      "location": {
+        "start": {
+          "line": 294,
+          "column": 4
+        },
+        "end": {
+          "line": 296,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Returns an array of objects that are owned by this object, or an empty\narray if none exists."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{Array}",
+            "type": "Array",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "getOwner": {
+      "type": "function",
+      "name": "getOwner",
+      "abstract": false,
+      "mixin": false,
+      "inherited": false,
+      "access": "public",
+      "property": "get",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>owner</code>.\n\nFor further details take a look at the property definition: {@link #owner}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "qx.core.Object",
+            "desc": "Returns the value for owner"
+          }
+        ]
+      }
+    },
+    "setOwner": {
+      "type": "function",
+      "name": "setOwner",
+      "abstract": false,
+      "mixin": false,
+      "inherited": false,
+      "access": "public",
+      "property": "set",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Sets the user value of the property <code>owner</code>.\n\nFor further details take a look at the property definition: {@link #owner}."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "type": "qx.core.Object",
+            "paramName": "value",
+            "desc": "Value for owner"
+          }
+        ]
+      }
+    },
+    "resetOwner": {
+      "type": "function",
+      "name": "resetOwner",
+      "abstract": false,
+      "mixin": false,
+      "inherited": false,
+      "access": "public",
+      "property": "reset",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Resets the user value of the property <code>owner</code>.\n\nThe computed value falls back to the next available value e.g. appearance, init or inheritance value depending on the property configuration and value availability.\n\nFor further details take a look at the property definition: {@link #owner}."
+          }
+        ]
+      }
+    },
+    "getObjectId": {
+      "type": "function",
+      "name": "getObjectId",
+      "abstract": false,
+      "mixin": false,
+      "inherited": false,
+      "access": "public",
+      "property": "get",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>objectId</code>.\n\nFor further details take a look at the property definition: {@link #objectId}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "desc": "Returns the value for objectId"
+          }
+        ]
+      }
+    },
+    "setObjectId": {
+      "type": "function",
+      "name": "setObjectId",
+      "abstract": false,
+      "mixin": false,
+      "inherited": false,
+      "access": "public",
+      "property": "set",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Sets the user value of the property <code>objectId</code>.\n\nFor further details take a look at the property definition: {@link #objectId}."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "paramName": "value",
+            "desc": "Value for objectId"
+          }
+        ]
+      }
+    },
+    "resetObjectId": {
+      "type": "function",
+      "name": "resetObjectId",
+      "abstract": false,
+      "mixin": false,
+      "inherited": false,
+      "access": "public",
+      "property": "reset",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Resets the user value of the property <code>objectId</code>.\n\nThe computed value falls back to the next available value e.g. appearance, init or inheritance value depending on the property configuration and value availability.\n\nFor further details take a look at the property definition: {@link #objectId}."
+          }
+        ]
+      }
+    }
+  },
+  "descendants": []
+}

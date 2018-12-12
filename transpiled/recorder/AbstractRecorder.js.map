@@ -1,0 +1,49 @@
+{
+  "version": 3,
+  "sources": [
+    "/home/travis/build/cboulanger/qx-contrib-recorder/source/class/recorder/AbstractRecorder.js"
+  ],
+  "names": [
+    "qx",
+    "Bootstrap",
+    "executePendingDefers",
+    "$$dbClassInfo",
+    "Class",
+    "define",
+    "extend",
+    "core",
+    "Object",
+    "construct",
+    "event",
+    "Manager",
+    "setGlobalEventMonitor",
+    "target",
+    "__running",
+    "id",
+    "getAttribute",
+    "Id",
+    "getAbsoluteIdOf",
+    "_recordEvent",
+    "members",
+    "__lines",
+    "__paused",
+    "start",
+    "pause",
+    "isPaused",
+    "resume",
+    "stop",
+    "concat",
+    "recordEvent",
+    "getLines",
+    "error",
+    "generateScript",
+    "lines",
+    "recorder",
+    "AbstractRecorder"
+  ],
+  "mappings": ";;;;;;;;;;;;;;;;;;;;;;AAAAA,KAAGC,SAAH,CAAaC,oBAAb,CAAkCC,aAAlC,EAoBAH,GAAGI,KAAH,CAASC,MAAT,CAAgB,2BAAhB,EACA;;AAEEC,YAASN,GAAGO,IAAH,CAAQC,MAFnB;AAGE;;AAEA;;;AAGAC,eAAY,qBAAW;AAAA;;AACrB;AACAT,SAAGU,KAAH,CAASC,OAAT,CAAiBC,qBAAjB,CAAuC,UAACC,MAAD,EAASH,KAAT,EAAmB;AACxD,YAAI,CAAC,MAAKI,SAAV,EAAqB;AACrB,YAAIC,WAAJ;AACA,YAAI,OAAOF,OAAOG,YAAd,IAA8B,UAAlC,EAA8C;AAC5CD,eAAKF,OAAOG,YAAP,CAAoB,mBAApB,CAAL;AACD,SAFD,MAEO,IAAIH,kBAAkBb,GAAGO,IAAH,CAAQC,MAA9B,EAAsC;AAC3CO,eAAKf,GAAGO,IAAH,CAAQU,EAAR,CAAWC,eAAX,CAA2BL,MAA3B,EAAkC,IAAlC,CAAL;AACD,SAFM,MAEA;AACL;AACD;AACD,YAAIE,EAAJ,EAAQ;AACN,gBAAKI,YAAL,CAAkBJ,EAAlB,EAAsBL,KAAtB,EAA6BG,MAA7B;AACD;AACF,OAbD;AAcD,KAxBH;;AA0BE;;;AAGAO,aACA;AACEN,iBAAY,KADd;AAEEO,eAAU,IAFZ;AAGEC,gBAAW,KAHb;;AAKEC,WALF,mBAKU;AACN,aAAKF,OAAL,GAAe,EAAf;AACA,aAAKP,SAAL,GAAiB,IAAjB;AACA,aAAKQ,QAAL,GAAgB,KAAhB;AACD,OATH;AAWEE,WAXF,mBAWU;AACN,aAAKV,SAAL,GAAiB,KAAjB;AACA,aAAKQ,QAAL,GAAgB,IAAhB;AACD,OAdH;AAgBEG,cAhBF,sBAgBa;AACT,eAAO,KAAKH,QAAZ;AACD,OAlBH;AAoBEI,YApBF,oBAoBW;AACP,aAAKZ,SAAL,GAAiB,IAAjB;AACA,aAAKQ,QAAL,GAAgB,KAAhB;AACD,OAvBH;AAyBEK,UAzBF,kBAyBS;AACL,aAAKb,SAAL,GAAiB,KAAjB;AACA,aAAKQ,QAAL,GAAgB,KAAhB;AACD,OA5BH;AA8BEH,kBA9BF,wBA8BeJ,EA9Bf,EA8BmBL,KA9BnB,EA8B0BG,MA9B1B,EA8BiC;AAC7B,aAAKQ,OAAL,GAAe,KAAKA,OAAL,CAAaO,MAAb,CAAoB,KAAKC,WAAL,CAAiBd,EAAjB,EAAqBL,KAArB,EAA4BG,MAA5B,CAApB,CAAf;AACD,OAhCH;AAkCEiB,cAlCF,sBAkCY;AACR,eAAO,KAAKT,OAAZ;AACD,OApCH;;;AAsCE;;;;;;;;;AASAQ,iBA/CF,uBA+Ccd,EA/Cd,EA+CkBL,KA/ClB,EA+CyBG,MA/CzB,EA+CiC;AAC7B,aAAKkB,KAAL,CAAW,gDAAX;AACD,OAjDH;;;AAmDE;;;;;;AAMAC,oBAzDF,0BAyDiBC,KAzDjB,EAyDuB;AACnB,aAAKF,KAAL,CAAW,mDAAX;AACD;AA3DH;AA9BF,GADA,C;AApBAG,WAASC,gBAAT,CAA0BhC,aAA1B,GAA0CA,aAA1C",
+  "file": "AbstractRecorder.js",
+  "sourcesContent": [
+    "/* ************************************************************************\n\n  UI Event Recorder\n\n  Copyright: \n    2018 Christian Boulanger\n\n  License: \n    MIT license\n    See the LICENSE file in the project's top-level directory for details.\n\n  Authors: Christian Boulanger\n    \n\n************************************************************************ */\n\n/**\n * This is a qooxdoo class\n * @require(qx.bom.Element)\n */\nqx.Class.define(\"recorder.AbstractRecorder\",\n{\n  \n  extend : qx.core.Object,\n  //include : [ Mixin1, Mixin2 ],\n\n  /**\n   * Constructor\n   */\n  construct : function() {\n    this.base(arguments);\n    qx.event.Manager.setGlobalEventMonitor((target, event) => {\n      if (!this.__running) return;\n      let id;\n      if (typeof target.getAttribute == \"function\" ){\n        id = target.getAttribute(\"data-qx-object-id\");\n      } else if (target instanceof qx.core.Object ){\n        id = qx.core.Id.getAbsoluteIdOf(target,true);\n      } else {\n        return;\n      }\n      if (id) {\n        this._recordEvent(id, event, target);\n      }\n    });\n  },\n\n  /**\n   * The methods and simple properties of this class\n   */\n  members :\n  {\n    __running : false,\n    __lines : null,\n    __paused : false,\n\n    start() {\n      this.__lines = [];\n      this.__running = true;\n      this.__paused = false;\n    },\n\n    pause() {\n      this.__running = false;\n      this.__paused = true;\n    },\n\n    isPaused() {\n      return this.__paused;\n    },\n\n    resume() {\n      this.__running = true;\n      this.__paused = false;\n    },\n\n    stop() {\n      this.__running = false;\n      this.__paused = false;\n    },\n\n    _recordEvent(id, event, target){\n      this.__lines = this.__lines.concat(this.recordEvent(id, event, target));\n    },\n\n    getLines(){\n      return this.__lines;\n    },\n\n    /**\n     * Given an id, the event and (optionally) the even target, return one or more\n     * pieces of code that can replay the user action that lead to this event.\n     * Return an array, each element is one line of code\n     * @param {String} id The id of the DOM node\n     * @param {qx.event.Event} event The event that was fired\n     * @param {qx.bom.Element} target The event target\n     * @return {String[]} An array of script lines\n     */\n    recordEvent(id, event, target) {\n      this.error(\"recordEvent() must be implemented by subclass.\");\n    },\n\n    /**\n     * Given an array of script lines, return a piece of code that can be\n     * pasted into a test suite.\n     * @param {String[]} lines Array of script lines\n     * @return {String}\n     */\n    generateScript(lines){\n      this.error(\"generateScript() must be implemented by subclass.\");\n    }\n  }\n});"
+  ]
+}

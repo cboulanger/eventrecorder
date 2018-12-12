@@ -1,0 +1,7 @@
+{
+  "compiler": "0.2.22",
+  "libraries": {
+    "recorder": "0.1.2",
+    "qx": "6.0.0-alpha"
+  }
+}

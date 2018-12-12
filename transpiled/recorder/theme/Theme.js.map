@@ -1,0 +1,32 @@
+{
+  "version": 3,
+  "sources": [
+    "/home/travis/build/cboulanger/qx-contrib-recorder/source/class/recorder/theme/Theme.js"
+  ],
+  "names": [
+    "qx",
+    "Bootstrap",
+    "executePendingDefers",
+    "$$dbClassInfo",
+    "Theme",
+    "define",
+    "meta",
+    "color",
+    "recorder",
+    "theme",
+    "Color",
+    "decoration",
+    "Decoration",
+    "font",
+    "Font",
+    "icon",
+    "Tango",
+    "appearance",
+    "Appearance"
+  ],
+  "mappings": ";;;;;;;;;;;;;;;;;;;;;;;;AAAAA,KAAGC,SAAH,CAAaC,oBAAb,CAAkCC,aAAlC,EAUAH,GAAGI,KAAH,CAASC,MAAT,CAAgB,sBAAhB,EACA;AACEC,UACA;AACEC,aAAQC,SAASC,KAAT,CAAeC,KADzB;AAEEC,kBAAaH,SAASC,KAAT,CAAeG,UAF9B;AAGEC,YAAOL,SAASC,KAAT,CAAeK,IAHxB;AAIEC,YAAOf,GAAGS,KAAH,CAASM,IAAT,CAAcC,KAJvB;AAKEC,kBAAaT,SAASC,KAAT,CAAeS;AAL9B;AAFF,GADA,C;AAVAV,WAASC,KAAT,CAAeL,KAAf,CAAqBD,aAArB,GAAqCA,aAArC",
+  "file": "Theme.js",
+  "sourcesContent": [
+    "/* ************************************************************************\n\n   Copyright: 2018 Christian Boulanger\n\n   License: MIT license\n\n   Authors: Christian Boulanger (cboulanger) info@bibliograph.org\n\n************************************************************************ */\n\nqx.Theme.define(\"recorder.theme.Theme\",\n{\n  meta :\n  {\n    color : recorder.theme.Color,\n    decoration : recorder.theme.Decoration,\n    font : recorder.theme.Font,\n    icon : qx.theme.icon.Tango,\n    appearance : recorder.theme.Appearance\n  }\n});"
+  ]
+}
