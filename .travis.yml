@@ -7,7 +7,7 @@ node_js: "stable"
 
 dist: trusty
 
-before_script:
+script:
   - npm install -g qxcompiler
   - qx compile --target=build
 
