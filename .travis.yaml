@@ -1,0 +1,20 @@
+language: node_js
+node_js: "stable"
+
+#cache:
+#  directories:
+#    - node_modules
+
+dist: trusty
+
+before_script:
+  - npm install -g qxcompiler
+  - qx compile --target=build
+
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITHUB_TOKEN
+  local-dir: build-output
+  on:
+    branch: master

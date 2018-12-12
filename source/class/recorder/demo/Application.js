@@ -25,9 +25,9 @@ qx.Class.define("recorder.demo.Application",
   members :
   {
     /**
-     * This method contains the initial application code and gets called 
+     * This method contains the initial application code and gets called
      * during startup of the application
-     * 
+     *
      * @lint ignoreDeprecated(alert)
      */
     main : function()
@@ -83,6 +83,7 @@ qx.Class.define("recorder.demo.Application",
 
       // recorder
       let controller = new recorder.UiController(new recorder.type.Qooxdoo());
+      controller.set({width:400,height:300});
       doc.add(controller, {top:0, right:0});
       controller.show();
     }

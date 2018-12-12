@@ -2,15 +2,15 @@
 
   UI Event Recorder
 
-  Copyright: 
+  Copyright:
     2018 Christian Boulanger
 
-  License: 
+  License:
     MIT license
     See the LICENSE file in the project's top-level directory for details.
 
   Authors: Christian Boulanger
-    
+
 
 ************************************************************************ */
 
@@ -19,7 +19,7 @@
  */
 qx.Class.define("recorder.UiController",
 {
-  
+
   extend : qx.ui.window.Window,
 
   /**
@@ -80,7 +80,7 @@ qx.Class.define("recorder.UiController",
           this._codeEditor.setValue("");
           this._recorder.start();
         }
-        this._startButton.setLabel("Pause");
+        this._startButton.setLabel("Recording, click to pause...");
         this._stopButton.setEnabled(true);
       } else {
         this._recorder.pause();

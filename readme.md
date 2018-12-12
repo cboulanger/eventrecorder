@@ -1,7 +1,6 @@
 # UI Event Recorder
 
-> NOTE: this is a very simple proof-of-concept which relies on a patched 
-  version of the qooxdoo library and doesn't do very much at the moment.
+> NOTE: this is a very simple proof-of-concept which doesn't do very much at the moment.
   
 This contrib allows to record user interaction for replay during tests. 
 
