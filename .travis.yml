@@ -8,8 +8,8 @@ node_js: "stable"
 dist: trusty
 
 script:
-  - npm update
   - npm install -g qxcompiler
+  - npm -g update
   - qx compile --target=build
 
 deploy:
