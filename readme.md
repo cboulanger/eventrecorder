@@ -34,7 +34,7 @@ Minimal example:
 
   // id registration
   qx.core.Id.getInstance().register(button1,"button");
-  button1.setObjectId("button");
+  button1.setQxObjectId("button");
   button1.addOwnedObject(win,"window");
 
   // recorder
@@ -45,9 +45,14 @@ Minimal example:
 
 ## Demo
 
+https://cboulanger.github.io/recorder/
+
+Or locally:
+
 ```bash
-cd /path/to/qx-contrib-recorder
-qx contrib install
+npm install -g qxcompiler
+git clone https://github.com/cboulanger/recorder.git
+cd recorder
 qx serve
 ```
 
