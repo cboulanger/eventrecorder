@@ -17,7 +17,7 @@
 /**
  * This is a qooxdoo class
  */
-qx.Class.define("recorder.UiController",
+qx.Class.define("gh.cboulanger.recorder.UiController",
 {
 
   extend : qx.ui.window.Window,
@@ -25,9 +25,10 @@ qx.Class.define("recorder.UiController",
   /**
    * Constructor
    */
-  construct : function(recorderImplementation) {
+  construct : function(recorderImplementation, caption="Recorder") {
     this.base(arguments);
     this.set({
+      caption,
       width: 200,
       height: 400,
       modal: false,
@@ -36,8 +37,8 @@ qx.Class.define("recorder.UiController",
       layout: new qx.ui.layout.VBox(5)
     });
 
-    if (! recorderImplementation instanceof recorder.AbstractRecorder){
-      this.error("Argument must be instanceof recorder.AbstractRecorder.");
+    if (! recorderImplementation instanceof gh.cboulanger.recorder.AbstractRecorder){
+      this.error("Argument must be instanceof gh.cboulanger.recorder.AbstractRecorder");
       return;
     }
     this._recorder = recorderImplementation;
@@ -56,7 +57,7 @@ qx.Class.define("recorder.UiController",
     let codeEditor = new qx.ui.form.TextArea();
     codeEditor.set({
       wrap: false
-    })
+    });
     this._codeEditor = codeEditor;
     this.add(codeEditor, {flex:1});
   },

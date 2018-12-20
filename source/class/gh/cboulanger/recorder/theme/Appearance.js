@@ -8,11 +8,11 @@
 
 ************************************************************************ */
 
-qx.Theme.define("recorder.theme.Font",
+qx.Theme.define("gh.cboulanger.recorder.theme.Appearance",
 {
-  extend : qx.theme.indigo.Font,
+  extend : qx.theme.indigo.Appearance,
 
-  fonts :
+  appearances :
   {
   }
 });

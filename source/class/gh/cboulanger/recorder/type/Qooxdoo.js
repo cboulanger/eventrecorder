@@ -17,10 +17,10 @@
 /**
  * This is a qooxdoo class
  */
-qx.Class.define("recorder.type.TestCafe",
+qx.Class.define("gh.cboulanger.recorder.type.Qooxdoo",
 {
   
-  extend : recorder.AbstractRecorder,
+  extend : gh.cboulanger.recorder.AbstractRecorder,
 
   members :
   {
@@ -36,14 +36,14 @@ qx.Class.define("recorder.type.TestCafe",
     recordEvent(id, event, target) {
       let line;
       switch (event.getType()) {
-        case "pointerup":
-          line = `.click(IdSelector("${id}"))`;
+        case "execute":
+          line = `id.getObject("${id}").fireEvent('execute');`;
           break;
         case "appear":
-          line = `.expect(IdSelector("${id}").visible).ok()`;
+          line = `qx.core.Assert.assertTrue(id.getObject("${id}").isVisible());`;
           break;
         case "disappear":
-          line = `.expect(IdSelector("${id}").visible).notOk()`;
+          line = `qx.core.Assert.assertFalse(id.getObject("${id}").isVisible());`;
           break;
         default:
           return [];
@@ -59,9 +59,7 @@ qx.Class.define("recorder.type.TestCafe",
      * @return {String}
      */
     generateScript(lines) {
-      lines.unshift("test('TEST TITLE', async t => {\nawait t");
-      lines[lines.length-1] += ";";
-      lines.push("});");
+      lines.unshift("let id = qx.core.Id;");
       return lines.join("\n");
     }
   }

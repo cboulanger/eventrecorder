@@ -8,14 +8,11 @@
 
 ************************************************************************ */
 
-qx.Theme.define("recorder.theme.Theme",
+qx.Theme.define("gh.cboulanger.recorder.theme.Color",
 {
-  meta :
+  extend : qx.theme.indigo.Color,
+
+  colors :
   {
-    color : recorder.theme.Color,
-    decoration : recorder.theme.Decoration,
-    font : recorder.theme.Font,
-    icon : qx.theme.icon.Tango,
-    appearance : recorder.theme.Appearance
   }
 });

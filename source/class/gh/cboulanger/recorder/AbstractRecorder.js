@@ -18,7 +18,7 @@
  * This is a qooxdoo class
  * @require(qx.bom.Element)
  */
-qx.Class.define("recorder.AbstractRecorder",
+qx.Class.define("gh.cboulanger.recorder.AbstractRecorder",
 {
   
   extend : qx.core.Object,
@@ -29,7 +29,7 @@ qx.Class.define("recorder.AbstractRecorder",
    */
   construct : function() {
     this.base(arguments);
-    qx.event.Manager.setGlobalEventMonitor((target, event) => {
+    this.addGlobalEventMonitor((target, event) => {
       if (!this.__running) return;
       let id;
       if (typeof target.getAttribute == "function" ){
@@ -53,6 +53,13 @@ qx.Class.define("recorder.AbstractRecorder",
     __running : false,
     __lines : null,
     __paused : false,
+
+    addGlobalEventMonitor: function(fn){
+      let evtMonitor = qx.event.Manager.getGlobalEventMonitor();
+      qx.event.Manager.setGlobalEventMonitor(
+        evtMonitor ? (target, event) => evtMonitor(target, event) || fn(target, event) : fn
+      );
+    },
 
     start() {
       this.__lines = [];

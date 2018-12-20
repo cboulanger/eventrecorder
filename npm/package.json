@@ -1,0 +1,28 @@
+{
+  "name": "qooxdoo-recorder",
+  "version": "0.0.1",
+  "description": "This package provides adapters for the automated testing of user interfaces built with the qooxdoo framework via replay of user actions. Currently it supports mainly the TestCafé framework.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cboulanger/recorder.git"
+  },
+  "keywords": [
+    "ui",
+    "testing",
+    "qooxdoo",
+    "testcafe"
+  ],
+  "author": "Christian Boulanger (cboulanger)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cboulanger/qx-contrib-recorder/issues"
+  },
+  "homepage": "https://github.com/cboulanger/qx-contrib-recorder#readme"
+}

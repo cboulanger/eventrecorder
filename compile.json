@@ -23,8 +23,8 @@
 
   "applications": [
     {
-      "class": "recorder.demo.Application",
-      "theme": "recorder.theme.Theme",
+      "class": "gh.cboulanger.recorder.demo.Application",
+      "theme": "gh.cboulanger.recorder.theme.Theme",
       "name": "recorder"
     }
   ]
