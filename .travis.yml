@@ -7,14 +7,22 @@ node_js: "stable"
 
 dist: trusty
 
+before_install:
+  - stty cols 80
+
 install:
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+  - sleep 3
+  - fluxbox >/dev/null 2>&1 &
   - npm install -g qxcompiler
   # use qooxdoo master for the moment, this will be replaced with npm packages
   - git clone --depth 1 https://github.com/qooxdoo/qooxdoo.git qooxdoo
   - qx config set qx.library qooxdoo
+  - qx serve --target=build &
+  - sleep 180 # Wait for compilation to finish
 
 script:
-  - qx serve --target=build &
   - npx testcafe chrome,firefox tests/testcafe.js  --app-init-delay 10000
 
 deploy:
