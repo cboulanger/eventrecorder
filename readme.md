@@ -47,7 +47,7 @@ Minimal example:
   controller.show();
 ````
 
-## Demo
+## Event recorder demo
 
 https://cboulanger.github.io/contrib.cboulanger.eventrecorder/
 
@@ -61,7 +61,14 @@ qx serve
 ```
 
 1. Open localhost:8080
+1. Open the "Event recorder demo application"
 1. In the window that appears in the top right corner, click on "Start".
 1. Click on the "Click me" button.
 1. Click on "Stop"
 1. A snippet of test code should appear in the text box. 
+
+# Running tests
+
+```
+npx testcafe chrome,firefox tests/testcafe.js  --app-init-delay 10000
+```
