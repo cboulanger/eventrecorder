@@ -2,7 +2,10 @@
 
 > NOTE: this is a very simple proof-of-concept which doesn't do very much at the moment.
   
-This contrib allows to record user interaction for replay during tests. 
+This contrib allows to record user interaction for replay during tests. It consists
+of a qooxdoo contrib that records user and UI events (clicks, appearances, etc.) 
+and which can be included in a qooxdoo application, and an NPM package (TBD) that
+acts as a backend to replay these events during automated tests. 
 
 It currently supports:
  - [qooxdoo unit tests](https://www.qooxdoo.org/current/pages/development/unit_testing.html)
