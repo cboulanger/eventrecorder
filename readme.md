@@ -38,20 +38,21 @@ Minimal example:
   button1.addOwnedObject(win,"window");
 
   // recorder
-  let controller = new recorder.UiController(new recorder.type.Qooxdoo());
+  const recorder = new contrib.cboulanger.eventrecorder.type.Qooxdoo()
+  const controller = new contrib.cboulanger.eventrecorder.UiController(recorder);
   doc.add(controller, {right:0});
   controller.show();
 ````
 
 ## Demo
 
-https://cboulanger.github.io/recorder/
+https://cboulanger.github.io/contrib.cboulanger.eventrecorder/
 
 Or locally:
 
 ```bash
 npm install -g qxcompiler
-git clone https://github.com/cboulanger/recorder.git
+git clone https://github.com/cboulanger/contrib.cboulanger.eventrecorder.git
 cd recorder
 qx serve
 ```

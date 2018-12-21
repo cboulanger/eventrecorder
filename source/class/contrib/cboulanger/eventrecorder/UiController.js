@@ -17,7 +17,7 @@
 /**
  * This is a qooxdoo class
  */
-qx.Class.define("gh.cboulanger.recorder.UiController",
+qx.Class.define("contrib.cboulanger.eventrecorder.UiController",
 {
 
   extend : qx.ui.window.Window,
@@ -37,18 +37,18 @@ qx.Class.define("gh.cboulanger.recorder.UiController",
       layout: new qx.ui.layout.VBox(5)
     });
 
-    if (! recorderImplementation instanceof gh.cboulanger.recorder.AbstractRecorder){
-      this.error("Argument must be instanceof gh.cboulanger.recorder.AbstractRecorder");
+    if (! recorderImplementation instanceof contrib.cboulanger.eventrecorder.AbstractRecorder){
+      this.error("Argument must be instanceof contrib.cboulanger.eventrecorder.AbstractRecorder");
       return;
     }
     this._recorder = recorderImplementation;
 
-    let startButton = new qx.ui.form.ToggleButton("Start",null);
+    let startButton = new qx.ui.form.ToggleButton("Start recording",null);
     startButton.addListener("changeValue", this.toggle, this);
     this._startButton = startButton;
     this.add(startButton);
 
-    let stopButton = new qx.ui.form.Button("Stop",null);
+    let stopButton = new qx.ui.form.Button("Stop & generate script",null);
     stopButton.set({enabled:false});
     stopButton.addListener("execute", this.stop, this);
     this._stopButton = stopButton;

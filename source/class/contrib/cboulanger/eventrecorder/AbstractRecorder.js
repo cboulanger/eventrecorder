@@ -18,7 +18,7 @@
  * This is a qooxdoo class
  * @require(qx.bom.Element)
  */
-qx.Class.define("gh.cboulanger.recorder.AbstractRecorder",
+qx.Class.define("contrib.cboulanger.eventrecorder.AbstractRecorder",
 {
   
   extend : qx.core.Object,

@@ -23,9 +23,9 @@
 
   "applications": [
     {
-      "class": "gh.cboulanger.recorder.demo.Application",
-      "theme": "gh.cboulanger.recorder.theme.Theme",
-      "name": "recorder"
+      "class": "contrib.cboulanger.eventrecorder.demo.Application",
+      "theme": "contrib.cboulanger.eventrecorder.theme.Theme",
+      "name": "eventrecorder"
     }
   ]
 }

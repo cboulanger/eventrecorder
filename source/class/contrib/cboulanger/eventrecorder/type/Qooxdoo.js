@@ -17,10 +17,10 @@
 /**
  * This is a qooxdoo class
  */
-qx.Class.define("gh.cboulanger.recorder.type.Qooxdoo",
+qx.Class.define("contrib.cboulanger.eventrecorder.type.Qooxdoo",
 {
   
-  extend : gh.cboulanger.recorder.AbstractRecorder,
+  extend : contrib.cboulanger.eventrecorder.AbstractRecorder,
 
   members :
   {
