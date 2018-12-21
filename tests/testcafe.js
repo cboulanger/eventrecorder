@@ -1,7 +1,7 @@
 import {IdSelector, QxSelector} from "../npm/adapters/TestCafe";
 
 fixture `Testing demo`
-  .page `http://127.0.0.1:8080/build/eventrecorder`;
+  .page `http://127.0.0.1:8080/build/eventrecorder/index.html`;
 
 test('Run demo', async t => {
   await t
