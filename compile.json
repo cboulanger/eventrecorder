@@ -27,25 +27,27 @@
       "class": "contrib.cboulanger.eventrecorder.demo.Application",
       "theme": "contrib.cboulanger.eventrecorder.theme.Theme",
       "name": "eventrecorder",
-      "title": "Event recorder demo"
+      "title": "Simple event recorder demo"
     },
     {
       "class": "qxl.widgetbrowser.Application",
       "theme": "qx.theme.Indigo",
       "name": "widgetbrowser",
-      "title": "WidgetBrowser",
+      "title": "WidgetBrowser with event recorder",
       "include": [
         "qx.theme.Modern",
         "qx.theme.Simple",
         "qx.theme.Classic",
         "qxl.versionlabel.VersionLabel",
-        "qxl.formdemo.FormItems"
+        "qxl.formdemo.FormItems",
+        "contrib.cboulanger.eventrecorder.UiController",
+        "contrib.cboulanger.eventrecorder.ObjectIdGenerator",
+        "contrib.cboulanger.eventrecorder.ObjectIdTooltip"
       ],
       "parts": {
         "boot": {
           "include": [
-            "qxl.widgetbrowser.Application",
-            "contrib.cboulanger.eventrecorder"
+            "qxl.widgetbrowser.Application"
           ]
         },
         "tree": {
