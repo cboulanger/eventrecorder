@@ -22,14 +22,14 @@ qx.Class.define("contrib.cboulanger.eventrecorder.AbstractRecorder",
 {
   
   extend : qx.core.Object,
-  //include : [ Mixin1, Mixin2 ],
+  include : [contrib.cboulanger.eventrecorder.MHelperMethods],
 
   /**
    * Constructor
    */
   construct : function() {
     this.base(arguments);
-    this.addGlobalEventMonitor((target, event) => {
+    this.addGlobalEventListener((target, event) => {
       if (!this.__running) return;
       let id;
       if (typeof target.getAttribute == "function" ){
@@ -54,12 +54,6 @@ qx.Class.define("contrib.cboulanger.eventrecorder.AbstractRecorder",
     __lines : null,
     __paused : false,
 
-    addGlobalEventMonitor: function(fn){
-      let evtMonitor = qx.event.Manager.getGlobalEventMonitor();
-      qx.event.Manager.setGlobalEventMonitor(
-        evtMonitor ? (target, event) => evtMonitor(target, event) || fn(target, event) : fn
-      );
-    },
 
     start() {
       this.__lines = [];

@@ -1,0 +1,207 @@
+#: qx/ui/control/ColorPopup.js:147
+msgid "Automatic"
+msgstr ""
+
+#: qx/ui/control/ColorPopup.js:155
+msgid "Open ColorSelector"
+msgstr ""
+
+#: qx/ui/control/ColorPopup.js:162 qx/ui/control/ColorSelector.js:357
+msgid "Preview (Old/New)"
+msgstr ""
+
+#: qx/ui/control/ColorPopup.js:180
+msgid "OK"
+msgstr ""
+
+#: qx/ui/control/ColorPopup.js:185
+msgid "Cancel"
+msgstr ""
+
+#: qx/ui/control/ColorPopup.js:242
+msgid "Color Selector"
+msgstr ""
+
+#: qx/ui/control/ColorPopup.js:481
+msgid "Basic Colors"
+msgstr ""
+
+#: qx/ui/control/ColorPopup.js:487
+msgid "Recent Colors"
+msgstr ""
+
+#: qx/ui/control/ColorSelector.js:255
+msgid "Visual"
+msgstr ""
+
+#: qx/ui/control/ColorSelector.js:315
+msgid "Presets"
+msgstr ""
+
+#: qx/ui/control/ColorSelector.js:346
+msgid "Details"
+msgstr ""
+
+#: qx/ui/control/ColorSelector.js:375
+msgid "Hex"
+msgstr ""
+
+#: qx/ui/control/ColorSelector.js:398
+msgid "RGB"
+msgstr ""
+
+#: qx/ui/control/ColorSelector.js:430
+msgid "HSB"
+msgstr ""
+
+#: qx/ui/control/DateChooser.js:258
+msgid "Last year"
+msgstr ""
+
+#: qx/ui/control/DateChooser.js:270
+msgid "Last month"
+msgstr ""
+
+#: qx/ui/control/DateChooser.js:282
+msgid "Next month"
+msgstr ""
+
+#: qx/ui/control/DateChooser.js:294
+msgid "Next year"
+msgstr ""
+
+#: qx/ui/form/validation/Manager.js:37
+msgid "This field is required"
+msgstr ""
+
+#: qx/ui/table/Table.js:1987
+msgid "one row"
+msgid_plural "%1 rows"
+msgstr[0] ""
+msgstr[1] ""
+
+#: qx/ui/table/Table.js:1989
+msgid "one of one row"
+msgid_plural "%1 of %2 rows"
+msgstr[0] ""
+msgstr[1] ""
+
+#: qx/ui/table/columnmodel/Resize.js:197
+msgid "Reset column widths"
+msgstr ""
+
+#: qx/util/Validate.js:90
+msgid "%1 is not a number."
+msgstr ""
+
+#: qx/util/Validate.js:129
+msgid "'%1' is not an email address."
+msgstr ""
+
+#: qx/util/Validate.js:166
+msgid "%1 is not a string."
+msgstr ""
+
+#: qx/util/Validate.js:202
+msgid "%1 is not an url."
+msgstr ""
+
+#: qx/util/Validate.js:243
+msgid "%1 is not a color! %2"
+msgstr ""
+
+#: qx/util/Validate.js:267
+msgid "%1 is not in the range from [%2, %3]."
+msgstr ""
+
+#: qx/util/Validate.js:290
+msgid "%1 is not in %2"
+msgstr ""
+
+#: qx/util/Validate.js:314
+msgid "%1 does not fit %2."
+msgstr ""
+
+#: qxl/apiviewer/Viewer.js:166
+msgid "Content"
+msgstr ""
+
+#: qxl/apiviewer/Viewer.js:169
+msgid "Show/hide the packages."
+msgstr ""
+
+#: qxl/apiviewer/Viewer.js:172
+msgid "Search"
+msgstr ""
+
+#: qxl/apiviewer/Viewer.js:174
+msgid "Search for packages, classes and members."
+msgstr ""
+
+#: qxl/apiviewer/Viewer.js:177
+msgid "Legend"
+msgstr ""
+
+#: qxl/apiviewer/Viewer.js:179
+msgid "Show/hide the legend."
+msgstr ""
+
+#: qxl/apiviewer/Viewer.js:191
+msgid "Properties"
+msgstr ""
+
+#: qxl/apiviewer/Viewer.js:194
+msgid "Show/hide all generated property methods."
+msgstr ""
+
+#: qxl/apiviewer/Viewer.js:197
+msgid "Includes"
+msgstr ""
+
+#: qxl/apiviewer/Viewer.js:199
+msgid "Show/hide members of other classes/mixins inherited/included in the current class"
+msgstr ""
+
+#: qxl/apiviewer/Viewer.js:204
+msgid "Inherited"
+msgstr ""
+
+#: qxl/apiviewer/Viewer.js:206
+msgid "Show/hide inherited members of the current class."
+msgstr ""
+
+#: qxl/apiviewer/Viewer.js:209
+msgid "Mixin Included"
+msgstr ""
+
+#: qxl/apiviewer/Viewer.js:211
+msgid "Show/hide included members of the current class."
+msgstr ""
+
+#: qxl/apiviewer/Viewer.js:217
+msgid "Protected"
+msgstr ""
+
+#: qxl/apiviewer/Viewer.js:219
+msgid "Show/hide protected members of the current class."
+msgstr ""
+
+#: qxl/apiviewer/Viewer.js:222
+msgid "Private"
+msgstr ""
+
+#: qxl/apiviewer/Viewer.js:224
+msgid "Show/hide private members of the current class."
+msgstr ""
+
+#: qxl/apiviewer/Viewer.js:227
+msgid "Internal"
+msgstr ""
+
+#: qxl/apiviewer/Viewer.js:229
+msgid "Show/hide internal members of the current class."
+msgstr ""
+
+#: qxl/apiviewer/ui/SearchView.js:667
+msgid "Hint: You can use regular expressions in the search field."
+msgstr ""
