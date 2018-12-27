@@ -22,6 +22,9 @@ qx.Class.define("contrib.cboulanger.eventrecorder.ObjectIdGenerator",
       // start generating ids with a delay because rendering widgets is asynchrous
       qx.event.Timer.once( ()=> this.assignObjectIdsToChildren(qx.core.Init.getApplication().getRoot()), null, 2000);
       // todo: we need a way of generating ids for widgets that get added to the layout dynamically
+      qx.io.PartLoader.getInstance().addListener("partLoaded", e => {
+        this.assignObjectIdsToChildren(qx.core.Init.getApplication().getRoot());
+      });
     },
 
     /**
@@ -42,17 +45,17 @@ qx.Class.define("contrib.cboulanger.eventrecorder.ObjectIdGenerator",
      * @param obj
      * @param parent
      */
-    setObjectId: function(obj, parent){
+    generateQxObjectId: function(obj, parent){
       if (!obj.getQxObjectId()) {
         let id=this.generateId(obj);
         obj.setQxObjectId(id);
         if (parent && parent.getQxObjectId()) {
           // if the parent has an id, we add the child as an owned object
-          //console.log(`Adding ${obj} to ${parent} with id '${id}'`);
-          parent.addOwnedObject(obj);
+          console.log(`Adding ${obj} to ${parent} with id '${id}'`);
+          parent.addOwnedQxObject(obj);
         } else {
           // otherwise, we register it as a top-level object
-          //console.log(`Registering ${obj} as global id root with id '${id}'`);
+          console.log(`Registering ${obj} as global id root with id '${id}'`);
           qx.core.Id.getInstance().register(obj, id);
         }
       }
@@ -62,17 +65,34 @@ qx.Class.define("contrib.cboulanger.eventrecorder.ObjectIdGenerator",
      * Recursively assigns object ids to the children of the given parent widget.
      * @param parent {qx.ui.core.Widget|qx.ui.core.MChildrenHandling} An object that must include
      * the qx.ui.core.MChildrenHandling mixin.
+     * @param level {Number}
      */
     assignObjectIdsToChildren: function(parent, level=0)
     {
-      //console.log("    ".repeat(level) + parent.classname);
-      for (let child of parent.getChildren()){
+      let children =
+        typeof parent.getChildren == "function"
+        ? parent.getChildren()
+        :  typeof parent.getLayoutChildren == "function"
+          ? parent.getLayoutChildren() : null;
+      // let msg = "    ".repeat(level) + parent.classname;
+      // if ( !children || ! children.length) {
+      //   console.log(msg + " (no children)");
+      //   return;
+      // }
+      // console.log(msg);
+      if ( !children || ! children.length) return;
+      for (let child of children){
         // assign object id and add to parent if neccessary
-        this.setObjectId(child, parent);
+        this.generateQxObjectId(child, parent);
         // recurse into children
-        if (typeof child.getChildren === "function") {
-          this.assignObjectIdsToChildren(child, level+1);
+        let realChild = child;
+        switch (child.classname) {
+          case "qx.ui.groupbox.GroupBox":
+            realChild = child.getChildControl("frame");
+            this.generateQxObjectId(realChild,child);
+            break;
         }
+        this.assignObjectIdsToChildren(realChild, level+1);
       }
     }
   },

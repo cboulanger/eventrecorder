@@ -37,13 +37,13 @@ qx.Class.define("contrib.cboulanger.eventrecorder.type.Qooxdoo",
       let line;
       switch (event.getType()) {
         case "execute":
-          line = `id.getObject("${id}").fireEvent('execute');`;
+          line = `id.getQxObject("${id}").fireEvent('execute');`;
           break;
         case "appear":
-          line = `qx.core.Assert.assertTrue(id.getObject("${id}").isVisible());`;
+          line = `qx.core.Assert.assertTrue(id.getQxObject("${id}").isVisible());`;
           break;
         case "disappear":
-          line = `qx.core.Assert.assertFalse(id.getObject("${id}").isVisible());`;
+          line = `qx.core.Assert.assertFalse(id.getQxObject("${id}").isVisible());`;
           break;
         default:
           return [];
