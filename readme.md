@@ -14,7 +14,7 @@ It currently supports:
 ## Example
 
 Minimal example:
-````javascript
+```javascript
   var button1 = new qx.ui.form.Button("Click me", "recorder/test.png");
   var doc = this.getRoot();
   doc.add(button1, {left: 100, top: 50});
@@ -38,18 +38,24 @@ Minimal example:
   // id registration
   qx.core.Id.getInstance().register(button1,"button");
   button1.setQxObjectId("button");
-  button1.addOwnedObject(win,"window");
+  button1.addOwnedQxObject(win,"window");
 
   // recorder
   const recorder = new contrib.cboulanger.eventrecorder.type.Qooxdoo()
   const controller = new contrib.cboulanger.eventrecorder.UiController(recorder);
   doc.add(controller, {right:0});
   controller.show();
-````
+```
 
-## Event recorder demo
+## Demos
 
-https://cboulanger.github.io/contrib.cboulanger.eventrecorder/
+- [Simple event recorder demo](https://cboulanger.github.io/contrib.cboulanger.eventrecorder/): See below for how to 
+  use the demo.
+- [Widget Browser with event recorder](https://cboulanger.github.io/contrib.cboulanger.eventrecorder/widgetbrowser_recorder): 
+  This demo shows how the event recorder is added to an existing application without changing its source code. 
+- [Widget Browser with object id tooltip](https://cboulanger.github.io/contrib.cboulanger.eventrecorder/widgetbrowser_recorder):
+  This demo displays the object ids which are automatically assigned to the widgets by showing a tooltip when hovering
+  over them.
 
 Or locally:
 
@@ -61,7 +67,7 @@ qx serve
 ```
 
 1. Open localhost:8080
-1. Open the "Event recorder demo application"
+1. Open the "Simple event recorder demo"
 1. In the window that appears in the top right corner, click on "Start".
 1. Click on the "Click me" button.
 1. Click on "Stop"

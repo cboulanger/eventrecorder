@@ -25,7 +25,7 @@ install:
   - qx config set qx.library qooxdoo
   - qx contrib install
   - qx serve & # --target=build &
-  - sleep 180 # Wait for compilation to finish
+  - sleep 60 # Wait for compilation to finish
 
 script:
   - #npx testcafe chrome,firefox tests/testcafe.js  --app-init-delay 10000

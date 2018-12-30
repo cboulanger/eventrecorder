@@ -77,7 +77,7 @@ qx.Class.define("contrib.cboulanger.eventrecorder.demo.Application",
 
       // id registration
       qx.core.Id.getInstance().register(button1,"button1");
-      button1.generateQxObjectId("button1");
+      button1.setQxObjectId("button1");
       button1.addOwnedQxObject(win,"window");
       win.addOwnedQxObject(button2,"button2");
 
