@@ -51,11 +51,11 @@ qx.Class.define("contrib.cboulanger.eventrecorder.ObjectIdGenerator",
         obj.setQxObjectId(id);
         if (parent && parent.getQxObjectId()) {
           // if the parent has an id, we add the child as an owned object
-          console.log(`Adding ${obj} to ${parent} with id '${id}'`);
+          // console.log(`Adding ${obj} to ${parent} with id '${id}'`);
           parent.addOwnedQxObject(obj);
         } else {
           // otherwise, we register it as a top-level object
-          console.log(`Registering ${obj} as global id root with id '${id}'`);
+          //console.log(`Registering ${obj} as global id root with id '${id}'`);
           qx.core.Id.getInstance().register(obj, id);
         }
       }
@@ -89,6 +89,10 @@ qx.Class.define("contrib.cboulanger.eventrecorder.ObjectIdGenerator",
         switch (child.classname) {
           case "qx.ui.groupbox.GroupBox":
             realChild = child.getChildControl("frame");
+            this.generateQxObjectId(realChild,child);
+            break;
+          case "qx.ui.form.MenuButton":
+            realChild = child.getMenu();
             this.generateQxObjectId(realChild,child);
             break;
         }

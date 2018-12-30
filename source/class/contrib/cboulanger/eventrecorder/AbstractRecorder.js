@@ -29,6 +29,7 @@ qx.Class.define("contrib.cboulanger.eventrecorder.AbstractRecorder",
    */
   construct : function() {
     this.base(arguments);
+    this.__excludeIds = [];
     this.addGlobalEventListener((target, event) => {
       if (!this.__running) return;
       let id;
@@ -53,37 +54,90 @@ qx.Class.define("contrib.cboulanger.eventrecorder.AbstractRecorder",
     __running : false,
     __lines : null,
     __paused : false,
+    __excludeIds : null,
 
+    /**
+     * Exclude the given id(s) from recording
+     * @param ids {Array|String}
+     */
+    excludeIds(ids){
+      // normalize to array
+      ids = qx.lang.Type.isArray(ids)? ids: [ids];
+      // add ids that are not yet included by path
+      for (let id of ids) {
+        let found=false;
+        for (let excluded of this.__excludeIds){
+          if (id.substr(0, excluded.length) === excluded) found = true;
+        }
+        if (!found) {
+          this.debug(`Excluding ${id} from event recording.`);
+          this.__excludeIds.push(id);
+        }
+      }
+    },
 
+    /**
+     * Starts the recorder, overwriting any recorded events
+     */
     start() {
       this.__lines = [];
       this.__running = true;
       this.__paused = false;
     },
 
+    /**
+     * Pause the recorder
+     */
     pause() {
       this.__running = false;
       this.__paused = true;
     },
 
+    /**
+     * Returns true if the recorder is paused
+     * @return {boolean}
+     */
     isPaused() {
       return this.__paused;
     },
 
+    /**
+     * Resumes recording.
+     */
     resume() {
       this.__running = true;
       this.__paused = false;
     },
 
+    /**
+     * Stops the recording.
+     */
     stop() {
       this.__running = false;
       this.__paused = false;
     },
 
+    /**
+     * Called by the global event listener
+     * @param id {String}
+     * @param event {qx.event.type.Event}
+     * @param target {qx.bom.Element}
+     * @private
+     * @return {boolean} returns true if the event was recorded, false if
+     * it was ignored because of the list of excluded ids.
+     */
     _recordEvent(id, event, target){
+      for (let excluded of this.__excludeIds){
+        if (id.substr(0, excluded.length) === excluded) return false;
+      }
       this.__lines = this.__lines.concat(this.recordEvent(id, event, target));
+      return true;
     },
 
+    /**
+     * Returns the script as an array of lines
+     * @return {Array|null}
+     */
     getLines(){
       return this.__lines;
     },
@@ -98,7 +152,7 @@ qx.Class.define("contrib.cboulanger.eventrecorder.AbstractRecorder",
      * @return {String[]} An array of script lines
      */
     recordEvent(id, event, target) {
-      this.error("recordEvent() must be implemented by subclass.");
+      throw new Error("Method recordEvent() must be implemented by subclass.");
     },
 
     /**
@@ -108,7 +162,28 @@ qx.Class.define("contrib.cboulanger.eventrecorder.AbstractRecorder",
      * @return {String}
      */
     generateScript(lines){
-      this.error("generateScript() must be implemented by subclass.");
+      throw new Error("Method generateScript() must be implemented by subclass.");
+    },
+
+    /**
+     * If the recorder is able to replay the generated script, override this
+     * method and return true
+     * @return {boolean}
+     */
+    canReplay() {
+      return false;
+    },
+
+    /**
+     * Implement in subclass if the recorder can replay the given script
+     * @param script {Array} The script to replay, as an array of self-contained lines
+     * @param delay {Number} The delay in miliseconds, defaults to 500
+     * @return {Promise} Promise which resolves when the script has been replayed, or
+     * rejects with an error
+     */
+    async replay(script, delay=500) {
+      if (! this.canReplay()) throw new Error("This recorder cannot replay the event log");
+      throw new Error("Method replay() must be implemented by subclass");
     }
   }
 });

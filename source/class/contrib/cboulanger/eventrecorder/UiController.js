@@ -54,9 +54,18 @@ qx.Class.define("contrib.cboulanger.eventrecorder.UiController",
     this._stopButton = stopButton;
     this.add(stopButton);
 
+    if (recorderImplementation.canReplay()){
+      let replayButton = new qx.ui.form.Button("Replay script",null);
+      replayButton.set({enabled:false});
+      replayButton.addListener("execute", this.replay, this);
+      this._replayButton = replayButton;
+      this.add(replayButton);
+    }
+
     let codeEditor = new qx.ui.form.TextArea();
     codeEditor.set({
-      wrap: false
+      wrap: false,
+      readOnly: true
     });
     this._codeEditor = codeEditor;
     this.add(codeEditor, {flex:1});
@@ -71,14 +80,17 @@ qx.Class.define("contrib.cboulanger.eventrecorder.UiController",
     _recorder : null,
     _startButton : null,
     _stopButton : null,
+    _replayButton : null,
     _codeEditor : null,
 
     toggle(e) {
+      this._replayButton.setEnabled(false);
       if (e.getData()) {
         if (this._recorder.isPaused()){
           this._recorder.resume();
         } else {
           this._codeEditor.setValue("");
+          this._recorder.excludeIds(qx.core.Id.getAbsoluteIdOf(this));
           this._recorder.start();
         }
         this._startButton.setLabel("Recording, click to pause...");
@@ -96,9 +108,27 @@ qx.Class.define("contrib.cboulanger.eventrecorder.UiController",
         label: "Start"
       });
       this._stopButton.setEnabled(false);
+      this._replayButton.setEnabled(true);
       this._recorder.stop();
       let script = this._recorder.generateScript(this._recorder.getLines());
       this._codeEditor.setValue(script);
+    },
+
+    replay() {
+      this._recorder.replay(this._recorder.getLines());
     }
+  },
+
+  /**
+   * Will be called after class has been loaded, before application startup
+   */
+  defer: function(){
+    qx.bom.Lifecycle.onReady(() => {
+      const qxRecorder = new contrib.cboulanger.eventrecorder.type.Qooxdoo();
+      const qxController = new contrib.cboulanger.eventrecorder.UiController(qxRecorder, "Generate qooxdoo script");
+      qxController.set({width:400,height:300});
+      qx.core.Init.getApplication().getRoot().add(qxController, {top:0, right:0});
+      qxController.show();
+    });
   }
 });

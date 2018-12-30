@@ -37,13 +37,18 @@ qx.Class.define("contrib.cboulanger.eventrecorder.type.Qooxdoo",
       let line;
       switch (event.getType()) {
         case "execute":
-          line = `id.getQxObject("${id}").fireEvent('execute');`;
+          line = `qx.core.Id.getQxObject("${id}").fireEvent('execute');`;
           break;
         case "appear":
-          line = `qx.core.Assert.assertTrue(id.getQxObject("${id}").isVisible());`;
+          line = `qx.core.Assert.assertTrue(qx.core.Id.getQxObject("${id}").isVisible());`;
           break;
         case "disappear":
-          line = `qx.core.Assert.assertFalse(id.getQxObject("${id}").isVisible());`;
+          line = `qx.core.Assert.assertFalse(qx.core.Id.getQxObject("${id}").isVisible());`;
+          break;
+        case "change":
+          let value = event.getData();
+          if (typeof value === "string") value = "'" + value + "'";
+          line = `qx.core.Id.getQxObject("${id}").setValue(${value});`;
           break;
         default:
           return [];
@@ -59,8 +64,30 @@ qx.Class.define("contrib.cboulanger.eventrecorder.type.Qooxdoo",
      * @return {String}
      */
     generateScript(lines) {
-      lines.unshift("let id = qx.core.Id;");
       return lines.join("\n");
-    }
+    },
+
+    /**
+     * Returns true to indicate that the recorder can replay its self-generated script
+     * @return {boolean}
+     */
+    canReplay() {
+      return true;
+    },
+
+    /**
+     * Replays the given script
+     * @param script {Array} The script to replay, as an array of self-contained lines
+     * @param delay {Number} The delay in miliseconds, defaults to 500
+     * @return {Promise} Promise which resolves when the script has been replayed, or
+     * rejects with an error
+     */
+    async replay(script, delay=500) {
+      if (! script instanceof Array) throw new TypeError("Script must be an array of strings");
+      for (let line of script){
+        eval(line); // evil!!
+        await new Promise(resolve => qx.event.Timer.once( resolve,null,delay));
+      }
+    },
   }
 });

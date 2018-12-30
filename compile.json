@@ -32,7 +32,89 @@
     {
       "class": "qxl.widgetbrowser.Application",
       "theme": "qx.theme.Indigo",
-      "name": "widgetbrowser",
+      "name": "widgetbrowser_tooltip",
+      "title": "WidgetBrowser with object id tooltip",
+      "include": [
+        "qx.theme.Modern",
+        "qx.theme.Simple",
+        "qx.theme.Classic",
+        "qxl.versionlabel.VersionLabel",
+        "qxl.formdemo.FormItems",
+        "contrib.cboulanger.eventrecorder.ObjectIdGenerator",
+        "contrib.cboulanger.eventrecorder.ObjectIdTooltip"
+      ],
+      "parts": {
+        "boot": {
+          "include": [
+            "qxl.widgetbrowser.Application"
+          ]
+        },
+        "tree": {
+          "include": [
+            "qxl.widgetbrowser.pages.Tree"
+          ]
+        },
+        "list": {
+          "include": [
+            "qxl.widgetbrowser.pages.List"
+          ]
+        },
+        "table": {
+          "include": [
+            "qxl.widgetbrowser.pages.Table"
+          ]
+        },
+        "form": {
+          "include": [
+            "qxl.widgetbrowser.pages.Form"
+          ]
+        },
+        "toolbar": {
+          "include": [
+            "qxl.widgetbrowser.pages.ToolBar"
+          ]
+        },
+        "window": {
+          "include": [
+            "qxl.widgetbrowser.pages.Window"
+          ]
+        },
+        "tab": {
+          "include": [
+            "qxl.widgetbrowser.pages.Tab"
+          ]
+        },
+        "control": {
+          "include": [
+            "qxl.widgetbrowser.pages.Control"
+          ]
+        },
+        "embed": {
+          "include": [
+            "qxl.widgetbrowser.pages.Embed"
+          ]
+        },
+        "embedframe": {
+          "include": [
+            "qxl.widgetbrowser.pages.EmbedFrame"
+          ]
+        },
+        "basic": {
+          "include": [
+            "qxl.widgetbrowser.pages.Basic"
+          ]
+        },
+        "misc": {
+          "include": [
+            "qxl.widgetbrowser.pages.Misc"
+          ]
+        }
+      }
+    },
+    {
+      "class": "qxl.widgetbrowser.Application",
+      "theme": "qx.theme.Indigo",
+      "name": "widgetbrowser_recorder",
       "title": "WidgetBrowser with event recorder",
       "include": [
         "qx.theme.Modern",
@@ -41,9 +123,12 @@
         "qxl.versionlabel.VersionLabel",
         "qxl.formdemo.FormItems",
         "contrib.cboulanger.eventrecorder.UiController",
-        "contrib.cboulanger.eventrecorder.ObjectIdGenerator",
-        "contrib.cboulanger.eventrecorder.ObjectIdTooltip"
+        "contrib.cboulanger.eventrecorder.type.Qooxdoo",
+        "contrib.cboulanger.eventrecorder.ObjectIdGenerator"
       ],
+      "environment": {
+
+      },
       "parts": {
         "boot": {
           "include": [
