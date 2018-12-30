@@ -22,10 +22,14 @@ qx.Class.define("contrib.cboulanger.eventrecorder.UiController",
 
   extend : qx.ui.window.Window,
 
+  statics: {
+    LOCAL_STORAGE_KEY: "contrib.cboulanger.eventrecorder.UiController.script"
+  },
+
   /**
    * Constructor
    */
-  construct : function(recorderImplementation, caption="Recorder") {
+  construct: function(recorderImplementation, caption="Recorder") {
     this.base(arguments);
     this.set({
       caption,
@@ -69,6 +73,8 @@ qx.Class.define("contrib.cboulanger.eventrecorder.UiController",
     });
     this._codeEditor = codeEditor;
     this.add(codeEditor, {flex:1});
+
+
   },
 
 
@@ -115,7 +121,11 @@ qx.Class.define("contrib.cboulanger.eventrecorder.UiController",
     },
 
     replay() {
-      this._recorder.replay(this._recorder.getLines());
+      let confirmed = window.confirm("This will reload the application and replay the event log");
+      if (confirmed){
+        qx.bom.storage.Web.getLocal().setItem(contrib.cboulanger.eventrecorder.UiController.LOCAL_STORAGE_KEY,this._recorder.getLines());
+        window.location.reload();
+      }
     }
   },
 
@@ -128,7 +138,24 @@ qx.Class.define("contrib.cboulanger.eventrecorder.UiController",
       const qxController = new contrib.cboulanger.eventrecorder.UiController(qxRecorder, "Generate qooxdoo script");
       qxController.set({width:400,height:300});
       qx.core.Init.getApplication().getRoot().add(qxController, {top:0, right:0});
-      qxController.show();
+      // replay
+      let storedScript = qx.bom.storage.Web.getLocal().getItem(contrib.cboulanger.eventrecorder.UiController.LOCAL_STORAGE_KEY);
+      if (storedScript && storedScript.length){
+        contrib.cboulanger.eventrecorder.ObjectIdGenerator.getInstance().addListenerOnce("done", async ()=>{
+          let confirm = window.confirm('Press OK to start replay');
+          if (confirm){
+            try{
+              await qxRecorder.replay(storedScript);
+            } catch (e) {
+              console.error(e);
+            }
+          }
+          qx.bom.storage.Web.getLocal().removeItem(contrib.cboulanger.eventrecorder.UiController.LOCAL_STORAGE_KEY);
+          qxController.show();
+        });
+      } else {
+        qxController.show();
+      }
     });
   }
 });

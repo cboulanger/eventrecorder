@@ -47,7 +47,7 @@ qx.Class.define("contrib.cboulanger.eventrecorder.type.Qooxdoo",
           break;
         case "change":
           let value = event.getData();
-          if (typeof value === "string") value = "'" + value + "'";
+          if (typeof value === "string") value = '"' + value + '"';
           line = `qx.core.Id.getQxObject("${id}").setValue(${value});`;
           break;
         default:
@@ -84,7 +84,9 @@ qx.Class.define("contrib.cboulanger.eventrecorder.type.Qooxdoo",
      */
     async replay(script, delay=500) {
       if (! script instanceof Array) throw new TypeError("Script must be an array of strings");
+      console.log(script.length);
       for (let line of script){
+        console.log(line);
         eval(line); // evil!!
         await new Promise(resolve => qx.event.Timer.once( resolve,null,delay));
       }

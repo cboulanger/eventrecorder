@@ -13,6 +13,9 @@ qx.Class.define("contrib.cboulanger.eventrecorder.ObjectIdGenerator",
   type: "singleton",
   extend: qx.core.Object,
   include : [contrib.cboulanger.eventrecorder.MHelperMethods],
+  events: {
+    "done" : "qx.event.type.Event"
+  },
   members: {
 
     /**
@@ -20,7 +23,10 @@ qx.Class.define("contrib.cboulanger.eventrecorder.ObjectIdGenerator",
      */
     init: function(){
       // start generating ids with a delay because rendering widgets is asynchrous
-      qx.event.Timer.once( ()=> this.assignObjectIdsToChildren(qx.core.Init.getApplication().getRoot()), null, 2000);
+      qx.event.Timer.once( ()=> {
+        this.assignObjectIdsToChildren(qx.core.Init.getApplication().getRoot());
+        this.fireEvent("done");
+      }, null, 2000);
       // todo: we need a way of generating ids for widgets that get added to the layout dynamically
       qx.io.PartLoader.getInstance().addListener("partLoaded", e => {
         this.assignObjectIdsToChildren(qx.core.Init.getApplication().getRoot());
@@ -28,14 +34,14 @@ qx.Class.define("contrib.cboulanger.eventrecorder.ObjectIdGenerator",
     },
 
     /**
-     * Given a {@link qx.core.Object}, return a unique id for it
+     * Given a {@link qx.core.Object}, return an id for it, which is the last
+     * part of the class name
      * @param qxObj {qx.core.Object}
      * @return {String}
      */
     generateId: function(qxObj) {
-      let hash = qxObj.toHashCode();
       let clazz = qxObj.classname;
-      return clazz.substr(clazz.lastIndexOf('.')+1) + hash.substring(0,hash.indexOf('-'));
+      return clazz.substr(clazz.lastIndexOf('.')+1);
     },
 
     /**
@@ -51,8 +57,20 @@ qx.Class.define("contrib.cboulanger.eventrecorder.ObjectIdGenerator",
         obj.setQxObjectId(id);
         if (parent && parent.getQxObjectId()) {
           // if the parent has an id, we add the child as an owned object
-          // console.log(`Adding ${obj} to ${parent} with id '${id}'`);
-          parent.addOwnedQxObject(obj);
+          let siblingWithSameName = false;
+          let postfix = 0;
+          do {
+            try{
+              parent.addOwnedQxObject(obj);
+              siblingWithSameName=false;
+              // console.log(`Adding ${obj} to ${parent} with id '${id}'`);
+            } catch (e) {
+              // name already exists, append a number
+              siblingWithSameName = true;
+              postfix++;
+              obj.setQxObjectId(id+postfix);
+            }
+          } while(siblingWithSameName);
         } else {
           // otherwise, we register it as a top-level object
           //console.log(`Registering ${obj} as global id root with id '${id}'`);
@@ -87,6 +105,10 @@ qx.Class.define("contrib.cboulanger.eventrecorder.ObjectIdGenerator",
         // recurse into children
         let realChild = child;
         switch (child.classname) {
+          case "qx.ui.form.ComboBox":
+            realChild = child.getChildControl("textfield");
+            this.generateQxObjectId(realChild,child);
+            break;
           case "qx.ui.groupbox.GroupBox":
             realChild = child.getChildControl("frame");
             this.generateQxObjectId(realChild,child);
