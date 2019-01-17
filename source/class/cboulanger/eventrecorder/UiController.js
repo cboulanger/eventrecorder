@@ -17,13 +17,13 @@
 /**
  * This is a qooxdoo class
  */
-qx.Class.define("contrib.cboulanger.eventrecorder.UiController",
+qx.Class.define("cboulanger.eventrecorder.UiController",
 {
 
   extend : qx.ui.window.Window,
 
   statics: {
-    LOCAL_STORAGE_KEY: "contrib.cboulanger.eventrecorder.UiController.script"
+    LOCAL_STORAGE_KEY: "cboulanger.eventrecorder.UiController.script"
   },
 
   /**
@@ -41,8 +41,8 @@ qx.Class.define("contrib.cboulanger.eventrecorder.UiController",
       layout: new qx.ui.layout.VBox(5)
     });
 
-    if (! recorderImplementation instanceof contrib.cboulanger.eventrecorder.AbstractRecorder){
-      this.error("Argument must be instanceof contrib.cboulanger.eventrecorder.AbstractRecorder");
+    if (! recorderImplementation instanceof cboulanger.eventrecorder.AbstractRecorder){
+      this.error("Argument must be instanceof cboulanger.eventrecorder.AbstractRecorder");
       return;
     }
     this._recorder = recorderImplementation;
@@ -123,7 +123,7 @@ qx.Class.define("contrib.cboulanger.eventrecorder.UiController",
     replay() {
       let confirmed = window.confirm("This will reload the application and replay the event log");
       if (confirmed){
-        qx.bom.storage.Web.getLocal().setItem(contrib.cboulanger.eventrecorder.UiController.LOCAL_STORAGE_KEY,this._recorder.getLines());
+        qx.bom.storage.Web.getLocal().setItem(cboulanger.eventrecorder.UiController.LOCAL_STORAGE_KEY,this._recorder.getLines());
         window.location.reload();
       }
     }
@@ -134,14 +134,14 @@ qx.Class.define("contrib.cboulanger.eventrecorder.UiController",
    */
   defer: function(){
     qx.bom.Lifecycle.onReady(() => {
-      const qxRecorder = new contrib.cboulanger.eventrecorder.type.Qooxdoo();
-      const qxController = new contrib.cboulanger.eventrecorder.UiController(qxRecorder, "Generate qooxdoo script");
+      const qxRecorder = new cboulanger.eventrecorder.type.Qooxdoo();
+      const qxController = new cboulanger.eventrecorder.UiController(qxRecorder, "Generate qooxdoo script");
       qxController.set({width:400,height:300});
       qx.core.Init.getApplication().getRoot().add(qxController, {top:0, right:0});
       // replay
-      let storedScript = qx.bom.storage.Web.getLocal().getItem(contrib.cboulanger.eventrecorder.UiController.LOCAL_STORAGE_KEY);
+      let storedScript = qx.bom.storage.Web.getLocal().getItem(cboulanger.eventrecorder.UiController.LOCAL_STORAGE_KEY);
       if (storedScript && storedScript.length){
-        contrib.cboulanger.eventrecorder.ObjectIdGenerator.getInstance().addListenerOnce("done", async ()=>{
+        cboulanger.eventrecorder.ObjectIdGenerator.getInstance().addListenerOnce("done", async ()=>{
           let confirm = window.confirm('Press OK to start replay');
           if (confirm){
             try{
@@ -150,7 +150,7 @@ qx.Class.define("contrib.cboulanger.eventrecorder.UiController",
               console.error(e);
             }
           }
-          qx.bom.storage.Web.getLocal().removeItem(contrib.cboulanger.eventrecorder.UiController.LOCAL_STORAGE_KEY);
+          qx.bom.storage.Web.getLocal().removeItem(cboulanger.eventrecorder.UiController.LOCAL_STORAGE_KEY);
           qxController.show();
         });
       } else {

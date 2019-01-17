@@ -12,7 +12,7 @@
  * This is the main application class of "UI Event Recorder"
  * @asset(contrib/cboulanger/eventrecorder/*)
  */
-qx.Class.define("contrib.cboulanger.eventrecorder.demo.Application",
+qx.Class.define("cboulanger.eventrecorder.demo.Application",
 {
   extend : qx.application.Standalone,
 
@@ -82,14 +82,14 @@ qx.Class.define("contrib.cboulanger.eventrecorder.demo.Application",
       win.addOwnedQxObject(button2,"button2");
 
       // event recorder
-      const qxRecorder = new contrib.cboulanger.eventrecorder.type.Qooxdoo();
-      const qxController = new contrib.cboulanger.eventrecorder.UiController(qxRecorder, "Generate qooxdoo script");
+      const qxRecorder = new cboulanger.eventrecorder.type.Qooxdoo();
+      const qxController = new cboulanger.eventrecorder.UiController(qxRecorder, "Generate qooxdoo script");
       qxController.set({width:400,height:300});
       doc.add(qxController, {top:0, right:0});
       qxController.show();
 
-      const testcafeRecorder = new contrib.cboulanger.eventrecorder.type.TestCafe();
-      const testcafeController = new contrib.cboulanger.eventrecorder.UiController(testcafeRecorder, "Generate TestCafe script");
+      const testcafeRecorder = new cboulanger.eventrecorder.type.TestCafe();
+      const testcafeController = new cboulanger.eventrecorder.UiController(testcafeRecorder, "Generate TestCafe script");
       testcafeController.set({width:400,height:300});
       doc.add(testcafeController, {bottom:0, right:0});
       testcafeController.show();

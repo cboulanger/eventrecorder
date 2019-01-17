@@ -8,7 +8,7 @@
 
 ************************************************************************ */
 
-qx.Theme.define("contrib.cboulanger.eventrecorder.theme.Decoration",
+qx.Theme.define("cboulanger.eventrecorder.theme.Decoration",
 {
   extend : qx.theme.indigo.Decoration,
 

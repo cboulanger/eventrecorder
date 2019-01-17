@@ -41,19 +41,19 @@ Minimal example:
   button1.addOwnedQxObject(win,"window");
 
   // recorder
-  const recorder = new contrib.cboulanger.eventrecorder.type.Qooxdoo()
-  const controller = new contrib.cboulanger.eventrecorder.UiController(recorder);
+  const recorder = new cboulanger.eventrecorder.type.Qooxdoo()
+  const controller = new cboulanger.eventrecorder.UiController(recorder);
   doc.add(controller, {right:0});
   controller.show();
 ```
 
 ## Demos
 
-- [Simple event recorder demo](https://cboulanger.github.io/contrib.cboulanger.eventrecorder/): See below for how to 
+- [Simple event recorder demo](https://cboulanger.github.io/cboulanger.eventrecorder/): See below for how to 
   use the demo.
-- [Widget Browser with event recorder](https://cboulanger.github.io/contrib.cboulanger.eventrecorder/widgetbrowser_recorder): 
+- [Widget Browser with event recorder](https://cboulanger.github.io/cboulanger.eventrecorder/widgetbrowser_recorder): 
   This demo shows how the event recorder is added to an existing application without changing its source code. 
-- [Widget Browser with object id tooltip](https://cboulanger.github.io/contrib.cboulanger.eventrecorder/widgetbrowser_recorder):
+- [Widget Browser with object id tooltip](https://cboulanger.github.io/cboulanger.eventrecorder/widgetbrowser_recorder):
   This demo displays the object ids which are automatically assigned to the widgets by showing a tooltip when hovering
   over them.
 
@@ -61,7 +61,7 @@ Or locally:
 
 ```bash
 npm install -g qxcompiler
-git clone https://github.com/cboulanger/contrib.cboulanger.eventrecorder.git
+git clone https://github.com/cboulanger/cboulanger.eventrecorder.git
 cd recorder
 qx serve
 ```

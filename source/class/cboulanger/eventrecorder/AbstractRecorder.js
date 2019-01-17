@@ -18,11 +18,11 @@
  * This is a qooxdoo class
  * @require(qx.bom.Element)
  */
-qx.Class.define("contrib.cboulanger.eventrecorder.AbstractRecorder",
+qx.Class.define("cboulanger.eventrecorder.AbstractRecorder",
 {
   
   extend : qx.core.Object,
-  include : [contrib.cboulanger.eventrecorder.MHelperMethods],
+  include : [cboulanger.eventrecorder.MHelperMethods],
 
   /**
    * Constructor

@@ -8,11 +8,11 @@
  * the widget. This will result in absolute ids of the form
  * `Composite50/Scroll117/TabView120/TabPage147`
  */
-qx.Class.define("contrib.cboulanger.eventrecorder.ObjectIdGenerator",
+qx.Class.define("cboulanger.eventrecorder.ObjectIdGenerator",
 {
   type: "singleton",
   extend: qx.core.Object,
-  include : [contrib.cboulanger.eventrecorder.MHelperMethods],
+  include : [cboulanger.eventrecorder.MHelperMethods],
   events: {
     "done" : "qx.event.type.Event"
   },
@@ -127,6 +127,6 @@ qx.Class.define("contrib.cboulanger.eventrecorder.ObjectIdGenerator",
   * Will be called after class has been loaded, before application startup
   */
   defer: function(){
-    qx.bom.Lifecycle.onReady(() => contrib.cboulanger.eventrecorder.ObjectIdGenerator.getInstance().init());
+    qx.bom.Lifecycle.onReady(() => cboulanger.eventrecorder.ObjectIdGenerator.getInstance().init());
   }
 });

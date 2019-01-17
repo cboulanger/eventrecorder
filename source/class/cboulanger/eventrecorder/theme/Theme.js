@@ -8,14 +8,14 @@
 
 ************************************************************************ */
 
-qx.Theme.define("contrib.cboulanger.eventrecorder.theme.Theme",
+qx.Theme.define("cboulanger.eventrecorder.theme.Theme",
 {
   meta :
   {
-    color : contrib.cboulanger.eventrecorder.theme.Color,
-    decoration : contrib.cboulanger.eventrecorder.theme.Decoration,
-    font : contrib.cboulanger.eventrecorder.theme.Font,
+    color : cboulanger.eventrecorder.theme.Color,
+    decoration : cboulanger.eventrecorder.theme.Decoration,
+    font : cboulanger.eventrecorder.theme.Font,
     icon : qx.theme.icon.Tango,
-    appearance : contrib.cboulanger.eventrecorder.theme.Appearance
+    appearance : cboulanger.eventrecorder.theme.Appearance
   }
 });

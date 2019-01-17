@@ -18,14 +18,14 @@
     "en"
   ],
   "environment": {
+    "qx.icontheme": ["Tango", "Oxygen"],
     "qx.debug": true,
-    "module.objectid": true,
-    "contrib.cboulanger.eventrecorder.enabled": true
+    "module.objectid": true
   },
   "applications": [
     {
-      "class": "contrib.cboulanger.eventrecorder.demo.Application",
-      "theme": "contrib.cboulanger.eventrecorder.theme.Theme",
+      "class": "cboulanger.eventrecorder.demo.Application",
+      "theme": "cboulanger.eventrecorder.theme.Theme",
       "name": "eventrecorder",
       "title": "Simple event recorder demo"
     },
@@ -40,9 +40,12 @@
         "qx.theme.Classic",
         "qxl.versionlabel.VersionLabel",
         "qxl.formdemo.FormItems",
-        "contrib.cboulanger.eventrecorder.ObjectIdGenerator",
-        "contrib.cboulanger.eventrecorder.ObjectIdTooltip"
-      ]
+        "cboulanger.eventrecorder.ObjectIdGenerator",
+        "cboulanger.eventrecorder.ObjectIdTooltip"
+      ],
+      "environment": {
+        "qx.icontheme": ["Tango", "Oxygen"]
+      }
     },
     {
       "class": "qxl.widgetbrowser.Application",
@@ -55,16 +58,16 @@
         "qx.theme.Classic",
         "qxl.versionlabel.VersionLabel",
         "qxl.formdemo.FormItems",
-        "contrib.cboulanger.eventrecorder.UiController",
-        "contrib.cboulanger.eventrecorder.type.Qooxdoo",
-        "contrib.cboulanger.eventrecorder.ObjectIdGenerator"
+        "cboulanger.eventrecorder.UiController",
+        "cboulanger.eventrecorder.type.Qooxdoo",
+        "cboulanger.eventrecorder.ObjectIdGenerator"
       ]
     },
     {
       "class": "qxl.apiviewer.Application",
       "theme": "qxl.apiviewer.Theme",
       "name": "apiviewer",
-      "title": "Qooxdoo API Viewer",
+      "title": "API Viewer",
       "environment": {
         "excludeFromAPIViewer": [
           "qxl.apiviewer.*"
