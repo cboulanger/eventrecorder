@@ -2,31 +2,35 @@
   "libraries": [
     {
       "library_name": "widgetbrowser",
-      "library_version": "0.1.3",
+      "library_version": "0.1.6",
+      "uri": "qooxdoo/qxl.widgetbrowser",
       "repo_name": "qooxdoo/qxl.widgetbrowser",
-      "repo_tag": "v0.1.3",
-      "path": "contrib/qooxdoo_qxl.widgetbrowser_v0.1.3"
+      "repo_tag": "v0.1.6",
+      "path": "contrib/qooxdoo_qxl.widgetbrowser_v0.1.6"
+    },
+    {
+      "library_name": "formdemo",
+      "library_version": "0.1.2",
+      "uri": "qooxdoo/qxl.formdemo",
+      "repo_name": "qooxdoo/qxl.formdemo",
+      "repo_tag": "v0.1.2",
+      "path": "contrib/qooxdoo_qxl.formdemo_v0.1.2"
     },
     {
       "library_name": "versionlabel",
-      "library_version": "0.1.1",
+      "library_version": "0.1.2",
+      "uri": "qooxdoo/qxl.versionlabel",
       "repo_name": "qooxdoo/qxl.versionlabel",
-      "repo_tag": "v0.1.1",
-      "path": "contrib/qooxdoo_qxl.versionlabel_v0.1.1"
+      "repo_tag": "v0.1.2",
+      "path": "contrib/qooxdoo_qxl.versionlabel_v0.1.2"
     },
     {
       "library_name": "Qooxdoo API Viewer",
       "library_version": "0.1.12",
+      "uri": "qooxdoo/qxl.apiviewer",
       "repo_name": "qooxdoo/qxl.apiviewer",
       "repo_tag": "v0.1.12",
       "path": "contrib/qooxdoo_qxl.apiviewer_v0.1.12"
-    },
-    {
-      "library_name": "formdemo",
-      "library_version": "0.1.1",
-      "repo_name": "qooxdoo/qxl.formdemo",
-      "repo_tag": "v0.1.1",
-      "path": "contrib/qooxdoo_qxl.formdemo_v0.1.1"
     }
   ]
 }

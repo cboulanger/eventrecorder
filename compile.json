@@ -2,15 +2,14 @@
   "targets": [
     {
       "type": "source",
-      "outputPath": "source-output"
-    },
-    {
-      "type": "hybrid",
-      "outputPath": "hybrid-output"
+      "outputPath": "output/source",
+      "bundle": {
+        "include": "qx.*"
+      }
     },
     {
       "type": "build",
-      "outputPath": "build-output"
+      "outputPath": "output/build"
     }
   ],
   "defaultTarget": "source",
@@ -18,7 +17,10 @@
     "en"
   ],
   "environment": {
-    "qx.icontheme": ["Tango", "Oxygen"],
+    "qx.icontheme": [
+      "Tango",
+      "Oxygen"
+    ],
     "qx.debug": true,
     "module.objectid": true
   },
@@ -36,15 +38,14 @@
       "title": "WidgetBrowser with object id tooltip",
       "include": [
         "qx.theme.Modern",
-        "qx.theme.Simple",
-        "qx.theme.Classic",
-        "qxl.versionlabel.VersionLabel",
-        "qxl.formdemo.FormItems",
         "cboulanger.eventrecorder.ObjectIdGenerator",
         "cboulanger.eventrecorder.ObjectIdTooltip"
       ],
       "environment": {
-        "qx.icontheme": ["Tango", "Oxygen"]
+        "qx.icontheme": [
+          "Tango",
+          "Oxygen"
+        ]
       }
     },
     {
@@ -54,10 +55,6 @@
       "title": "WidgetBrowser with event recorder",
       "include": [
         "qx.theme.Modern",
-        "qx.theme.Simple",
-        "qx.theme.Classic",
-        "qxl.versionlabel.VersionLabel",
-        "qxl.formdemo.FormItems",
         "cboulanger.eventrecorder.UiController",
         "cboulanger.eventrecorder.type.Qooxdoo",
         "cboulanger.eventrecorder.ObjectIdGenerator"
@@ -67,7 +64,7 @@
       "class": "qxl.apiviewer.Application",
       "theme": "qxl.apiviewer.Theme",
       "name": "apiviewer",
-      "title": "API Viewer",
+      "title": "Qooxdoo API Viewer",
       "environment": {
         "excludeFromAPIViewer": [
           "qxl.apiviewer.*"
@@ -80,6 +77,15 @@
         "qx.test.*",
         "qx.module.Blocker",
         "qx.module.Placement"
+      ]
+    },
+    {
+      "class": "qxl.widgetbrowser.Application",
+      "theme": "qx.theme.Indigo",
+      "name": "widgetbrowser",
+      "title": "WidgetBrowser",
+      "include": [
+        "qx.theme.Modern"
       ]
     }
   ]

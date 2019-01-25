@@ -8,10 +8,8 @@
 
 ************************************************************************ */
 
-qx.Theme.define("cboulanger.eventrecorder.theme.Theme",
-{
-  meta :
-  {
+qx.Theme.define("cboulanger.eventrecorder.theme.Theme", {
+  meta : {
     color : cboulanger.eventrecorder.theme.Color,
     decoration : cboulanger.eventrecorder.theme.Decoration,
     font : cboulanger.eventrecorder.theme.Font,

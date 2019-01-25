@@ -2,24 +2,23 @@
 
   UI Event Recorder
 
-  Copyright: 
+  Copyright:
     2018 Christian Boulanger
 
-  License: 
+  License:
     MIT license
     See the LICENSE file in the project's top-level directory for details.
 
   Authors: Christian Boulanger
-    
+
 
 ************************************************************************ */
 
 /**
  * This is a qooxdoo class
  */
-qx.Class.define("cboulanger.eventrecorder.type.TestCafe",
-{
-  
+qx.Class.define("cboulanger.eventrecorder.type.TestCafe", {
+
   extend : cboulanger.eventrecorder.AbstractRecorder,
 
   members :

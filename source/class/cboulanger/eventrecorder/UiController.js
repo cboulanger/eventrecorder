@@ -17,9 +17,7 @@
 /**
  * This is a qooxdoo class
  */
-qx.Class.define("cboulanger.eventrecorder.UiController",
-{
-
+qx.Class.define("cboulanger.eventrecorder.UiController", {
   extend : qx.ui.window.Window,
 
   statics: {
@@ -41,25 +39,25 @@ qx.Class.define("cboulanger.eventrecorder.UiController",
       layout: new qx.ui.layout.VBox(5)
     });
 
-    if (! recorderImplementation instanceof cboulanger.eventrecorder.AbstractRecorder){
+    if (!(recorderImplementation instanceof cboulanger.eventrecorder.AbstractRecorder)) {
       this.error("Argument must be instanceof cboulanger.eventrecorder.AbstractRecorder");
       return;
     }
     this._recorder = recorderImplementation;
 
-    let startButton = new qx.ui.form.ToggleButton("Start recording",null);
+    let startButton = new qx.ui.form.ToggleButton("Start recording", null);
     startButton.addListener("changeValue", this.toggle, this);
     this._startButton = startButton;
     this.add(startButton);
 
-    let stopButton = new qx.ui.form.Button("Stop & generate script",null);
+    let stopButton = new qx.ui.form.Button("Stop & generate script", null);
     stopButton.set({enabled:false});
     stopButton.addListener("execute", this.stop, this);
     this._stopButton = stopButton;
     this.add(stopButton);
 
-    if (recorderImplementation.canReplay()){
-      let replayButton = new qx.ui.form.Button("Replay script",null);
+    if (recorderImplementation.canReplay()) {
+      let replayButton = new qx.ui.form.Button("Replay script", null);
       replayButton.set({enabled:false});
       replayButton.addListener("execute", this.replay, this);
       this._replayButton = replayButton;
@@ -73,8 +71,6 @@ qx.Class.define("cboulanger.eventrecorder.UiController",
     });
     this._codeEditor = codeEditor;
     this.add(codeEditor, {flex:1});
-
-
   },
 
 
@@ -90,9 +86,11 @@ qx.Class.define("cboulanger.eventrecorder.UiController",
     _codeEditor : null,
 
     toggle(e) {
-      this._replayButton.setEnabled(false);
+      if (this._replayButton) {
+        this._replayButton.setEnabled(false);
+      }
       if (e.getData()) {
-        if (this._recorder.isPaused()){
+        if (this._recorder.isPaused()) {
           this._recorder.resume();
         } else {
           this._codeEditor.setValue("");
@@ -114,7 +112,9 @@ qx.Class.define("cboulanger.eventrecorder.UiController",
         label: "Start"
       });
       this._stopButton.setEnabled(false);
-      this._replayButton.setEnabled(true);
+      if (this._replayButton){
+        this._replayButton.setEnabled(true);
+      }
       this._recorder.stop();
       let script = this._recorder.generateScript(this._recorder.getLines());
       this._codeEditor.setValue(script);
@@ -122,8 +122,8 @@ qx.Class.define("cboulanger.eventrecorder.UiController",
 
     replay() {
       let confirmed = window.confirm("This will reload the application and replay the event log");
-      if (confirmed){
-        qx.bom.storage.Web.getLocal().setItem(cboulanger.eventrecorder.UiController.LOCAL_STORAGE_KEY,this._recorder.getLines());
+      if (confirmed) {
+        qx.bom.storage.Web.getLocal().setItem(cboulanger.eventrecorder.UiController.LOCAL_STORAGE_KEY, this._recorder.getLines());
         window.location.reload();
       }
     }
@@ -132,22 +132,24 @@ qx.Class.define("cboulanger.eventrecorder.UiController",
   /**
    * Will be called after class has been loaded, before application startup
    */
-  defer: function(){
+  defer: function() {
     qx.bom.Lifecycle.onReady(() => {
       const qxRecorder = new cboulanger.eventrecorder.type.Qooxdoo();
       const qxController = new cboulanger.eventrecorder.UiController(qxRecorder, "Generate qooxdoo script");
-      qxController.set({width:400,height:300});
-      qx.core.Init.getApplication().getRoot().add(qxController, {top:0, right:0});
+      qxController.set({width:400, height:300});
+      qx.core.Init.getApplication().getRoot()
+        .add(qxController, {top:0, right:0});
       // replay
       let storedScript = qx.bom.storage.Web.getLocal().getItem(cboulanger.eventrecorder.UiController.LOCAL_STORAGE_KEY);
-      if (storedScript && storedScript.length){
-        cboulanger.eventrecorder.ObjectIdGenerator.getInstance().addListenerOnce("done", async ()=>{
-          let confirm = window.confirm('Press OK to start replay');
-          if (confirm){
-            try{
+      if (storedScript && storedScript.length) {
+        cboulanger.eventrecorder.ObjectIdGenerator.getInstance().addListenerOnce("done", async () => {
+          /*eslint no-alert: "off"*/
+          let confirm = window.confirm("Press OK to start replay");
+          if (confirm) {
+            try {
               await qxRecorder.replay(storedScript);
             } catch (e) {
-              console.error(e);
+              qx.core.Init.getApplication().error(e);
             }
           }
           qx.bom.storage.Web.getLocal().removeItem(cboulanger.eventrecorder.UiController.LOCAL_STORAGE_KEY);

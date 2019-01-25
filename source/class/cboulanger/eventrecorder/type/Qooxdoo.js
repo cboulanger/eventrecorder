@@ -2,24 +2,23 @@
 
   UI Event Recorder
 
-  Copyright: 
+  Copyright:
     2018 Christian Boulanger
 
-  License: 
+  License:
     MIT license
     See the LICENSE file in the project's top-level directory for details.
 
   Authors: Christian Boulanger
-    
+
 
 ************************************************************************ */
 
 /**
  * This is a qooxdoo class
  */
-qx.Class.define("cboulanger.eventrecorder.type.Qooxdoo",
-{
-  
+qx.Class.define("cboulanger.eventrecorder.type.Qooxdoo", {
+
   extend : cboulanger.eventrecorder.AbstractRecorder,
 
   members :
@@ -47,7 +46,9 @@ qx.Class.define("cboulanger.eventrecorder.type.Qooxdoo",
           break;
         case "change":
           let value = event.getData();
-          if (typeof value === "string") value = '"' + value + '"';
+          if (typeof value === "string") {
+            value = "\"" + value + "\"";
+          }
           line = `qx.core.Id.getQxObject("${id}").setValue(${value});`;
           break;
         default:
@@ -83,13 +84,14 @@ qx.Class.define("cboulanger.eventrecorder.type.Qooxdoo",
      * rejects with an error
      */
     async replay(script, delay=500) {
-      if (! script instanceof Array) throw new TypeError("Script must be an array of strings");
-      console.log(script.length);
-      for (let line of script){
-        console.log(line);
-        eval(line); // evil!!
-        await new Promise(resolve => qx.event.Timer.once( resolve,null,delay));
+      if (!(script instanceof Array)) {
+        throw new TypeError("Script must be an array of strings");
       }
-    },
+      for (let line of script) {
+
+        eval(line); // evil!!
+        await new Promise(resolve => qx.event.Timer.once(resolve, null, delay));
+      }
+    }
   }
 });

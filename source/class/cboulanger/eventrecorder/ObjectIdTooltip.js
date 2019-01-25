@@ -3,8 +3,7 @@
  * this class will automatically create a small popup with the id of the widget
  * when hovering over it.
  */
-qx.Class.define("cboulanger.eventrecorder.ObjectIdTooltip",
-{
+qx.Class.define("cboulanger.eventrecorder.ObjectIdTooltip", {
   type: "singleton",
   extend: qx.core.Object,
   include : [cboulanger.eventrecorder.MHelperMethods],
@@ -13,12 +12,12 @@ qx.Class.define("cboulanger.eventrecorder.ObjectIdTooltip",
     /**
      * Start automatically displaying the popups
      */
-    init: function(){
+    init: function() {
       const tooltip = new qx.ui.tooltip.ToolTip();
       this.addGlobalEventListener((target, event) => {
         let type=event.getType();
         switch (type) {
-          case "pointerover":
+          case "pointerover": {
             let id = target.getAttribute("data-qx-object-id");
             if (id) {
               tooltip.setLabel(id);
@@ -26,6 +25,7 @@ qx.Class.define("cboulanger.eventrecorder.ObjectIdTooltip",
               tooltip.show();
             }
             break;
+          }
           case "pointerout":
             tooltip.hide();
             break;
@@ -37,7 +37,7 @@ qx.Class.define("cboulanger.eventrecorder.ObjectIdTooltip",
   /**
    * Will be called after class has been loaded, before application startup
    */
-  defer: function(){
+  defer: function() {
     qx.bom.Lifecycle.onReady(() => cboulanger.eventrecorder.ObjectIdTooltip.getInstance().init());
   }
 });

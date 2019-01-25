@@ -8,11 +8,7 @@
 
 ************************************************************************ */
 
-qx.Theme.define("cboulanger.eventrecorder.theme.Color",
-{
+qx.Theme.define("cboulanger.eventrecorder.theme.Color", {
   extend : qx.theme.indigo.Color,
-
-  colors :
-  {
-  }
+  colors : {}
 });

@@ -34,6 +34,6 @@ deploy:
   provider: pages
   skip-cleanup: true
   github-token: $GITHUB_TOKEN
-  local-dir: source-output
+  local-dir: output/source
   on:
     branch: master

@@ -11,8 +11,7 @@
         "email": "info@bibliograph.org"
       }
     ],
-    "version": "0.2.0",
-    "qooxdoo-range": "^6.0.0-alpha"
+    "version": "0.3.0"
   },
   "provides": {
     "namespace": "cboulanger.eventrecorder",
@@ -21,5 +20,11 @@
     "resource": "source/resource",
     "translation": "source/translation",
     "type": "contribution"
+  },
+  "requires": {
+    "qooxdoo-sdk": "^6.0.0-alpha",
+    "qooxdoo-compiler": "^0.2.45",
+    "qooxdoo/qxl.widgetbrowser": "^0.1.2",
+    "qooxdoo/qxl.apiviewer": "^0.1.12"
   }
 }

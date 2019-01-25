@@ -8,8 +8,7 @@
  * the widget. This will result in absolute ids of the form
  * `Composite50/Scroll117/TabView120/TabPage147`
  */
-qx.Class.define("cboulanger.eventrecorder.ObjectIdGenerator",
-{
+qx.Class.define("cboulanger.eventrecorder.ObjectIdGenerator", {
   type: "singleton",
   extend: qx.core.Object,
   include : [cboulanger.eventrecorder.MHelperMethods],
@@ -21,9 +20,9 @@ qx.Class.define("cboulanger.eventrecorder.ObjectIdGenerator",
     /**
      * Start automatically assigning ids.
      */
-    init: function(){
+    init: function() {
       // start generating ids with a delay because rendering widgets is asynchrous
-      qx.event.Timer.once( ()=> {
+      qx.event.Timer.once(() => {
         this.assignObjectIdsToChildren(qx.core.Init.getApplication().getRoot());
         this.fireEvent("done");
       }, null, 2000);
@@ -41,7 +40,7 @@ qx.Class.define("cboulanger.eventrecorder.ObjectIdGenerator",
      */
     generateId: function(qxObj) {
       let clazz = qxObj.classname;
-      return clazz.substr(clazz.lastIndexOf('.')+1);
+      return clazz.substr(clazz.lastIndexOf(".")+1);
     },
 
     /**
@@ -51,7 +50,7 @@ qx.Class.define("cboulanger.eventrecorder.ObjectIdGenerator",
      * @param obj
      * @param parent
      */
-    generateQxObjectId: function(obj, parent){
+    generateQxObjectId: function(obj, parent) {
       if (!obj.getQxObjectId()) {
         let id=this.generateId(obj);
         obj.setQxObjectId(id);
@@ -60,7 +59,7 @@ qx.Class.define("cboulanger.eventrecorder.ObjectIdGenerator",
           let siblingWithSameName = false;
           let postfix = 0;
           do {
-            try{
+            try {
               parent.addOwnedQxObject(obj);
               siblingWithSameName=false;
               // console.log(`Adding ${obj} to ${parent} with id '${id}'`);
@@ -70,7 +69,7 @@ qx.Class.define("cboulanger.eventrecorder.ObjectIdGenerator",
               postfix++;
               obj.setQxObjectId(id+postfix);
             }
-          } while(siblingWithSameName);
+          } while (siblingWithSameName);
         } else {
           // otherwise, we register it as a top-level object
           //console.log(`Registering ${obj} as global id root with id '${id}'`);
@@ -85,21 +84,22 @@ qx.Class.define("cboulanger.eventrecorder.ObjectIdGenerator",
      * the qx.ui.core.MChildrenHandling mixin.
      * @param level {Number}
      */
-    assignObjectIdsToChildren: function(parent, level=0)
-    {
+    assignObjectIdsToChildren: function(parent, level=0) {
       let children =
-        typeof parent.getChildren == "function"
-        ? parent.getChildren()
-        :  typeof parent.getLayoutChildren == "function"
-          ? parent.getLayoutChildren() : null;
+        typeof parent.getChildren == "function" ?
+          parent.getChildren() :
+          typeof parent.getLayoutChildren == "function" ?
+            parent.getLayoutChildren() : null;
       // let msg = "    ".repeat(level) + parent.classname;
       // if ( !children || ! children.length) {
       //   console.log(msg + " (no children)");
       //   return;
       // }
       // console.log(msg);
-      if ( !children || ! children.length) return;
-      for (let child of children){
+      if (!children || !children.length) {
+        return;
+      }
+      for (let child of children) {
         // assign object id and add to parent if neccessary
         this.generateQxObjectId(child, parent);
         // recurse into children
@@ -107,15 +107,15 @@ qx.Class.define("cboulanger.eventrecorder.ObjectIdGenerator",
         switch (child.classname) {
           case "qx.ui.form.ComboBox":
             realChild = child.getChildControl("textfield");
-            this.generateQxObjectId(realChild,child);
+            this.generateQxObjectId(realChild, child);
             break;
           case "qx.ui.groupbox.GroupBox":
             realChild = child.getChildControl("frame");
-            this.generateQxObjectId(realChild,child);
+            this.generateQxObjectId(realChild, child);
             break;
           case "qx.ui.form.MenuButton":
             realChild = child.getMenu();
-            this.generateQxObjectId(realChild,child);
+            this.generateQxObjectId(realChild, child);
             break;
         }
         this.assignObjectIdsToChildren(realChild, level+1);
@@ -126,7 +126,7 @@ qx.Class.define("cboulanger.eventrecorder.ObjectIdGenerator",
   /**
   * Will be called after class has been loaded, before application startup
   */
-  defer: function(){
+  defer: function() {
     qx.bom.Lifecycle.onReady(() => cboulanger.eventrecorder.ObjectIdGenerator.getInstance().init());
   }
 });
