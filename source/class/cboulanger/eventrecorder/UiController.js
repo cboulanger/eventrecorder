@@ -45,6 +45,11 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     }
     this._recorder = recorderImplementation;
 
+    // do not record events for this widget
+    const objectId = this.toHashCode();
+    this.setQxObjectId(objectId)
+    this._recorder.excludeIds(objectId);
+
     let startButton = new qx.ui.form.ToggleButton("Start recording", null);
     startButton.addListener("changeValue", this.toggle, this);
     this._startButton = startButton;
@@ -94,7 +99,6 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
           this._recorder.resume();
         } else {
           this._codeEditor.setValue("");
-          this._recorder.excludeIds(qx.core.Id.getAbsoluteIdOf(this));
           this._recorder.start();
         }
         this._startButton.setLabel("Recording, click to pause...");
@@ -137,8 +141,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       const qxRecorder = new cboulanger.eventrecorder.type.Qooxdoo();
       const qxController = new cboulanger.eventrecorder.UiController(qxRecorder, "Generate qooxdoo script");
       qxController.set({width:400, height:300});
-      qx.core.Init.getApplication().getRoot()
-        .add(qxController, {top:0, right:0});
+      qx.core.Init.getApplication().getRoot().add(qxController, {top:0, right:0});
       // replay
       let storedScript = qx.bom.storage.Web.getLocal().getItem(cboulanger.eventrecorder.UiController.LOCAL_STORAGE_KEY);
       if (storedScript && storedScript.length) {

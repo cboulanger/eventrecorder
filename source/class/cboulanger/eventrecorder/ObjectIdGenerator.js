@@ -106,7 +106,21 @@ qx.Class.define("cboulanger.eventrecorder.ObjectIdGenerator", {
         let realChild = child;
         switch (child.classname) {
           case "qx.ui.form.ComboBox":
+            realChild = child.getChildControl("list");
+            this.generateQxObjectId(realChild, child);
+            this.assignObjectIdsToChildren(realChild, level+1);
             realChild = child.getChildControl("textfield");
+            this.generateQxObjectId(realChild, child);
+            break;
+          case "qx.ui.form.VirtualComboBox":
+            realChild = child.getChildControl("dropdown").getChildControl("list");
+            this.generateQxObjectId(realChild, child);
+            this.assignObjectIdsToChildren(realChild, level+1);
+            realChild = child.getChildControl("textfield");
+            this.generateQxObjectId(realChild, child);
+            break;
+          case "qx.ui.form.VirtualSelectBox":
+            realChild = child.getSelection();
             this.generateQxObjectId(realChild, child);
             break;
           case "qx.ui.groupbox.GroupBox":

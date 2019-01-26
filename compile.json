@@ -2,14 +2,14 @@
   "targets": [
     {
       "type": "source",
-      "outputPath": "output/source",
+      "outputPath": "compiled/source",
       "bundle": {
         "include": "qx.*"
       }
     },
     {
       "type": "build",
-      "outputPath": "output/build"
+      "outputPath": "compiled/build"
     }
   ],
   "defaultTarget": "source",
@@ -58,7 +58,13 @@
         "cboulanger.eventrecorder.UiController",
         "cboulanger.eventrecorder.type.Qooxdoo",
         "cboulanger.eventrecorder.ObjectIdGenerator"
-      ]
+      ],
+      "environment": {
+        "qx.icontheme": [
+          "Tango",
+          "Oxygen"
+        ]
+      }
     },
     {
       "class": "qxl.apiviewer.Application",
