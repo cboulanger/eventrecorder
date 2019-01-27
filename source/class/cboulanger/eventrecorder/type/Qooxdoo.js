@@ -34,88 +34,67 @@ qx.Class.define("cboulanger.eventrecorder.type.Qooxdoo", {
      */
     recordEvent(id, event, target) {
       let line;
-      switch (event.getType()) {
-        case "mouseover":
-        case "pointerover":
-        case "mousemove":
-        case "pointermove":
-        case "mouseout":
-        case "pointerout":
-        case "pointerup":
-        case "mouseup":
-        case "pointerdown":
-        case "mousedown":
-        case "tap":
-        case "press":
-        case "dbltap":
-        case "track":
-        case "trackstart":
-        case "trackend":
-        case "focus":
-        case "focusin":
-        case "focusout":
-        case "blur":
-        case "activate":
-        case "deactivate":
-        case "roll":
-        case "capture":
-        case "losecapture":
-        case "click":
-        case "dblclick":
-        case "loaded":
-        case "swipe":
-        case "release":
-        case "resize":
-        case "changeVisibility":
-        case "input":
-        case "keypress":
-        case "keyup":
-        case "keydown":
-        case "keyinput":
-          return [];
+      const type = event.getType();
+      let data = typeof event.getData == "function" ? event.getData() : null;
+      switch (type) {
         case "execute":
           switch (true) {
-            case (target.getQxOwner() instanceof qx.ui.form.DateField):
+            case typeof target.getQxOwner == "function" && target.getQxOwner() instanceof qx.ui.form.DateField:
               return [];
           }
           line = `qx.core.Id.getQxObject("${id}").fireEvent('execute');`;
           break;
         case "appear":
-          line = `qx.core.Assert.assertTrue(qx.core.Id.getQxObject("${id}").isVisible());`;
-          break;
         case "disappear":
-          line = `qx.core.Assert.assertFalse(qx.core.Id.getQxObject("${id}").isVisible());`;
-          break;
-        case "changeValue":
-        case "change": {
-          let data = event.getData();
-          switch (true) {
-            // selection of virtual select box
-            case (target.getQxOwner() instanceof qx.ui.form.VirtualSelectBox): {
-              let index = target.getQxOwner().getModel().indexOf(data.added[0]);
-              line = `let obj = qx.core.Id.getQxObject("${id}"); obj.getQxOwner().setSelection(new qx.data.Array([obj.getQxOwner().getModel().getItem(${index})]));`;
-              break;
-            }
-            // other form fields
-            default:
-              if (typeof data === "string") {
-                data = "\"" + data + "\"";
-              }
-              line = `qx.core.Id.getQxObject("${id}").setValue(${data});`;
+          if (qx.ui.core.FocusHandler.getInstance().isFocusRoot(qx.core.Id.getQxObject(id))) {
+            line = `qx.core.Assert.assert${type==="appear"?"True":"False"}(qx.core.Id.getQxObject("${id}").isVisible());`;
+            break;
           }
+          return [];
+        case "change": {
+          const isModelSelection =
+            target instanceof qx.data.Array &&
+            target.getQxOwner() &&
+            typeof target.getQxOwner().getModel == "function";
+          if (isModelSelection) {
+            const owner = target.getQxOwner();
+            const ownerId = qx.core.Id.getAbsoluteIdOf(owner);
+            const model = target.getQxOwner().getModel();
+            const indexes = target.toArray().map(item => model.indexOf(item));
+            line = `let obj = qx.core.Id.getQxObject("${ownerId}"); obj.setSelection(new qx.data.Array(${JSON.stringify(indexes)}.map(i => obj.getModel().getItem(i))));`
+            break;
+          }
+          // other form fields
+          if (typeof data === "string") {
+            data = "\"" + data + "\"";
+          }
+          line = `qx.core.Id.getQxObject("${id}").setValue(${data});`;
           break;
         }
         case "changeSelection": {
-          let selected = event.getData()[0];
-          if (typeof target.getSelectables == "function") {
-            let index = target.getSelectables().indexOf(selected);
-            line = `let obj = qx.core.Id.getQxObject("${id}"); obj.setSelection([obj.getSelectables()[${index}]]);`;
+          if (target instanceof qx.ui.table.selection.Model) {
+            line = `let sm = qx.core.Id.getQxObject("${id}"); sm.resetSelection();`;
+            let ranges = target.getSelectedRanges();
+            if (ranges.length) {
+              line += `sm.addSelectionInterval(${ranges[0].minIndex}, ${ranges[0].maxIndex});`;
+            }
             break;
+          }
+          if (data && data.length && qx.lang.Type.isArray(data)) {
+            let selected = data[0];
+            if (selected instanceof qx.core.Object && selected.getQxObjectId()) {
+              let selectedId = qx.core.Id.getAbsoluteIdOf(selected);
+              line = `qx.core.Id.getQxObject("${id}").setSelection([qx.core.Id.getQxObject("${selectedId}")]);`;
+              break;
+            } else if (typeof target.getSelectables == "function") {
+              let index = target.getSelectables().indexOf(selected);
+              line = `let obj = qx.core.Id.getQxObject("${id}"); obj.setSelection([obj.getSelectables()[${index}]]);`;
+              break;
+            }
           }
           return [];
         }
         default:
-          console.log(`${id}: ${event.getType()}`);
           return [];
       }
       return [line];

@@ -26,9 +26,10 @@ qx.Class.define("cboulanger.eventrecorder.ObjectIdGenerator", {
         this.assignObjectIdsToChildren(qx.core.Init.getApplication().getRoot());
         this.fireEvent("done");
       }, null, 2000);
-      // todo: we need a way of generating ids for widgets that get added to the layout dynamically
-      qx.io.PartLoader.getInstance().addListener("partLoaded", e => {
-        this.assignObjectIdsToChildren(qx.core.Init.getApplication().getRoot());
+      this.addGlobalEventListener((target, event) => {
+        if (event.getType() === "appear") {
+          this.assignObjectIdsToChildren(qx.core.Init.getApplication().getRoot());
+        }
       });
     },
 
@@ -47,34 +48,37 @@ qx.Class.define("cboulanger.eventrecorder.ObjectIdGenerator", {
      * Given an object and its parent, set its object id and add it to the
      * parent's owned objects. If the object doesn't have a parent or the
      * parent has no object id, register the object as a global id root.
-     * @param obj
-     * @param parent
+     * @param obj The object to assign an object id to
+     * @param owner The owning parent object
+     * @param id {String|undefined} Optional id. If not given, generate an id from
+     * the class name
      */
-    generateQxObjectId: function(obj, parent) {
-      if (!obj.getQxObjectId()) {
-        let id=this.generateId(obj);
-        obj.setQxObjectId(id);
-        if (parent && parent.getQxObjectId()) {
-          // if the parent has an id, we add the child as an owned object
-          let siblingWithSameName = false;
-          let postfix = 0;
-          do {
-            try {
-              parent.addOwnedQxObject(obj);
-              siblingWithSameName=false;
-              // console.log(`Adding ${obj} to ${parent} with id '${id}'`);
-            } catch (e) {
-              // name already exists, append a number
-              siblingWithSameName = true;
-              postfix++;
-              obj.setQxObjectId(id+postfix);
-            }
-          } while (siblingWithSameName);
-        } else {
-          // otherwise, we register it as a top-level object
-          //console.log(`Registering ${obj} as global id root with id '${id}'`);
-          qx.core.Id.getInstance().register(obj, id);
-        }
+    generateQxObjectId: function(obj, owner, id) {
+      if (!obj || typeof obj.getQxObjectId != "function" || obj.getQxObjectId()) {
+        return;
+      }
+      id = id || this.generateId(obj);
+      obj.setQxObjectId(id);
+      if (owner && owner.getQxObjectId()) {
+        // if the parent has an id, we add the child as an owned object
+        let siblingWithSameName = false;
+        let postfix = 1;
+        do {
+          try {
+            owner.addOwnedQxObject(obj);
+            siblingWithSameName=false;
+            // console.log(`Adding ${obj} to ${parent} with id '${id}'`);
+          } catch (e) {
+            // name already exists, append a number
+            siblingWithSameName = true;
+            postfix++;
+            obj.setQxObjectId(id+postfix);
+          }
+        } while (siblingWithSameName);
+      } else {
+        // otherwise, we register it as a top-level object
+        //console.log(`Registering ${obj} as global id root with id '${id}'`);
+        qx.core.Id.getInstance().register(obj, id);
       }
     },
 
@@ -85,6 +89,9 @@ qx.Class.define("cboulanger.eventrecorder.ObjectIdGenerator", {
      * @param level {Number}
      */
     assignObjectIdsToChildren: function(parent, level=0) {
+      if (!parent) {
+        return;
+      }
       let children =
         typeof parent.getChildren == "function" ?
           parent.getChildren() :
@@ -100,37 +107,46 @@ qx.Class.define("cboulanger.eventrecorder.ObjectIdGenerator", {
         return;
       }
       for (let child of children) {
+       // ignore popups
+       if (child instanceof qx.ui.popup.Popup) {
+         continue;
+       }
         // assign object id and add to parent if neccessary
         this.generateQxObjectId(child, parent);
         // recurse into children
         let realChild = child;
+        let id;
         switch (child.classname) {
           case "qx.ui.form.ComboBox":
-            realChild = child.getChildControl("list");
-            this.generateQxObjectId(realChild, child);
-            this.assignObjectIdsToChildren(realChild, level+1);
             realChild = child.getChildControl("textfield");
-            this.generateQxObjectId(realChild, child);
-            break;
-          case "qx.ui.form.VirtualComboBox":
-            realChild = child.getChildControl("dropdown").getChildControl("list");
-            this.generateQxObjectId(realChild, child);
-            this.assignObjectIdsToChildren(realChild, level+1);
-            realChild = child.getChildControl("textfield");
-            this.generateQxObjectId(realChild, child);
             break;
           case "qx.ui.form.VirtualSelectBox":
             realChild = child.getSelection();
-            this.generateQxObjectId(realChild, child);
             break;
           case "qx.ui.groupbox.GroupBox":
             realChild = child.getChildControl("frame");
-            this.generateQxObjectId(realChild, child);
             break;
           case "qx.ui.form.MenuButton":
+          case "qx.ui.toolbar.MenuButton":
+          case "qx.ui.menubar.Button":
             realChild = child.getMenu();
-            this.generateQxObjectId(realChild, child);
             break;
+          case "qx.ui.treevirtual.TreeVirtual":
+          case "qx.ui.table.Table":
+            realChild = child.getSelectionModel();
+            id = "Selection";
+            break;
+          case "qx.ui.list.List":
+          //case "qx.ui.tree.VirtualTree":
+            realChild = child.getSelection();
+            id = "Selection";
+            break;
+          case "qx.ui.tabview.Page":
+            this.generateQxObjectId(child.getChildControl("button"), child);
+            break;
+        }
+        if (realChild !== child) {
+          this.generateQxObjectId(realChild, child, id);
         }
         this.assignObjectIdsToChildren(realChild, level+1);
       }
