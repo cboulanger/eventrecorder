@@ -26,7 +26,7 @@ install:
 #  - sleep 60 # Wait for compilation to finish
 
 script:
-#  - npx testcafe chrome,firefox tests/testcafe.js  --app-init-delay 10000
+  - # npx testcafe chrome,firefox tests/testcafe.js  --app-init-delay 10000
 
 deploy:
   provider: pages
