@@ -137,6 +137,9 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
    * Will be called after class has been loaded, before application startup
    */
   defer: function() {
+    if (!qx.core.Environment.get("module.objectid")) {
+      return;
+    }
     qx.bom.Lifecycle.onReady(() => {
       const qxRecorder = new cboulanger.eventrecorder.type.Qooxdoo();
       const qxController = new cboulanger.eventrecorder.UiController(qxRecorder, "Generate qooxdoo script");

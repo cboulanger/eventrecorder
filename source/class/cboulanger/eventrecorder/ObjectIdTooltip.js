@@ -120,6 +120,8 @@ qx.Class.define("cboulanger.eventrecorder.ObjectIdTooltip", {
    * Will be called after class has been loaded, before application startup
    */
   defer: function() {
-    qx.bom.Lifecycle.onReady(() => cboulanger.eventrecorder.ObjectIdTooltip.getInstance().init());
+    if (qx.core.Environment.get("module.objectid")) {
+      qx.bom.Lifecycle.onReady(() => cboulanger.eventrecorder.ObjectIdTooltip.getInstance().init());
+    }
   }
 });
