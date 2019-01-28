@@ -132,18 +132,26 @@ qx.Class.define("cboulanger.eventrecorder.ObjectIdGenerator", {
             realChild = child.getMenu();
             break;
           case "qx.ui.treevirtual.TreeVirtual":
+            child.addListener("treeClose", () => {});
+            child.addListener("treeOpenWithContent", () => {});
+            child.addListener("treeOpenWhileEmpty", () => {});
+            // fallthrough
           case "qx.ui.table.Table":
             realChild = child.getSelectionModel();
             id = "Selection";
             break;
           case "qx.ui.list.List":
-          //case "qx.ui.tree.VirtualTree":
             realChild = child.getSelection();
             id = "Selection";
             break;
           case "qx.ui.tabview.Page":
             this.generateQxObjectId(child.getChildControl("button"), child);
             break;
+          case "qx.ui.tree.VirtualTree":
+            child.addListener("open", () => {});
+            child.addListener("close", () => {});
+            this.generateQxObjectId(child._manager, child);
+            continue;
         }
         if (realChild !== child) {
           this.generateQxObjectId(realChild, child, id);

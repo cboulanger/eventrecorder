@@ -46,6 +46,9 @@ qx.Class.define("cboulanger.eventrecorder.ObjectIdTooltip", {
             break;
           case qx.lang.Type.isObject(data):
             data = JSON.stringify(data);
+            if (data.length > 100) {
+              data = data.substr(0, 100) + " [...]";
+            }
             break;
           case qx.lang.Type.isString(data):
             data = `'${data}'`;
@@ -71,7 +74,10 @@ qx.Class.define("cboulanger.eventrecorder.ObjectIdTooltip", {
             // display all events that relate to the widget for which a toolip was just displayed
             if (target === this.__lastTarget) {
               switch (true) {
-                // ignore the following events
+                // don't ignore virtual cell events
+                case type.startsWith("cell"):
+                  break;
+                // ignore the following event types
                 case type.startsWith("mouse"):
                 case type.startsWith("pointer"):
                 case type.includes("track"):
@@ -97,8 +103,9 @@ qx.Class.define("cboulanger.eventrecorder.ObjectIdTooltip", {
               console.info(msg);
             } else {
               switch (true) {
-                case type.startsWith("change") && !type.includes("Visibility"):
+                case type !== "change" && type.startsWith("change") && !type.includes("Visibility"):
                 case type === "execute":
+                case type.startsWith("tree"):
                   tooltip.setLabel(msg);
                   tooltip.show();
                   console.info(msg);

@@ -36,10 +36,12 @@ qx.Class.define("cboulanger.eventrecorder.type.Qooxdoo", {
       let line;
       const type = event.getType();
       let data = typeof event.getData == "function" ? event.getData() : null;
+      let owner = typeof target.getQxOwner == "function" ? target.getQxOwner() : null;
       switch (type) {
         case "execute":
           switch (true) {
-            case typeof target.getQxOwner == "function" && target.getQxOwner() instanceof qx.ui.form.DateField:
+            case owner instanceof qx.ui.form.DateField:
+            case target instanceof qx.ui.tree.core.FolderOpenButton:
               return [];
           }
           line = `qx.core.Id.getQxObject("${id}").fireEvent('execute');`;
@@ -61,7 +63,7 @@ qx.Class.define("cboulanger.eventrecorder.type.Qooxdoo", {
             const ownerId = qx.core.Id.getAbsoluteIdOf(owner);
             const model = target.getQxOwner().getModel();
             const indexes = target.toArray().map(item => model.indexOf(item));
-            line = `let obj = qx.core.Id.getQxObject("${ownerId}"); obj.setSelection(new qx.data.Array(${JSON.stringify(indexes)}.map(i => obj.getModel().getItem(i))));`
+            line = `let obj = qx.core.Id.getQxObject("${ownerId}"); obj.setSelection(new qx.data.Array(${JSON.stringify(indexes)}.map(i => obj.getModel().getItem(i))));`;
             break;
           }
           // other form fields
@@ -71,7 +73,26 @@ qx.Class.define("cboulanger.eventrecorder.type.Qooxdoo", {
           line = `qx.core.Id.getQxObject("${id}").setValue(${data});`;
           break;
         }
+        case "open":
+        case "close": {
+          if (target instanceof qx.ui.tree.VirtualTree) {
+            let row = target.getLookupTable().indexOf(data);
+            line = `let tree = qx.core.Id.getQxObject("${id}"); tree.${type}Node(tree.getLookupTable().getItem(${row}));`;
+            break;
+          }
+          return [];
+        }
+        // qx.ui.treevirtual.TreeVirtual
+        case "treeClose":
+        case "treeOpenWithContent":
+        case "treeOpenWhileEmpty":
+          line = `qx.core.Id.getQxObject("${id}").getDataModel().setState(${Number(data.nodeId)},{bOpened:${type==="treeClose"?"false":"true"}});`;
+          break;
         case "changeSelection": {
+          if (target instanceof qx.ui.virtual.selection.Row) {
+            line = `qx.core.Id.getQxObject("${id}").selectItem(${Number(data)});`;
+            break;
+          }
           if (target instanceof qx.ui.table.selection.Model) {
             line = `let sm = qx.core.Id.getQxObject("${id}"); sm.resetSelection();`;
             let ranges = target.getSelectedRanges();
