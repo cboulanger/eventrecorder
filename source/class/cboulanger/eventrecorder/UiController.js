@@ -137,7 +137,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
    * Will be called after class has been loaded, before application startup
    */
   defer: function() {
-    if (!qx.core.Environment.get("module.objectid")) {
+    if (!qx.core.Environment.get("module.objectid") || !qx.core.Environment.get("eventrecorder.enabled")) {
       return;
     }
     qx.bom.Lifecycle.onReady(() => {
