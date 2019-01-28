@@ -24,7 +24,7 @@ install:
   - git clone --depth 1 https://github.com/qooxdoo/qooxdoo.git qooxdoo
   - qx config set qx.library qooxdoo
   - qx contrib install
-  - qx serve & # --target=build &
+  - qx serve --target=build &
   - sleep 60 # Wait for compilation to finish
 
 script:
@@ -34,6 +34,6 @@ deploy:
   provider: pages
   skip-cleanup: true
   github-token: $GITHUB_TOKEN
-  local-dir: output/source
+  local-dir: compiled/build
   on:
     branch: master
