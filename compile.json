@@ -22,7 +22,8 @@
       "Oxygen"
     ],
     "qx.debug": true,
-    "module.objectid": true
+    "module.objectid": true,
+    "eventrecorder.enabled": true
   },
   "applications": [
     {
