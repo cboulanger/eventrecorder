@@ -126,9 +126,12 @@ qx.Class.define("cboulanger.eventrecorder.Recorder", {
         case "execute":
           switch (true) {
             case owner instanceof qx.ui.form.DateField:
+            case owner instanceof qx.ui.form.ComboBox:
+            case owner instanceof qx.ui.form.VirtualComboBox:
             case target instanceof qx.ui.tree.core.FolderOpenButton:
               return [];
           }
+          console.log([id,owner]);
           lines.push(`execute ${id}`);
           break;
         case "appear":
@@ -137,6 +140,8 @@ qx.Class.define("cboulanger.eventrecorder.Recorder", {
             return [`check-${type} ${id}`];
           }
           return [];
+
+        case "changeValue":        
         case "change": {
           const isModelSelection =
             target instanceof qx.data.Array &&

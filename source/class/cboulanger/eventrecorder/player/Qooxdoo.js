@@ -40,13 +40,16 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @return {String} A line of javascript code
      */
     generateReplayCode(code) {
-      let [command, id, data] = code.split(/ /);
+      let [command, id, ...data] = code.split(/ /);
+      data = data.join(" "); 
       switch (command) {
         /**
          * wait <ms>
          */
         case "wait":
-          return `(new Promise(resolve => setTimeout(resolve,${id})))`;
+          // user delay feels too slow, cap by default delay
+          let delay = Math.min(id, this.getDefaultDelay());
+          return `(new Promise(resolve => setTimeout(resolve,${delay})))`;
 
         /** CHECKS */
 
