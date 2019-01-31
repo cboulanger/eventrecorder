@@ -163,7 +163,7 @@ qx.Class.define("cboulanger.eventrecorder.Recorder", {
             let row = target.getLookupTable().indexOf(data);
             lines.push(`${type}-tree-node ${id} ${row}`);
           }
-          return [];
+          break;
         }
         // qx.ui.treevirtual.TreeVirtual
         case "treeClose":
@@ -174,14 +174,14 @@ qx.Class.define("cboulanger.eventrecorder.Recorder", {
 
         case "changeSelection": {
           if (target instanceof qx.ui.virtual.selection.Row) {
-            lines.push(`set-row-selection ${id} [${data}]`);
+            lines.push(`set-row-selection ${id} ${data}`);
             break;
           }
           if (target instanceof qx.ui.table.selection.Model) {
             lines.push(`reset-table-selection ${id}`);
             let ranges = target.getSelectedRanges();
             if (ranges.length) {
-              lines.push(`set-table-selection ${id} ${ranges[0].minIndex}, ${ranges[0].maxIndex}`);
+              lines.push(`set-table-selection ${id} ${ranges[0].minIndex},${ranges[0].maxIndex}`);
             }
             break;
           }

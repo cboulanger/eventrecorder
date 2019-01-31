@@ -35,20 +35,6 @@
     {
       "class": "qxl.widgetbrowser.Application",
       "theme": "qx.theme.Indigo",
-      "name": "widgetbrowser_tooltip",
-      "title": "WidgetBrowser with object id tooltip",
-      "include": [
-        "qx.theme.Modern",
-        "cboulanger.eventrecorder.ObjectIdGenerator",
-        "cboulanger.eventrecorder.ObjectIdTooltip"
-      ],
-      "environment": {
-        "qx.icontheme": ["Tango"]
-      }
-    },
-    {
-      "class": "qxl.widgetbrowser.Application",
-      "theme": "qx.theme.Indigo",
       "name": "widgetbrowser_recorder",
       "title": "WidgetBrowser with event recorder",
       "include": [
@@ -58,6 +44,20 @@
       ],
       "environment": {
         "qx.icontheme": ["Tango" ]
+      }
+    },
+    {
+      "class": "qxl.widgetbrowser.Application",
+      "theme": "qx.theme.Indigo",
+      "name": "widgetbrowser_tooltip",
+      "title": "WidgetBrowser with object id tooltip to debug events",
+      "include": [
+        "qx.theme.Modern",
+        "cboulanger.eventrecorder.ObjectIdGenerator",
+        "cboulanger.eventrecorder.ObjectIdTooltip"
+      ],
+      "environment": {
+        "qx.icontheme": ["Tango"]
       }
     },
     {

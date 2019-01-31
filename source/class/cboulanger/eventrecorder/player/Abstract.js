@@ -119,7 +119,12 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
         }
         this.fireDataEvent("progress", [step, steps]);
         let code = this.generateReplayCode(line);
-        this.info("Executing: " + code);
+
+        this.debug(`
+===== Step ${step} / ${steps} ====
+Command: ${line}
+Executing: ${code}`);
+
         try {
           let result = window.eval(code);
           if (result instanceof Promise) {
@@ -154,7 +159,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      * @param timeoutmsg {String} A message to be shown if the condition hasn't been met before the timeout. If not given
      * the condition expression will be shown
      */
-    generateWaitForCode(condition, timeoutmsg) {
+    generateWaitForCode(condition, timeoutmsg=null) {
       return `(cboulanger.eventrecorder.player.Abstract.waitForCondition(() => ${condition},${this.getInterval()},${this.getTimeout()}, "${timeoutmsg||condition.replace(/"/g, "\\\"")}"))`;
     },
 

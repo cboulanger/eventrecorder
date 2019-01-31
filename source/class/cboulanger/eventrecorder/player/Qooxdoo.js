@@ -73,10 +73,18 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
          * (open|close)-tree-node-treevirtual <id> <node id>
          * (qx.ui.treevirtual.TreeVirtual)
          */
-        case "open-tree-node-treevirtual":
-        case "close-tree-node-treevirtual": {
+        case "open-tree-node":
+        case "close-tree-node": {
           let type = command.startsWith("open") ? "open" : "close";
           return `let t = qx.core.Id.getQxObject("${id}"); t.${type}Node(t.getLookupTable().getItem(${data}))`;
+        }
+        /**
+         * (open|close)-tree-node-treevirtual <id> <node id>
+         * (qx.ui.treevirtual.TreeVirtual)
+         */
+        case "open-tree-node-treevirtual":
+        case "close-tree-node-treevirtual": {
+          return `qx.core.Id.getQxObject("${id}").getDataModel().setState(${data},{bOpened:${command.startsWith("close")?"false":"true"}});`;
         }
         /**
          * set-selection <id> <id of selected object>
@@ -101,7 +109,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
         case "reset-table-selection":
           return `qx.core.Id.getQxObject("${id}").resetSelection();`;
         case "set-table-selection":
-          return `qx.core.Id.getQxObject("${id}").addSelectionInterval(${data}`;
+          return `qx.core.Id.getQxObject("${id}").addSelectionInterval(${data})`;
         /**
          * set-row-selection <id> <row index>
          * (qx.ui.virtual.selection.Row)

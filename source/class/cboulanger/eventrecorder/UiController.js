@@ -225,7 +225,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       if (this.getRecorder().isRunning()) {
         this.getRecorder().stop();
         let script = this.getRecorder().getScript();
-        this.info(script);
+        this.debug(script);
         this.setScript(script);
       }
       if (this.getPlayer() && this.getPlayer().isRunning()) {
