@@ -17,9 +17,9 @@
 /**
  * This is a qooxdoo class
  */
-qx.Class.define("cboulanger.eventrecorder.type.TestCafe", {
+qx.Class.define("cboulanger.eventrecorder.player.TestCafe", {
 
-  extend : cboulanger.eventrecorder.AbstractRecorder,
+  extend : cboulanger.eventrecorder.player.Abstract,
 
   members :
   {
@@ -49,19 +49,6 @@ qx.Class.define("cboulanger.eventrecorder.type.TestCafe", {
         //console.log(`//${id}: ${event.getType()}`);
       }
       return [line];
-    },
-
-    /**
-     * Given an array of script lines, return a piece of code that can be
-     * pasted into a test suite.
-     * @param {String[]} lines Array of script lines
-     * @return {String}
-     */
-    generateScript(lines) {
-      lines.unshift("test('TEST TITLE', async t => {\nawait t");
-      lines[lines.length-1] += ";";
-      lines.push("});");
-      return lines.join("\n");
     }
   }
 });

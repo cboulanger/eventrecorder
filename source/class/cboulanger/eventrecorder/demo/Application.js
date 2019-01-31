@@ -10,7 +10,6 @@
 
 /**
  * This is the main application class of "UI Event Recorder"
- * @asset(cboulanger/eventrecorder/*)
  */
 qx.Class.define("cboulanger.eventrecorder.demo.Application", {
   extend : qx.application.Standalone,
@@ -46,7 +45,7 @@ qx.Class.define("cboulanger.eventrecorder.demo.Application", {
       */
 
       // button
-      var button1 = new qx.ui.form.Button("Click me to open window", "cboulanger/eventrecorder/test.png");
+      var button1 = new qx.ui.form.Button("Click on the red 'Record' button first, then click me...", "cboulanger/eventrecorder/test.png");
       var doc = this.getRoot();
       doc.add(button1, {left: 100, top: 50});
 
@@ -59,6 +58,12 @@ qx.Class.define("cboulanger.eventrecorder.demo.Application", {
         showMinimize: false,
         showMaximize: false
       });
+      let label = new qx.ui.basic.Label("Click on the button below, then click on the 'Stop', then on the 'Replay' button in the recorder.");
+      label.set({
+        rich: true,
+        wrap: true
+      })
+      win.add(label);
       let button2 = new qx.ui.form.Button("Click me to close window", "cboulanger/eventrecorder/test.png");
       button2.addListener("execute", () => win.close());
       win.add(button2);
@@ -77,19 +82,6 @@ qx.Class.define("cboulanger.eventrecorder.demo.Application", {
       button1.setQxObjectId("button1");
       button1.addOwnedQxObject(win, "window");
       win.addOwnedQxObject(button2, "button2");
-
-      // event recorder
-      const qxRecorder = new cboulanger.eventrecorder.type.Qooxdoo();
-      const qxController = new cboulanger.eventrecorder.UiController(qxRecorder, "Generate qooxdoo script");
-      qxController.set({width:400, height:300});
-      doc.add(qxController, {top:0, right:0});
-      qxController.show();
-
-      const testcafeRecorder = new cboulanger.eventrecorder.type.TestCafe();
-      const testcafeController = new cboulanger.eventrecorder.UiController(testcafeRecorder, "Generate TestCafe script");
-      testcafeController.set({width:400, height:300});
-      doc.add(testcafeController, {bottom:0, right:0});
-      testcafeController.show();
     }
   }
 });

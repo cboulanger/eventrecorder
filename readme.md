@@ -41,8 +41,7 @@ Minimal example:
   button1.addOwnedQxObject(win,"window");
 
   // recorder
-  const recorder = new cboulanger.eventrecorder.type.Qooxdoo()
-  const controller = new cboulanger.eventrecorder.UiController(recorder);
+  const controller = new cboulanger.eventrecorder.UiController();
   doc.add(controller, {right:0});
   controller.show();
 ```

@@ -13,14 +13,9 @@
     }
   ],
   "defaultTarget": "source",
-  "locales": [
-    "en"
-  ],
+  "locales": ["en"],
   "environment": {
-    "qx.icontheme": [
-      "Tango",
-      "Oxygen"
-    ],
+    "qx.icontheme": ["Tango"],
     "qx.debug": true,
     "module.objectid": true,
     "eventrecorder.enabled": true
@@ -30,7 +25,12 @@
       "class": "cboulanger.eventrecorder.demo.Application",
       "theme": "cboulanger.eventrecorder.theme.Theme",
       "name": "eventrecorder",
-      "title": "Simple event recorder demo"
+      "title": "Simple event recorder demo",
+      "include": [
+        "qx.theme.Modern",
+        "cboulanger.eventrecorder.UiController",
+        "cboulanger.eventrecorder.ObjectIdGenerator"
+      ]
     },
     {
       "class": "qxl.widgetbrowser.Application",
@@ -43,10 +43,7 @@
         "cboulanger.eventrecorder.ObjectIdTooltip"
       ],
       "environment": {
-        "qx.icontheme": [
-          "Tango",
-          "Oxygen"
-        ]
+        "qx.icontheme": ["Tango"]
       }
     },
     {
@@ -57,14 +54,10 @@
       "include": [
         "qx.theme.Modern",
         "cboulanger.eventrecorder.UiController",
-        "cboulanger.eventrecorder.type.Qooxdoo",
         "cboulanger.eventrecorder.ObjectIdGenerator"
       ],
       "environment": {
-        "qx.icontheme": [
-          "Tango",
-          "Oxygen"
-        ]
+        "qx.icontheme": ["Tango" ]
       }
     },
     {
