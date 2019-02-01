@@ -24,7 +24,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
   include: [cboulanger.eventrecorder.MState],
 
   properties: {
-    canReplay: {
+    canReplayInBrowser: {
       refine: true,
       init: true
     }
@@ -34,6 +34,13 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
   {
 
     /**
+     * @inheritDoc
+     */
+    getExportFileExtension() {
+      return "js";
+    },
+
+    /**
      * Given a line of intermediate code, return a line of javascript code that
      * can replay the corresponding user action.
      * @param code {String} A line of intermediate code
@@ -41,15 +48,16 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      */
     generateReplayCode(code) {
       let [command, id, ...data] = code.split(/ /);
-      data = data.join(" "); 
+      data = data.join(" ");
       switch (command) {
         /**
          * wait <ms>
          */
-        case "wait":
+        case "wait": {
           // user delay feels too slow, cap by default delay
           let delay = Math.min(id, this.getDefaultDelay());
           return `(new Promise(resolve => setTimeout(resolve,${delay})))`;
+        }
 
         /** CHECKS */
 

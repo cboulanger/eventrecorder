@@ -82,11 +82,24 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
       init: 500
     },
 
-    canReplay: {
+    /**
+     * Whether the player can replay the generated script in the browser
+     */
+    canReplayInBrowser: {
       check: "Boolean",
       nullable: false,
       init: false,
       event: "changeCanReplay"
+    },
+
+    /**
+     * Whether the player can export code that can be used outside this application
+     */
+    canExportExecutableCode: {
+      check: "Boolean",
+      nullable: false,
+      init: false,
+      event: "changeCanExportExecutableCode"
     }
   },
 
@@ -143,7 +156,7 @@ Executing: ${code}`);
     },
 
     /**
-     * Translates the intermediate code into javascript code
+     * Translates the intermediate code into the target language
      * @param script
      * @return {string} Javasc
      */
@@ -171,6 +184,14 @@ Executing: ${code}`);
      */
     generateReplayCode(code) {
       throw new Error("Method generateReplayCode() must be implemented by subclass");
+    },
+
+    /**
+     * Returns the file extension of the downloaded file in the target language
+     * @return {string}
+     */
+    getExportFileExtension() {
+      throw new Error("Method getExportFileExtension must be impemented in subclass");
     }
   }
 });

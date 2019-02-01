@@ -131,7 +131,6 @@ qx.Class.define("cboulanger.eventrecorder.Recorder", {
             case target instanceof qx.ui.tree.core.FolderOpenButton:
               return [];
           }
-          console.log([id,owner]);
           lines.push(`execute ${id}`);
           break;
         case "appear":
@@ -141,7 +140,7 @@ qx.Class.define("cboulanger.eventrecorder.Recorder", {
           }
           return [];
 
-        case "changeValue":        
+        case "changeValue":
         case "change": {
           const isModelSelection =
             target instanceof qx.data.Array &&
@@ -166,6 +165,9 @@ qx.Class.define("cboulanger.eventrecorder.Recorder", {
         case "close": {
           if (target instanceof qx.ui.tree.VirtualTree) {
             let row = target.getLookupTable().indexOf(data);
+            if (row < 0) {
+              return [];
+            }
             lines.push(`${type}-tree-node ${id} ${row}`);
           }
           break;

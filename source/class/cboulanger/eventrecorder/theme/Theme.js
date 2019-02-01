@@ -13,7 +13,7 @@ qx.Theme.define("cboulanger.eventrecorder.theme.Theme", {
     color : cboulanger.eventrecorder.theme.Color,
     decoration : cboulanger.eventrecorder.theme.Decoration,
     font : cboulanger.eventrecorder.theme.Font,
-    icon : cboulanger.eventrecorder.theme.Icon,
+    icon : qx.theme.icon.Tango,
     appearance : cboulanger.eventrecorder.theme.Appearance
   }
 });

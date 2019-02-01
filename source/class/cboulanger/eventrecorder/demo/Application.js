@@ -62,7 +62,7 @@ qx.Class.define("cboulanger.eventrecorder.demo.Application", {
       label.set({
         rich: true,
         wrap: true
-      })
+      });
       win.add(label);
       let button2 = new qx.ui.form.Button("Click me to close window", "cboulanger/eventrecorder/test.png");
       button2.addListener("execute", () => win.close());
