@@ -143,7 +143,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       );
     };
     recorder.addListener("changeRunning", stopButtonState);
-    stopButton.addListener("execute", this._stop, this);
+    stopButton.addListener("execute", this.stop, this);
 
     // replay
     let replayButton = new qx.ui.form.ToggleButton();
@@ -169,7 +169,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       icon:"eventrecorder.icon.save",
       toolTipText: "Save script"
     });
-    saveButton.addListener("execute", this._save, this);
+    saveButton.addListener("execute", this.save, this);
     // enable export button only if we have a script
     this.bind("script", saveButton, "enabled", {
       converter: v => Boolean(v)
@@ -183,7 +183,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       icon:"eventrecorder.icon.export",
       toolTipText: "Export script in the target format (such as JavaScript)"
     });
-    exportButton.addListener("execute", this._export, this);
+    exportButton.addListener("execute", this.export, this);
     // show export button only if a player is attached and if it can export code that runs outside of this app
     this.bind("player", exportButton, "visibility", {
       converter: player => Boolean(player) && player.getCanExportExecutableCode() ? "visible" : "excluded"
@@ -200,7 +200,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       icon:"eventrecorder.icon.load",
       toolTipText: "Load script"
     });
-    loadButton.addListener("execute", this._load, this);
+    loadButton.addListener("execute", this.load, this);
     // enable load button only if player can replay scripts in the browser
     this.bind("player.canReplayInBrowser", loadButton, "enabled");
 
@@ -232,23 +232,17 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
 
     // fetch script from URL
     let uri_info = qx.util.Uri.parseUri(window.location.href);
-    let gist_uri = uri_info.queryKey.gist;
-    if (gist_uri) {
-      if (!gist_uri.startsWith("https://gist.github.com/")) {
-        alert("Remote scripts must be hosted on https://gist.github.com/");
-      }
+    let gist_id = uri_info.queryKey.eventrecorder_gist_id;
+    if (gist_id) {
       if (this._hasStoredScript()) {
         // already replaying a script
         return;
       }
-      fetch(gist_uri)
-        .then(response => response.text())
-        .then(script => {
-          this.setScript(script);
-          if (uri_info.queryKey.autostart) {
-            this._storeScript();
-            window.location.reload();
-          }
+      this._getRawGist(gist_id)
+        .then(gist => {
+          this.setPlayer( new cboulanger.eventrecorder.player.Qooxdoo());
+          this.setScript(gist);
+          this.replay();
         })
         .catch(e => alert(e.message));
     }
@@ -283,27 +277,20 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     },
 
     /**
-     * Event handler
+     * Event handler for record toggle button
      * @param e
      */
     _toggleRecord(e) {
       if (e.getData()) {
-        this.resetScript();
-        this.getRecorder().start();
+        this.record();
       }
     },
 
-    _stop() {
-      if (this.getRecorder().isRunning()) {
-        this.getRecorder().stop();
-        let script = this.getRecorder().getScript();
-        this.setScript(script);
-      }
-      if (this.getPlayer() && this.getPlayer().isRunning()) {
-        this.getPlayer().stop();
-      }
-    },
-
+    /**
+     * Event handler for replay toggle button
+     * @param e
+     * @private
+     */
     _toggleReplay(e) {
       if (e.getData()) {
         // start
@@ -315,41 +302,11 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       }
     },
 
-    _save() {
-      let filename = prompt("Please enter the name of the file to save");
-      if (!filename) {
-       return;
-      }
-      this._download(filename + ".eventrecorder", this.getScript());
-    },
-
-    _export() {
-      let filename = prompt("Please enter the name of the file to export");
-      if (!filename) {
-        return;
-      }
-      this._download(`${filename}.${this.getPlayer().getExportFileExtension()}`, this.getPlayer().translate(this.getScript()));
-    },
-
-    async _load() {
-      try {
-        let script = await this._upload();
-        this.setScript(script);
-      } catch (e) {
-        alert(e.message);
-      }
-    },
-
-    _download(filename, text) {
-      var element = document.createElement("a");
-      element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(text));
-      element.setAttribute("download", filename);
-      element.style.display = "none";
-      document.body.appendChild(element);
-      element.click();
-      document.body.removeChild(element);
-    },
-
+    /**
+     * Upload content
+     * @return {Promise<*>}
+     * @private
+     */
     async _upload() {
       return new Promise((resolve, reject) => {
         let input = document.getElementById(cboulanger.eventrecorder.UiController.FILE_INPUT_ID);
@@ -367,6 +324,137 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
         });
         input.click();
       });
+    },
+
+    /**
+     * Donwload content
+     * @param filename
+     * @param text
+     * @private
+     */
+    _download(filename, text) {
+      var element = document.createElement("a");
+      element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(text));
+      element.setAttribute("download", filename);
+      element.style.display = "none";
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
+    },
+
+    /**
+     * Get the content of a gist by its id
+     * @param gist_id {String}
+     * @return {Promise<*>}
+     * @private
+     */
+    _getRawGist: async function (gist_id) {
+      return new Promise((resolve, reject) => {
+        let url = `https://api.github.com/gists/${gist_id}`;
+        let req = new qx.io.request.Jsonp(url);
+        req.addListener("success", e => {
+          let response = req.getResponse();
+          let filenames = Object.getOwnPropertyNames(response.data.files);
+          let file = response.data.files[filenames[0]];
+          if (!file.filename.endsWith(".eventrecorder")) {
+            reject(new Error("Gist is not an eventrecorder script"));
+          }
+          let script = file.content;
+          resolve(script);
+        });
+        req.addListener("statusError", reject);
+        req.send();
+      });
+    },
+
+    /********* PUBLIC API **********/
+
+    /**
+     * Starts recording
+     */
+    record() {
+      this.resetScript();
+      this.getRecorder().start();
+    },
+
+    /**
+     * Stops recording/replaying
+     */
+    stop() {
+      if (this.getRecorder().isRunning()) {
+        this.getRecorder().stop();
+        let script = this.getRecorder().getScript();
+        this.setScript(script);
+      }
+      if (this.getPlayer() && this.getPlayer().isRunning()) {
+        this.getPlayer().stop();
+      }
+    },
+
+    /**
+     * Replays the current script
+     * @return {Promise<void>}
+     */
+    async replay() {
+      if (!this.getScript()) {
+        throw new Error("No script to replay");
+      }
+      let player = this.getPlayer();
+      if (!player) {
+        throw new Error("No player has been set");
+      }
+      this.setMode("player");
+      player.addListener("progress", e => {
+        let [step, steps] = e.getData();
+        this.showPopup(`Replaying ... (${step}/${steps})`);
+      });
+      let error = null;
+      try {
+        await player.replay(this.getScript());
+      } catch (e) {
+        error = e;
+      }
+      this.hidePopup();
+      qx.bom.storage.Web.getLocal().removeItem(cboulanger.eventrecorder.UiController.LOCAL_STORAGE_KEY);
+      this.setMode("recorder");
+      if (error) {
+        throw error;
+      }
+    },
+
+    /**
+     * Save the current script to the local machine
+     */
+    save() {
+      let filename = prompt("Please enter the name of the file to save");
+      if (!filename) {
+       return;
+      }
+      this._download(filename + ".eventrecorder", this.getScript());
+    },
+
+    /**
+     * Export the script in the native format
+     */
+    export() {
+      let filename = prompt("Please enter the name of the file to export");
+      if (!filename) {
+        return;
+      }
+      this._download(`${filename}.${this.getPlayer().getExportFileExtension()}`, this.getPlayer().translate(this.getScript()));
+    },
+
+    /**
+     * Load a script from the local machine
+     * @return {Promise<void>}
+     */
+    async load() {
+      try {
+        let script = await this._upload();
+        this.setScript(script);
+      } catch (e) {
+        alert(e.message);
+      }
     }
   },
 
@@ -390,26 +478,18 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
         let player = new cboulanger.eventrecorder.player.Qooxdoo();
         controller.setPlayer(player);
         controller.show();
-
+        // do we have a stored script?
         let storedScript = qx.bom.storage.Web.getLocal().getItem(cboulanger.eventrecorder.UiController.LOCAL_STORAGE_KEY);
         if (!storedScript || storedScript.length===0) {
           return;
         }
-        // replay
         controller.setScript(storedScript);
-        controller.setMode("player");
-        player.addListener("progress", e => {
-          let [step, steps] = e.getData();
-          controller.showPopup(`Replaying ... (${step}/${steps})`);
-        });
         try {
-          await player.replay(storedScript);
+          controller.replay();
         } catch (e) {
-          qx.core.Init.getApplication().error(e);
+          controller.error(e);
+          alert(e.message);
         }
-        controller.hidePopup();
-        qx.bom.storage.Web.getLocal().removeItem(cboulanger.eventrecorder.UiController.LOCAL_STORAGE_KEY);
-        controller.setMode("recorder");
       });
     });
   }
