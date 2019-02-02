@@ -229,6 +229,29 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     input.setAttribute("name", "file");
     input.setAttribute("visibility", "hidden");
     form.appendChild(input);
+
+    // fetch script from URL
+    let uri_info = qx.util.Uri.parseUri(window.location.href);
+    let gist_uri = uri_info.queryKey.gist;
+    if (gist_uri) {
+      if (!gist_uri.startsWith("https://gist.github.com/")) {
+        alert("Remote scripts must be hosted on https://gist.github.com/");
+      }
+      if (this._hasStoredScript()) {
+        // already replaying a script
+        return;
+      }
+      fetch(gist_uri)
+        .then(response => response.text())
+        .then(script => {
+          this.setScript(script);
+          if (uri_info.queryKey.autostart) {
+            this._storeScript();
+            window.location.reload();
+          }
+        })
+        .catch(e => alert(e.message));
+    }
   },
 
   /**
