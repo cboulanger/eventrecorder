@@ -240,7 +240,9 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       }
       this._getRawGist(gist_id)
         .then(gist => {
-          this.setPlayer(new cboulanger.eventrecorder.player.Qooxdoo());
+          let player = new cboulanger.eventrecorder.player.Qooxdoo();
+          player.setMode("presentation");
+          this.setPlayer(player);
           this.setScript(gist);
           this.replay();
         })
