@@ -23,12 +23,12 @@ GUI if you assign the `qxObjectId`s yourself.
 
 ## Demos
 
-- [Simple event recorder demo](https://cboulanger.github.io/cboulanger.eventrecorder/): Very simple demo 
-- [Widget Browser with event recorder](https://cboulanger.github.io/cboulanger.eventrecorder/widgetbrowser_recorder): 
+- [Simple event recorder demo](https://cboulanger.github.io/eventrecorder/): Very simple demo 
+- [Widget Browser with event recorder](https://cboulanger.github.io/eventrecorder/widgetbrowser_recorder): 
   This demo shows how the event recorder is added to an existing application without changing its source code. 
 - [Widget Browser with event recorder, autoplaying a gist](https://cboulanger.github.io/eventrecorder/widgetbrowser_recorder/?eventrecorder_gist_id=8f5458b5f694c10951b1a7a0c7cf3d5b&eventrecorder_autostart=1):   
   This downloads the script to replay from a gist at GitHub.
-- [Widget Browser with object id tooltip](https://cboulanger.github.io/cboulanger.eventrecorder/widgetbrowser_recorder):
+- [Widget Browser with object id tooltip](https://cboulanger.github.io/eventrecorder/widgetbrowser_recorder):
   This demo displays the object ids which are automatically assigned to the widgets by showing a tooltip when hovering
   over them.
 
@@ -36,14 +36,14 @@ GUI if you assign the `qxObjectId`s yourself.
 
 ```bash
 npm install -g qxcompiler
-git clone https://github.com/cboulanger/cboulanger.eventrecorder.git
+git clone https://github.com/cboulanger/eventrecorder.git
 cd recorder
 qx serve
 ```
 
 ## API Viewer
 
-The API Viewer app is [here](https://cboulanger.github.io/cboulanger.eventrecorder/apiviewer).
+The API Viewer app is [here](https://cboulanger.github.io/eventrecorder/apiviewer).
 
 ## ID generation
 
@@ -56,7 +56,7 @@ used in the script.
 
 ## Script language reference
 
-The available commands can be gleaned from the methods of the [cboulanger.eventrecorder.IPlayer interface](https://cboulanger.github.io/cboulanger.eventrecorder/apiviewer/index.html#cboulanger.eventrecorder.IPlayer).
+The available commands can be gleaned from the methods of the [cboulanger.eventrecorder.IPlayer interface](https://cboulanger.github.io/eventrecorder/apiviewer/index.html#cboulanger.eventrecorder.IPlayer).
 
 The methods that start with `cmd_` provide the implementation of commands: 
 `cmd_execute` will generate code for the `execute` command, `cmd_cmd_open_tree_node`
@@ -68,7 +68,7 @@ commands manually in order to deal with network or rendering latency (see below)
 
 ## Player mode
 
-The player instances can be used in two [modes](https://cboulanger.github.io/cboulanger.eventrecorder/apiviewer/index.html#cboulanger.eventrecorder.player.Abstract#mode): 
+The player instances can be used in two [modes](https://cboulanger.github.io/eventrecorder/apiviewer/index.html#cboulanger.eventrecorder.player.Abstract#mode): 
 - "test": The script is executed ignoring user delays; errors will stop 
 execution and will be thrown. This is useful for test runners.
 - "presentation": The script is executed with user delays; errors will be
