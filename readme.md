@@ -41,6 +41,10 @@ cd recorder
 qx serve
 ```
 
+## API Viewer
+
+The API Viewer app is [here](https://cboulanger.github.io/cboulanger.eventrecorder/apiviewer).
+
 ## ID generation
 
 By including `"cboulanger.eventrecorder.ObjectIdGenerator"` in your compile.json
