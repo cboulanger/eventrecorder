@@ -3,75 +3,88 @@
   UI Event Recorder
 
   Copyright:
-    2018 Christian Boulanger
+    2019 Christian Boulanger
 
   License:
     MIT license
     See the LICENSE file in the project's top-level directory for details.
 
-  Authors: Christian Boulanger
-
+  Authors:
+    Christian Boulanger (cboulanger) info@bibliograph.org
 
 ************************************************************************ */
 
 /**
- * This is an event player that works in the client
+ * This interface defines the events and methods a player must implement
  */
-qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
+qx.Interface.define("cboulanger.eventrecorder.IPlayer", {
 
-  extend: cboulanger.eventrecorder.player.Abstract,
-  include: [cboulanger.eventrecorder.MState],
-  implement: [cboulanger.eventrecorder.IPlayer],
-
-  properties: {
-    canReplayInBrowser: {
-      refine: true,
-      init: true
-    }
+  /**
+   * Events that must be declared by this interface
+   */
+  events: {
+    /**
+     * Fired with each step of the replayed script. The event data is an array
+     * containing the number of the step and the number of steps
+     */
+    "progress" : "qx.event.type.Data"
   },
 
-  members:
+  /**
+   * Methonds that must be declared by this interface
+   */
+  members :
   {
 
     /**
-     * @inheritDoc
+     * Starts the player
      */
-    getExportFileExtension() {
-      return "js";
-    },
+    start() {},
+
+    /**
+     * Stops the recording.
+     */
+    stop() {},
+
+    /**
+     * Replays the given script of intermediate code
+     * @param script {String} The script to replay
+     * @return {Promise} Promise which resolves when the script has been replayed, or
+     * rejecdts with an error
+     */
+    async replay(script) {},
+
+    /**
+     * Translates the intermediate code into the target language
+     * @param script
+     * @return {string} Javasc
+     */
+    translate(script) {},
+
+    /**
+     * Returns the file extension of the downloaded file in the target language
+     * @return {string}
+     */
+    getExportFileExtension() {},
+
+
+    /***** COMMANDS ******/
 
     /**
      * Generates code that causes the given delay (in milliseconds).
-     * The delay is capped by the {@link #cboulanger.eventrecorder.player.Abstract#maxDelay} property
+     * The delay is capped by the {@link cboulanger.eventrecorder.player.Abstract#maxDelay} property
      * @param delayInMs {Number}
      * @return {string}
      */
-    cmd_delay(delayInMs) {
-      delayInMs = Math.min(delayInMs, this.getMaxDelay());
-      return `(new Promise(resolve => setTimeout(resolve,${delayInMs})))`;
-    },
+    cmd_delay(delayInMs) {},
 
     /**
      * Generates code that waits the given time in milliseconds, regardless of player mode
      * @param timeInMs {Number}
      * @return {string}
      */
-    cmd_wait(timeInMs) {
-      return `(new Promise(resolve => setTimeout(resolve,${timeInMs})))`;
-    },
+    cmd_wait(timeInMs) {},
 
-    /**
-     * Generates code that returns a promise which resolves when a property of the
-     * object with the given id is assigned a value. The value must be given in JSON
-     * format, i.e. strings must be quoted.
-     * @param id {String} The id of the object
-     * @param data {String} The property and value, separated by a whitespace
-     * @return {*|string}
-     */
-    cmd_await_property_value(id, data) {
-      let [property, value] = data.split(/ /);
-      return this.generateWaitForCode(`qx.core.Id.getQxObject("${id}").get("${property}")===${value}`);
-    },
 
     /**
      * Generates code that returns a promise with resolves when the object with the given id becomes visible and rejects
@@ -79,9 +92,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @param id {String}
      * @return {String}
      */
-    cmd_check_appear(id) {
-      return this.generateWaitForCode(`qx.core.Id.getQxObject("${id}").isVisible()`);
-    },
+    cmd_check_appear(id) {},
 
     /**
      * Generates code that returns a promise with resolves when the object with the given id disappears and rejects
@@ -89,18 +100,15 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @param id {String}
      * @return {String}
      */
-    cmd_check_disappear(id) {
-      return this.generateWaitForCode(`!qx.core.Id.getQxObject("${id}").isVisible()`);
-    },
+    cmd_check_disappear(id) {},
+
 
     /**
      * Generates code that fires an `execute` event on the object with the given id (Button, Command)
      * @param id {String}
      * @return {String}
      */
-    cmd_execute(id) {
-      return `qx.core.Id.getQxObject("${id}").fireEvent('execute')`;
-    },
+    cmd_execute(id) {},
 
     /**
      * Generates code that sets the `value` property of the object with the given id
@@ -108,9 +116,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @param data {String} A JSON expression
      * @return {string}
      */
-    cmd_set_value(id, data) {
-      return `qx.core.Id.getQxObject("${id}").setValue(${data});`;
-    },
+    cmd_set_value(id, data) {},
 
     /**
      * Generates code that opens a the node with the given node id on the {@link qx.ui.tree.VirtualTree} with the given id
@@ -118,9 +124,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @param nodeIndex {String|Number} The index of the node in the tree data model
      * @return {String}
      */
-    cmd_open_tree_node(id, nodeIndex) {
-      return `let t = qx.core.Id.getQxObject("${id}"); t.openNode(t.getLookupTable().getItem(${nodeIndex}))`;
-    },
+    cmd_open_tree_node(id, nodeIndex) {},
 
     /**
      * Generates code that closes a the node with the given node id on the {@link qx.ui.tree.VirtualTree} with the given id
@@ -128,9 +132,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @param nodeIndex {String|Number} The index of the node in the tree data model
      * @return {String}
      */
-    cmd_close_tree_node(id, nodeIndex) {
-      return `let t = qx.core.Id.getQxObject("${id}"); t.closeNode(t.getLookupTable().getItem(${nodeIndex}))`;
-    },
+    cmd_close_tree_node(id, nodeIndex) {},
 
     /**
      * Generates code that opens a the node with the given node id on the {@link qx.ui.treevirtual.TreeVirtual} with the given id
@@ -138,9 +140,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @param nodeIndex {String|Number} The index of the node in the tree data model
      * @return {String}
      */
-    cmd_open_tree_node_treevirtual(id, nodeIndex) {
-      return `qx.core.Id.getQxObject("${id}").getDataModel().setState(${nodeIndex},{bOpened:true});`;
-    },
+    cmd_open_tree_node_treevirtual(id, nodeIndex) {},
 
     /**
      * Generates code that closes a the node with the given node id on the {@link qx.ui.treevirtual.TreeVirtual} with the given id
@@ -148,9 +148,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @param nodeIndex {String|Number} The index of the node in the tree data model
      * @return {String}
      */
-    cmd_close_tree_node_treevirtual(id, nodeIndex) {
-      return `qx.core.Id.getQxObject("${id}").getDataModel().setState(${nodeIndex},{bOpened:false});`;
-    },
+    cmd_close_tree_node_treevirtual(id, nodeIndex) {},
 
     /**
      * Generates code that sets a selection for all objects which have a `setSelection` command that
@@ -159,9 +157,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @param selectedId {String} The id of the widget that is selected. Only one widget can be selected at this time
      * @return {String}
      */
-    cmd_set_selection(id, selectedId) {
-      return `qx.core.Id.getQxObject("${id}").setSelection([qx.core.Id.getQxObject("${selectedId}")])`;
-    },
+    cmd_set_selection(id, selectedId) {},
 
     /**
      * Generates code that sets a selection for all (virtual) widgets that have a data model
@@ -169,9 +165,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @param indexArray {String} An array literal containing the indexes of the models
      * @return {String}
      */
-    cmd_set_model_selection(id, indexArray) {
-      return `let o = qx.core.Id.getQxObject("${id}"); o.setSelection(new qx.data.Array(${indexArray}.map(i => o.getModel().getItem(i))))`;
-    },
+    cmd_set_model_selection(id, indexArray) {},
 
     /**
      * Generates code that sets a selection on widgets that have a `getSelectables()` method
@@ -179,18 +173,14 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @param index {String|Number}
      * @return {String}
      */
-    cmd_set_from_selectables(id, index) {
-      return `let o = qx.core.Id.getQxObject("${id}"); o.setSelection([o.getSelectables()[${index}]])`;
-    },
+    cmd_set_from_selectables(id, index) {},
 
     /**
      * Resets the selection of a widget that has a `selection` property or a `resetSelection` method.
      * @param id {String} The id of the widget
      * @return {string}
      */
-    cmd_reset_selection(id) {
-      return `qx.core.Id.getQxObject("${id}").resetSelection()`;
-    },
+    cmd_reset_selection(id) {},
 
     /**
      * Generates code that sets an selection interval on a {@link qx.ui.table.Table}
@@ -198,9 +188,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @param interval {String} The first and the last row to be selected, separated by comma.
      * @return {String}
      */
-    cmd_set_table_selection(id, interval) {
-      return `qx.core.Id.getQxObject("${id}").addSelectionInterval(${interval})`;
-    },
+    cmd_set_table_selection(id, interval) {},
 
     /**
      * Generates code that set the selection on a {@link qx.ui.virtual.selection.Row} object
@@ -208,8 +196,6 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @param rowIndex {String|Number} The index of the row to be selected
      * @return {String}
      */
-    cmd_set_row_selection(id, rowIndex) {
-      return `qx.core.Id.getQxObject("${id}").selectItem(${rowIndex})`;
-    }
+    cmd_set_row_selection(id, rowIndex) {}
   }
 });

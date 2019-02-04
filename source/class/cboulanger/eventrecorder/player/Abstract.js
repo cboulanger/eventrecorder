@@ -50,6 +50,19 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
 
   properties: {
     /**
+     * The replay mode. Possible values:
+     * "test": The script is executed ignoring the "delay" commands, errors will
+     * stop execution and will be thrown.
+     * "presentation": The script is executed with user delays, errors will be
+     * logged to the console but will not stop execution
+     */
+    mode: {
+      check: ["test", "presentation"],
+      event: "changeMode",
+      init: "test"
+    },
+
+    /**
      * The timeout in milliseconds
      */
     timeout: {
@@ -75,11 +88,11 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
     },
 
     /**
-     * The delay between events
+     * The maximun delay between events (limits user-generated delay)
      */
-    defaultDelay: {
+    maxDelay: {
       check: "Number",
-      init: 500
+      init: 1000
     },
 
     /**
@@ -104,6 +117,10 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
   },
 
   events: {
+    /**
+     * Fired with each step of the replayed script. The event data is an array
+     * containing the number of the step and the number of steps
+     */
     "progress" : "qx.event.type.Data"
   },
 
@@ -126,30 +143,48 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
       let steps = lines.reduce((prev, curr, index) => prev+Number(!curr.startsWith("wait")), 0);
       let step = 0;
       for (let line of lines) {
-        let delay = 0;
-        if (!line.startsWith("wait")) {
+        // stop if we're not running
+        if (!this.getRunning()) {
+          return true;
+        }
+        // wait doesn't count as a step
+        if (!line.startsWith("wait") || !line.startsWith("delay")) {
           step++;
         }
-        this.fireDataEvent("progress", [step, steps]);
-        let code = this.generateReplayCode(line);
-
-        this.debug(`
-===== Step ${step} / ${steps} ====
-Command: ${line}
-Executing: ${code}`);
-
-        try {
-          let result = window.eval(code);
-          if (result instanceof Promise) {
-            await result;
-          }
-        } catch (e) {
-          this.error(e);
-          alert(e.message);
-          break;
+        // comments
+        if (line.startsWith("#")) {
+          continue;
         }
-        if (delay) {
-          await new Promise(resolve => qx.event.Timer.once(resolve, null, delay));
+        // ignore delay in test mode
+        if (this.getMode()==="test" && line.startsWith("delay")) {
+          continue;
+        }
+        // inform listeners
+        this.fireDataEvent("progress", [step, steps]);
+        // parse command line, todo: use real tokenizer
+        let [command, id, ...data] = line.split(/ /);
+        data = data.join(" ");
+        // run command generation implementation
+        let method_name = "cmd_" + command.replace(/-/g, "_");
+        if (typeof this[method_name] == "function") {
+          let code = this[method_name](id, data);
+          this.debug(`\n===== Step ${step} / ${steps} ====\nCommand: ${line}\nExecuting: ${code}`);
+          try {
+            let result = window.eval(code);
+            if (result instanceof Promise) {
+              await result;
+            }
+          } catch (e) {
+            switch (this.getMode()) {
+              case "test":
+                throw e;
+              case "presentation":
+                this.error(e);
+            }
+          }
+        } else {
+          let msg = `Unsupported/unrecognized command: ${command}`;
+          this.warn(msg);
         }
       }
       this.setRunning(false);
@@ -174,16 +209,6 @@ Executing: ${code}`);
      */
     generateWaitForCode(condition, timeoutmsg=null) {
       return `(cboulanger.eventrecorder.player.Abstract.waitForCondition(() => ${condition},${this.getInterval()},${this.getTimeout()}, "${timeoutmsg||condition.replace(/"/g, "\\\"")}"))`;
-    },
-
-    /**
-     * Given a line of intermediate code, return a line of javascript code that
-     * can replay the corresponding user action.
-     * @param code {String} A line of intermediate code
-     * @return {String} A line of javascript code
-     */
-    generateReplayCode(code) {
-      throw new Error("Method generateReplayCode() must be implemented by subclass");
     },
 
     /**

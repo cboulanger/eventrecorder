@@ -185,7 +185,7 @@ qx.Class.define("cboulanger.eventrecorder.Recorder", {
             break;
           }
           if (target instanceof qx.ui.table.selection.Model) {
-            lines.push(`reset-table-selection ${id}`);
+            lines.push(`reset-selection ${id}`);
             let ranges = target.getSelectedRanges();
             if (ranges.length) {
               lines.push(`set-table-selection ${id} ${ranges[0].minIndex},${ranges[0].maxIndex}`);
@@ -213,7 +213,7 @@ qx.Class.define("cboulanger.eventrecorder.Recorder", {
       let msSinceLastEvent = now - (this.__lastEventTimestamp || now);
       this.__lastEventTimestamp = now;
       if (msSinceLastEvent) {
-        lines.unshift(`wait ${msSinceLastEvent}`);
+        lines.unshift(`delay ${msSinceLastEvent}`);
       }
       return lines;
     },

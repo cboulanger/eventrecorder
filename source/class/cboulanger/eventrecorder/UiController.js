@@ -60,7 +60,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
      * The player instance
      */
     player: {
-      check: "cboulanger.eventrecorder.player.Abstract",
+      check: "cboulanger.eventrecorder.IPlayer",
       event: "changePlayer",
       nullable: true
     },
@@ -240,11 +240,13 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       }
       this._getRawGist(gist_id)
         .then(gist => {
-          this.setPlayer( new cboulanger.eventrecorder.player.Qooxdoo());
+          this.setPlayer(new cboulanger.eventrecorder.player.Qooxdoo());
           this.setScript(gist);
           this.replay();
         })
-        .catch(e => alert(e.message));
+        .catch(e => {
+          throw new Error(`Gist ${gist_id} cannot be loaded: ${e.message}.`);
+        });
     }
   },
 
@@ -261,7 +263,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     },
 
     _applyScript(value, old) {
-      this.debug(value);
+      // do nothing ATM
     },
 
     _getStoredScript() {
@@ -474,8 +476,9 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
         controller.hidePopup();
         // show controller
         qx.core.Init.getApplication().getRoot().add(controller, {top:0, right:10});
-        // add a player
+        // add a player in presentation mode
         let player = new cboulanger.eventrecorder.player.Qooxdoo();
+        player.setMode("presentation");
         controller.setPlayer(player);
         controller.show();
         // do we have a stored script?

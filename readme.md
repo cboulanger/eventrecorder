@@ -1,62 +1,38 @@
 # UI Event Recorder
-
-> NOTE: this is a very simple proof-of-concept which doesn't do very much at the moment.
   
-This contrib allows to record user interaction for replay during tests. It consists
-of a qooxdoo contrib that records user and UI events (clicks, appearances, etc.) 
-and which can be included in a qooxdoo application, and an NPM package (TBD) that
-acts as a backend to replay these events during automated tests. 
+This library allows to record user interaction for replay in tests, or for use in
+a presentation/screencast/"take-a-tour" scenario. It consists of 
 
-It currently supports:
- - [qooxdoo unit tests](https://www.qooxdoo.org/current/pages/development/unit_testing.html)
- - [TestCafé](https://devexpress.github.io/testcafe/documentation/test-api/) 
-
-## Example
-
-Minimal example:
-```javascript
-  var button1 = new qx.ui.form.Button("Click me", "recorder/test.png");
-  var doc = this.getRoot();
-  doc.add(button1, {left: 100, top: 50});
-
-  let win = new qx.ui.window.Window("New window");
-  win.set({
-    width: 200,
-    height: 50,
-    showMinimize: false,
-    showMaximize: false,
-  });
-  doc.add(win);
-
-  win.addListener("appear", ()=>{
-    win.center();
-  });
-  button1.addListener("execute", ()=>{
-    win.show();
-  });
-
-  // id registration
-  qx.core.Id.getInstance().register(button1,"button");
-  button1.setQxObjectId("button");
-  button1.addOwnedQxObject(win,"window");
-
-  // recorder
-  const controller = new cboulanger.eventrecorder.UiController();
-  doc.add(controller, {right:0});
-  controller.show();
-```
+1. a [object id generator](source/class/cboulanger/eventrecorder/ObjectIdGenerator.js) 
+which crawls the entire qooxdoo widget hierarchy to assign unique `qxObjectId` values.
+2. a [recorder](source/class/cboulanger/eventrecorder/Recorder.js) that registers 
+qooxdoo events and saves them together with the object ids and data in a very 
+simple human readable and editable intermediate "language" (see below)
+3. several [players](source/class/cboulanger/eventrecorder/player) which can translate 
+this "language" into code that runs in the browser or by a browser automation 
+tool (such as Puppeteer, Selenium, TestCafé, etc.) on the server, and 
+4. an [UI](source/class/cboulanger/eventrecorder/UiController.js) to control 
+recording/replaying and loading/saving the generated scripts.
+ 
+The event recorder can be added to any application without having to change anything
+in the application itself, by simply `include`'ing classes in `compile.json/applications`. 
+(See [this example](compile.json)). Typically, that would be `"cboulanger.eventrecorder.UiController"`
+and `"cboulanger.eventrecorder.ObjectIdGenerator"`, but it is also possible
+to use the ID generator and a player without the GUI, or a player with or without
+GUI if you assign the `qxObjectId`s yourself. 
 
 ## Demos
 
-- [Simple event recorder demo](https://cboulanger.github.io/cboulanger.eventrecorder/): See below for how to 
-  use the demo.
+- [Simple event recorder demo](https://cboulanger.github.io/cboulanger.eventrecorder/): Very simple demo 
 - [Widget Browser with event recorder](https://cboulanger.github.io/cboulanger.eventrecorder/widgetbrowser_recorder): 
   This demo shows how the event recorder is added to an existing application without changing its source code. 
+- [Widget Browser with event recorder, autoplaying a gist](https://cboulanger.github.io/eventrecorder/widgetbrowser_recorder/?eventrecorder_gist_id=8f5458b5f694c10951b1a7a0c7cf3d5b&eventrecorder_autostart=1):   
+  This downloads the script to replay from a gist at GitHub.
 - [Widget Browser with object id tooltip](https://cboulanger.github.io/cboulanger.eventrecorder/widgetbrowser_recorder):
   This demo displays the object ids which are automatically assigned to the widgets by showing a tooltip when hovering
   over them.
 
-Or locally:
+## Installation
 
 ```bash
 npm install -g qxcompiler
@@ -65,15 +41,39 @@ cd recorder
 qx serve
 ```
 
-1. Open localhost:8080
-1. Open the "Simple event recorder demo"
-1. In the window that appears in the top right corner, click on "Start".
-1. Click on the "Click me" button.
-1. Click on "Stop"
-1. A snippet of test code should appear in the text box. 
+## ID generation
 
-# Running tests
+By including `"cboulanger.eventrecorder.ObjectIdGenerator"` in your compile.json
+(see above), IDs are automatically generated for a large number of widgets. 
+However, these ID are long and not descriptive of the actual widget. 
+If you want to have readable and easily editable replay scripts, you should 
+assign a semantically meaningful `qxObjectId` property to each widget that is 
+used in the script. 
 
-```
-npx testcafe chrome,firefox tests/testcafe.js  --app-init-delay 10000
-```
+## Script language reference
+
+The available commands can be gleaned from the methods of the [cboulanger.eventrecorder.IPlayer interface](https://cboulanger.github.io/cboulanger.eventrecorder/apiviewer/index.html#cboulanger.eventrecorder.IPlayer).
+
+The methods that start with `cmd_` provide the implementation of commands: 
+`cmd_execute` will generate code for the `execute` command, `cmd_cmd_open_tree_node`
+for the `open-tree-node` command. 
+
+Most commands will be autogenerated by the recorder and are therefore probably 
+not of interest to the library user. However, you might want to insert `wait` 
+commands manually in order to deal with network or rendering latency (see below).
+
+## Player mode
+
+The player instances can be used in two [modes](https://cboulanger.github.io/cboulanger.eventrecorder/apiviewer/index.html#cboulanger.eventrecorder.player.Abstract#mode): 
+- "test": The script is executed ignoring user delays; errors will stop 
+execution and will be thrown. This is useful for test runners.
+- "presentation": The script is executed with user delays; errors will be
+logged to the console but will not stop execution. This is the default mode,
+which can be used for application demos. 
+
+## Issues
+
+- when opening a window or a tab containing complex content that requires a bit of
+time to render, you probably have to manually insert a `wait 1000` command into
+the script. This is because the objects might not yet ready when the next command will
+be executed. The same is true for content that depends on network traffic. 

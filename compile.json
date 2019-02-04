@@ -2,10 +2,10 @@
   "targets": [
     {
       "type": "source",
-      "outputPath": "compiled/source",
-      "bundle": {
-        "include": "qx.*"
-      }
+      "outputPath": "compiled/source"//,
+//      "bundle": {
+//        "include": "qx.*"
+//      }
     },
     {
       "type": "build",
@@ -18,7 +18,9 @@
     "qx.icontheme": ["Tango"],
     "qx.debug": true,
     "module.objectid": true,
-    "eventrecorder.enabled": true
+    "eventrecorder.enabled": true,
+    "qx.testNameSpace": {},
+    "qx.standaloneAutorun": {}
   },
   "applications": [
     {
@@ -28,8 +30,7 @@
       "title": "Simple event recorder demo",
       "include": [
         "qx.theme.Modern",
-        "cboulanger.eventrecorder.UiController",
-        "cboulanger.eventrecorder.ObjectIdGenerator"
+        "cboulanger.eventrecorder.UiController"
       ]
     },
     {
@@ -61,6 +62,34 @@
       }
     },
     {
+      "class": "qxl.playground.Application",
+      "theme": "qxl.playground.theme.Theme",
+      "name": "playground",
+      "title": "Playground in presentation mode",
+      "include": [
+        "qx.*",
+        "qxl.logpane.*",
+        "cboulanger.eventrecorder.UiController",
+        "cboulanger.eventrecorder.ObjectIdGenerator"
+
+      ],
+      "exclude": [
+        "qx.test.*",
+        "qx.module.Blocker",
+        "qx.module.Placement"
+      ],
+      "environment": {
+        "environment": {
+          "qx.debug" : true,
+          "qx.debug.ui.queue" : true,
+          "qx.nativeScrollBars" : true,
+          "qx.allowUrlSettings" : true,
+          "qx.mobile.emulatetouch" : true,
+          "qx.icontheme": ["Tango"]
+        }
+      }
+    },
+    {
       "class": "qxl.apiviewer.Application",
       "theme": "qxl.apiviewer.Theme",
       "name": "apiviewer",
@@ -77,15 +106,6 @@
         "qx.test.*",
         "qx.module.Blocker",
         "qx.module.Placement"
-      ]
-    },
-    {
-      "class": "qxl.widgetbrowser.Application",
-      "theme": "qx.theme.Indigo",
-      "name": "widgetbrowser",
-      "title": "WidgetBrowser",
-      "include": [
-        "qx.theme.Modern"
       ]
     }
   ]
