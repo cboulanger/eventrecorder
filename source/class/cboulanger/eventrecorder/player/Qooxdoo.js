@@ -165,7 +165,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @return {string}
      */
     cmd_set_value(id, data) {
-      return `qx.core.Id.getQxObject("${id}").setValue(${data});`;
+      return `qx.core.Id.getQxObject("${id}").setValue(${JSON.stringify(data)});`;
     },
 
     /**
