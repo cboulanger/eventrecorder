@@ -20,8 +20,6 @@
  */
 qx.Class.define("cboulanger.eventrecorder.UiController", {
   extend: qx.ui.window.Window,
-  include: [cboulanger.eventrecorder.MLoadingPopup],
-
   statics: {
     LOCAL_STORAGE_KEY: "eventrecorder-script",
     FILE_INPUT_ID : "eventrecorder-fileupload",
@@ -105,10 +103,14 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     const recorder = new cboulanger.eventrecorder.Recorder();
     this.setRecorder(recorder);
 
-    // do not record events for this widget
-    const objectId = this.toHashCode();
+    // assign id to this widget from caption
+    const objectId = caption.replace(/ /g,"").toLocaleLowerCase();
     this.setQxObjectId(objectId);
-    recorder.excludeIds(objectId);
+    qx.core.Id.getInstance().register(this, objectId);
+    // do not record events for this widget unless explicitly requested
+    if (!qx.core.Environment.get("eventrecorder.makeScriptable")) {
+      recorder.excludeIds(objectId);
+    }
 
     // caption
     this.bind("recorder.running", this, "caption", {
@@ -206,11 +208,17 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
 
     // add button to parent
     this.add(loadButton);
+    this.addOwnedQxObject(loadButton, "load");
     this.add(replayButton);
+    this.addOwnedQxObject(replayButton, "replay");
     this.add(recordButton);
+    this.addOwnedQxObject(recordButton, "record");
     this.add(stopButton);
+    this.addOwnedQxObject(stopButton, "stop");
     this.add(saveButton);
+    this.addOwnedQxObject(saveButton, "save");
     this.add(exportButton);
+    this.addOwnedQxObject(exportButton, "export");
 
     // add events for new players
     this.addListener("changePlayer", e => {
@@ -241,7 +249,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       this._getRawGist(gist_id)
         .then(gist => {
           let player = new cboulanger.eventrecorder.player.Qooxdoo();
-          player.setMode("presentation");
+          player.setMode(qx.core.Environment.get("eventrecorder.mode")||"presentation");
           this.setPlayer(player);
           this.setScript(gist);
           this.replay();
@@ -408,17 +416,21 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
         throw new Error("No player has been set");
       }
       this.setMode("player");
-      player.addListener("progress", e => {
-        let [step, steps] = e.getData();
-        this.showPopup(`Replaying ... (${step}/${steps})`);
-      });
+      let infoPane = cboulanger.eventrecorder.InfoPane.getInstance();
+      infoPane.useIcon("waiting");
+      if (qx.core.Environment.get("eventrecorder.showProgress")) {
+        player.addListener("progress", e => {
+          let [step, steps] = e.getData();
+          infoPane.display(`Replaying ... (${step}/${steps})`);
+        });
+      }
       let error = null;
       try {
         await player.replay(this.getScript());
       } catch (e) {
         error = e;
       }
-      this.hidePopup();
+      infoPane.hide();
       qx.bom.storage.Web.getLocal().removeItem(cboulanger.eventrecorder.UiController.LOCAL_STORAGE_KEY);
       this.setMode("recorder");
       if (error) {
@@ -471,16 +483,17 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     }
     qx.bom.Lifecycle.onReady(() => {
       let controller = new cboulanger.eventrecorder.UiController();
-      controller.createPopup();
-      controller.showPopup("Initializing Event Recorder, please wait...");
+      let infoPane = cboulanger.eventrecorder.InfoPane.getInstance();
+      infoPane.useIcon("waiting");
+      infoPane.display("Initializing Event Recorder, please wait...");
       const objIdGen = cboulanger.eventrecorder.ObjectIdGenerator.getInstance();
       objIdGen.addListenerOnce("done", async () => {
-        controller.hidePopup();
+        infoPane.hide();
         // show controller
         qx.core.Init.getApplication().getRoot().add(controller, {top:0, right:10});
-        // add a player in presentation mode
+        // add a player in presentation mode unless configured otherwise
         let player = new cboulanger.eventrecorder.player.Qooxdoo();
-        player.setMode("presentation");
+        player.setMode(qx.core.Environment.get("eventrecorder.mode")||"presentation");
         controller.setPlayer(player);
         controller.show();
         // do we have a stored script?

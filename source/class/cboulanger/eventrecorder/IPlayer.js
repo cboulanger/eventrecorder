@@ -71,6 +71,38 @@ qx.Interface.define("cboulanger.eventrecorder.IPlayer", {
     /***** COMMANDS ******/
 
     /**
+     * Generates code that displays an informational text centered on the screen
+     * @param text {String} The text to display
+     * @return {String}
+     */
+    cmd_info(text) {},
+
+    /**
+     * Generates code that hides the info pane
+     * @return {String}
+     */
+    cmd_hide_info(text) {},
+
+    /**
+     * Generates code that displays an informational text placed next to the widget with the given id.
+     * @param id {String} The id of the widget
+     * @param text {String} The text to display
+     * @return {String}
+     */
+    cmd_widget_info(id, text) {},
+
+    /**
+     * Generates code that returns a promise which resolves when a property of the
+     * object with the given id is assigned a value. The value must be given in JSON
+     * format, i.e. strings must be quoted.
+     * @param id {String} The id of the object
+     * @param property {String} The name of the property
+     * @param value {String} The value, must be serializable to JSON
+     * @return {*|string}
+     */
+    cmd_await_property_value(id, property, value) {},
+
+    /**
      * Generates code that causes the given delay (in milliseconds).
      * The delay is capped by the {@link cboulanger.eventrecorder.player.Abstract#maxDelay} property
      * @param delayInMs {Number}
@@ -87,6 +119,25 @@ qx.Interface.define("cboulanger.eventrecorder.IPlayer", {
 
 
     /**
+     * Generates code that returns a promise which resolves when the object with
+     * the given id fires an event with the given name.
+     * @param id {String} The id of the object
+     * @param type {String} The type of the event
+     * @return {*|string}
+     */
+    cmd_await_event(id, type) {},
+
+    /**
+     * Generates code that returns a promise which resolves when the object with
+     * the given id fires an event with the given name.
+     * @param id {String} The id of the object
+     * @param type {String} The type of the event
+     * @param data {*} The data to expect. Must be serializable to JSON
+     * @return {*|string}
+     */
+    cmd_await_event_data(id, type, data) {},
+
+    /**
      * Generates code that returns a promise with resolves when the object with the given id becomes visible and rejects
      * if the timeout is reached before that happens.
      * @param id {String}
@@ -101,7 +152,6 @@ qx.Interface.define("cboulanger.eventrecorder.IPlayer", {
      * @return {String}
      */
     cmd_check_disappear(id) {},
-
 
     /**
      * Generates code that fires an `execute` event on the object with the given id (Button, Command)

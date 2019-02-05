@@ -41,6 +41,33 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
     },
 
     /**
+     * Generates code that displays an informational text centered on the screen
+     * @param text {String} The text to display
+     * @return {String}
+     */
+    cmd_info(text) {
+      return `cboulanger.eventrecorder.InfoPane.getInstance().useIcon("info").display("${text}");`;
+    },
+
+    /**
+     * Generates code that hides the info pane
+     * @return {String}
+     */
+    cmd_hide_info(text) {
+      return `cboulanger.eventrecorder.InfoPane.getInstance().hide();`;
+    },
+
+    /**
+     * Generates code that displays an informational text placed next to the widget with the given id.
+     * @param id {String} The id of the widget
+     * @param text {String} The text to display
+     * @return {String}
+     */
+    cmd_widget_info(id, text) {
+      return `cboulanger.eventrecorder.InfoPane.getInstance().useIcon("info").display("${text}",qx.core.Id.getQxObject("${id}"));`;
+    },
+
+    /**
      * Generates code that causes the given delay (in milliseconds).
      * The delay is capped by the {@link #cboulanger.eventrecorder.player.Abstract#maxDelay} property
      * @param delayInMs {Number}
@@ -65,12 +92,41 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * object with the given id is assigned a value. The value must be given in JSON
      * format, i.e. strings must be quoted.
      * @param id {String} The id of the object
-     * @param data {String} The property and value, separated by a whitespace
+     * @param property {String} The name of the property
+     * @param value {String} The value, must be serializable to JSON
      * @return {*|string}
      */
-    cmd_await_property_value(id, data) {
-      let [property, value] = data.split(/ /);
-      return this.generateWaitForCode(`qx.core.Id.getQxObject("${id}").get("${property}")===${value}`);
+    cmd_await_property_value(id, property, value) {
+      return this.generateWaitForConditionCode(`qx.core.Id.getQxObject("${id}").get("${property}")===${JSON.stringify(value)}`);
+    },
+
+    /**
+     * Generates code that returns a promise which resolves when the object with
+     * the given id fires an event with the given name.
+     * @param id {String} The id of the object
+     * @param type {String} The type of the event
+     * @return {*|string}
+     */
+    cmd_await_event(id, type) {
+      if (this.getMode()==="presentation") {
+        return this.generateWaitForEventTimoutFunction(id, type, null, `if (window["${this._globalRef}"].isRunning()) cboulanger.eventrecorder.InfoPane.getInstance().show().animate(); else return resolve();`);
+      }
+      return this.generateWaitForEventCode(id, type);
+    },
+
+    /**
+     * Generates code that returns a promise which resolves when the object with
+     * the given id fires an event with the given name.
+     * @param id {String} The id of the object
+     * @param type {String} The type of the event
+     * @param data {*} The data to expect. Must be serializable to JSON
+     * @return {*|string}
+     */
+    cmd_await_event_data(id, type, data) {
+      if (this.getMode()==="presentation") {
+        return this.generateWaitForEventTimoutFunction(id, type, data, `if (window["${this._globalRef}"].isRunning()) cboulanger.eventrecorder.InfoPane.getInstance().show().animate(); else return resolve();`);
+      }
+      return this.generateWaitForEventCode(id, type, data);
     },
 
     /**
@@ -80,7 +136,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @return {String}
      */
     cmd_check_appear(id) {
-      return this.generateWaitForCode(`qx.core.Id.getQxObject("${id}").isVisible()`);
+      return this.generateWaitForConditionCode(`qx.core.Id.getQxObject("${id}").isVisible()`);
     },
 
     /**
@@ -90,7 +146,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @return {String}
      */
     cmd_check_disappear(id) {
-      return this.generateWaitForCode(`!qx.core.Id.getQxObject("${id}").isVisible()`);
+      return this.generateWaitForConditionCode(`!qx.core.Id.getQxObject("${id}").isVisible()`);
     },
 
     /**

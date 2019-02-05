@@ -45,7 +45,7 @@ qx.Class.define("cboulanger.eventrecorder.demo.Application", {
       */
 
       // button
-      var button1 = new qx.ui.form.Button("Click on the red 'Record' button first, then click me...", "cboulanger/eventrecorder/test.png");
+      var button1 = new qx.ui.form.Button("Open window", "cboulanger/eventrecorder/test.png");
       var doc = this.getRoot();
       doc.add(button1, {left: 100, top: 50});
 
@@ -58,13 +58,7 @@ qx.Class.define("cboulanger.eventrecorder.demo.Application", {
         showMinimize: false,
         showMaximize: false
       });
-      let label = new qx.ui.basic.Label("Click on the button below, then click on the 'Stop', then on the 'Replay' button in the recorder.");
-      label.set({
-        rich: true,
-        wrap: true
-      });
-      win.add(label);
-      let button2 = new qx.ui.form.Button("Click me to close window", "cboulanger/eventrecorder/test.png");
+      let button2 = new qx.ui.form.Button("Close window", "cboulanger/eventrecorder/test.png");
       button2.addListener("execute", () => win.close());
       win.add(button2);
       doc.add(win);

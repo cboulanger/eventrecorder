@@ -42,8 +42,34 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
         }, interval);
         setTimeout(() => {
           clearInterval(intervalId);
-          reject(new Error(`Timeout of ${timeout} ms has been reached${timeoutMsg?": "+timeoutMsg:""}`));
+          reject(new Error(timeoutMsg || `Timeout waiting for condition.`));
         }, timeout);
+      }));
+    },
+
+    /**
+     * Returns a promise that will resolve (with any potential event data) if the given object fires an event with the given type
+     * and will reject if the timeout is reached before that happens.
+     * @param qxObj {qx.core.Object}
+     * @param type {String} Type of the event
+     * @param data {*} The data to expect. If not null, the data will be compared with the actual event data both serialized to JSON
+     * @param timeout {Number} The timeout in milliseconds. Defaults to 10 seconds
+     * @param timeoutMsg {String|undefined} An optional addition to the timeout error message
+     * @return {Promise}
+     */
+    waitForEvent: function(qxObj, type, data, timeout=10000, timeoutMsg) {
+      return new Promise(((resolve, reject) => {
+        let timeoutId = setTimeout(() => {
+          reject(new Error(timeoutMsg || `Timeout waiting for event "${type}.`));
+        }, timeout);
+        qxObj.addListenerOnce(type, e => {
+          if (data && e instanceof qx.event.type.Data && (JSON.stringify(e.getData()) !== JSON.stringify(data))) {
+            this.debug(JSON.stringify(e.getData())+"==="+JSON.stringify(data)+" ?");
+            return;
+          }
+          clearTimeout(timeoutId);
+          resolve(e instanceof qx.event.type.Data ? e.getData():true);
+        });
       }));
     }
   },
@@ -129,6 +155,40 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
    */
   members :
   {
+    /**
+     * Simple tokenizer which splits expressions separated by whitespace, but keeps
+     * expressions in quotes (which can contain whitespace) together.
+     * @param line {String}
+     * @return {String[]}
+     * @private
+     */
+    _tokenize(line) {
+      qx.core.Assert.assertString(line);
+      let tokens = [];
+      let token = "";
+      let prevChar="";
+      let insideQuotes = false;
+      for (let char of line.trim().split("")) {
+        if (char==="\"") {
+          insideQuotes=!insideQuotes;
+          continue;
+        }
+        if (char === " " && !insideQuotes) {
+          if (prevChar === " ") {
+            continue;
+          }
+          tokens.push(token);
+          token = "";
+        } else {
+          token += char;
+        }
+        prevChar = char;
+      }
+      if (token.length) {
+        tokens.push(token);
+      }
+      return tokens;
+    },
 
     /**
      * Replays the given script of intermediate code
@@ -139,21 +199,23 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      */
     async replay(script) {
       this.setRunning(true);
+      this._globalRef = "player" + this.toHashCode();
+      window[this._globalRef]=this;
       let lines = script.split(/\n/);
       let steps = lines.reduce((prev, curr, index) => prev+Number(!curr.startsWith("wait")), 0);
       let step = 0;
       for (let line of lines) {
         // stop if we're not running
         if (!this.getRunning()) {
-          return true;
+          return;
+        }
+        // ignore comments and empty lines
+        if (line.trim()==="" || line.startsWith("#")) {
+          continue;
         }
         // wait doesn't count as a step
         if (!line.startsWith("wait") || !line.startsWith("delay")) {
           step++;
-        }
-        // comments
-        if (line.startsWith("#")) {
-          continue;
         }
         // ignore delay in test mode
         if (this.getMode()==="test" && line.startsWith("delay")) {
@@ -161,13 +223,12 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
         }
         // inform listeners
         this.fireDataEvent("progress", [step, steps]);
-        // parse command line, todo: use real tokenizer
-        let [command, id, ...data] = line.split(/ /);
-        data = data.join(" ");
+        // parse command line
+        let [command, ...args] = this._tokenize(line);
         // run command generation implementation
         let method_name = "cmd_" + command.replace(/-/g, "_");
         if (typeof this[method_name] == "function") {
-          let code = this[method_name](id, data);
+          let code = this[method_name].apply(this, args);
           this.debug(`\n===== Step ${step} / ${steps} ====\nCommand: ${line}\nExecuting: ${code}`);
           try {
             let result = window.eval(code);
@@ -204,11 +265,47 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      * return code that checks for this condition, throwing an error if the
      * condition hasn't been fulfilled within the set timeout.
      * @param condition {String} The condition expression as a string
-     * @param timeoutmsg {String} A message to be shown if the condition hasn't been met before the timeout. If not given
+     * @param timeoutmsg {String|undefined} A message to be shown if the condition hasn't been met before the timeout. If not given
      * the condition expression will be shown
      */
-    generateWaitForCode(condition, timeoutmsg=null) {
+    generateWaitForConditionCode(condition, timeoutmsg) {
       return `(cboulanger.eventrecorder.player.Abstract.waitForCondition(() => ${condition},${this.getInterval()},${this.getTimeout()}, "${timeoutmsg||condition.replace(/"/g, "\\\"")}"))`;
+    },
+
+    /**
+     * Generates code that returns a promise which will resolve (with any potential event data) if the given object fires
+     * an event with the given type and data (if applicable) and will reject if the timeout is reached before that happens.
+     * @param id {String} The id of the object to monitor
+     * @param type {String} The type of the event to wait for
+     * @param data {*|null} The data to expect. Must be serializable to JSON
+     * @param timeoutmsg {String|undefined} A message to be shown if the event hasn't been fired before the timeout.
+     * @return {String}
+     */
+    generateWaitForEventCode(id, type, data=null, timeoutmsg) {
+      return `(cboulanger.eventrecorder.player.Abstract.waitForEvent(qx.core.Id.getQxObject("${id}"), "${type}",${JSON.stringify(data)}, ${this.getTimeout()}, "${timeoutmsg||"Timeout waiting for event '"+type+"'"}"))`;
+    },
+
+    /**
+     * Generates code that returns a promise which will resolve (with any potential event data) if the given object fires
+     * an event with the given type and data (if applicable). After the timeout, it will execute the given code and restart
+     * the timeout.
+     * @param id {String} The id of the object to monitor
+     * @param type {String} The type of the event to wait for
+     * @param data {*|null} The data to expect. Must be serializable to JSON
+     * @param code {String} The code to execute after the timeout
+     * @return {String}
+     */
+    generateWaitForEventTimoutFunction(id, type, data=null, code) {
+      return `(new Promise(async (resolve, reject) => { 
+        while (true){
+          try {
+            return await cboulanger.eventrecorder.player.Abstract.waitForEvent(qx.core.Id.getQxObject("${id}"), "${type}", ${JSON.stringify(data)}, ${this.getTimeout()}); 
+          } catch (e) {
+            console.debug(e.message);
+          }
+          ${code};
+        }
+      }))`;
     },
 
     /**
