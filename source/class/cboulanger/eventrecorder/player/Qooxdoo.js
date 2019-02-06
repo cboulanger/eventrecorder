@@ -109,7 +109,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      */
     cmd_await_event(id, type) {
       if (this.getMode()==="presentation") {
-        return this.generateWaitForEventTimoutFunction(id, type, null, `if (window["${this._globalRef}"].isRunning()) cboulanger.eventrecorder.InfoPane.getInstance().show().animate(); else return resolve();`);
+        return this.generateWaitForEventTimoutFunction(id, type, null, `if (window["${this._globalRef}"].isRunning()) cboulanger.eventrecorder.InfoPane.getInstance().show().animate(); else return resolve(false)`);
       }
       return this.generateWaitForEventCode(id, type);
     },

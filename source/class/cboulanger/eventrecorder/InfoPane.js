@@ -18,7 +18,8 @@ qx.Class.define("cboulanger.eventrecorder.InfoPane", {
       minWidth: 100,
       minHeight: 30,
       padding: 10,
-      backgroundColor: "#f0f0f0"
+      backgroundColor: "#f0f0f0",
+      autoHide: false
     });
     this.__atom = new qx.ui.basic.Atom();
     this.__atom.getChildControl("label").set({
@@ -34,6 +35,7 @@ qx.Class.define("cboulanger.eventrecorder.InfoPane", {
 
     /**
      * Center the widget
+     * @return {cboulanger.eventrecorder.InfoPane}
      */
     center() {
       let bounds = this.getBounds();
@@ -53,6 +55,7 @@ qx.Class.define("cboulanger.eventrecorder.InfoPane", {
      * @param text {String|false} The text to display. If false, hide the widget
      * @param widgetToPlaceTo {qx.ui.core.Widget|undefined} If given, place the
      * info panel next to this widget
+     * @return {cboulanger.eventrecorder.InfoPane}
      */
     display(text, widgetToPlaceTo=false) {
       if (!text) {
@@ -61,7 +64,17 @@ qx.Class.define("cboulanger.eventrecorder.InfoPane", {
       this.__atom.setLabel(text);
       this.show();
       if (widgetToPlaceTo) {
-        this.placeToWidget(widgetToPlaceTo, true);
+        this.set({
+          marginTop:0,
+          marginLeft: 0
+        });
+        if (widgetToPlaceTo.isVisible()) {
+          this.placeToWidget(widgetToPlaceTo, true);
+        } else {
+          widgetToPlaceTo.addListenerOnce("appear", () => {
+            this.placeToWidget(widgetToPlaceTo, true);
+          });
+        }
       } else if (this.isVisible()) {
         qx.event.Timer.once(this.center, this, 100);
       } else {
@@ -71,8 +84,17 @@ qx.Class.define("cboulanger.eventrecorder.InfoPane", {
     },
 
     /**
+     * Return the content of the text label
+     * @return {String}
+     */
+    getDisplayedText() {
+      return this.__atom.getLabel();
+    },
+
+    /**
      * When displaying the info, show the icon associated with the given alias
      * @param alias
+     * @return {cboulanger.eventrecorder.InfoPane}
      */
     useIcon(alias) {
       let iconpath = cboulanger.eventrecorder.InfoPane.icon[alias];
@@ -83,6 +105,10 @@ qx.Class.define("cboulanger.eventrecorder.InfoPane", {
       return this;
     },
 
+    /**
+     * Animate the info pane to draw attention from the user
+     * @return {cboulanger.eventrecorder.InfoPane}
+     */
     animate() {
       if (!this.isVisible()) {
         this.addListenerOnce("appear", this.animate, this);
@@ -105,6 +131,10 @@ qx.Class.define("cboulanger.eventrecorder.InfoPane", {
       return this;
     },
 
+    /**
+     * Show the info pane. Overridden to return instance & allow chaining method calls.
+     * @return {cboulanger.eventrecorder.InfoPane}
+     */
     show() {
       this.base(arguments);
       return this;

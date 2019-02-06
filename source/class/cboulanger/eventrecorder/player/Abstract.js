@@ -63,12 +63,13 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
           reject(new Error(timeoutMsg || `Timeout waiting for event "${type}.`));
         }, timeout);
         qxObj.addListenerOnce(type, e => {
-          if (data && e instanceof qx.event.type.Data && (JSON.stringify(e.getData()) !== JSON.stringify(data))) {
-            this.debug(JSON.stringify(e.getData())+"==="+JSON.stringify(data)+" ?");
+          let eventdata = e instanceof qx.event.type.Data ? e.getData() : null;
+          if (eventdata !== null && (JSON.stringify(eventdata) !== JSON.stringify(data))) {
+            this.debug(JSON.stringify(eventdata) + " !== " + JSON.stringify(data) +" !!");
             return;
           }
           clearTimeout(timeoutId);
-          resolve(e instanceof qx.event.type.Data ? e.getData():true);
+          resolve(eventdata);
         });
       }));
     }
@@ -169,18 +170,24 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
       let prevChar="";
       let insideQuotes = false;
       for (let char of line.trim().split("")) {
-        if (char==="\"") {
-          insideQuotes=!insideQuotes;
-          continue;
-        }
-        if (char === " " && !insideQuotes) {
-          if (prevChar === " ") {
-            continue;
-          }
-          tokens.push(token);
-          token = "";
-        } else {
-          token += char;
+        switch (char) {
+          case "\"":
+            insideQuotes=!insideQuotes;
+            break;
+          case " ":
+            // add whitespace to token if inside quotes
+            if (insideQuotes) {
+              token += char;
+              break;
+            }
+            // when outside quotes, whitespace is end of token
+            if (prevChar !== " ") {
+              tokens.push(token);
+              token = "";
+            }
+            break;
+          default:
+            token += char;
         }
         prevChar = char;
       }
@@ -299,11 +306,12 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
       return `(new Promise(async (resolve, reject) => { 
         while (true){
           try {
-            return await cboulanger.eventrecorder.player.Abstract.waitForEvent(qx.core.Id.getQxObject("${id}"), "${type}", ${JSON.stringify(data)}, ${this.getTimeout()}); 
+            await cboulanger.eventrecorder.player.Abstract.waitForEvent(qx.core.Id.getQxObject("${id}"), "${type}", ${JSON.stringify(data)}, ${this.getTimeout()});
+            return resolve(); 
           } catch (e) {
             console.debug(e.message);
+            ${code};
           }
-          ${code};
         }
       }))`;
     },

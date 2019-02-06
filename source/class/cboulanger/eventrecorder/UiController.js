@@ -100,15 +100,18 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       allowGrowY: false
     });
 
+    const uri_info = qx.util.Uri.parseUri(window.location.href);
     const recorder = new cboulanger.eventrecorder.Recorder();
     this.setRecorder(recorder);
 
     // assign id to this widget from caption
-    const objectId = caption.replace(/ /g,"").toLocaleLowerCase();
+    const objectId = caption.replace(/ /g, "").toLocaleLowerCase();
     this.setQxObjectId(objectId);
     qx.core.Id.getInstance().register(this, objectId);
+
     // do not record events for this widget unless explicitly requested
-    if (!qx.core.Environment.get("eventrecorder.makeScriptable")) {
+    let scriptable = uri_info.queryKey.eventrecorder_scriptable || qx.core.Environment.get("eventrecorder.scriptable");
+    if (!scriptable) {
       recorder.excludeIds(objectId);
     }
 
@@ -239,20 +242,24 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     form.appendChild(input);
 
     // fetch script from URL
-    let uri_info = qx.util.Uri.parseUri(window.location.href);
-    let gist_id = uri_info.queryKey.eventrecorder_gist_id;
-    if (gist_id) {
-      if (this._hasStoredScript()) {
-        // already replaying a script
-        return;
-      }
+    let gist_id = uri_info.queryKey.eventrecorder_gist_id || qx.core.Environment.get("eventrecorder.gistId");
+    let mode = uri_info.queryKey.eventrecorder_mode || qx.core.Environment.get("eventrecorder.mode") || "presentation";
+    let autoplay = uri_info.queryKey.eventrecorder_autoplay || qx.core.Environment.get("eventrecorder.autoplay");
+    if (!this._hasStoredScript() && gist_id && autoplay) {
       this._getRawGist(gist_id)
         .then(gist => {
           let player = new cboulanger.eventrecorder.player.Qooxdoo();
-          player.setMode(qx.core.Environment.get("eventrecorder.mode")||"presentation");
+          player.setMode(mode);
           this.setPlayer(player);
-          this.setScript(gist);
-          this.replay();
+          // if the eventrecorder itself is scriptable, run the gist in a separate player without GUI
+          if (scriptable) {
+            let gistplayer = new cboulanger.eventrecorder.player.Qooxdoo();
+            gistplayer.setMode(mode);
+            gistplayer.replay(gist);
+          } else {
+            this.setScript(gist);
+            this.replay();
+          }
         })
         .catch(e => {
           throw new Error(`Gist ${gist_id} cannot be loaded: ${e.message}.`);
@@ -486,16 +493,22 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       let infoPane = cboulanger.eventrecorder.InfoPane.getInstance();
       infoPane.useIcon("waiting");
       infoPane.display("Initializing Event Recorder, please wait...");
+      let dispayedText = infoPane.getDisplayedText();
       const objIdGen = cboulanger.eventrecorder.ObjectIdGenerator.getInstance();
       objIdGen.addListenerOnce("done", async () => {
-        infoPane.hide();
-        // show controller
+        // hide splash screen if it hasn't used by other code yet
+        if (infoPane.getDisplayedText() === dispayedText) {
+          infoPane.hide();
+        }
+        // create controller
         qx.core.Init.getApplication().getRoot().add(controller, {top:0, right:10});
         // add a player in presentation mode unless configured otherwise
         let player = new cboulanger.eventrecorder.player.Qooxdoo();
         player.setMode(qx.core.Environment.get("eventrecorder.mode")||"presentation");
         controller.setPlayer(player);
-        controller.show();
+        if (!qx.core.Environment.get("eventrecorder.hidden")) {
+          controller.show();
+        }
         // do we have a stored script?
         let storedScript = qx.bom.storage.Web.getLocal().getItem(cboulanger.eventrecorder.UiController.LOCAL_STORAGE_KEY);
         if (!storedScript || storedScript.length===0) {
