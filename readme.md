@@ -23,11 +23,11 @@ GUI if you assign the `qxObjectId`s yourself.
 
 ## Demos
 
-- [Simple event recorder demo](https://cboulanger.github.io/eventrecorder/): Very simple demo 
-- [Widget Browser with event recorder](https://cboulanger.github.io/eventrecorder/widgetbrowser_recorder): 
-  This demo shows how the event recorder is added to an existing application without changing its source code. 
+- [Simple event recorder demo in "tour" mode](https://cboulanger.github.io/eventrecorder/): Very simple demo that shows how you can 
+  use the event recorder to walk the user through your app, using [this gist](https://gist.github.com/cboulanger/64ed4149a27d48de38d9cb176907355e)
+- [Widget Browser with event recorder](https://cboulanger.github.io/eventrecorder/widgetbrowser_recorder) 
 - [Widget Browser with event recorder, autoplaying a gist](https://cboulanger.github.io/eventrecorder/widgetbrowser_recorder/?eventrecorder_gist_id=8f5458b5f694c10951b1a7a0c7cf3d5b&eventrecorder_autostart=1):   
-  This downloads the script to replay from a gist at GitHub.
+  This plays the script in [this gist](https://gist.github.com/cboulanger/8f5458b5f694c10951b1a7a0c7cf3d5b)
 - [Widget Browser with object id tooltip](https://cboulanger.github.io/eventrecorder/widgetbrowser_recorder):
   This demo displays the object ids which are automatically assigned to the widgets by showing a tooltip when hovering
   over them.
@@ -43,7 +43,7 @@ qx serve
 
 ## API Viewer
 
-The API Viewer app is [here](https://cboulanger.github.io/eventrecorder/apiviewer).
+The API Viewer app is [here](https://cboulanger.github.io/eventrecorder/apiviewer/#cboulanger.eventrecorder).
 
 ## ID generation
 
@@ -74,6 +74,10 @@ execution and will be thrown. This is useful for test runners.
 - "presentation": The script is executed with user delays; errors will be
 logged to the console but will not stop execution. This is the default mode,
 which can be used for application demos. 
+
+## Environment variables
+
+see [here](https://cboulanger.github.io/eventrecorder/apiviewer/#cboulanger.eventrecorder)
 
 ## Issues
 

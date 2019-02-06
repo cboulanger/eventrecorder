@@ -14,6 +14,7 @@
 
 ************************************************************************ */
 
+
 qx.Mixin.define("cboulanger.eventrecorder.MHelperMethods", {
   members :
   {
