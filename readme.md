@@ -33,7 +33,7 @@ recording/replaying and loading/saving the generated scripts.
 ```bash
 npm install -g qxcompiler
 git clone https://github.com/cboulanger/eventrecorder.git
-cd recorder
+cd eventrecorder
 qx serve
 ```
 
