@@ -449,22 +449,26 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
      * Save the current script to the local machine
      */
     save() {
-      let filename = prompt("Please enter the name of the file to save");
-      if (!filename) {
-       return;
-      }
-      this._download(filename + ".eventrecorder", this.getScript());
+      qx.event.Timer.once(() => {
+        let filename = prompt("Please enter the name of the file to save");
+        if (!filename) {
+          return;
+        }
+        this._download(filename + ".eventrecorder", this.getScript());
+      }, null, 0);
     },
 
     /**
      * Export the script in the native format
      */
     export() {
-      let filename = prompt("Please enter the name of the file to export");
-      if (!filename) {
-        return;
-      }
-      this._download(`${filename}.${this.getPlayer().getExportFileExtension()}`, this.getPlayer().translate(this.getScript()));
+      qx.event.Timer.once(() => {
+        let filename = prompt("Please enter the name of the file to export");
+        if (!filename) {
+          return;
+        }
+        this._download(`${filename}.${this.getPlayer().getExportFileExtension()}`, this.getPlayer().translate(this.getScript()));
+      }, null, 0);
     },
 
     /**

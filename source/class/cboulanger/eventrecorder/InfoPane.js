@@ -38,6 +38,10 @@ qx.Class.define("cboulanger.eventrecorder.InfoPane", {
      * @return {cboulanger.eventrecorder.InfoPane}
      */
     center() {
+      if (!this.isVisible()) {
+        this.addListenerOnce("appear", this.center, this);
+        return this;
+      }
       let bounds = this.getBounds();
       this.set({
         marginTop: Math.round(
@@ -75,10 +79,8 @@ qx.Class.define("cboulanger.eventrecorder.InfoPane", {
             this.placeToWidget(widgetToPlaceTo, true);
           });
         }
-      } else if (this.isVisible()) {
-        qx.event.Timer.once(this.center, this, 100);
       } else {
-        this.addListenerOnce("appear", this.center, this);
+        qx.event.Timer.once(this.center, this, 100);
       }
       return this;
     },
