@@ -13,13 +13,7 @@ this "language" into code that runs in the browser or by a browser automation
 tool (such as Puppeteer, Selenium, TestCafé, etc.) on the server, and 
 4. an [UI](source/class/cboulanger/eventrecorder/UiController.js) to control 
 recording/replaying and loading/saving the generated scripts.
- 
-The event recorder can be added to any application without having to change anything
-in the application itself, by simply `include`'ing classes in `compile.json/applications`. 
-(See [this example](compile.json)). Typically, that would be `"cboulanger.eventrecorder.UiController"`
-and `"cboulanger.eventrecorder.ObjectIdGenerator"`, but it is also possible
-to use the ID generator and a player without the GUI, or a player with or without
-GUI if you assign the `qxObjectId`s yourself. 
+
 
 ## Demos
 
@@ -34,12 +28,25 @@ GUI if you assign the `qxObjectId`s yourself.
 
 ## Installation
 
+### As a standalone demo
+
 ```bash
 npm install -g qxcompiler
 git clone https://github.com/cboulanger/eventrecorder.git
 cd recorder
 qx serve
 ```
+
+### As an addition to an existing project
+
+The event recorder can be added to any application without having to change anything
+in the application itself, by simply `include`'ing classes in `compile.json/applications`. 
+(See [this example](compile.json)). 
+
+Typically, that would be `"cboulanger.eventrecorder.UiController"`
+and `"cboulanger.eventrecorder.ObjectIdGenerator"`, but it is also possible
+to use the ID generator and a player without the GUI, or a player with or without
+GUI if you assign the `qxObjectId`s yourself. 
 
 ## API Viewer
 
@@ -77,7 +84,7 @@ which can be used for application demos.
 
 ## Environment variables
 
-see [here](https://cboulanger.github.io/eventrecorder/apiviewer/#cboulanger.eventrecorder)
+See [here](https://cboulanger.github.io/eventrecorder/apiviewer/#cboulanger.eventrecorder).
 
 ## Issues
 
