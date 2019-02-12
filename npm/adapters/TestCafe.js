@@ -1,3 +1,6 @@
+require("qx");
+require("../../source/class/cboulanger/eventrecorder/player/Testcafe");
+
 import { Selector, ClientFunction } from "testcafe";
 
 export const getPageHTML = ClientFunction(() => document.documentElement.outerHTML);

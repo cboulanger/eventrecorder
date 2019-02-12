@@ -2,8 +2,8 @@
   "targets": [
     {
       "type": "source",
-      "outputPath": "compiled/source",
-      "bundle": {
+      "outputPath": "compiled/source"
+      ,"bundle": {
         "include": "qx.*"
       }
     },
@@ -18,12 +18,15 @@
     "qx.icontheme": ["Tango"],
     "qx.debug": true,
     "module.objectid": true,
+    // default values, for documentation only
     "eventrecorder.enabled": true,
-//    "eventrecorder.scriptable": false,
-//    "eventrecorder.mode": "presentation",
-//    "eventrecorder.showProgress": false,
-//    "eventrecorder.gistId": "",
-//    "eventrecorder.autoplay": false,
+    "eventrecorder.scriptable": false,
+    "eventrecorder.mode": "presentation",
+    "eventrecorder.showProgress": false,
+    "eventrecorder.gistId": "",
+    "eventrecorder.autoplay": false,
+    "eventrecorder.playerType": "qooxdoo",
+    // needed by playground
     "qx.testNameSpace": {},
     "qx.standaloneAutorun": {}
   },
@@ -56,6 +59,21 @@
       "environment": {
         "qx.icontheme": ["Tango" ],
         "eventrecorder.showProgress": true
+      }
+    },
+    {
+      "class": "qxl.widgetbrowser.Application",
+      "theme": "qx.theme.Indigo",
+      "name": "widgetbrowser_testcafe",
+      "title": "WidgetBrowser with a recorder that replays in the browser and exports TestCafé code",
+      "include": [
+        "qx.theme.Modern",
+        "cboulanger.eventrecorder.UiController",
+        "cboulanger.eventrecorder.ObjectIdGenerator"
+      ],
+      "environment": {
+        "qx.icontheme": ["Tango" ],
+        "eventrecorder.playerType": "testcafe"
       }
     },
     {

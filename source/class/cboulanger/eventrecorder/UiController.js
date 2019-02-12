@@ -245,12 +245,13 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     let gist_id = uri_info.queryKey.eventrecorder_gist_id || qx.core.Environment.get("eventrecorder.gistId");
     let mode = uri_info.queryKey.eventrecorder_mode || qx.core.Environment.get("eventrecorder.mode") || "presentation";
     let autoplay = uri_info.queryKey.eventrecorder_autoplay || qx.core.Environment.get("eventrecorder.autoplay");
+    let playerType = qx.core.Environment.get("eventrecorder.playerType")||"qooxdoo";
+    let player = new cboulanger.eventrecorder.player[qx.lang.String.firstUp(playerType)]();
+    player.setMode(mode);
+    this.setPlayer(player);
     if (!this._hasStoredScript() && gist_id && autoplay) {
       this._getRawGist(gist_id)
         .then(gist => {
-          let player = new cboulanger.eventrecorder.player.Qooxdoo();
-          player.setMode(mode);
-          this.setPlayer(player);
           // if the eventrecorder itself is scriptable, run the gist in a separate player without GUI
           if (scriptable) {
             let gistplayer = new cboulanger.eventrecorder.player.Qooxdoo();
@@ -507,8 +508,10 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
         // create controller
         qx.core.Init.getApplication().getRoot().add(controller, {top:0, right:10});
         // add a player in presentation mode unless configured otherwise
-        let player = new cboulanger.eventrecorder.player.Qooxdoo();
-        player.setMode(qx.core.Environment.get("eventrecorder.mode")||"presentation");
+        let playerType = qx.core.Environment.get("eventrecorder.playerType") || "qooxdoo";
+        let mode = qx.core.Environment.get("eventrecorder.mode") || "presentation";
+        let player = new cboulanger.eventrecorder.player[qx.lang.String.firstUp(playerType)]();
+        player.setMode(mode);
         controller.setPlayer(player);
         if (!qx.core.Environment.get("eventrecorder.hidden")) {
           controller.show();

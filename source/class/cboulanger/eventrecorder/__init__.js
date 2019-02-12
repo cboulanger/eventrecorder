@@ -26,11 +26,15 @@
  *   </tr>
  *   <tr>
  *     <td>"eventrecorder.gistId": {String}</td>
- *     <td>If given, load the script published at https://gist.github.com with this id.r</td>
+ *     <td>If given, load the script published at https://gist.github.com with this id.</td>
  *   </tr>
  *   <tr>
  *     <td>"eventrecorder.autoplay": {Boolean}</td>
  *     <td>If true, start any preloaded script.</td>
+ *   </tr>
+ *   <tr>
+ *     <td>"eventrecorder.playerType": {String}</td>
+ *     <td>The player type. Defaults to the qooxdoo player</td>
  *   </tr>
  *   <tr>
  *     <td>"eventrecorder.scriptable": {Boolean}</td>

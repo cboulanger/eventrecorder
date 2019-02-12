@@ -230,29 +230,22 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
         }
         // inform listeners
         this.fireDataEvent("progress", [step, steps]);
-        // parse command line
-        let [command, ...args] = this._tokenize(line);
-        // run command generation implementation
-        let method_name = "cmd_" + command.replace(/-/g, "_");
-        if (typeof this[method_name] == "function") {
-          let code = this[method_name].apply(this, args);
+        try {
+          // translate
+          let code = this._translateLine(line);
           this.debug(`\n===== Step ${step} / ${steps} ====\nCommand: ${line}\nExecuting: ${code}`);
-          try {
-            let result = window.eval(code);
-            if (result instanceof Promise) {
-              await result;
-            }
-          } catch (e) {
-            switch (this.getMode()) {
-              case "test":
-                throw e;
-              case "presentation":
-                this.error(e);
-            }
+          // execute
+          let result = window.eval(code);
+          if (result instanceof Promise) {
+            await result;
           }
-        } else {
-          let msg = `Unsupported/unrecognized command: ${command}`;
-          this.warn(msg);
+        } catch (e) {
+          switch (this.getMode()) {
+            case "test":
+              throw e;
+            case "presentation":
+              this.error(e);
+          }
         }
       }
       this.setRunning(false);
@@ -261,10 +254,28 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
     /**
      * Translates the intermediate code into the target language
      * @param script
-     * @return {string} Javasc
+     * @return {string} executable code
      */
     translate(script) {
-      return script.split(/\n/).map(line => this.generateReplayCode(line)).join("\n");
+      return script.split(/\n/).map(line => this._translateLine(line)).join("\n");
+    },
+
+    /**
+     * Translates a single line from the intermediate code into the target language. To be overridden by
+     * subclasses if neccessary.
+     * @param line {String}
+     * @return {String}
+     * @private
+     */
+    _translateLine(line) {
+      // parse command line
+      let [command, ...args] = this._tokenize(line);
+      // run command generation implementation
+      let method_name = "cmd_" + command.replace(/-/g, "_");
+      if (typeof this[method_name] == "function") {
+        return this[method_name].apply(this, args);
+      }
+      throw new Error(`Unsupported/unrecognized command: ${command}`);
     },
 
     /**
