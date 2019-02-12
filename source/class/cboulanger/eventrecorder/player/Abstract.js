@@ -173,6 +173,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
         switch (char) {
           case "\"":
             insideQuotes=!insideQuotes;
+            token += char;
             break;
           case " ":
             // add whitespace to token if inside quotes
@@ -182,6 +183,10 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
             }
             // when outside quotes, whitespace is end of token
             if (prevChar !== " ") {
+              // parse token as json expression or as a string if that fails
+              try {
+                token = JSON.parse(token);
+              } catch (e) {}
               tokens.push(token);
               token = "";
             }
@@ -192,9 +197,30 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
         prevChar = char;
       }
       if (token.length) {
+        try {
+          token = JSON.parse(token);
+        } catch (e) {}
         tokens.push(token);
       }
       return tokens;
+    },
+
+    /**
+     * Translates a single line from the intermediate code into the target language. To be overridden by
+     * subclasses if neccessary.
+     * @param line {String}
+     * @return {String}
+     * @private
+     */
+    _translateLine(line) {
+      // parse command line
+      let [command, ...args] = this._tokenize(line);
+      // run command generation implementation
+      let method_name = "cmd_" + command.replace(/-/g, "_");
+      if (typeof this[method_name] == "function") {
+        return this[method_name].apply(this, args);
+      }
+      throw new Error(`Unsupported/unrecognized command: ${command}`);
     },
 
     /**
@@ -258,24 +284,6 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      */
     translate(script) {
       return script.split(/\n/).map(line => this._translateLine(line)).join("\n");
-    },
-
-    /**
-     * Translates a single line from the intermediate code into the target language. To be overridden by
-     * subclasses if neccessary.
-     * @param line {String}
-     * @return {String}
-     * @private
-     */
-    _translateLine(line) {
-      // parse command line
-      let [command, ...args] = this._tokenize(line);
-      // run command generation implementation
-      let method_name = "cmd_" + command.replace(/-/g, "_");
-      if (typeof this[method_name] == "function") {
-        return this[method_name].apply(this, args);
-      }
-      throw new Error(`Unsupported/unrecognized command: ${command}`);
     },
 
     /**

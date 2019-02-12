@@ -226,7 +226,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @return {String}
      */
     cmd_set_model_selection(id, indexArray) {
-      return `let o = qx.core.Id.getQxObject("${id}"); o.setSelection(new qx.data.Array(${indexArray}.map(i => o.getModel().getItem(i))))`;
+      return `let o = qx.core.Id.getQxObject("${id}"); o.setSelection(new qx.data.Array(${JSON.stringify(indexArray)}.map(i => o.getModel().getItem(i))))`;
     },
 
     /**

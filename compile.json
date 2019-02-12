@@ -21,6 +21,7 @@
     // default values, for documentation only
     "eventrecorder.enabled": true,
     "eventrecorder.scriptable": false,
+    "eventrecorder.hidden": false,
     "eventrecorder.mode": "presentation",
     "eventrecorder.showProgress": false,
     "eventrecorder.gistId": "",
