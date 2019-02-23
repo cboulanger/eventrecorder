@@ -108,8 +108,8 @@ Inside macros, "$1", "$2" etc. will be replaced with the value of the the nth
 argument passed to the name of the macro in the script.
 
 Do not expect any functionality beyond these rather primitive features (such as
-control structures etc.). Any more complex requirement should be should be
-solved in the target script language.
+control structures etc.). Any more complex requirement should be solved in the 
+target script language.
 
 ## Player mode
 
