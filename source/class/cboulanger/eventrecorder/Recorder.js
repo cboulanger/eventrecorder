@@ -46,6 +46,11 @@ qx.Class.define("cboulanger.eventrecorder.Recorder", {
     });
   },
 
+  properties: {
+
+
+  },
+
   /**
    * The methods and simple properties of this class
    */
@@ -54,6 +59,7 @@ qx.Class.define("cboulanger.eventrecorder.Recorder", {
     __lines: null,
     __excludeIds: null,
     __lastEventTimestamp: null,
+    __latInput: null,
 
     /**
      * Exclude the given id(s) from recording
@@ -140,8 +146,12 @@ qx.Class.define("cboulanger.eventrecorder.Recorder", {
           }
           return [];
 
-        case "changeValue":
+        case "input":
+          this.__lastInput = data;
+          return [];
+
         case "change": {
+          // model selection
           const isModelSelection =
             target instanceof qx.data.Array &&
             target.getQxOwner() &&
@@ -154,13 +164,20 @@ qx.Class.define("cboulanger.eventrecorder.Recorder", {
             lines.push(`set-model-selection ${ownerId} ${JSON.stringify(indexes)}`);
             break;
           }
-          // other form fields
-          if (typeof data === "string") {
-            data = "\"" + data + "\"";
+          // form fields
+          if (qx.lang.Type.isString(data) && data === this.__lastInput) {
+            lines.push(`set-value ${id} "${data}"`);
           }
-          lines.push(`set-value ${id} ${data}`);
           break;
         }
+
+        case "changeValue":
+          if (!qx.lang.Type.isObject(data)) {
+            lines.push(`await-value ${id} ${JSON.stringify(data)}`);
+            break;
+          }
+          return [];
+
         case "open":
         case "close": {
           if (target instanceof qx.ui.tree.VirtualTree) {

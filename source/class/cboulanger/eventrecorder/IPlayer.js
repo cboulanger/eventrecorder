@@ -93,8 +93,8 @@ qx.Interface.define("cboulanger.eventrecorder.IPlayer", {
 
     /**
      * Generates code that returns a promise which resolves when a property of the
-     * object with the given id is assigned a value. The value must be given in JSON
-     * format, i.e. strings must be quoted.
+     * object with the given id is assigned the given value. The value must be
+     * given in JSON format, i.e. strings must be quoted.
      * @param id {String} The id of the object
      * @param property {String} The name of the property
      * @param value {String} The value, must be serializable to JSON
@@ -102,9 +102,11 @@ qx.Interface.define("cboulanger.eventrecorder.IPlayer", {
      */
     cmd_await_property_value(id, property, value) {},
 
+
     /**
      * Generates code that causes the given delay (in milliseconds).
      * The delay is capped by the {@link cboulanger.eventrecorder.player.Abstract#maxDelay} property
+     * and will only be caused in presentation mode
      * @param delayInMs {Number}
      * @return {string}
      */
@@ -116,7 +118,6 @@ qx.Interface.define("cboulanger.eventrecorder.IPlayer", {
      * @return {string}
      */
     cmd_wait(timeInMs) {},
-
 
     /**
      * Generates code that returns a promise which resolves when the object with
@@ -169,6 +170,16 @@ qx.Interface.define("cboulanger.eventrecorder.IPlayer", {
     cmd_set_value(id, data) {},
 
     /**
+     * Generates code that returns a promise which resolves when the value
+     * property of the object with the given id is assigned the given value.
+     * The value must be given in JSON format, i.e. strings must be quoted.
+     * @param id {String} The id of the object
+     * @param value {String} The value, must be serializable to JSON
+     * @return {*|string}
+     */
+    cmd_await_value(id, value) {},
+
+    /**
      * Generates code that opens a the node with the given node id on the {@link qx.ui.tree.VirtualTree} with the given id
      * @param id {String} The id of the {@link qx.ui.tree.VirtualTree}
      * @param nodeIndex {String|Number} The index of the node in the tree data model
@@ -201,13 +212,23 @@ qx.Interface.define("cboulanger.eventrecorder.IPlayer", {
     cmd_close_tree_node_treevirtual(id, nodeIndex) {},
 
     /**
-     * Generates code that sets a selection for all objects which have a `setSelection` command that
+     * Generates code that sets a selection for all objects which have a `setSelection` method that
      * takes an array of qooxdoo widgets that should be selected.
      * @param id {String} Id of the object ón which the selection is set
      * @param selectedId {String} The id of the widget that is selected. Only one widget can be selected at this time
      * @return {String}
      */
     cmd_set_selection(id, selectedId) {},
+
+    /**
+     * Generates code that awaits a selection for all objects which have a `setSelection` method that
+     * takes an array of qooxdoo widgets that should be selected within the timeout
+     * @param id {String} Id of the object ón which the selection is set
+     * @param selectedId {String} The id of the widget that should be selected
+     * @return {String}
+     */
+    cmd_await_selection(id, selectedId) {},
+
 
     /**
      * Generates code that sets a selection for all (virtual) widgets that have a data model

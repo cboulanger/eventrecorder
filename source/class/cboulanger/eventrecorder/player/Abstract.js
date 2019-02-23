@@ -156,9 +156,37 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
    */
   members :
   {
+
+    /**
+     * An object mapping macro names to arrays containing the macro lines
+     * @var {Object}
+     */
+    __macros : null,
+
+    /**
+     * An array of object containing information on the macros that are currently
+     * being defined (in a nested way)
+     * @var {Object[]}
+     */
+    __macro_stack: null,
+
+    /**
+     * The index of the macro in the macro stack that is currently defined
+     * @var {Integer}
+     */
+    __macro_stack_index: -1,
+
+    /**
+     * Variables
+     */
+    __vars: null,
+
+
+
     /**
      * Simple tokenizer which splits expressions separated by whitespace, but keeps
-     * expressions in quotes (which can contain whitespace) together.
+     * expressions in quotes (which can contain whitespace) together. Parses tokens
+     * as JSON expressions, but accepts unquoted text as strings.
      * @param line {String}
      * @return {String[]}
      * @private
@@ -210,7 +238,6 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      * subclasses if neccessary.
      * @param line {String}
      * @return {String}
-     * @private
      */
     _translateLine(line) {
       // parse command line
@@ -231,35 +258,106 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      * @todo implement pausing
      */
     async replay(script) {
+      this.__macros = {};
+      this.__macro_stack = [];
+      this.__macro_stack_index = -1;
+      this.__vars = {};
+
       this.setRunning(true);
       this._globalRef = "player" + this.toHashCode();
-      window[this._globalRef]=this;
-      let lines = script.split(/\n/);
-      let steps = lines.reduce((prev, curr, index) => prev+Number(!curr.startsWith("wait")), 0);
-      let step = 0;
-      for (let line of lines) {
-        // stop if we're not running
-        if (!this.getRunning()) {
-          return;
-        }
-        // ignore comments and empty lines
-        if (line.trim()==="" || line.startsWith("#")) {
+      window[this._globalRef] = this;
+      let lines = [];
+
+      // expand macros and count steps
+      let steps = 0;
+      for (let line of script.split(/\n/)) {
+        line = line.trim();
+        if (!line) {
           continue;
         }
-        // wait doesn't count as a step
-        if (!line.startsWith("wait") || !line.startsWith("delay")) {
+        // variables
+        let var_def = line.match(/([^=\s]+)\s*=\s*(.+)/);
+        if (var_def) {
+          this.__vars[var_def[1]] = var_def[2];
+          continue;
+        } else if (line.match(/\$([^\s\d\/]+)/)) {
+          line = line.replace(/\$([^\s\d\/]+)/g, (...args) => this.__vars[args[1]]);
+        }
+
+        // macros
+        if (line.startsWith("define ") || line === "end") {
+          this._translateLine(line);
+        } else if (this.__macro_stack_index >= 0) {
+          let {name} = this.__macro_stack[this.__macro_stack_index];
+          this.__macros[name].push(line);
+        } else {
+          lines.push(line);
+          if (!line.startsWith("wait ") && !line.startsWith("#") && !line.startsWith("delay")) {
+            steps++;
+          }
+        }
+      }
+      let result = await this._play(lines, steps, 0);
+      this.setRunning(false);
+      return result;
+    },
+
+    /**
+     * Replays a number of script lines
+     * @param lines {String[]}
+     * @param steps {Integer?}
+     * @param step {Integer?}
+     * @return {Promise<boolean>}
+     * @private
+     */
+    async _play(lines, steps=0, step=0) {
+      for (let line of lines) {
+
+        // stop if we're not running (user pressed "stop" button
+        if (!this.getRunning()) {
+          return false;
+        }
+
+        // play macros recursively
+        let [command, ...args] = this._tokenize(line);
+        let macro_lines = this.__macros[command];
+        if (macro_lines !== undefined) {
+          if (steps) {
+            step++;
+            this.debug(`\n===== Step ${step} / ${steps}, executing macro ${command} =====`);
+          }
+          // argument placeholders
+          for (let i=0; i<args.length; i++) {
+            macro_lines = macro_lines.map(l => l.replace(new RegExp("\\$"+(i+1), "g"), JSON.stringify(args[i])));
+          }
+          await this._play(macro_lines);
+          continue;
+        }
+
+        // ignore comments
+        if (line.startsWith("#")) {
+          continue;
+        }
+        // count steps if given, wait doesn't count as a step
+        if (steps && !line.startsWith("wait") && !line.startsWith("delay")) {
           step++;
+          // inform listeners
+          this.fireDataEvent("progress", [step, steps]);
+          this.debug(`\n===== Step ${step} / ${steps} ====`);
         }
         // ignore delay in test mode
         if (this.getMode()==="test" && line.startsWith("delay")) {
           continue;
         }
-        // inform listeners
-        this.fireDataEvent("progress", [step, steps]);
+
         try {
           // translate
           let code = this._translateLine(line);
-          this.debug(`\n===== Step ${step} / ${steps} ====\nCommand: ${line}\nExecuting: ${code}`);
+          if (!code) {
+            continue;
+          }
+          // all other code is executed
+          this.debug(`Command: ${line}\nExecuting: ${code}`);
           // execute
           let result = window.eval(code);
           if (result instanceof Promise) {
@@ -274,7 +372,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
           }
         }
       }
-      this.setRunning(false);
+      return true;
     },
 
     /**
@@ -303,12 +401,18 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      * an event with the given type and data (if applicable) and will reject if the timeout is reached before that happens.
      * @param id {String} The id of the object to monitor
      * @param type {String} The type of the event to wait for
-     * @param data {*|null} The data to expect. Must be serializable to JSON
+     * @param data {*|null} The data to expect. Must be serializable to JSON. Exception: if the data is a string that
+     * starts with "{verbatim}", use the unquoted string
      * @param timeoutmsg {String|undefined} A message to be shown if the event hasn't been fired before the timeout.
      * @return {String}
      */
     generateWaitForEventCode(id, type, data=null, timeoutmsg) {
-      return `(cboulanger.eventrecorder.player.Abstract.waitForEvent(qx.core.Id.getQxObject("${id}"), "${type}",${JSON.stringify(data)}, ${this.getTimeout()}, "${timeoutmsg||"Timeout waiting for event '"+type+"'"}"))`;
+      if (qx.lang.Type.isString(data) && data.startsWith("{verbatim}")) {
+        data = data.substr(10);
+      } else {
+        data = JSON.stringify(data);
+      }
+      return `(cboulanger.eventrecorder.player.Abstract.waitForEvent(qx.core.Id.getQxObject("${id}"), "${type}",${data}, ${this.getTimeout()}, "${timeoutmsg||"Timeout waiting for event '"+type+"'"}"))`;
     },
 
     /**
@@ -341,6 +445,24 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      */
     getExportFileExtension() {
       throw new Error("Method getExportFileExtension must be impemented in subclass");
+    },
+
+    cmd_define(macro_name) {
+      if (this.__macros[macro_name] !== undefined) {
+        throw new Error(`Cannot define macro '${macro_name}' since a macro of that name already exists.`);
+      }
+      let index = ++this.__macro_stack_index;
+      this.__macro_stack[index] = { name: macro_name };
+      this.__macros[macro_name] = [];
+      return null;
+    },
+
+    cmd_end() {
+      if (this.__macro_stack_index < 0) {
+        throw new Error(`Unexpected 'end' without macro definition.`);
+      }
+      this.__macro_stack_index--;
+      return null;
     }
   }
 });

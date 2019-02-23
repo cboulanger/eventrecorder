@@ -36,7 +36,7 @@
       "class": "cboulanger.eventrecorder.demo.Application",
       "theme": "cboulanger.eventrecorder.theme.Theme",
       "name": "eventrecorder",
-      "title": "Simple event recorder demo",
+      "title": "Simple event recorder demo, autoplaying from a gist",
       "include": [
         "qx.theme.Modern",
         "cboulanger.eventrecorder.UiController"
@@ -70,7 +70,8 @@
       "include": [
         "qx.theme.Modern",
         "cboulanger.eventrecorder.UiController",
-        "cboulanger.eventrecorder.ObjectIdGenerator"
+        "cboulanger.eventrecorder.ObjectIdGenerator",
+        "cboulanger.eventrecorder.player.Testcafe"
       ],
       "environment": {
         "qx.icontheme": ["Tango" ],

@@ -76,6 +76,8 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
 
   /**
    * Constructor
+   * @param caption {String} The caption of the window. Will be used to create
+   * an object id.
    */
   construct: function(caption="Event Recorder") {
     this.base(arguments);
@@ -245,8 +247,8 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     let gist_id = uri_info.queryKey.eventrecorder_gist_id || qx.core.Environment.get("eventrecorder.gistId");
     let mode = uri_info.queryKey.eventrecorder_mode || qx.core.Environment.get("eventrecorder.mode") || "presentation";
     let autoplay = uri_info.queryKey.eventrecorder_autoplay || qx.core.Environment.get("eventrecorder.autoplay");
-    let playerType = qx.core.Environment.get("eventrecorder.playerType")||"qooxdoo";
-    let player = new cboulanger.eventrecorder.player[qx.lang.String.firstUp(playerType)]();
+    let playerType = qx.lang.String.firstUp(qx.core.Environment.get("eventrecorder.playerType") || "qooxdoo");
+    let player = new cboulanger.eventrecorder.player[playerType]();
     player.setMode(mode);
     this.setPlayer(player);
     if (!this._hasStoredScript() && gist_id && autoplay) {
