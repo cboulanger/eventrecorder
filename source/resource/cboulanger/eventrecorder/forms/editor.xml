@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.qookery.org/ns/Form"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="https://raw.githubusercontent.com/ergobyte/qookery/master/qookery/docs/form.xsd"
+      layout="v-box">
+
+    <!-- Import the implementation of the Qooxdoo application -->
+    <import service="qx.application.IApplication" />
+
+    <!-- Import the Qookery static class, we need some of its utility methods  -->
+    <import class="qookery.contexts.Qookery" />
+
+    <tool-bar>
+        <button label="Save" focusable="false" appearance="toolbar-button">
+            <script event="execute">
+                $.Form.executeAction("run");
+            </script>
+        </button>
+    </tool-bar>
+
+    <ace:editor xmlns:ace="http://www.qookery.org/ns/Form/Ace"
+                id="scriptEditor" mode="text" flex="1" create-label="false"
+                tab-size="4" theme="eclipse" print-margin-column="100" />
+
+    <script action="run">
+        var xmlCode = $("#xmlEditor").getValue();
+        if(xmlCode == null) return;
+        $("#resultArea").getMainWidget().loadForm(xmlCode);
+    </script>
+
+</form>

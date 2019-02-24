@@ -47,6 +47,22 @@
       "repo_name": "qooxdoo/qxl.logpane",
       "repo_tag": "v0.1.4",
       "path": "contrib/qooxdoo_qxl.logpane_v0.1.4"
+    },
+    {
+      "library_name": "Qookery",
+      "library_version": "0.5.0",
+      "uri": "ergobyte/qookery/qookery",
+      "repo_name": "ergobyte/qookery",
+      "repo_tag": "v0.5.0",
+      "path": "contrib/ergobyte_qookery_v0.5.0/qookery"
+    },
+    {
+      "library_name": "Qookery Ace",
+      "library_version": "0.5.0",
+      "uri": "ergobyte/qookery/qookeryace",
+      "repo_name": "ergobyte/qookery",
+      "repo_tag": "v0.5.0",
+      "path": "contrib/ergobyte_qookery_v0.5.0/qookeryace"
     }
   ]
 }

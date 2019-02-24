@@ -28,6 +28,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       "eventrecorder.icon.start":   "cboulanger/eventrecorder/media-playback-start.png",
       "eventrecorder.icon.pause":   "cboulanger/eventrecorder/media-playback-pause.png",
       "eventrecorder.icon.stop":    "cboulanger/eventrecorder/media-playback-stop.png",
+      "eventrecorder.icon.edit":    "cboulanger/eventrecorder/document-properties.png",
       "eventrecorder.icon.save":    "cboulanger/eventrecorder/document-save.png",
       "eventrecorder.icon.load":    "cboulanger/eventrecorder/document-open.png",
       "eventrecorder.icon.export":  "cboulanger/eventrecorder/emblem-symbolic-link.png"
@@ -169,6 +170,19 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       converter: script => Boolean(script)
     });
 
+
+    // edit button
+    let editButton = new qx.ui.form.Button();
+    editButton.set({
+      enabled: true,
+      icon:"eventrecorder.icon.edit",
+      toolTipText: "Edit script"
+    });
+    editButton.addListener("execute", this.edit, this);
+    // this.bind("script", editButton, "enabled", {
+    //   converter: v => Boolean(v)
+    // });
+
     // save button
     let saveButton = new qx.ui.form.Button();
     saveButton.set({
@@ -177,7 +191,6 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       toolTipText: "Save script"
     });
     saveButton.addListener("execute", this.save, this);
-    // enable export button only if we have a script
     this.bind("script", saveButton, "enabled", {
       converter: v => Boolean(v)
     });
@@ -220,6 +233,8 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     this.addOwnedQxObject(recordButton, "record");
     this.add(stopButton);
     this.addOwnedQxObject(stopButton, "stop");
+    this.add(editButton);
+    this.addOwnedQxObject(editButton, "edit");
     this.add(saveButton);
     this.addOwnedQxObject(saveButton, "save");
     this.add(exportButton);
@@ -275,6 +290,10 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
    */
   members:
   {
+    /**
+     * @var {qx.ui.window.Window}
+     */
+    __editorWindow : null,
 
     _applyMode(value, old) {
       if (!this.getPlayer()) {
@@ -446,6 +465,35 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       if (error) {
         throw error;
       }
+    },
+
+    /**
+     * Edits the current script
+     */
+    edit() {
+      if (this.__editorWindow) {
+        this.__editorWindow.open();
+        return;
+      }
+      let editorWindow = new qx.ui.window.Window("Edit script");
+      editorWindow.set({
+        width: 300,
+        height: 300
+      });
+      editorWindow.addListener("appear", () =>{
+        editorWindow.center();
+      });
+
+      qookery.contexts.Qookery.loadResource(
+        qx.util.ResourceManager.getInstance().toUri("cboulanger/eventrecorder/forms/editor.xml"), this,
+          xmlSource => {
+        let xmlDocument = qx.xml.Document.fromString(xmlSource);
+        let parser = qookery.Qookery.createFormParser();
+        let formComponent = parser.parseXmlDocument(xmlDocument);
+        editorWindow.add(formComponent.getMainWidget());
+        parser.dispose();
+        this.edit();
+      });
     },
 
     /**

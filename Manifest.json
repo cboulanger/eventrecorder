@@ -22,6 +22,8 @@
     "type": "contribution"
   },
   "requires": {
-    "qooxdoo-sdk": "^6.0.0-alpha"
+    "qooxdoo-sdk": "^6.0.0-alpha*",
+    "ergobyte/qookery/qookery": "^0.5.0",
+    "ergobyte/qookery/qookeryace": "^0.5.0"
   }
 }
