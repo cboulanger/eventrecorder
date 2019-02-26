@@ -3,9 +3,9 @@
     {
       "type": "source",
       "outputPath": "compiled/source"
-      ,"bundle": {
-        "include": "qx.*"
-      }
+//      ,"bundle": {
+//        "include": "qx.*"
+//      }
     },
     {
       "type": "build",
@@ -14,10 +14,16 @@
   ],
   "defaultTarget": "source",
   "locales": ["en"],
+  "include": [
+    "qookery.*",
+    "qookery.ace.*"
+  ],
   "environment": {
     "qx.icontheme": ["Tango"],
     "qx.debug": true,
     "module.objectid": true,
+    // path to the dir containing the ACE files
+    "qookery.ace.path": "cboulanger/eventrecorder/js/ace",
     // default values, for documentation only
     "eventrecorder.enabled": true,
     "eventrecorder.scriptable": false,

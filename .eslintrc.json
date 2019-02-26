@@ -3,6 +3,7 @@
     "qx", "qx/browser"
   ],
   "globals": {
-    "cboulanger": false
+    "cboulanger": false,
+    "qookery": false
   }
 }

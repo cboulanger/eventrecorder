@@ -181,8 +181,6 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      */
     __vars: null,
 
-
-
     /**
      * Simple tokenizer which splits expressions separated by whitespace, but keeps
      * expressions in quotes (which can contain whitespace) together. Parses tokens
@@ -251,25 +249,18 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
     },
 
     /**
-     * Replays the given script of intermediate code
-     * @param script {String} The script to replay
-     * @return {Promise} Promise which resolves when the script has been replayed, or
-     * rejects with an error
-     * @todo implement pausing
+     * Given a script, return an array of lines with all variable and macro declarations
+     * removed, variables expanded and macros registered.
+     * @param script {String}
+     * @return {Array}
+     * @private
      */
-    async replay(script) {
+    _handleMacrosAndVariables(script) {
       this.__macros = {};
       this.__macro_stack = [];
       this.__macro_stack_index = -1;
       this.__vars = {};
-
-      this.setRunning(true);
-      this._globalRef = "player" + this.toHashCode();
-      window[this._globalRef] = this;
       let lines = [];
-
-      // expand macros and count steps
-      let steps = 0;
       for (let line of script.split(/\n/)) {
         line = line.trim();
         if (!line) {
@@ -283,7 +274,6 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
         } else if (line.match(/\$([^\s\d\/]+)/)) {
           line = line.replace(/\$([^\s\d\/]+)/g, (...args) => this.__vars[args[1]]);
         }
-
         // macros
         if (line.startsWith("define ") || line === "end") {
           this._translateLine(line);
@@ -292,9 +282,45 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
           this.__macros[name].push(line);
         } else {
           lines.push(line);
-          if (!line.startsWith("wait ") && !line.startsWith("#") && !line.startsWith("delay")) {
-            steps++;
-          }
+        }
+      }
+      return lines;
+    },
+
+    /**
+     * Returns the macro lines
+     * @param macro_name {String}
+     * @param args {Array}
+     * @return {Array}
+     * @private
+     */
+    _getMacro(macro_name, args) {
+      let macro_lines = this.__macros[macro_name];
+      if (macro_lines !== undefined) {
+        // argument placeholders
+        for (let i = 0; i < args.length; i++) {
+          macro_lines = macro_lines.map(l => l.replace(new RegExp("\\$" + (i + 1), "g"), JSON.stringify(args[i])));
+        }
+      }
+      return macro_lines;
+    },
+
+    /**
+     * Replays the given script of intermediate code
+     * @param script {String} The script to replay
+     * @return {Promise} Promise which resolves when the script has been replayed, or
+     * rejects with an error
+     * @todo implement pausing
+     */
+    async replay(script) {
+      this.setRunning(true);
+      this._globalRef = "player" + this.toHashCode();
+      window[this._globalRef] = this;
+      let steps = 0;
+      let lines = this._handleMacrosAndVariables(script);
+      for (let line of lines) {
+        if (!line.startsWith("wait ") && !line.startsWith("#") && !line.startsWith("delay")) {
+          steps++;
         }
       }
       let result = await this._play(lines, steps, 0);
@@ -320,15 +346,11 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
 
         // play macros recursively
         let [command, ...args] = this._tokenize(line);
-        let macro_lines = this.__macros[command];
+        let macro_lines = this._getMacro(command, args);
         if (macro_lines !== undefined) {
           if (steps) {
             step++;
             this.debug(`\n===== Step ${step} / ${steps}, executing macro ${command} =====`);
-          }
-          // argument placeholders
-          for (let i=0; i<args.length; i++) {
-            macro_lines = macro_lines.map(l => l.replace(new RegExp("\\$"+(i+1), "g"), JSON.stringify(args[i])));
           }
           await this._play(macro_lines);
           continue;
@@ -375,13 +397,36 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
       return true;
     },
 
+
     /**
      * Translates the intermediate code into the target language
      * @param script
      * @return {string} executable code
      */
     translate(script) {
-      return script.split(/\n/).map(line => this._translateLine(line)).join("\n");
+      return this._translate(script);
+    },
+
+    /**
+     * Implementation for #translate()
+     * @param script
+     * @return {string}
+     * @private
+     */
+    _translate(script) {
+      let lines = this._handleMacrosAndVariables(script);
+      let translatedLines = [];
+      for (let line of lines) {
+        if (line.startsWith("#")) {
+          translatedLines.push(this.addComment(line.substr(1).trim()));
+          continue;
+        }
+        let [command, ...args] = this._tokenize(line);
+        let macro_lines = this._getMacro(command, args);
+        let new_lines = (macro_lines ||[line]).map(l => this._translateLine(l));
+        translatedLines = translatedLines.concat(new_lines);
+      }
+      return translatedLines.join("\n");
     },
 
     /**
@@ -437,6 +482,15 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
           }
         }
       }))`;
+    },
+
+    /**
+     * Adds a line comment to the target script
+     * @param comment {String}
+     * @return {string}
+     */
+    addComment(comment) {
+      return "// " + comment;
     },
 
     /**

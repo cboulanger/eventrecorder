@@ -17,11 +17,13 @@
 /**
  * The UI Controller for the recorder
  * @asset(cboulanger/eventrecorder/*)
+ * @require(cboulanger.eventrecorder.player.Testcafe)
  */
 qx.Class.define("cboulanger.eventrecorder.UiController", {
   extend: qx.ui.window.Window,
   statics: {
-    LOCAL_STORAGE_KEY: "eventrecorder-script",
+    LOCAL_STORAGE_KEY_SCRIPT: "eventrecorder.script",
+    LOCAL_STORAGE_KEY_AUTOPLAY: "eventrecorder.autoplay",
     FILE_INPUT_ID : "eventrecorder-fileupload",
     aliases: {
       "eventrecorder.icon.record":  "cboulanger/eventrecorder/media-record.png",
@@ -72,6 +74,18 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       nullable: true,
       event: "changeScript",
       apply: "_applyScript"
+    },
+
+    /**
+     * Whether the stored script should start playing after the
+     * application loads
+     */
+    autoplay: {
+      check: "Boolean",
+      nullable: false,
+      init: false,
+      event: "changeAutoplay",
+      apply: "_applyAutoplay"
     }
   },
 
@@ -195,24 +209,6 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       converter: v => Boolean(v)
     });
 
-    // export button
-    let exportButton = new qx.ui.form.Button();
-    exportButton.set({
-      enabled: false,
-      visibility: "hidden",
-      icon:"eventrecorder.icon.export",
-      toolTipText: "Export script in the target format (such as JavaScript)"
-    });
-    exportButton.addListener("execute", this.export, this);
-    // show export button only if a player is attached and if it can export code that runs outside of this app
-    this.bind("player", exportButton, "visibility", {
-      converter: player => Boolean(player) && player.getCanExportExecutableCode() ? "visible" : "excluded"
-    });
-    // enable export button only if we have a script
-    this.bind("script", exportButton, "enabled", {
-      converter: v => Boolean(v)
-    });
-
     // load button
     let loadButton = new qx.ui.form.Button();
     loadButton.set({
@@ -237,8 +233,6 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     this.addOwnedQxObject(editButton, "edit");
     this.add(saveButton);
     this.addOwnedQxObject(saveButton, "save");
-    this.add(exportButton);
-    this.addOwnedQxObject(exportButton, "export");
 
     // add events for new players
     this.addListener("changePlayer", e => {
@@ -259,6 +253,8 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     form.appendChild(input);
 
     // fetch script from URL
+    // FIXME: must differentiate between script source (local storage or gist) and autoplay
+
     let gist_id = uri_info.queryKey.eventrecorder_gist_id || qx.core.Environment.get("eventrecorder.gistId");
     let mode = uri_info.queryKey.eventrecorder_mode || qx.core.Environment.get("eventrecorder.mode") || "presentation";
     let autoplay = uri_info.queryKey.eventrecorder_autoplay || qx.core.Environment.get("eventrecorder.autoplay");
@@ -266,7 +262,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     let player = new cboulanger.eventrecorder.player[playerType]();
     player.setMode(mode);
     this.setPlayer(player);
-    if (!this._hasStoredScript() && gist_id && autoplay) {
+    if (!this.getAutoplay() && gist_id && autoplay) {
       this._getRawGist(gist_id)
         .then(gist => {
           // if the eventrecorder itself is scriptable, run the gist in a separate player without GUI
@@ -301,16 +297,28 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       }
     },
 
+    /**
+     * When setting the script property, store it in the browser
+     * @param value
+     * @param old
+     * @private
+     */
     _applyScript(value, old) {
-      // do nothing ATM
+      qx.bom.storage.Web.getLocal().setItem(cboulanger.eventrecorder.UiController.LOCAL_STORAGE_KEY_SCRIPT, value);
+    },
+
+    /**
+     * Apply the "autoplay" property and store it in local storage
+     * @param value
+     * @param old
+     * @private
+     */
+    _applyAutoplay(value, old) {
+      qx.bom.storage.Web.getLocal().setItem(cboulanger.eventrecorder.UiController.LOCAL_STORAGE_KEY_AUTOPLAY, value);
     },
 
     _getStoredScript() {
-      return qx.bom.storage.Web.getLocal().getItem(cboulanger.eventrecorder.UiController.LOCAL_STORAGE_KEY);
-    },
-
-    _storeScript() {
-      qx.bom.storage.Web.getLocal().setItem(cboulanger.eventrecorder.UiController.LOCAL_STORAGE_KEY, this.getScript());
+      return qx.bom.storage.Web.getLocal().getItem(cboulanger.eventrecorder.UiController.LOCAL_STORAGE_KEY_SCRIPT);
     },
 
     _hasStoredScript() {
@@ -337,7 +345,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
         // start
         if (this.getScript()) {
           // reload
-          this._storeScript();
+          this._enableAutoPlay();
           window.location.reload();
         }
       }
@@ -408,6 +416,23 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       });
     },
 
+    /**
+     * Returns a player instance
+     * @param type
+     * @private
+     * @return {cboulanger.eventrecorder.IPlayer}
+     */
+    _getPlayerByType(type) {
+      if (!type) {
+        throw new Error("No player type given!");
+      }
+      let clazz = cboulanger.eventrecorder.player[qx.lang.String.firstUp(type)];
+      if (!clazz) {
+        throw new Error(`A player of type '${type}' does not exist.`);
+      }
+      return new clazz();
+    },
+
     /********* PUBLIC API **********/
 
     /**
@@ -460,7 +485,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
         error = e;
       }
       infoPane.hide();
-      qx.bom.storage.Web.getLocal().removeItem(cboulanger.eventrecorder.UiController.LOCAL_STORAGE_KEY);
+      qx.bom.storage.Web.getLocal().removeItem(cboulanger.eventrecorder.UiController.LOCAL_STORAGE_KEY_SCRIPT);
       this.setMode("recorder");
       if (error) {
         throw error;
@@ -475,14 +500,17 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
         this.__editorWindow.open();
         return;
       }
-      let editorWindow = new qx.ui.window.Window("Edit script");
-      editorWindow.set({
-        width: 300,
-        height: 300
+      let win = new qx.ui.window.Window("Edit script");
+      win.set({
+        layout: new qx.ui.layout.VBox(5),
+        showMinimize: false,
+        width: 800,
+        height: 600
       });
-      editorWindow.addListener("appear", () =>{
-        editorWindow.center();
+      win.addListener("appear", () => {
+        win.center();
       });
+      this.__editorWindow = win;
 
       qookery.contexts.Qookery.loadResource(
         qx.util.ResourceManager.getInstance().toUri("cboulanger/eventrecorder/forms/editor.xml"), this,
@@ -490,7 +518,12 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
         let xmlDocument = qx.xml.Document.fromString(xmlSource);
         let parser = qookery.Qookery.createFormParser();
         let formComponent = parser.parseXmlDocument(xmlDocument);
-        editorWindow.add(formComponent.getMainWidget());
+        formComponent.setQxObjectId("editor");
+        this.addOwnedQxObject(formComponent);
+        let editorWidget = formComponent.getMainWidget();
+        win.add(editorWidget);
+        this.bind("script", formComponent.getModel(), "leftEditorContent");
+        formComponent.getModel().bind("leftEditorContent", this, "script");
         parser.dispose();
         this.edit();
       });
@@ -510,16 +543,48 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     },
 
     /**
-     * Export the script in the native format
+     * Translates the text in the left editor into the language produced by the
+     * given player type. Alerts any errors that occur.
+     * @param playerType {String}
+     * @return {String|false}
      */
-    export() {
+    translateTo(playerType) {
+      const exporter = this._getPlayerByType(playerType);
+      const model = this.getQxObject("editor").getModel();
+      let editedScript = model.getLeftEditorContent();
+      try {
+        let translatedText = exporter.translate(editedScript);
+        model.setRightEditorContent(translatedText);
+        return translatedText;
+      } catch (e) {
+        alert(e.message);
+      }
+      return false;
+    },
+
+    /**
+     * Export the script in the given format
+     * @param playerType {String}
+     * @return {Boolean}
+     */
+    exportTo(playerType) {
+      const exporter = this._getPlayerByType(playerType);
+      let translatedScript = this.getQxObject("editor").getModel().getRightEditorContent();
+      if (!translatedScript) {
+        if (!this.getScript()) {
+          alert("No script to export!");
+          return false;
+        }
+        translatedScript = this.translateTo(playerType);
+      }
       qx.event.Timer.once(() => {
         let filename = prompt("Please enter the name of the file to export");
         if (!filename) {
           return;
         }
-        this._download(`${filename}.${this.getPlayer().getExportFileExtension()}`, this.getPlayer().translate(this.getScript()));
+        this._download(`${filename}.${exporter.getExportFileExtension()}`, translatedScript);
       }, null, 0);
+      return true;
     },
 
     /**
@@ -567,16 +632,15 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
           controller.show();
         }
         // do we have a stored script?
-        let storedScript = qx.bom.storage.Web.getLocal().getItem(cboulanger.eventrecorder.UiController.LOCAL_STORAGE_KEY);
-        if (!storedScript || storedScript.length===0) {
-          return;
-        }
+        let storedScript = qx.bom.storage.Web.getLocal().getItem(cboulanger.eventrecorder.UiController.LOCAL_STORAGE_KEY_SCRIPT);
         controller.setScript(storedScript);
-        try {
-          controller.replay();
-        } catch (e) {
-          controller.error(e);
-          alert(e.message);
+        if (qx.bom.storage.Web.getLocal().getItem(cboulanger.eventrecorder.UiController.LOCAL_STORAGE_KEY_AUTOPLAY)) {
+          try {
+            controller.replay();
+          } catch (e) {
+            controller.error(e);
+            alert(e.message);
+          }
         }
       });
     });

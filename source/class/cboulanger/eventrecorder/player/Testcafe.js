@@ -36,7 +36,6 @@ qx.Class.define("cboulanger.eventrecorder.player.Testcafe", {
 
   members :
   {
-    __exportingToTestCafe : false,
 
     /**
      * Returns the file extension of the downloaded file in the target language
@@ -52,7 +51,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Testcafe", {
      * @return {string} executable code
      */
     translate(script) {
-      let lines = script.split(/\n/).map(line => this._translateLineToTestCafe(line));
+      let lines = this._translate(script).split(/\n/);
       return [
         "fixture `<Test suite title>`",
         "  .page `" + window.location.href + "`;",
@@ -61,7 +60,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Testcafe", {
         "  await t",
         ...lines.map(line => " ".repeat(4) + line),
         "});"
-      ].filter(line => Boolean(line.trim())).join("\n");
+      ].join("\n");
     },
 
     /**
@@ -70,10 +69,10 @@ qx.Class.define("cboulanger.eventrecorder.player.Testcafe", {
      * @return {*|var}
      * @private
      */
-    _translateLineToTestCafe(line) {
-      let code = this._translateLine(line);
-      if (!code.startsWith(".")) {
-        code = `.eval("${code.replace(/"/g, "\\\"")})"`;
+    _translateLine(line) {
+      let code = this.base(arguments, line);
+      if (code && !code.startsWith(".")) {
+        code = `.eval("${code.replace(/"/g, "\\\"")}");`;
       }
       return code;
     },

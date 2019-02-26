@@ -41,6 +41,21 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
     },
 
     /**
+     * Translates the intermediate code into the target language
+     * @param script
+     * @return {string} executable code
+     */
+    translate(script) {
+      let lines = this._translate(script)
+        .split(/\n/)
+        .map(line => (line.startsWith("(new Promise")? "await " + line: line))
+        .map(line => "  " + line);
+      lines.unshift("async function test() {");
+      lines.push("}");
+      return lines.join("\n");
+    },
+
+    /**
      * Generates code that displays an informational text centered on the screen
      * @param text {String} The text to display
      * @return {String}

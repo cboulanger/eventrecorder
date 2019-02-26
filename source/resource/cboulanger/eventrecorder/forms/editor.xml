@@ -1,31 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.qookery.org/ns/Form"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="https://raw.githubusercontent.com/ergobyte/qookery/master/qookery/docs/form.xsd"
-      layout="v-box">
+      xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/ergobyte/qookery/master/qookery/docs/form.xsd"
+      layout="v-box" flex="1">
 
-    <!-- Import the implementation of the Qooxdoo application -->
-    <import service="qx.application.IApplication" />
+  <import service="qx.application.IApplication"/>
+  <import class="qookery.contexts.Qookery"/>
+  <import class="qx.data.marshal.Json"/>
 
-    <!-- Import the Qookery static class, we need some of its utility methods  -->
-    <import class="qookery.contexts.Qookery" />
+  <script>
+    $.Form.setModel($.Json.createModel({
+      leftEditorContent: "",
+      rightEditorContent: "",
+      rightEditorVisible: false,
+      targetScriptType: "qooxdoo"
+    }));
+    $.scriptTypes = {
+      "qooxdoo": "qooxdoo javascript (Browser)",
+      "testcafe": "TestCáfé javascript (NodeJS)"
+    };
+  </script>
 
-    <tool-bar>
-        <button label="Save" focusable="false" appearance="toolbar-button">
-            <script event="execute">
-                $.Form.executeAction("run");
-            </script>
-        </button>
-    </tool-bar>
+  <!-- toolbar with collapsable part -->
+  <tool-bar spacing="5">
+    <spacer flex="1" />
+    <!-- hidden when rightEditorVisible is false -->
+    <composite id="export-menu" layout="h-box" spacing="5">
+      <script>
+        $.Form.getModel().bind("rightEditorVisible", this, "visibility", { converter: v => v ? "visible" : "excluded"});
+      </script>
+      <button label="Translate">
+        <script event="execute">
+          $.Form.getQxOwner().translateTo($.Form.getModel().getTargetScriptType());
+        </script>
+      </button>
+      <button label="Export">
+        <script event="execute">
+          $.Form.getQxOwner().exportTo($.Form.getModel().getTargetScriptType());
+        </script>
+      </button>
+      <select-box connect="targetScriptType" width="200">
+        <script><![CDATA[
+        this.setItems($.scriptTypes);
+        this.getMainWidget().addListener("appear", () => {
+          this.getMainWidget().addListener("changeSelection", () => {
+            let playerType = $.Form.getModel().getTargetScriptType();
+            let allowTranslate = $.Form.getQxOwner() && playerType && $.Form.getModel().getLeftEditorContent();
+            if (allowTranslate) {
+              $.Form.getQxOwner().translateTo($.Form.getModel().getTargetScriptType());
+            }
+          });
+        });
+      ]]></script>
+      </select-box>
+    </composite>
+    <!-- toggle visibility -->
+    <button label=">>">
+      <script event="execute"><![CDATA[
+        let rightEditorVisible = $.Form.getModel().getRightEditorVisible();
+        $.Form.getModel().setRightEditorVisible(!rightEditorVisible);
+        this.getMainWidget().setLabel(rightEditorVisible? ">>" : "<<");
+      ]]>
+      </script>
+    </button>
+  </tool-bar>
 
+  <composite layout="h-box" flex="1">
     <ace:editor xmlns:ace="http://www.qookery.org/ns/Form/Ace"
-                id="scriptEditor" mode="text" flex="1" create-label="false"
-                tab-size="4" theme="eclipse" print-margin-column="100" />
-
-    <script action="run">
-        var xmlCode = $("#xmlEditor").getValue();
-        if(xmlCode == null) return;
-        $("#resultArea").getMainWidget().loadForm(xmlCode);
-    </script>
+                xsi:schemaLocation="https://raw.githubusercontent.com/cboulanger/qookery/master/qookeryace/docs/form-ace.xsd"
+                id="leftEditor" mode="text"
+                connect="leftEditorContent"
+                flex="1" create-label="false" tab-size="2" theme="eclipse"/>
+    <ace:editor xmlns:ace="http://www.qookery.org/ns/Form/Ace"
+                xsi:schemaLocation="https://raw.githubusercontent.com/cboulanger/qookery/master/qookeryace/docs/form-ace.xsd"
+                id="rightEditor" mode="javascript"
+                connect="rightEditorContent"
+                flex="1" create-label="false" tab-size="2" theme="eclipse">
+      <script>
+        $.Form.getModel().bind("rightEditorVisible", this, "visibility", { converter: v => v ? "visible" : "excluded"});
+      </script>
+    </ace:editor>
+  </composite>
 
 </form>
