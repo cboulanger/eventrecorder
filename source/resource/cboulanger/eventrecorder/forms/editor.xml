@@ -30,13 +30,10 @@
   <!-- toolbar with collapsable part -->
   <tool-bar spacing="5">
     <!-- button to toggle visibility of left editor-->
-    <button label="Hide script">
+    <button label="Hide script" id="toggleLeftEditorButton">
       <script>$.Form.getModel().bind("rightEditorVisible", this, "enabled");</script>
-      <script event="execute"><![CDATA[
-        let leftEditorVisible = $.Form.getModel().getLeftEditorVisible();
-        $.Form.getModel().setLeftEditorVisible(!leftEditorVisible);
-        this.getMainWidget().setLabel(leftEditorVisible? "Hide script" : "Show script");
-      ]]>
+      <script event="execute">
+        $.Form.executeAction("toggleLeftEditor");
       </script>
     </button>
     <!-- spacer to keep following widgets to the right -->
@@ -64,26 +61,36 @@
       </select-box>
     </composite>
     <!-- toggle visibility of right editor-->
-    <button label="Show translation">
+    <button label="Show translation" id="toggleRightEditorButton">
       <script>$.Form.getModel().bind("leftEditorVisible", this, "enabled");</script>
-      <script event="execute"><![CDATA[
-        let rightEditorVisible = $.Form.getModel().getRightEditorVisible();
-        $.Form.getModel().setRightEditorVisible(!rightEditorVisible);
-        this.getMainWidget().setLabel(rightEditorVisible? "Show translation" : "Hide translation");
-        $.Form.executeAction("translate");
-      ]]>
+      <script event="execute">
+        $.Form.executeAction("toggleRightEditor");
       </script>
     </button>
   </tool-bar>
 
-
+  <!-- actions -->
   <script action="translate">
     $.Form.getQxOwner().translateTo($.Form.getModel().getTargetScriptType(), $.Form.getModel().getTargetMode());
   </script>
   <script action="export">
     $.Form.getQxOwner().exportTo($.Form.getModel().getTargetScriptType(), $.Form.getModel().getTargetMode());
   </script>
+  <script action="toggleLeftEditor"><![CDATA[
+        let leftEditorVisible = $.Form.getModel().getLeftEditorVisible();
+        $.Form.getModel().setLeftEditorVisible(!leftEditorVisible);
+        $("#toggleLeftEditorButton").setLabel(leftEditorVisible? "Hide script" : "Show script");
+      ]]>
+  </script>
+  <script action="toggleRightEditor"><![CDATA[
+        let rightEditorVisible = $.Form.getModel().getRightEditorVisible();
+        $.Form.getModel().setRightEditorVisible(!rightEditorVisible);
+        $("#toggleRightEditorButton").setLabel(rightEditorVisible? "Show translation" : "Hide translation");
+        $.Form.executeAction("translate");
+      ]]>
+  </script>
 
+  <!-- editors -->
   <composite layout="h-box" flex="1">
     <ace:editor xmlns:ace="http://www.qookery.org/ns/Form/Ace"
                 xsi:schemaLocation="https://raw.githubusercontent.com/cboulanger/qookery/master/qookeryace/docs/form-ace.xsd"
