@@ -48,7 +48,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
     translate(script) {
       let lines = this._translate(script)
         .split(/\n/)
-        .map(line => (line.startsWith("(new Promise")? "await " + line: line))
+        .map(line => (line.startsWith("(new Promise")? `await ${line};`: line))
         .map(line => "  " + line);
       lines.unshift("async function test() {");
       lines.push("}");

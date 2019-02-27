@@ -72,7 +72,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Testcafe", {
     _translateLine(line) {
       let code = this.base(arguments, line);
       if (code && !code.startsWith(".")) {
-        code = `.eval("${code.replace(/"/g, "\\\"")}");`;
+        code = `.eval("${code.replace(/"/g, "\\\"")}")`;
       }
       return code;
     },

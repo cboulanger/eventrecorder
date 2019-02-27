@@ -250,12 +250,13 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
 
     /**
      * Given a script, return an array of lines with all variable and macro declarations
-     * removed, variables expanded and macros registered.
+     * registered and removed. Optionally, variables are expanded.
      * @param script {String}
+     * @param expandVariables {Boolean} Whether to expand the found variables. Default to true
      * @return {Array}
      * @private
      */
-    _handleMacrosAndVariables(script) {
+    _handleMacrosAndVariables(script, expandVariables=false) {
       this.__macros = {};
       this.__macro_stack = [];
       this.__macro_stack_index = -1;
@@ -266,15 +267,15 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
         if (!line) {
           continue;
         }
-        // variables
+        // expand variables
         let var_def = line.match(/([^=\s]+)\s*=\s*(.+)/);
         if (var_def) {
           this.__vars[var_def[1]] = var_def[2];
           continue;
-        } else if (line.match(/\$([^\s\d\/]+)/)) {
+        } else if (expandVariables && line.match(/\$([^\s\d\/]+)/)) {
           line = line.replace(/\$([^\s\d\/]+)/g, (...args) => this.__vars[args[1]]);
         }
-        // macros
+        // register macros
         if (line.startsWith("define ") || line === "end") {
           this._translateLine(line);
         } else if (this.__macro_stack_index >= 0) {
@@ -283,6 +284,10 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
         } else {
           lines.push(line);
         }
+      }
+      // remove variable registration if they have been expanded
+      if (expandVariables) {
+        this.__vars = {};
       }
       return lines;
     },
@@ -305,27 +310,35 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
       return macro_lines;
     },
 
+
     /**
-     * Replays the given script of intermediate code
-     * @param script {String} The script to replay
-     * @return {Promise} Promise which resolves when the script has been replayed, or
-     * rejects with an error
-     * @todo implement pausing
+     * Returns an array of lines containing variable declarations
+     * @return {string[]}
+     * @private
      */
-    async replay(script) {
-      this.setRunning(true);
-      this._globalRef = "player" + this.toHashCode();
-      window[this._globalRef] = this;
-      let steps = 0;
-      let lines = this._handleMacrosAndVariables(script);
-      for (let line of lines) {
-        if (!line.startsWith("wait ") && !line.startsWith("#") && !line.startsWith("delay")) {
-          steps++;
-        }
+    _defineVariables() {
+      return Object.getOwnPropertyNames(this.__vars)
+        .map(key => `const ${key} ="${this.__vars[key]}";`);
+    },
+
+    /**
+     * Translates variables in a line
+     * @param line {String}
+     * @private
+     * @return {String}
+     */
+    _translateVariables(line) {
+      if (line.match(/\$([^\s\d\/]+)/)) {
+        line = line.replace(/\$([^\s\d\/]+)/g, (...args) => {
+          let var_name = args[1];
+          let var_content = this.__vars[var_name];
+          if (var_content === undefined) {
+            throw new Error(`Variable '${var_name}' has not been defined.`);
+          }
+          return var_content;
+        });
       }
-      let result = await this._play(lines, steps, 0);
-      this.setRunning(false);
-      return result;
+      return line;
     },
 
     /**
@@ -344,6 +357,14 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
           return false;
         }
 
+        // ignore comments
+        if (line.startsWith("#")) {
+          continue;
+        }
+
+        // variables
+        line = this._translateVariables(line);
+
         // play macros recursively
         let [command, ...args] = this._tokenize(line);
         let macro_lines = this._getMacro(command, args);
@@ -356,10 +377,6 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
           continue;
         }
 
-        // ignore comments
-        if (line.startsWith("#")) {
-          continue;
-        }
         // count steps if given, wait doesn't count as a step
         if (steps && !line.startsWith("wait") && !line.startsWith("delay")) {
           step++;
@@ -397,6 +414,33 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
       return true;
     },
 
+    /**
+     * Replays the given script of intermediate code
+     * @param script {String} The script to replay
+     * @return {Promise} Promise which resolves when the script has been replayed, or
+     * rejects with an error
+     * @todo implement pausing
+     */
+    async replay(script) {
+      this.setRunning(true);
+      this._globalRef = "player" + this.toHashCode();
+      window[this._globalRef] = this;
+      // register macros & variables
+      let lines = this._handleMacrosAndVariables(script);
+      // count the steps of the script
+      let steps = 0;
+      for (let line of lines) {
+        if (!line.startsWith("wait ") && !line.startsWith("#") && !line.startsWith("delay")) {
+          steps++;
+        }
+      }
+      // add variable definitions
+      line = this._defineVariables().concat(lines);
+      // replay it!
+      let result = await this._play(lines, steps, 0);
+      this.setRunning(false);
+      return result;
+    },
 
     /**
      * Translates the intermediate code into the target language
@@ -415,7 +459,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      */
     _translate(script) {
       let lines = this._handleMacrosAndVariables(script);
-      let translatedLines = [];
+      let translatedLines = this._defineVariables();
       for (let line of lines) {
         if (line.startsWith("#")) {
           translatedLines.push(this.addComment(line.substr(1).trim()));
