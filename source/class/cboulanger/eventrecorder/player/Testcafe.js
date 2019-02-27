@@ -57,8 +57,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Testcafe", {
         "  .page `" + window.location.href + "`;",
         "",
         "test('<Test description>', async t => {",
-        "  await t",
-        ...lines.map(line => " ".repeat(4) + line),
+        ...lines.map(line => "  " + line),
         "});"
       ].join("\n");
     },
@@ -71,8 +70,10 @@ qx.Class.define("cboulanger.eventrecorder.player.Testcafe", {
      */
     _translateLine(line) {
       let code = this.base(arguments, line);
-      if (code && !code.startsWith(".")) {
-        code = `.eval("${code.replace(/"/g, "\\\"")}")`;
+      if (code && !code.startsWith("await t.")) {
+        code = code.endsWith(";") ?
+          `await t.eval(()=>{${code}});`:
+          `await t.eval(()=>${code});`;
       }
       return code;
     },
@@ -86,7 +87,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Testcafe", {
      */
     cmd_delay(delayInMs) {
       delayInMs = Math.min(delayInMs, this.getMaxDelay());
-      return this.getMode() === "presentation" && delayInMs > 0 ? `.wait(${delayInMs})`: "";
+      return this.getMode() === "presentation" && delayInMs > 0 ? `await t.wait(${delayInMs});`: "";
     },
 
     /**
@@ -95,7 +96,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Testcafe", {
      * @return {string}
      */
     cmd_wait(timeInMs) {
-      return `.wait(${timeInMs})`;
+      return `await t.wait(${timeInMs});`;
     }
   }
 });

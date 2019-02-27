@@ -14,11 +14,16 @@
       leftEditorVisible: true,
       rightEditorContent: "",
       rightEditorVisible: false,
-      targetScriptType: "qooxdoo"
+      targetScriptType: "qooxdoo",
+      targetMode: "test"
     }));
     $.scriptTypes = {
       "qooxdoo": "qooxdoo javascript (Browser)",
       "testcafe": "TestCáfé javascript (NodeJS)"
+    };
+    $.modes = {
+      "test": "Test",
+      "presentation": "Presentation"
     };
   </script>
 
@@ -34,6 +39,7 @@
       ]]>
       </script>
     </button>
+    <!-- spacer to keep following widgets to the right -->
     <spacer flex="1" />
     <!-- hidden when rightEditorVisible is false -->
     <composite id="export-menu" layout="h-box" spacing="5">
@@ -42,27 +48,19 @@
       </script>
       <button label="Translate">
         <script event="execute">
-          $.Form.getQxOwner().translateTo($.Form.getModel().getTargetScriptType());
+          $.Form.executeAction("translate");
         </script>
       </button>
       <button label="Export">
         <script event="execute">
-          $.Form.getQxOwner().exportTo($.Form.getModel().getTargetScriptType());
+          $.Form.executeAction("export");
         </script>
       </button>
       <select-box connect="targetScriptType" width="200">
-        <script><![CDATA[
-        this.setItems($.scriptTypes);
-        this.getMainWidget().addListener("appear", () => {
-          this.getMainWidget().addListener("changeSelection", () => {
-            let playerType = $.Form.getModel().getTargetScriptType();
-            let allowTranslate = $.Form.getQxOwner() && playerType && $.Form.getModel().getLeftEditorContent();
-            if (allowTranslate) {
-              $.Form.getQxOwner().translateTo($.Form.getModel().getTargetScriptType());
-            }
-          });
-        });
-      ]]></script>
+        <script>this.setItems($.scriptTypes);</script>
+      </select-box>
+      <select-box connect="targetMode" width="150">
+        <script>this.setItems($.modes);</script>
       </select-box>
     </composite>
     <!-- toggle visibility of right editor-->
@@ -72,10 +70,19 @@
         let rightEditorVisible = $.Form.getModel().getRightEditorVisible();
         $.Form.getModel().setRightEditorVisible(!rightEditorVisible);
         this.getMainWidget().setLabel(rightEditorVisible? "Show translation" : "Hide translation");
+        $.Form.executeAction("translate");
       ]]>
       </script>
     </button>
   </tool-bar>
+
+
+  <script action="translate">
+    $.Form.getQxOwner().translateTo($.Form.getModel().getTargetScriptType(), $.Form.getModel().getTargetMode());
+  </script>
+  <script action="export">
+    $.Form.getQxOwner().exportTo($.Form.getModel().getTargetScriptType(), $.Form.getModel().getTargetMode());
+  </script>
 
   <composite layout="h-box" flex="1">
     <ace:editor xmlns:ace="http://www.qookery.org/ns/Form/Ace"

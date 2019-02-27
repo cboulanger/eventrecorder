@@ -22,17 +22,16 @@
     "qx.icontheme": ["Tango"],
     "qx.debug": true,
     "module.objectid": true,
-    // path to the dir containing the ACE files
-    "qookery.ace.path": "cboulanger/eventrecorder/js/ace",
     // default values, for documentation only
     "eventrecorder.enabled": true,
     "eventrecorder.scriptable": false,
     "eventrecorder.hidden": false,
-    "eventrecorder.mode": "presentation",
-    "eventrecorder.showProgress": false,
-    "eventrecorder.gistId": "",
+    "eventrecorder.player_type": "qooxdoo",
+    "eventrecorder.player_mode": "presentation",
+    "eventrecorder.show_progress": false,
+    "eventrecorder.gist_id": "",
     "eventrecorder.autoplay": false,
-    "eventrecorder.playerType": "qooxdoo",
+
     // needed by playground
     "qx.testNameSpace": {},
     "qx.standaloneAutorun": {}
@@ -49,7 +48,7 @@
       ],
       "environment": {
         "eventrecorder.scriptable": true,
-        "eventrecorder.gistId": "64ed4149a27d48de38d9cb176907355e",
+        "eventrecorder.gist_id": "64ed4149a27d48de38d9cb176907355e",
         "eventrecorder.autoplay": true
       }
     },
@@ -65,7 +64,7 @@
       ],
       "environment": {
         "qx.icontheme": ["Tango" ],
-        "eventrecorder.showProgress": true
+        "eventrecorder.show.progress": true
       }
     },
     {
@@ -81,7 +80,7 @@
       ],
       "environment": {
         "qx.icontheme": ["Tango" ],
-        "eventrecorder.playerType": "testcafe"
+        "eventrecorder.player_type": "testcafe"
       }
     },
     {

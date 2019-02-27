@@ -18,23 +18,23 @@
  *     <td>Whether the controller is hidden. False by default</td>
  *   </tr>
  *   <tr>
- *     <td>"eventrecorder.mode": {String}</td>
+ *     <td>"eventrecorder.player_type": {String}</td>
+ *     <td>The player type. Defaults to the qooxdoo player</td>
+ *   </tr>
+ *   <tr>
+ *     <td>"eventrecorder.player_mode": {String}</td>
  *     <td>Either "test" or "presentation" (See {@link cboulanger.eventrecorder.player.Abstract#mode}. Defaults to "presentation"</td></tr>
  *   <tr>
- *     <td>"eventrecorder.showProgress": {Boolean}</td>
+ *     <td>"eventrecorder.show_progress": {Boolean}</td>
  *     <td>If true, show a progress indicator</td>
  *   </tr>
  *   <tr>
- *     <td>"eventrecorder.gistId": {String}</td>
+ *     <td>"eventrecorder.gist_id": {String}</td>
  *     <td>If given, load the script published at https://gist.github.com with this id.</td>
  *   </tr>
  *   <tr>
  *     <td>"eventrecorder.autoplay": {Boolean}</td>
  *     <td>If true, start any preloaded script.</td>
- *   </tr>
- *   <tr>
- *     <td>"eventrecorder.playerType": {String}</td>
- *     <td>The player type. Defaults to the qooxdoo player</td>
  *   </tr>
  *   <tr>
  *     <td>"eventrecorder.scriptable": {Boolean}</td>

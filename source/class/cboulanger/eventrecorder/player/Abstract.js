@@ -256,7 +256,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      * @return {Array}
      * @private
      */
-    _handleMacrosAndVariables(script, expandVariables=false) {
+    _handleMacrosAndVariables(script, expandVariables=true) {
       this.__macros = {};
       this.__macro_stack = [];
       this.__macro_stack_index = -1;

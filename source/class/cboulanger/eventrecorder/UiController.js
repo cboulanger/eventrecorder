@@ -22,8 +22,14 @@
 qx.Class.define("cboulanger.eventrecorder.UiController", {
   extend: qx.ui.window.Window,
   statics: {
-    LOCAL_STORAGE_KEY_SCRIPT: "eventrecorder.script",
-    LOCAL_STORAGE_KEY_AUTOPLAY: "eventrecorder.autoplay",
+    CONFIG_KEY : {
+      SCRIPT:       "eventrecorder.script",
+      PLAYER_TYPE:  "eventrecorder.player_type",
+      PLAYER_MODE:  "eventrecorder.player_mode",
+      GIST_ID:      "eventrecorder.gist_id",
+      AUTOPLAY:     "eventrecorder.autoplay",
+      SHOW_PROGRESS:"eventrecorder.show_progress"
+    },
     FILE_INPUT_ID : "eventrecorder-fileupload",
     aliases: {
       "eventrecorder.icon.record":  "cboulanger/eventrecorder/media-record.png",
@@ -116,6 +122,8 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       allowGrowX: false,
       allowGrowY: false
     });
+
+    this.__players = {};
 
     const uri_info = qx.util.Uri.parseUri(window.location.href);
     const recorder = new cboulanger.eventrecorder.Recorder();
@@ -252,32 +260,60 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     input.setAttribute("visibility", "hidden");
     form.appendChild(input);
 
-    // fetch script from URL
-    // FIXME: must differentiate between script source (local storage or gist) and autoplay
+    const env = qx.core.Environment;
+    const storage = qx.bom.storage.Web.getSession();
 
-    let gist_id = uri_info.queryKey.eventrecorder_gist_id || qx.core.Environment.get("eventrecorder.gistId");
-    let mode = uri_info.queryKey.eventrecorder_mode || qx.core.Environment.get("eventrecorder.mode") || "presentation";
-    let autoplay = uri_info.queryKey.eventrecorder_autoplay || qx.core.Environment.get("eventrecorder.autoplay");
-    let playerType = qx.lang.String.firstUp(qx.core.Environment.get("eventrecorder.playerType") || "qooxdoo");
-    let player = new cboulanger.eventrecorder.player[playerType]();
+    // player configuration
+    let playerType = uri_info.queryKey.eventrecorder_type
+      || env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.PLAYER_TYPE)
+      || "qooxdoo";
+    let mode = uri_info.queryKey.eventrecorder_player_mode
+      || storage.getItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.PLAYER_MODE)
+      || env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.PLAYER_MODE)
+      || "presentation";
+    let player = this.getPlayerByType(playerType);
     player.setMode(mode);
+    player.addListener("changeMode", e => {
+      storage.setItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.PLAYER_MODE, e.getData());
+    });
     this.setPlayer(player);
-    if (!this.getAutoplay() && gist_id && autoplay) {
+
+    // autoplay
+    const autoplay = uri_info.queryKey.eventrecorder_autoplay
+      || storage.getItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.AUTOPLAY)
+      || env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.AUTOPLAY);
+    this.setAutoplay(autoplay);
+
+    // external script source
+    let gist_id = uri_info.queryKey.eventrecorder_gist_id
+      || env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.GIST_ID);
+
+    if (gist_id) {
       this._getRawGist(gist_id)
         .then(gist => {
           // if the eventrecorder itself is scriptable, run the gist in a separate player without GUI
-          if (scriptable) {
+          if (autoplay && scriptable) {
             let gistplayer = new cboulanger.eventrecorder.player.Qooxdoo();
             gistplayer.setMode(mode);
             gistplayer.replay(gist);
           } else {
             this.setScript(gist);
-            this.replay();
+            if (autoplay) {
+              this.replay();
+            }
           }
         })
         .catch(e => {
           throw new Error(`Gist ${gist_id} cannot be loaded: ${e.message}.`);
         });
+    } else {
+      let script = storage.getItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.SCRIPT);
+      if (script) {
+        this.setScript(script);
+        if (autoplay) {
+          this.replay();
+        }
+      }
     }
   },
 
@@ -290,9 +326,10 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
      * @var {qx.ui.window.Window}
      */
     __editorWindow : null,
+    __players : null,
 
     _applyMode(value, old) {
-      if (!this.getPlayer()) {
+      if (value === "player" && !this.getPlayer()) {
         throw new Error("Cannot switch to player mode: no player has been set");
       }
     },
@@ -304,7 +341,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
      * @private
      */
     _applyScript(value, old) {
-      qx.bom.storage.Web.getLocal().setItem(cboulanger.eventrecorder.UiController.LOCAL_STORAGE_KEY_SCRIPT, value);
+      qx.bom.storage.Web.getSession().setItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.SCRIPT, value);
     },
 
     /**
@@ -314,15 +351,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
      * @private
      */
     _applyAutoplay(value, old) {
-      qx.bom.storage.Web.getLocal().setItem(cboulanger.eventrecorder.UiController.LOCAL_STORAGE_KEY_AUTOPLAY, value);
-    },
-
-    _getStoredScript() {
-      return qx.bom.storage.Web.getLocal().getItem(cboulanger.eventrecorder.UiController.LOCAL_STORAGE_KEY_SCRIPT);
-    },
-
-    _hasStoredScript() {
-      return Boolean(this._getStoredScript());
+      qx.bom.storage.Web.getSession().setItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.AUTOPLAY, value);
     },
 
     /**
@@ -345,7 +374,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
         // start
         if (this.getScript()) {
           // reload
-          this._enableAutoPlay();
+          this.setAutoplay(true);
           window.location.reload();
         }
       }
@@ -417,20 +446,25 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     },
 
     /**
-     * Returns a player instance
+     * Returns a player instance. Caches the result
      * @param type
      * @private
      * @return {cboulanger.eventrecorder.IPlayer}
      */
-    _getPlayerByType(type) {
+    getPlayerByType(type) {
       if (!type) {
         throw new Error("No player type given!");
+      }
+      if (this.__players[type]) {
+        return this.__players[type];
       }
       let clazz = cboulanger.eventrecorder.player[qx.lang.String.firstUp(type)];
       if (!clazz) {
         throw new Error(`A player of type '${type}' does not exist.`);
       }
-      return new clazz();
+      const player = new clazz();
+      this.__players[type] = player;
+      return player;
     },
 
     /********* PUBLIC API **********/
@@ -472,7 +506,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       this.setMode("player");
       let infoPane = cboulanger.eventrecorder.InfoPane.getInstance();
       infoPane.useIcon("waiting");
-      if (qx.core.Environment.get("eventrecorder.showProgress")) {
+      if (qx.core.Environment.get("eventrecorder.show_progress")) {
         player.addListener("progress", e => {
           let [step, steps] = e.getData();
           infoPane.display(`Replaying ... (${step}/${steps})`);
@@ -485,7 +519,6 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
         error = e;
       }
       infoPane.hide();
-      qx.bom.storage.Web.getLocal().removeItem(cboulanger.eventrecorder.UiController.LOCAL_STORAGE_KEY_SCRIPT);
       this.setMode("recorder");
       if (error) {
         throw error;
@@ -523,7 +556,10 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
         let editorWidget = formComponent.getMainWidget();
         win.add(editorWidget);
         this.bind("script", formComponent.getModel(), "leftEditorContent");
-        formComponent.getModel().bind("leftEditorContent", this, "script");
+        formModel = formComponent.getModel();
+        formModel.bind("leftEditorContent", this, "script");
+        formModel.addListener("changeTargetScriptType", e => this.translateTo(formModel.getTargetScriptType(), formModel.getTargetMode()));
+        formModel.addListener("changeTargetMode", e => this.translateTo(formModel.getTargetScriptType(), formModel.getTargetMode()));
         parser.dispose();
         this.edit();
       });
@@ -546,11 +582,15 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
      * Translates the text in the left editor into the language produced by the
      * given player type. Alerts any errors that occur.
      * @param playerType {String}
+     * @param mode {String}
      * @return {String|false}
      */
-    translateTo(playerType) {
-      const exporter = this._getPlayerByType(playerType);
+    translateTo(playerType, mode) {
+      const exporter = this.getPlayerByType(playerType);
       const model = this.getQxObject("editor").getModel();
+      if (mode) {
+        exporter.setMode(mode);
+      }
       let editedScript = model.getLeftEditorContent();
       try {
         let translatedText = exporter.translate(editedScript);
@@ -565,10 +605,14 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     /**
      * Export the script in the given format
      * @param playerType {String}
+     * @param mode {String}
      * @return {Boolean}
      */
-    exportTo(playerType) {
-      const exporter = this._getPlayerByType(playerType);
+    exportTo(playerType, mode) {
+      const exporter = this.getPlayerByType(playerType);
+      if (mode) {
+        exporter.setMode(mode);
+      }
       let translatedScript = this.getQxObject("editor").getModel().getRightEditorContent();
       if (!translatedScript) {
         if (!this.getScript()) {
@@ -608,12 +652,16 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     if (!qx.core.Environment.get("module.objectid") || !qx.core.Environment.get("eventrecorder.enabled")) {
      return;
     }
+    qookery.Qookery.setOption(
+      qookery.Qookery.OPTION_EXTERNAL_LIBRARIES,
+      qx.util.ResourceManager.getInstance().toUri("cboulanger/eventrecorder/js"));
+    // called when application is ready
     qx.bom.Lifecycle.onReady(() => {
-      let controller = new cboulanger.eventrecorder.UiController();
       let infoPane = cboulanger.eventrecorder.InfoPane.getInstance();
       infoPane.useIcon("waiting");
       infoPane.display("Initializing Event Recorder, please wait...");
       let dispayedText = infoPane.getDisplayedText();
+      // assign object ids
       const objIdGen = cboulanger.eventrecorder.ObjectIdGenerator.getInstance();
       objIdGen.addListenerOnce("done", async () => {
         // hide splash screen if it hasn't used by other code yet
@@ -621,26 +669,10 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
           infoPane.hide();
         }
         // create controller
+        let controller = new cboulanger.eventrecorder.UiController();
         qx.core.Init.getApplication().getRoot().add(controller, {top:0, right:10});
-        // add a player in presentation mode unless configured otherwise
-        let playerType = qx.core.Environment.get("eventrecorder.playerType") || "qooxdoo";
-        let mode = qx.core.Environment.get("eventrecorder.mode") || "presentation";
-        let player = new cboulanger.eventrecorder.player[qx.lang.String.firstUp(playerType)]();
-        player.setMode(mode);
-        controller.setPlayer(player);
         if (!qx.core.Environment.get("eventrecorder.hidden")) {
           controller.show();
-        }
-        // do we have a stored script?
-        let storedScript = qx.bom.storage.Web.getLocal().getItem(cboulanger.eventrecorder.UiController.LOCAL_STORAGE_KEY_SCRIPT);
-        controller.setScript(storedScript);
-        if (qx.bom.storage.Web.getLocal().getItem(cboulanger.eventrecorder.UiController.LOCAL_STORAGE_KEY_AUTOPLAY)) {
-          try {
-            controller.replay();
-          } catch (e) {
-            controller.error(e);
-            alert(e.message);
-          }
         }
       });
     });
