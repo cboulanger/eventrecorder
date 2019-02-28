@@ -32,6 +32,10 @@
     <!-- button to toggle visibility of left editor-->
     <button label="Hide script" id="toggleLeftEditorButton">
       <script>$.Form.getModel().bind("rightEditorVisible", this, "enabled");</script>
+      <script>
+        this.getMainWidget().setQxObjectId(this.getId());
+        qx.event.Timer.once(()=>$.Form.getQxOwner().addOwnedQxObject(this.getMainWidget()),null,0);
+      </script>
       <script event="execute">
         $.Form.executeAction("toggleLeftEditor");
       </script>
@@ -43,26 +47,46 @@
       <script>
         $.Form.getModel().bind("rightEditorVisible", this, "visibility", { converter: v => v ? "visible" : "excluded"});
       </script>
-      <button label="Translate">
+      <button label="Translate" id="translateButton">
         <script event="execute">
           $.Form.executeAction("translate");
         </script>
+        <script>
+          this.getMainWidget().setQxObjectId(this.getId());
+          qx.event.Timer.once(()=>$.Form.getQxOwner().addOwnedQxObject(this.getMainWidget()),null,0);
+        </script>
       </button>
-      <button label="Export">
+      <button label="Export" id="exportButton">
         <script event="execute">
           $.Form.executeAction("export");
         </script>
+        <script>
+          this.getMainWidget().setQxObjectId(this.getId());
+          qx.event.Timer.once(()=>$.Form.getQxOwner().addOwnedQxObject(this.getMainWidget()),null,0);
+        </script>
       </button>
-      <select-box connect="targetScriptType" width="200">
+      <select-box connect="targetScriptType" width="200" id="targetScriptTypeSelectBox">
         <script>this.setItems($.scriptTypes);</script>
+        <script>
+          this.getMainWidget().setQxObjectId(this.getId());
+          qx.event.Timer.once(()=>$.Form.getQxOwner().addOwnedQxObject(this.getMainWidget()),null,0);
+        </script>
       </select-box>
-      <select-box connect="targetMode" width="150">
+      <select-box connect="targetMode" width="150" id="targetModeSelectBox">
         <script>this.setItems($.modes);</script>
+        <script>
+          this.getMainWidget().setQxObjectId(this.getId());
+          qx.event.Timer.once(()=>$.Form.getQxOwner().addOwnedQxObject(this.getMainWidget()),null,0);
+        </script>
       </select-box>
     </composite>
     <!-- toggle visibility of right editor-->
     <button label="Show translation" id="toggleRightEditorButton">
       <script>$.Form.getModel().bind("leftEditorVisible", this, "enabled");</script>
+      <script>
+        this.getMainWidget().setQxObjectId(this.getId());
+        qx.event.Timer.once(()=>$.Form.getQxOwner().addOwnedQxObject(this.getMainWidget()),null,0);
+      </script>
       <script event="execute">
         $.Form.executeAction("toggleRightEditor");
       </script>
@@ -99,6 +123,10 @@
       <script>
         $.Form.getModel().bind("leftEditorVisible", this, "visibility", { converter: v => v ? "visible" : "excluded"});
       </script>
+      <script>
+        this.getMainWidget().setQxObjectId(this.getId());
+        qx.event.Timer.once(()=>$.Form.getQxOwner().addOwnedQxObject(this.getMainWidget()),null,0);
+      </script>
     </ace:editor>
     <ace:editor xmlns:ace="http://www.qookery.org/ns/Form/Ace"
                 id="rightEditor" mode="javascript"
@@ -106,6 +134,10 @@
                 flex="1" create-label="false" tab-size="2" theme="eclipse">
       <script>
         $.Form.getModel().bind("rightEditorVisible", this, "visibility", { converter: v => v ? "visible" : "excluded"});
+      </script>
+      <script>
+        this.getMainWidget().setQxObjectId(this.getId());
+        qx.event.Timer.once(()=>$.Form.getQxOwner().addOwnedQxObject(this.getMainWidget()),null,0);
       </script>
     </ace:editor>
   </composite>
