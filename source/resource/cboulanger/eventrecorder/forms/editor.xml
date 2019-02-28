@@ -34,7 +34,7 @@
       <script>$.Form.getModel().bind("rightEditorVisible", this, "enabled");</script>
       <script>
         this.getMainWidget().setQxObjectId(this.getId());
-        qx.event.Timer.once(()=>$.Form.getQxOwner().addOwnedQxObject(this.getMainWidget()),null,0);
+        $.Form.addOwnedQxObject(this.getMainWidget());
       </script>
       <script event="execute">
         $.Form.executeAction("toggleLeftEditor");
@@ -53,7 +53,7 @@
         </script>
         <script>
           this.getMainWidget().setQxObjectId(this.getId());
-          qx.event.Timer.once(()=>$.Form.getQxOwner().addOwnedQxObject(this.getMainWidget()),null,0);
+          $.Form.addOwnedQxObject(this.getMainWidget());
         </script>
       </button>
       <button label="Export" id="exportButton">
@@ -62,21 +62,21 @@
         </script>
         <script>
           this.getMainWidget().setQxObjectId(this.getId());
-          qx.event.Timer.once(()=>$.Form.getQxOwner().addOwnedQxObject(this.getMainWidget()),null,0);
+          $.Form.addOwnedQxObject(this.getMainWidget());
         </script>
       </button>
       <select-box connect="targetScriptType" width="200" id="targetScriptTypeSelectBox">
         <script>this.setItems($.scriptTypes);</script>
         <script>
           this.getMainWidget().setQxObjectId(this.getId());
-          qx.event.Timer.once(()=>$.Form.getQxOwner().addOwnedQxObject(this.getMainWidget()),null,0);
+          $.Form.addOwnedQxObject(this.getMainWidget());
         </script>
       </select-box>
       <select-box connect="targetMode" width="150" id="targetModeSelectBox">
         <script>this.setItems($.modes);</script>
         <script>
           this.getMainWidget().setQxObjectId(this.getId());
-          qx.event.Timer.once(()=>$.Form.getQxOwner().addOwnedQxObject(this.getMainWidget()),null,0);
+          $.Form.addOwnedQxObject(this.getMainWidget());
         </script>
       </select-box>
     </composite>
@@ -85,7 +85,7 @@
       <script>$.Form.getModel().bind("leftEditorVisible", this, "enabled");</script>
       <script>
         this.getMainWidget().setQxObjectId(this.getId());
-        qx.event.Timer.once(()=>$.Form.getQxOwner().addOwnedQxObject(this.getMainWidget()),null,0);
+        $.Form.addOwnedQxObject(this.getMainWidget());
       </script>
       <script event="execute">
         $.Form.executeAction("toggleRightEditor");
@@ -125,7 +125,7 @@
       </script>
       <script>
         this.getMainWidget().setQxObjectId(this.getId());
-        qx.event.Timer.once(()=>$.Form.getQxOwner().addOwnedQxObject(this.getMainWidget()),null,0);
+        $.Form.addOwnedQxObject(this.getMainWidget());
       </script>
     </ace:editor>
     <ace:editor xmlns:ace="http://www.qookery.org/ns/Form/Ace"
@@ -137,7 +137,7 @@
       </script>
       <script>
         this.getMainWidget().setQxObjectId(this.getId());
-        qx.event.Timer.once(()=>$.Form.getQxOwner().addOwnedQxObject(this.getMainWidget()),null,0);
+        $.Form.addOwnedQxObject(this.getMainWidget());
       </script>
     </ace:editor>
   </composite>

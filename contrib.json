@@ -54,7 +54,6 @@
       "uri": "ergobyte/qookery/qookery",
       "repo_name": "ergobyte/qookery",
       "repo_tag": "v0.5.0",
-      //"path": "contrib/ergobyte_qookery_v0.5.0/qookery"
       "path": "../qookery/qookery"
     },
     {
@@ -63,8 +62,15 @@
       "uri": "ergobyte/qookery/qookeryace",
       "repo_name": "ergobyte/qookery",
       "repo_tag": "v0.5.0",
-      //"path": "contrib/ergobyte_qookery_v0.5.0/qookeryace",
       "path": "../qookery/qookeryace"
+    },
+    {
+      "library_name": "Dialog",
+      "library_version": "1.4.0",
+      "uri": "cboulanger/qx-contrib-Dialog",
+      "repo_name": "cboulanger/qx-contrib-Dialog",
+      "repo_tag": "v1.4.0",
+      "path": "contrib/cboulanger_qx-contrib-Dialog_v1.4.0"
     }
   ]
 }

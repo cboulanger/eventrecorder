@@ -656,25 +656,29 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       qookery.Qookery.OPTION_EXTERNAL_LIBRARIES,
       qx.util.ResourceManager.getInstance().toUri("cboulanger/eventrecorder/js"));
     // called when application is ready
-    qx.bom.Lifecycle.onReady(() => {
+    qx.bom.Lifecycle.onReady(async () => {
       let infoPane = cboulanger.eventrecorder.InfoPane.getInstance();
       infoPane.useIcon("waiting");
       infoPane.display("Initializing Event Recorder, please wait...");
       let dispayedText = infoPane.getDisplayedText();
-      // assign object ids
-      const objIdGen = cboulanger.eventrecorder.ObjectIdGenerator.getInstance();
-      objIdGen.addListenerOnce("done", async () => {
-        // hide splash screen if it hasn't used by other code yet
-        if (infoPane.getDisplayedText() === dispayedText) {
-          infoPane.hide();
-        }
-        // create controller
-        let controller = new cboulanger.eventrecorder.UiController();
-        qx.core.Init.getApplication().getRoot().add(controller, {top:0, right:10});
-        if (!qx.core.Environment.get("eventrecorder.hidden")) {
-          controller.show();
-        }
-      });
+      // assign object ids if object id generator has been included
+      if (qx.Class.isDefined("cboulanger.eventrecorder.ObjectIdGenerator")) {
+        await new Promise(resolve => {
+          const objIdGen = qx.Class.getByName("cboulanger.eventrecorder.ObjectIdGenerator").getInstance();
+          objIdGen.addListenerOnce("done", resolve);
+        });
+      }
+
+      // hide splash screen if it hasn't used by other code yet
+      if (infoPane.getDisplayedText() === dispayedText) {
+        infoPane.hide();
+      }
+      // create controller
+      let controller = new cboulanger.eventrecorder.UiController();
+      qx.core.Init.getApplication().getRoot().add(controller, {top:0, right:10});
+      if (!qx.core.Environment.get("eventrecorder.hidden")) {
+        controller.show();
+      }
     });
   }
 });
