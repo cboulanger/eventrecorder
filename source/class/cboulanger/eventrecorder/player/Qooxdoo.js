@@ -48,7 +48,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
     translate(script) {
       let lines = this._translate(script)
         .split(/\n/)
-        .map(line => (line.startsWith("(new Promise")? `await ${line};`: line))
+        .map(line => (line.startsWith("(")? `await ${line};`: line))
         .map(line => "  " + line);
       lines.unshift("async function test() {");
       lines.push("}");
@@ -172,7 +172,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @return {String}
      */
     cmd_execute(id) {
-      return `qx.core.Id.getQxObject("${id}").fireEvent('execute')`;
+      return `qx.core.Id.getQxObject("${id}").fireEvent('execute');`;
     },
 
     /**
@@ -204,7 +204,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @return {String}
      */
     cmd_open_tree_node(id, nodeIndex) {
-      return `let t = qx.core.Id.getQxObject("${id}"); t.openNode(t.getLookupTable().getItem(${nodeIndex}))`;
+      return `let t = qx.core.Id.getQxObject("${id}"); t.openNode(t.getLookupTable().getItem(${nodeIndex}));`;
     },
 
     /**
@@ -214,7 +214,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @return {String}
      */
     cmd_close_tree_node(id, nodeIndex) {
-      return `let t = qx.core.Id.getQxObject("${id}"); t.closeNode(t.getLookupTable().getItem(${nodeIndex}))`;
+      return `let t = qx.core.Id.getQxObject("${id}"); t.closeNode(t.getLookupTable().getItem(${nodeIndex}));`;
     },
 
     /**
@@ -245,7 +245,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @return {String}
      */
     cmd_set_selection(id, selectedId) {
-      return `qx.core.Id.getQxObject("${id}").setSelection([qx.core.Id.getQxObject("${selectedId}")])`;
+      return `qx.core.Id.getQxObject("${id}").setSelection([qx.core.Id.getQxObject("${selectedId}")]);`;
     },
 
     /**
@@ -266,7 +266,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @return {String}
      */
     cmd_set_model_selection(id, indexArray) {
-      return `let o = qx.core.Id.getQxObject("${id}"); o.setSelection(new qx.data.Array(${JSON.stringify(indexArray)}.map(i => o.getModel().getItem(i))))`;
+      return `let o = qx.core.Id.getQxObject("${id}"); o.setSelection(new qx.data.Array(${JSON.stringify(indexArray)}.map(i => o.getModel().getItem(i))));`;
     },
 
     /**
@@ -288,7 +288,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @return {String}
      */
     cmd_set_from_selectables(id, index) {
-      return `let o = qx.core.Id.getQxObject("${id}"); o.setSelection([o.getSelectables()[${index}]])`;
+      return `let o = qx.core.Id.getQxObject("${id}"); o.setSelection([o.getSelectables()[${index}]]);`;
     },
 
     /**
@@ -297,7 +297,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @return {string}
      */
     cmd_reset_selection(id) {
-      return `qx.core.Id.getQxObject("${id}").resetSelection()`;
+      return `qx.core.Id.getQxObject("${id}").resetSelection();`;
     },
 
     /**
@@ -307,7 +307,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @return {String}
      */
     cmd_set_table_selection(id, interval) {
-      return `qx.core.Id.getQxObject("${id}").addSelectionInterval(${interval})`;
+      return `qx.core.Id.getQxObject("${id}").addSelectionInterval(${interval});`;
     },
 
     /**
@@ -317,7 +317,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @return {String}
      */
     cmd_set_row_selection(id, rowIndex) {
-      return `qx.core.Id.getQxObject("${id}").selectItem(${rowIndex})`;
+      return `qx.core.Id.getQxObject("${id}").selectItem(${rowIndex});`;
     }
   }
 });
