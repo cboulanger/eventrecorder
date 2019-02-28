@@ -556,7 +556,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
         let editorWidget = formComponent.getMainWidget();
         win.add(editorWidget);
         this.bind("script", formComponent.getModel(), "leftEditorContent");
-        formModel = formComponent.getModel();
+        let formModel = formComponent.getModel();
         formModel.bind("leftEditorContent", this, "script");
         formModel.addListener("changeTargetScriptType", e => this.translateTo(formModel.getTargetScriptType(), formModel.getTargetMode()));
         formModel.addListener("changeTargetMode", e => this.translateTo(formModel.getTargetScriptType(), formModel.getTargetMode()));

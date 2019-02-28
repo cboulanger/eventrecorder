@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.qookery.org/ns/Form"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/ergobyte/qookery/master/qookery/docs/form.xsd"
+      xsi:schemaLocation="
+        http://www.qookery.org/ns/Form https://raw.githubusercontent.com/ergobyte/qookery/master/qookery/docs/form.xsd
+        http://www.qookery.org/ns/Form/Ace https://raw.githubusercontent.com/cboulanger/qookery/master/qookeryace/docs/form-ace.xsd"
       layout="v-box" flex="1">
 
-  <import service="qx.application.IApplication"/>
-  <import class="qookery.contexts.Qookery"/>
   <import class="qx.data.marshal.Json"/>
 
   <script>
@@ -93,7 +93,6 @@
   <!-- editors -->
   <composite layout="h-box" flex="1">
     <ace:editor xmlns:ace="http://www.qookery.org/ns/Form/Ace"
-                xsi:schemaLocation="https://raw.githubusercontent.com/cboulanger/qookery/master/qookeryace/docs/form-ace.xsd"
                 id="leftEditor" mode="text"
                 connect="leftEditorContent"
                 flex="1" create-label="false" tab-size="2" theme="eclipse">
@@ -102,7 +101,6 @@
       </script>
     </ace:editor>
     <ace:editor xmlns:ace="http://www.qookery.org/ns/Form/Ace"
-                xsi:schemaLocation="https://raw.githubusercontent.com/cboulanger/qookery/master/qookeryace/docs/form-ace.xsd"
                 id="rightEditor" mode="javascript"
                 connect="rightEditorContent"
                 flex="1" create-label="false" tab-size="2" theme="eclipse">

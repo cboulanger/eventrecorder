@@ -44,6 +44,7 @@
       "title": "Simple event recorder demo, autoplaying from a gist",
       "include": [
         "qx.theme.Modern",
+        "qx.data.marshal.Json",
         "cboulanger.eventrecorder.UiController"
       ],
       "environment": {
@@ -64,23 +65,7 @@
       ],
       "environment": {
         "qx.icontheme": ["Tango" ],
-        "eventrecorder.show.progress": true
-      }
-    },
-    {
-      "class": "qxl.widgetbrowser.Application",
-      "theme": "qx.theme.Indigo",
-      "name": "widgetbrowser_testcafe",
-      "title": "WidgetBrowser with a recorder that replays in the browser and exports TestCafé code",
-      "include": [
-        "qx.theme.Modern",
-        "cboulanger.eventrecorder.UiController",
-        "cboulanger.eventrecorder.ObjectIdGenerator",
-        "cboulanger.eventrecorder.player.Testcafe"
-      ],
-      "environment": {
-        "qx.icontheme": ["Tango" ],
-        "eventrecorder.player_type": "testcafe"
+        "eventrecorder.show_progress": true
       }
     },
     {
@@ -97,35 +82,35 @@
         "qx.icontheme": ["Tango"]
       }
     },
-    {
-      "class": "qxl.playground.Application",
-      "theme": "qxl.playground.theme.Theme",
-      "name": "playground",
-      "title": "Playground in presentation mode",
-      "include": [
-        "qx.*",
-        "qxl.logpane.*",
-        "cboulanger.eventrecorder.UiController",
-        "cboulanger.eventrecorder.ObjectIdGenerator"
-
-      ],
-      "exclude": [
-        "qx.test.*",
-        "qx.module.Blocker",
-        "qx.module.Placement",
-        "qx.dev.unit.*"
-      ],
-      "environment": {
-        "environment": {
-          "qx.debug" : true,
-          "qx.debug.ui.queue" : true,
-          "qx.nativeScrollBars" : true,
-          "qx.allowUrlSettings" : true,
-          "qx.mobile.emulatetouch" : true,
-          "qx.icontheme": ["Tango"]
-        }
-      }
-    },
+//    {
+//      "class": "qxl.playground.Application",
+//      "theme": "qxl.playground.theme.Theme",
+//      "name": "playground",
+//      "title": "Playground in presentation mode",
+//      "include": [
+//        "qx.*",
+//        "qxl.logpane.*",
+//        "cboulanger.eventrecorder.UiController",
+//        "cboulanger.eventrecorder.ObjectIdGenerator"
+//
+//      ],
+//      "exclude": [
+//        "qx.test.*",
+//        "qx.module.Blocker",
+//        "qx.module.Placement",
+//        "qx.dev.unit.*"
+//      ],
+//      "environment": {
+//        "environment": {
+//          "qx.debug" : true,
+//          "qx.debug.ui.queue" : true,
+//          "qx.nativeScrollBars" : true,
+//          "qx.allowUrlSettings" : true,
+//          "qx.mobile.emulatetouch" : true,
+//          "qx.icontheme": ["Tango"]
+//        }
+//      }
+//    },
     {
       "class": "qxl.apiviewer.Application",
       "theme": "qxl.apiviewer.Theme",
