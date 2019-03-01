@@ -395,12 +395,15 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
           if (!code) {
             continue;
           }
-          // all other code is executed
-          this.debug(`Command: ${line}\nExecuting: ${code}`);
+          this.debug(`${line}\n${"-".repeat(40)}\n${code}`);
           // execute
           let result = window.eval(code);
           if (result instanceof Promise) {
-            await result;
+            try {
+              await result;
+            } catch (e) {
+              throw e;
+            }
           }
         } catch (e) {
           switch (this.getMode()) {
@@ -478,11 +481,10 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      * return code that checks for this condition, throwing an error if the
      * condition hasn't been fulfilled within the set timeout.
      * @param condition {String} The condition expression as a string
-     * @param timeoutmsg {String|undefined} A message to be shown if the condition hasn't been met before the timeout. If not given
-     * the condition expression will be shown
+     * @param timeoutmsg {String|undefined} An optional message to be shown if the condition hasn't been met before the timeout.
      */
     generateWaitForConditionCode(condition, timeoutmsg) {
-      return `(cboulanger.eventrecorder.player.Abstract.waitForCondition(() => ${condition},${this.getInterval()},${this.getTimeout()}, "${timeoutmsg||condition.replace(/"/g, "\\\"")}"))`;
+      return `(cboulanger.eventrecorder.player.Abstract.waitForCondition(() => ${condition},${this.getInterval()},${this.getTimeout()}, "${timeoutmsg||"Timeout waiting for condition to fulfil."}"))`;
     },
 
     /**
@@ -492,7 +494,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      * @param type {String} The type of the event to wait for
      * @param data {*|null} The data to expect. Must be serializable to JSON. Exception: if the data is a string that
      * starts with "{verbatim}", use the unquoted string
-     * @param timeoutmsg {String|undefined} A message to be shown if the event hasn't been fired before the timeout.
+     * @param timeoutmsg {String|undefined} An optional message to be shown if the event hasn't been fired before the timeout.
      * @return {String}
      */
     generateWaitForEventCode(id, type, data=null, timeoutmsg) {

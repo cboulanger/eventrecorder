@@ -7,6 +7,15 @@ qx.Class.define("cboulanger.eventrecorder.ObjectIdTooltip", {
   type: "singleton",
   extend: qx.core.Object,
   include : [cboulanger.eventrecorder.MHelperMethods],
+
+  properties: {
+    includeNodesWithoutQxId: {
+      check: "Boolean",
+      nullable: false,
+      init: false
+    }
+  },
+
   members: {
 
     /**
@@ -29,6 +38,10 @@ qx.Class.define("cboulanger.eventrecorder.ObjectIdTooltip", {
           (target instanceof qx.core.Object ?
             qx.core.Id.getAbsoluteIdOf(target, true) || (target.toString()+" (no qx id)") :
             target.toString());
+        if (!this.isIncludeNodesWithoutQxId() && id.includes("no qx id")) {
+          return;
+        }
+
         // data
         let data = (typeof event.getData == "function") ? event.getData() : null;
         // selections are arrays
@@ -71,7 +84,10 @@ qx.Class.define("cboulanger.eventrecorder.ObjectIdTooltip", {
             tooltip.hide();
             break;
           default:
-            // display all events that relate to the widget for which a toolip was just displayed
+            if (id.startsWith("eventrecorder")) {
+              return;
+            }
+            // log all events that relate to the widget for which a toolip was just displayed
             if (target === this.__lastTarget) {
               switch (true) {
                 // don't ignore virtual cell events
@@ -80,6 +96,7 @@ qx.Class.define("cboulanger.eventrecorder.ObjectIdTooltip", {
                 // ignore the following event types
                 case type.startsWith("mouse"):
                 case type.startsWith("pointer"):
+                case type.startsWith("touch"):
                 case type.includes("track"):
                 case type.includes("activate"):
                 case type.includes("capture"):
@@ -98,16 +115,12 @@ qx.Class.define("cboulanger.eventrecorder.ObjectIdTooltip", {
                 case type === "input":
                   return;
               }
-              tooltip.setLabel(msg);
-              tooltip.show();
               console.info(msg);
             } else {
               switch (true) {
                 case type !== "change" && type.startsWith("change") && !type.includes("Visibility"):
                 case type === "execute":
                 case type.startsWith("tree"):
-                  tooltip.setLabel(msg);
-                  tooltip.show();
                   console.info(msg);
               }
             }

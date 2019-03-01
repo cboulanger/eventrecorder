@@ -264,13 +264,13 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     const storage = qx.bom.storage.Web.getSession();
 
     // player configuration
-    let playerType = uri_info.queryKey.eventrecorder_type
-      || env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.PLAYER_TYPE)
-      || "qooxdoo";
-    let mode = uri_info.queryKey.eventrecorder_player_mode
-      || storage.getItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.PLAYER_MODE)
-      || env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.PLAYER_MODE)
-      || "presentation";
+    let playerType = uri_info.queryKey.eventrecorder_type ||
+      env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.PLAYER_TYPE) ||
+      "qooxdoo";
+    let mode = uri_info.queryKey.eventrecorder_player_mode ||
+      storage.getItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.PLAYER_MODE) ||
+      env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.PLAYER_MODE) ||
+      "presentation";
     let player = this.getPlayerByType(playerType);
     player.setMode(mode);
     player.addListener("changeMode", e => {
@@ -279,14 +279,14 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     this.setPlayer(player);
 
     // autoplay
-    const autoplay = uri_info.queryKey.eventrecorder_autoplay
-      || storage.getItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.AUTOPLAY)
-      || env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.AUTOPLAY);
+    const autoplay = uri_info.queryKey.eventrecorder_autoplay ||
+      storage.getItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.AUTOPLAY) ||
+      env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.AUTOPLAY);
     this.setAutoplay(autoplay);
 
     // external script source
-    let gist_id = uri_info.queryKey.eventrecorder_gist_id
-      || env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.GIST_ID);
+    let gist_id = uri_info.queryKey.eventrecorder_gist_id ||
+      env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.GIST_ID);
 
     if (gist_id) {
       this._getRawGist(gist_id)

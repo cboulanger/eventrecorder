@@ -28,7 +28,7 @@
   </script>
 
   <!-- toolbar with collapsable part -->
-  <tool-bar spacing="5">
+  <tool-bar spacing="5" padding="2">
     <!-- button to toggle visibility of left editor-->
     <button label="Hide script" id="toggleLeftEditorButton">
       <script>$.Form.getModel().bind("rightEditorVisible", this, "enabled");</script>
@@ -38,6 +38,11 @@
       </script>
       <script event="execute">
         $.Form.executeAction("toggleLeftEditor");
+      </script>
+    </button>
+    <button label="Clear" id="clearEditor">
+      <script event="execute">
+        this.setValue("");
       </script>
     </button>
     <!-- spacer to keep following widgets to the right -->

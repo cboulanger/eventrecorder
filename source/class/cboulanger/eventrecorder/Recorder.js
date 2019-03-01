@@ -84,6 +84,14 @@ qx.Class.define("cboulanger.eventrecorder.Recorder", {
     },
 
     /**
+     * Returns the list of excluded ids.
+     * @return {String[]}
+     */
+    getExcludedIds() {
+      return this.__excludeIds;
+    },
+
+    /**
      * Called by start()
      */
     beforeStart() {
@@ -197,6 +205,14 @@ qx.Class.define("cboulanger.eventrecorder.Recorder", {
           break;
 
         case "changeSelection": {
+          if (target instanceof qx.ui.treevirtual.TreeVirtual) {
+            let selection = event.getData();
+            if (!selection.length) {
+              return [];
+            }
+            let row = target.getDataModel().getRowFromNodeId(selection[0].nodeId);
+            lines.push(`set-table-selection ${id} ${row},${row}`);
+          }
           if (target instanceof qx.ui.virtual.selection.Row) {
             lines.push(`set-row-selection ${id} ${data}`);
             break;
@@ -223,6 +239,13 @@ qx.Class.define("cboulanger.eventrecorder.Recorder", {
           return [];
         }
         default:
+          // change events
+          if (type.startsWith("change") && !qx.lang.Type.isObject(data)) {
+            let property = qx.lang.String.firstLow(type.substr(6));
+            lines.push(`await-property-value ${id} ${property} ${JSON.stringify(data)}`);
+            break;
+          }
+          // ignore all others
           return [];
       }
       // prepend a wait command to replay delays in user action
