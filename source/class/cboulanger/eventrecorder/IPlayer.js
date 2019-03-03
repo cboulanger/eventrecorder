@@ -93,15 +93,28 @@ qx.Interface.define("cboulanger.eventrecorder.IPlayer", {
 
     /**
      * Generates code that returns a promise which resolves when a property of the
-     * object with the given id is assigned the given value. The value must be
-     * given in JSON format, i.e. strings must be quoted.
+     * object with the given id is assigned the given value.
      * @param id {String} The id of the object
      * @param property {String} The name of the property
-     * @param value {String} The value, must be serializable to JSON
+     * @param value {*} The value, must be serializable to JSON
      * @return {*|string}
      */
     cmd_await_property_value(id, property, value) {},
 
+    /**
+     * Generates code that returns a promise which resolves when the following
+     * condition is met: the property with the given name of the object with the
+     * given id changes to a value that, if serialized to json, matches the given
+     * json literal. The json can contain regular expressions enclosed in
+     * <! and !> as placeholders (and validators) for unknown values
+     * (See {@link cboulanger.eventrecorder.player.Abstract#createRegexpForJsonComparison}
+     *
+     * @param id {String} The id of the object
+     * @param property {String} The name of the property
+     * @param json {String} A json expression
+     * @return {*|string}
+     */
+    cmd_match_property_json(id, property, json) {},
 
     /**
      * Generates code that causes the given delay (in milliseconds).

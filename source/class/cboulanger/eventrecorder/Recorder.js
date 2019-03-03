@@ -19,7 +19,10 @@
  */
 qx.Class.define("cboulanger.eventrecorder.Recorder", {
   extend : qx.core.Object,
-  include : [cboulanger.eventrecorder.MHelperMethods, cboulanger.eventrecorder.MState],
+  include : [
+    cboulanger.eventrecorder.MHelperMethods,
+    cboulanger.eventrecorder.MState
+  ],
 
   /**
    * Constructor
@@ -128,10 +131,14 @@ qx.Class.define("cboulanger.eventrecorder.Recorder", {
      * that lead to this event. Return an array, each element is one line of code
      * @param {String} id The id of the qooxdoo object
      * @param {qx.event.Event} event The event that was fired
-     * @param {qx.bom.Element} target The event target
+     * @param {qx.bom.Element|qx.core.Object} target The event target
      * @return {String[]} An array of script lines
      */
     createIntermediateCodeFromEvent(id, event, target) {
+      // opt out of recording
+      if (typeof target.getTrackEvents == "function" && !target.getTrackEvents()) {
+        return;
+      }
       let lines = [];
       const type = event.getType();
       let data = typeof event.getData == "function" ? event.getData() : null;
@@ -178,13 +185,6 @@ qx.Class.define("cboulanger.eventrecorder.Recorder", {
           }
           break;
         }
-
-        case "changeValue":
-          if (!qx.lang.Type.isObject(data)) {
-            lines.push(`await-value ${id} ${JSON.stringify(data)}`);
-            break;
-          }
-          return [];
 
         case "open":
         case "close": {
@@ -239,11 +239,13 @@ qx.Class.define("cboulanger.eventrecorder.Recorder", {
           return [];
         }
         default:
-          // change events
-          if (type.startsWith("change") && !qx.lang.Type.isObject(data)) {
-            let property = qx.lang.String.firstLow(type.substr(6));
-            lines.push(`await-property-value ${id} ${property} ${JSON.stringify(data)}`);
-            break;
+          // record change events if explicitly requested
+          if (type.startsWith("change") && typeof target.getTrackPropertyChanges == "function") {
+            if ( target.getTrackPropertyChanges() ) {
+              let property = qx.lang.String.firstLow(type.substr(6));
+              lines.push(`match-property-json ${id} ${property} ${JSON.stringify(data)}`);
+              break;
+            }
           }
           // ignore all others
           return [];
