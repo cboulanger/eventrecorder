@@ -92,8 +92,10 @@ qx.Interface.define("cboulanger.eventrecorder.IPlayer", {
     cmd_widget_info(id, text) {},
 
     /**
-     * Generates code that returns a promise which resolves when a property of the
-     * object with the given id is assigned the given value.
+     * Generates code that returns a promise which resolves when the given
+     * property of the object with the given id is assigned the given value.
+     * This works also with properties without a change event because the
+     * value is periodically checked.
      * @param id {String} The id of the object
      * @param property {String} The name of the property
      * @param value {*} The value, must be serializable to JSON

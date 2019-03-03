@@ -105,12 +105,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
     },
 
     /**
-     * Generates code that returns a promise which resolves when a property of the
-     * object with the given id is assigned the given value.
-     * @param id {String} The id of the object
-     * @param property {String} The name of the property
-     * @param value {*} The value, must be serializable to JSON
-     * @return {*|string}
+     * @inheritDoc
      */
     cmd_await_property_value(id, property, value) {
       return this.generateWaitForConditionCode(`JSON.stringify(qx.core.Id.getQxObject("${id}").get${qx.lang.String.firstUp(property)}())==='${JSON.stringify(value).replace(/'/,"\\'")}'`);
