@@ -114,7 +114,7 @@ qx.Interface.define("cboulanger.eventrecorder.IPlayer", {
      * @param json {String} A json expression
      * @return {*|string}
      */
-    cmd_match_property_json(id, property, json) {},
+    cmd_await_match_json(id, property, json) {},
 
     /**
      * Generates code that causes the given delay (in milliseconds).

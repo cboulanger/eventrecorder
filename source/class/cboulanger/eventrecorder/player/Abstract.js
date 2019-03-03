@@ -80,12 +80,12 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
                 console.warn(`When waiting for event '${type}' on object ${qxObj}, expected data to match '${expectedData.toString()}', got '${JSON.stringify(eventdata)}'!"`);
                 return;
               }
-              console.warn(`Success: '${JSON.stringify(eventdata)}' matches '${expectedData.toString()}'!"`);
+              //console.log(`Success: '${JSON.stringify(eventdata)}' matches '${expectedData.toString()}'!"`);
             } else if (JSON.stringify(eventdata) !== JSON.stringify(expectedData)) {
               console.warn(`When waiting for event '${type}' on object ${qxObj}, expected '${JSON.stringify(expectedData)}', got '${JSON.stringify(eventdata)}'!"`);
               return;
             } else {
-              console.warn(`Success: '${JSON.stringify(eventdata)}' received!`);
+              //console.log(`Success: '${JSON.stringify(eventdata)}' received!`);
             }
           }
           clearTimeout(timeoutId);
@@ -264,6 +264,10 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      * @return {String}
      */
     _translateLine(line) {
+      // comment
+      if (line.startsWith("#")) {
+        return this.addComment(line.substr(1).trim());
+      }
       // parse command line
       let [command, ...args] = this._tokenize(line);
       // run command generation implementation
@@ -308,13 +312,6 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
           line = line.replace(/\$([^\s\d\/]+)/g, (...args) => this.__vars[args[1]]);
         }
 
-        // await block
-        if (line.startsWith("await-")) {
-          this._translateLine(line);
-          lines.push(line);
-          continue;
-        }
-
         // register macros
         if (line.startsWith("define ")) {
           if (this.isInAwaitBlock()) {
@@ -324,12 +321,20 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
           continue;
         }
 
-        if (line === "end") {
-          if (this.isInAwaitBlock()) {
-            lines.push(line);
-          }
+        // await block
+        if (line.startsWith("await-")) {
           this._translateLine(line);
-          continue;
+        }
+
+        // end await block or macro
+        if (line === "end") {
+          // macro
+          if (!this.isInAwaitBlock()) {
+            this._translateLine(line);
+            continue;
+          }
+          // await block
+          this._translateLine(line);
         }
 
         // add code to macro
@@ -339,12 +344,14 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
           continue;
         }
 
+
         lines.push(line);
       }
       // remove variable registration if they have been expanded
       if (expandVariables) {
         this.__vars = {};
       }
+      console.log(lines);
       return lines;
     },
 
@@ -532,10 +539,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
       let lines = this._handleMeta(script);
       let translatedLines = this._defineVariables();
       for (let line of lines) {
-        if (line.startsWith("#")) {
-          translatedLines.push(this.addComment(line.substr(1).trim()));
-          continue;
-        }
+        line = line.trim();
         let [command, ...args] = this._tokenize(line);
         let macro_lines = this._getMacro(command, args);
         let new_lines = (macro_lines || [line])

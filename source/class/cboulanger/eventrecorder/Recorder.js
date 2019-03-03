@@ -243,7 +243,7 @@ qx.Class.define("cboulanger.eventrecorder.Recorder", {
           if (type.startsWith("change") && typeof target.getTrackPropertyChanges == "function") {
             if ( target.getTrackPropertyChanges() ) {
               let property = qx.lang.String.firstLow(type.substr(6));
-              lines.push(`match-property-json ${id} ${property} ${JSON.stringify(data)}`);
+              lines.push(`await-match-json ${id} ${property} ${JSON.stringify(data)}`);
               break;
             }
           }

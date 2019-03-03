@@ -119,7 +119,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
     /**
      * @inheritDoc
      */
-    cmd_match_property_json(id, property, json) {
+    cmd_await_match_json(id, property, json) {
       if (!qx.lang.Type.isString(json)) {
         json = JSON.stringify(json);
       }
@@ -184,7 +184,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @return {String}
      */
     cmd_execute(id) {
-      return `qx.core.Id.getQxObject("${id}").fireEvent('execute');`;
+      return `qx.core.Id.getQxObject("${id}").fireEvent("execute");`;
     },
 
     /**
