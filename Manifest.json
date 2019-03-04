@@ -23,8 +23,8 @@
   },
   "requires": {
     "qooxdoo-sdk": "^6.0.0-alpha* || 6.0.0-alpha",
-    "ergobyte/qookery/qookery": "^0.5.0",
-    "ergobyte/qookery/qookeryace": "^0.5.0",
+    "ergobyte/qookery/qookery": "^0.6.0",
+    "ergobyte/qookery/qookeryace": "^0.6.0",
     "cboulanger/qx-contrib-Dialog": "^2.0.0"
   }
 }

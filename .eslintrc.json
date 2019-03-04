@@ -4,6 +4,7 @@
   ],
   "globals": {
     "cboulanger": false,
-    "qookery": false
+    "qookery": false,
+    "ace": false
   }
 }

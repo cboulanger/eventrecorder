@@ -18,6 +18,7 @@
  * The UI Controller for the recorder
  * @asset(cboulanger/eventrecorder/*)
  * @require(cboulanger.eventrecorder.player.Testcafe)
+ * @ignore(ace)
  */
 qx.Class.define("cboulanger.eventrecorder.UiController", {
   extend: qx.ui.window.Window,
@@ -560,9 +561,41 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
         formModel.bind("leftEditorContent", this, "script");
         formModel.addListener("changeTargetScriptType", e => this.translateTo(formModel.getTargetScriptType(), formModel.getTargetMode()));
         formModel.addListener("changeTargetMode", e => this.translateTo(formModel.getTargetScriptType(), formModel.getTargetMode()));
+        qx.event.Timer.once(() => this.__setupAutocomplete(), this, 1000);
         parser.dispose();
         this.edit();
       });
+    },
+
+    /**
+     * @private
+     */
+    __setupAutocomplete() {
+      const langTools = ace.require("ace/ext/language_tools");
+      let commands = [];
+      const player = this.getPlayer();
+      for (let key in player) {
+        // noinspection JSUnfilteredForInLoop
+        if (key.startsWith("cmd_") && typeof player[key]=="function") {
+          // noinspection JSUnfilteredForInLoop
+          commands.push(key.substr(4).replace(/_/g, "-"));
+        }
+      }
+      console.log(commands);
+      const completer = {
+        getCompletions: function(editor, session, pos, prefix, callback) {
+          console.log([pos, prefix]);
+          if (prefix.length === 0) {
+            callback(null, []);
+            return;
+          }
+          callback(null,
+            commands
+              .filter(cmd => cmd.substr(0, prefix.lang) === prefix))
+              .map(cmd => ({ name: cmd, value: cmd, score: 100, meta: "????"}));
+        }
+      };
+      langTools.addCompleter(completer);
     },
 
     /**

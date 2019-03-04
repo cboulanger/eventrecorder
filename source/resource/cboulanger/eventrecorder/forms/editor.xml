@@ -124,6 +124,7 @@
     <ace:editor xmlns:ace="http://www.qookery.org/ns/Form/Ace"
                 id="leftEditor" mode="text"
                 connect="leftEditorContent"
+                auto-complete="basic"
                 flex="1" create-label="false" tab-size="2" theme="eclipse">
       <script>
         $.Form.getModel().bind("leftEditorVisible", this, "visibility", { converter: v => v ? "visible" : "excluded"});
