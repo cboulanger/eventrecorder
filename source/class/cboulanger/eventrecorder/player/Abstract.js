@@ -48,25 +48,45 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
     },
 
     /**
-     * Returns a promise that will resolve (with any potential event data) if the given object fires an event with the given type
-     * and will reject if the timeout is reached before that happens.
-     * @param qxObj {qx.core.Object}
+     * Returns a promise that will resolve (with any potential event data) if
+     * the given object fires an event with the given type and will reject if
+     * the timeout is reached before that happens.
+     *
+     * @param qxObj {qx.core.Object|String} If string, assume it is the object id
      * @param type {String} Type of the event
-     * @param data {*} The data to expect. If not null, the data will be compared with the actual event data both serialized to JSON
-     * @param timeout {Number} The timeout in milliseconds. Defaults to 10 seconds
+     * @param expectedData {*|undefined} The data to expect. If undefined,
+     * resolve. If a regular expression, the event data as a JSON literal will
+     * be matched with that regex and the promise will resolve when it matches.
+     * Otherwise, the data will be compared with the actual event data both
+     * serialized to JSON.
+     * @param timeout {Number|undefined} The timeout in milliseconds. Defaults to 10 seconds
      * @param timeoutMsg {String|undefined} An optional addition to the timeout error message
      * @return {Promise}
      */
-    waitForEvent: function(qxObj, type, data, timeout=10000, timeoutMsg) {
+    waitForEvent: function(qxObj, type, expectedData, timeout, timeoutMsg) {
+      if (qx.lang.Type.isString(qxObj)) {
+        qxObj = qx.core.Id.getQxObject(qxObj);
+      }
+      timeout = timeout || this.getTimeout();
       return new Promise(((resolve, reject) => {
         let timeoutId = setTimeout(() => {
           reject(new Error(timeoutMsg || `Timeout waiting for event "${type}.`));
         }, timeout);
         qxObj.addListenerOnce(type, e => {
           let eventdata = e instanceof qx.event.type.Data ? e.getData() : null;
-          if (eventdata !== null && (JSON.stringify(eventdata) !== JSON.stringify(data))) {
-            this.debug(JSON.stringify(eventdata) + " !== " + JSON.stringify(data) +" !!");
-            return;
+          if (expectedData !== undefined){
+            if (qx.lang.Type.isRegExp(expectedData)) {
+              if (!JSON.stringify(eventdata).match(expectedData)) {
+                console.warn(`When waiting for event '${type}' on object ${qxObj}, expected data to match '${expectedData.toString()}', got '${JSON.stringify(eventdata)}'!"`);
+                return;
+              }
+              //console.log(`Success: '${JSON.stringify(eventdata)}' matches '${expectedData.toString()}'!"`);
+            } else if (JSON.stringify(eventdata) !== JSON.stringify(expectedData)) {
+              console.warn(`When waiting for event '${type}' on object ${qxObj}, expected '${JSON.stringify(expectedData)}', got '${JSON.stringify(eventdata)}'!"`);
+              return;
+            } else {
+              //console.log(`Success: '${JSON.stringify(eventdata)}' received!`);
+            }
           }
           clearTimeout(timeoutId);
           resolve(eventdata);
@@ -102,7 +122,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      */
     interval: {
       check: "Number",
-      init: 1000
+      init: 100
     },
 
     /**
@@ -182,6 +202,11 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
     __vars: null,
 
     /**
+     * An array of promises which are to be awaited
+     */
+    __promises: null,
+
+    /**
      * Simple tokenizer which splits expressions separated by whitespace, but keeps
      * expressions in quotes (which can contain whitespace) together. Parses tokens
      * as JSON expressions, but accepts unquoted text as strings.
@@ -232,31 +257,42 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
     },
 
     /**
-     * Translates a single line from the intermediate code into the target language. To be overridden by
-     * subclasses if neccessary.
+     * Translates a single line from the intermediate code into the target
+     * language. To be overridden by subclasses if neccessary.
+     *
      * @param line {String}
      * @return {String}
      */
     _translateLine(line) {
+      // comment
+      if (line.startsWith("#")) {
+        return this.addComment(line.substr(1).trim());
+      }
       // parse command line
       let [command, ...args] = this._tokenize(line);
       // run command generation implementation
       let method_name = "cmd_" + command.replace(/-/g, "_");
       if (typeof this[method_name] == "function") {
-        return this[method_name].apply(this, args);
+        let translatedLine = this[method_name].apply(this, args);
+        if (translatedLine && translatedLine.startsWith("(") && this.isInAwaitBlock()) {
+          this._addPromiseToAwaitStack(translatedLine);
+          return null;
+        }
+        return translatedLine;
       }
-      throw new Error(`Unsupported/unrecognized command: ${command}`);
+      throw new Error(`Unsupported/unrecognized command: '${command}'`);
     },
 
     /**
-     * Given a script, return an array of lines with all variable and macro declarations
-     * registered and removed. Optionally, variables are expanded.
+     * Given a script, return an array of lines with all variable and macro
+     * declarations registered and removed. Optionally, variables are expanded.
+     *
      * @param script {String}
      * @param expandVariables {Boolean} Whether to expand the found variables. Default to true
      * @return {Array}
      * @private
      */
-    _handleMacrosAndVariables(script, expandVariables=true) {
+    _handleMeta(script, expandVariables=true) {
       this.__macros = {};
       this.__macro_stack = [];
       this.__macro_stack_index = -1;
@@ -275,28 +311,56 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
         } else if (expandVariables && line.match(/\$([^\s\d\/]+)/)) {
           line = line.replace(/\$([^\s\d\/]+)/g, (...args) => this.__vars[args[1]]);
         }
+
         // register macros
-        if (line.startsWith("define ") || line === "end") {
+        if (line.startsWith("define ")) {
+          if (this.isInAwaitBlock()) {
+            throw new Error("You cannot use a macro in an await block.");
+          }
           this._translateLine(line);
-        } else if (this.__macro_stack_index >= 0) {
+          continue;
+        }
+
+        // await block
+        if (line.startsWith("await-")) {
+          this._translateLine(line);
+        }
+
+        // end await block or macro
+        if (line === "end") {
+          // macro
+          if (!this.isInAwaitBlock()) {
+            this._translateLine(line);
+            continue;
+          }
+          // await block
+          this._translateLine(line);
+        }
+
+        // add code to macro
+        if (this.__macro_stack_index >= 0) {
           let {name} = this.__macro_stack[this.__macro_stack_index];
           this.__macros[name].push(line);
-        } else {
-          lines.push(line);
+          continue;
         }
+
+
+        lines.push(line);
       }
       // remove variable registration if they have been expanded
       if (expandVariables) {
         this.__vars = {};
       }
+      console.log(lines);
       return lines;
     },
 
     /**
-     * Returns the macro lines
+     * Returns the lines for the macro of the given name. If it doesn't exist,
+     * return undefined
      * @param macro_name {String}
      * @param args {Array}
-     * @return {Array}
+     * @return {Array|undefined}
      * @private
      */
     _getMacro(macro_name, args) {
@@ -306,8 +370,9 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
         for (let i = 0; i < args.length; i++) {
           macro_lines = macro_lines.map(l => l.replace(new RegExp("\\$" + (i + 1), "g"), JSON.stringify(args[i])));
         }
+        return macro_lines;
       }
-      return macro_lines;
+      return undefined;
     },
 
 
@@ -392,6 +457,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
         try {
           // translate
           let code = this._translateLine(line);
+          // skip empty lines
           if (!code) {
             continue;
           }
@@ -429,11 +495,20 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
       this._globalRef = "player" + this.toHashCode();
       window[this._globalRef] = this;
       // register macros & variables
-      let lines = this._handleMacrosAndVariables(script);
+      let lines = this._handleMeta(script);
       // count the steps of the script
       let steps = 0;
+      let await_block= false;
       for (let line of lines) {
-        if (!line.startsWith("wait ") && !line.startsWith("#") && !line.startsWith("delay")) {
+        if (line.startsWith("await-")) {
+          await_block = true;
+          continue;
+        }
+        if (line.startsWith("end")) {
+          await_block = false;
+          continue;
+        }
+        if (!await_block && !line.startsWith("wait ") && !line.startsWith("#") && !line.startsWith("delay")) {
           steps++;
         }
       }
@@ -461,16 +536,15 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      * @private
      */
     _translate(script) {
-      let lines = this._handleMacrosAndVariables(script);
+      let lines = this._handleMeta(script);
       let translatedLines = this._defineVariables();
       for (let line of lines) {
-        if (line.startsWith("#")) {
-          translatedLines.push(this.addComment(line.substr(1).trim()));
-          continue;
-        }
+        line = line.trim();
         let [command, ...args] = this._tokenize(line);
         let macro_lines = this._getMacro(command, args);
-        let new_lines = (macro_lines ||[line]).map(l => this._translateLine(l));
+        let new_lines = (macro_lines || [line])
+          .map(l => this._translateLine(l))
+          .filter(l=>!!l);
         translatedLines = translatedLines.concat(new_lines);
       }
       return translatedLines.join("\n");
@@ -484,6 +558,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      * @param timeoutmsg {String|undefined} An optional message to be shown if the condition hasn't been met before the timeout.
      */
     generateWaitForConditionCode(condition, timeoutmsg) {
+      qx.core.Assert.assertString(condition);
       return `(cboulanger.eventrecorder.player.Abstract.waitForCondition(() => ${condition},${this.getInterval()},${this.getTimeout()}, "${timeoutmsg||"Timeout waiting for condition to fulfil."}"))`;
     },
 
@@ -492,24 +567,28 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      * an event with the given type and data (if applicable) and will reject if the timeout is reached before that happens.
      * @param id {String} The id of the object to monitor
      * @param type {String} The type of the event to wait for
-     * @param data {*|null} The data to expect. Must be serializable to JSON. Exception: if the data is a string that
+     * @param data {*|undefined} The data to expect. Must be serializable to JSON. Exception: if the data is a string that
      * starts with "{verbatim}", use the unquoted string
      * @param timeoutmsg {String|undefined} An optional message to be shown if the event hasn't been fired before the timeout.
      * @return {String}
      */
-    generateWaitForEventCode(id, type, data=null, timeoutmsg) {
+    generateWaitForEventCode(id, type, data, timeoutmsg) {
+      qx.core.Assert.assertString(id);
+      qx.core.Assert.assertString(type);
       if (qx.lang.Type.isString(data) && data.startsWith("{verbatim}")) {
         data = data.substr(10);
       } else {
         data = JSON.stringify(data);
       }
-      return `(cboulanger.eventrecorder.player.Abstract.waitForEvent(qx.core.Id.getQxObject("${id}"), "${type}",${data}, ${this.getTimeout()}, "${timeoutmsg||"Timeout waiting for event '"+type+"'"}"))`;
+      return `(cboulanger.eventrecorder.player.Abstract.waitForEvent("${id}", "${type}",${data}, ${this.getTimeout()}, "${timeoutmsg||"Timeout waiting for event '"+type+"'"}"))`;
     },
 
     /**
-     * Generates code that returns a promise which will resolve (with any potential event data) if the given object fires
-     * an event with the given type and data (if applicable). After the timeout, it will execute the given code and restart
-     * the timeout.
+     * Generates code that returns a promise which will resolve (with any
+     * potential event data) if the given object fires an event with the given
+     * type and data (if applicable). After the timeout, it will execute the
+     * given code and restart the timeout.
+     *
      * @param id {String} The id of the object to monitor
      * @param type {String} The type of the event to wait for
      * @param data {*|null} The data to expect. Must be serializable to JSON
@@ -517,6 +596,8 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      * @return {String}
      */
     generateWaitForEventTimoutFunction(id, type, data=null, code) {
+      qx.core.Assert.assertString(id);
+      qx.core.Assert.assertString(type);
       return `(new Promise(async (resolve, reject) => { 
         while (true){
           try {
@@ -540,6 +621,46 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
     },
 
     /**
+     * Escapes all characters in a string that are special characters in a regular expression
+     * @param s {String} The string to escape
+     * @return {String}
+     */
+    escapeRegexpChars(s) {
+      return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+    },
+
+    /**
+     * Creates a regular expression that matches a json string. In this string, you can use a regular expression
+     * enclosed by "<!" and "!>" to replace data that cannot be known in advance, such as tokens or session ids.
+     * Example: '{token:"<![A-Za-z0-9]{32}!>",user:"admin">' will match '{"token":"OnBHqQd59VHZYcphVADPhX74q0Sc6ERR","user":"admin"}'
+     * @param s {string}
+     */
+    createRegexpForJsonComparison(s) {
+      let searchExp = /<![^<][^!]+!>/g;
+      let foundRegExps = s.match(searchExp);
+      if (foundRegExps && foundRegExps.length) {
+        let index=0;
+        // remove escape sequence
+        foundRegExps = foundRegExps.map(m => m.slice(2,-2));
+        // replace placeholders
+        return this.escapeRegexpChars(s).replace(searchExp,()=> foundRegExps[index++]);
+      }
+      return this.escapeRegexpChars(s);
+    },
+
+    /**
+     * Adds promise code to a list of promises that need to resolve before the
+     * script proceeds
+     * @param promiseCode
+     */
+    _addPromiseToAwaitStack(promiseCode) {
+      if (!qx.lang.Type.isArray(this.__promises)) {
+        throw new Error("Cannot add promise since no await block has been opened.");
+      }
+      this.__promises.push(promiseCode);
+    },
+
+    /**
      * Returns the file extension of the downloaded file in the target language
      * @return {string}
      */
@@ -547,6 +668,19 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
       throw new Error("Method getExportFileExtension must be impemented in subclass");
     },
 
+    /**
+     * Whether the player is in an await block
+     * @return {Boolean}
+     */
+    isInAwaitBlock() {
+      return qx.lang.Type.isArray(this.__promises);
+    },
+
+    /**
+     * Starts the definition of a macro
+     * @param macro_name
+     * @return {null}
+     */
     cmd_define(macro_name) {
       if (this.__macros[macro_name] !== undefined) {
         throw new Error(`Cannot define macro '${macro_name}' since a macro of that name already exists.`);
@@ -557,12 +691,30 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
       return null;
     },
 
+    /**
+     * Ends the definition of a macro or a block of awaitable statements
+     * @return {null}
+     */
     cmd_end() {
+      if (this.__promises) {
+        let line = this.__promises.length ? `(Promise.all([${this.__promises.join(",")}]))` : null;
+        this.__promises = null;
+        return line;
+      }
       if (this.__macro_stack_index < 0) {
-        throw new Error(`Unexpected 'end' without macro definition.`);
+        throw new Error(`Unexpected 'end'.`);
       }
       this.__macro_stack_index--;
       return null;
+    },
+
+    /**
+     * Starts a block of statements that return promises
+     */
+    cmd_await_all(){
+      this.__promises=[];
+      return null;
     }
+
   }
 });

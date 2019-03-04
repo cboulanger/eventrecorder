@@ -630,6 +630,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
         model.setRightEditorContent(translatedText);
         return translatedText;
       } catch (e) {
+        this.error(e);
         alert(e.message);
       }
       return false;

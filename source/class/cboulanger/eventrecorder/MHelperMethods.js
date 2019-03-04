@@ -19,13 +19,13 @@ qx.Mixin.define("cboulanger.eventrecorder.MHelperMethods", {
   members :
   {
     /**
-     * Add a function to the global event monitor
+     * Add a function to the global event monitor.
      * @param fn {Function}
      */
     addGlobalEventListener: function(fn) {
       let evtMonitor = qx.event.Manager.getGlobalEventMonitor();
       qx.event.Manager.setGlobalEventMonitor(
-        evtMonitor ? (target, event) => evtMonitor(target, event) || fn(target, event) : fn
+        evtMonitor ? ((target, event) => {evtMonitor(target, event); fn(target, event)}) : fn
       );
     },
 

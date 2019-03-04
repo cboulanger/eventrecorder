@@ -48,7 +48,8 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
     translate(script) {
       let lines = this._translate(script)
         .split(/\n/)
-        .map(line => (line.startsWith("(")? `await ${line};`: line))
+        .map(line => (line.startsWith("(") ? `await ${line};` : line))
+        .filter(line => !!line)
         .map(line => "  " + line);
       lines.unshift("async function test() {");
       lines.push("}");
@@ -104,18 +105,24 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
     },
 
     /**
-     * Generates code that returns a promise which resolves when a property of the
-     * object with the given id is assigned the given value. The value must be
-     * given in JSON format, i.e. strings must be quoted.
-     * @param id {String} The id of the object
-     * @param property {String} The name of the property
-     * @param value {String} The value, must be serializable to JSON
-     * @return {*|string}
+     * @inheritDoc
      */
     cmd_await_property_value(id, property, value) {
-      return this.generateWaitForConditionCode(`qx.core.Id.getQxObject("${id}").get("${property}")===${JSON.stringify(value)}`);
+      return this.generateWaitForConditionCode(`JSON.stringify(qx.core.Id.getQxObject("${id}").get${qx.lang.String.firstUp(property)}())==='${JSON.stringify(value).replace(/'/,"\\'")}'`);
     },
 
+    /**
+     * @inheritDoc
+     */
+    cmd_await_match_json(id, property, json) {
+      if (!qx.lang.Type.isString(json)) {
+        json = JSON.stringify(json);
+      }
+      let regExLiteral = this.createRegexpForJsonComparison(json);
+      let timeoutmsg = `Timeout waiting for ID(${id}).${property} to match /${regExLiteral.replace(/"/g,'\\"')}/.`;
+      let type = "change" + qx.lang.String.firstUp(property);
+      return this.generateWaitForEventCode(id, type, `{verbatim}/${regExLiteral}/`, timeoutmsg);
+    },
 
     /**
      * Generates code that returns a promise which resolves when the object with
@@ -172,7 +179,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @return {String}
      */
     cmd_execute(id) {
-      return `qx.core.Id.getQxObject("${id}").fireEvent('execute');`;
+      return `qx.core.Id.getQxObject("${id}").fireEvent("execute");`;
     },
 
     /**

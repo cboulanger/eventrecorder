@@ -121,7 +121,7 @@
 
   <!-- editors -->
   <composite layout="h-box" flex="1">
-    <ace:editor xmlns:ace="http://www.qookery.org/ns/Form/Ace"
+    <ace:editor xmlns:ace="http://www.qookery.org/ns/Form/Ace" use-wrap-mode="true"
                 id="leftEditor" mode="text"
                 connect="leftEditorContent"
                 auto-complete="basic"
@@ -134,7 +134,7 @@
         $.Form.addOwnedQxObject(this.getMainWidget());
       </script>
     </ace:editor>
-    <ace:editor xmlns:ace="http://www.qookery.org/ns/Form/Ace"
+    <ace:editor xmlns:ace="http://www.qookery.org/ns/Form/Ace" use-wrap-mode="true"
                 id="rightEditor" mode="javascript"
                 connect="rightEditorContent"
                 flex="1" create-label="false" tab-size="2" theme="eclipse">
