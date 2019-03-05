@@ -570,29 +570,58 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     /**
      * @private
      */
-    __setupAutocomplete() {
+    __setupAutocomplete: function () {
       const langTools = ace.require("ace/ext/language_tools");
       let commands = [];
-      const player = this.getPlayer();
-      for (let key in player) {
-        // noinspection JSUnfilteredForInLoop
-        if (key.startsWith("cmd_") && typeof player[key]=="function") {
-          // noinspection JSUnfilteredForInLoop
-          commands.push(key.substr(4).replace(/_/g, "-"));
+      let iface = qx.Interface.getByName("cboulanger.eventrecorder.IPlayer").$$members;
+      for (let key of Object.getOwnPropertyNames(iface)) {
+        if (key.startsWith("cmd_") && typeof iface[key] == "function") {
+          let code = iface[key].toString();
+          commands.push({
+            name: key.substr(4).replace(/_/g, "-"),
+            description: code.slice(code.indexOf("(") + 1, code.indexOf(")"))
+          });
         }
       }
-      console.log(commands);
+      let ids = [];
+      let traverseObjectTree = function(obj) {
+        if (typeof obj.getQxObjectId !== "function") {
+          return;
+        }
+        let id = obj.getQxObjectId();
+        if (id) {
+          ids.push(qx.core.Id.getAbsoluteIdOf(obj));
+        }
+        for (let owned of obj.getOwnedQxObjects()) {
+          traverseObjectTree(owned);
+        }
+      };
+      let registeredObjects = Object.values(qx.core.Id.getInstance().__registeredObjects); //FIXME
+      for (let obj of registeredObjects) {
+        traverseObjectTree(obj);
+      }
+      for (let id of ids) {
+        commands.push({
+          name: id,
+          description: "(ID)"
+        });
+      }
+
       const completer = {
-        getCompletions: function(editor, session, pos, prefix, callback) {
-          console.log([pos, prefix]);
+        getCompletions: function (editor, session, pos, prefix, callback) {
           if (prefix.length === 0) {
             callback(null, []);
             return;
           }
-          callback(null,
-            commands
-              .filter(cmd => cmd.substr(0, prefix.lang) === prefix))
-              .map(cmd => ({ name: cmd, value: cmd, score: 100, meta: "????"}));
+          let options = commands
+            .filter(cmd => cmd.name.toLocaleLowerCase().substr(0, prefix.length) === prefix.toLocaleLowerCase())
+            .map(cmd => ({
+              name: cmd.name,
+              value: cmd.name,
+              score: 100,
+              meta: cmd.description
+            }));
+          callback(null, options);
         }
       };
       langTools.addCompleter(completer);

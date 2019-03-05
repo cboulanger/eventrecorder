@@ -159,9 +159,14 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @param id {String}
      * @return {String}
      */
-    cmd_check_appear(id) {
+    cmd_assert_appeared(id) {
       return this.generateWaitForConditionCode(`qx.core.Id.getQxObject("${id}").isVisible()`);
     },
+
+    /**
+     * @deprecated
+     */
+    cmd_check_appear: this.cmd_assert_appeared,
 
     /**
      * Generates code that returns a promise with resolves when the object with the given id disappears and rejects
@@ -169,9 +174,14 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @param id {String}
      * @return {String}
      */
-    cmd_check_disappear(id) {
+    cmd_assert_disappeared(id) {
       return this.generateWaitForConditionCode(`!qx.core.Id.getQxObject("${id}").isVisible()`);
     },
+
+    /**
+     * @deprecated
+     */
+    cmd_check_disappear: this.cmd_assert_disappeared,
 
     /**
      * Generates code that fires an `execute` event on the object with the given id (Button, Command)

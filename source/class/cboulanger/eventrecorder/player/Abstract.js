@@ -172,10 +172,26 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
   },
 
   /**
+   * constructor
+   */
+  construct: function() {
+    this.base(arguments);
+    this.__commands = [];
+    this.__macros = [];
+    this.__macro_stack = [];
+    //this.addCommands();
+  },
+
+  /**
    * The methods and simple properties of this class
    */
   members :
   {
+
+    /**
+     * A list of available commands
+     */
+    __commands: null,
 
     /**
      * An object mapping macro names to arrays containing the macro lines
@@ -205,6 +221,24 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      * An array of promises which are to be awaited
      */
     __promises: null,
+
+    /**
+     * NOT IMPLEMENTED
+     * Adds the given array of commands
+     * @param commands {Object[]}
+     */
+    _addCommands(commands) {
+      this.__commands = this.__commands.concat(commands).sort((a, b) => a.name > b.name);
+    },
+
+    /**
+     * NOT IMPLEMENTED
+     * Returns the list of availabe commands
+     * @return {Object[]}
+     */
+    getCommands() {
+      return this.__commands;
+    },
 
     /**
      * Simple tokenizer which splits expressions separated by whitespace, but keeps

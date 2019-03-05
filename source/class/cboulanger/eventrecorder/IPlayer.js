@@ -159,7 +159,7 @@ qx.Interface.define("cboulanger.eventrecorder.IPlayer", {
      * @param id {String}
      * @return {String}
      */
-    cmd_check_appear(id) {},
+    cmd_assert_appeared(id) {},
 
     /**
      * Generates code that returns a promise with resolves when the object with the given id disappears and rejects
@@ -167,7 +167,7 @@ qx.Interface.define("cboulanger.eventrecorder.IPlayer", {
      * @param id {String}
      * @return {String}
      */
-    cmd_check_disappear(id) {},
+    cmd_assert_disappeared(id) {},
 
     /**
      * Generates code that fires an `execute` event on the object with the given id (Button, Command)

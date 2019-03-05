@@ -42,7 +42,7 @@
     </button>
     <button label="Clear" id="clearEditor">
       <script event="execute">
-        this.setValue("");
+        $.Form.getModel().setLeftEditorContent("");
       </script>
     </button>
     <!-- spacer to keep following widgets to the right -->
@@ -124,7 +124,7 @@
     <ace:editor xmlns:ace="http://www.qookery.org/ns/Form/Ace" use-wrap-mode="true"
                 id="leftEditor" mode="text"
                 connect="leftEditorContent"
-                auto-complete="basic"
+                auto-complete="basic live"
                 flex="1" create-label="false" tab-size="2" theme="eclipse">
       <script>
         $.Form.getModel().bind("leftEditorVisible", this, "visibility", { converter: v => v ? "visible" : "excluded"});
