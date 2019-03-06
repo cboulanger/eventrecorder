@@ -572,14 +572,15 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
      */
     __setupAutocomplete: function () {
       const langTools = ace.require("ace/ext/language_tools");
-      let commands = [];
+      let tokens = [];
       let iface = qx.Interface.getByName("cboulanger.eventrecorder.IPlayer").$$members;
       for (let key of Object.getOwnPropertyNames(iface)) {
         if (key.startsWith("cmd_") && typeof iface[key] == "function") {
           let code = iface[key].toString();
-          commands.push({
+          tokens.push({
             name: key.substr(4).replace(/_/g, "-"),
-            description: code.slice(code.indexOf("(") + 1, code.indexOf(")"))
+            description: code.slice(code.indexOf("(") + 1, code.indexOf(")")),
+            type: "command"
           });
         }
       }
@@ -601,11 +602,12 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
         traverseObjectTree(obj);
       }
       for (let id of ids) {
-        commands.push({
+        tokens.push({
           name: id,
-          description: "(ID)"
+          type: "id"
         });
       }
+      let player = this.getPlayer();
 
       const completer = {
         getCompletions: function (editor, session, pos, prefix, callback) {
@@ -613,16 +615,45 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
             callback(null, []);
             return;
           }
-          let options = commands
-            .filter(cmd => cmd.name.toLocaleLowerCase().substr(0, prefix.length) === prefix.toLocaleLowerCase())
-            .map(cmd => ({
-              name: cmd.name,
-              value: cmd.name,
-              score: 100,
-              meta: cmd.description
-            }));
+          // the commented-out lines were an attempt to provide a way to display the argument list of a line's command in the popup.
+          // doesn't really work...
+          // https://github.com/ajaxorg/ace/blob/master/lib/ace/autocomplete.js#L179
+          // let row, line, lineTokens, params;
+          // if (this.__description) {
+          //   row = editor.getSelectionRange().start.row;
+          //   line = editor.session.getLine(row);
+          //   lineTokens = player._tokenize(line);
+          //   params = this.__description.split(/ /);
+          // }
+          let options = tokens
+            .filter(token => token.name.toLocaleLowerCase().substr(0, prefix.length) === prefix.toLocaleLowerCase())
+            .map(token => {
+              let len_diff = token.length - prefix.length;
+              // let description = token.description;
+              // if (this.__description && token.type !== "command") {
+              //   description =
+              //     params.slice(0, lineTokens.length-1).join(" ") +
+              //     "<b>" + params[lineTokens] + "</b>" +
+              //     params.slice(lineTokens.length+1).join(" ");
+              // }
+              return {
+                value: token.name,
+                score: 100 - len_diff,
+                meta: token.description
+                // ,completer: this
+              };
+            });
           callback(null, options);
         }
+        // ,insertMatch: function(editor, data) {
+        //   console.data(data);
+        //   if (data.type === "command") {
+        //     this.__description = data.description;
+        //   }
+        //   editor.forEachSelection(() => {
+        //     editor.insert(data.value);
+        //   });
+        // }
       };
       langTools.addCompleter(completer);
     },
