@@ -137,7 +137,7 @@ qx.Class.define("cboulanger.eventrecorder.Recorder", {
     createIntermediateCodeFromEvent(id, event, target) {
       // opt out of recording
       if (typeof target.getTrackEvents == "function" && !target.getTrackEvents()) {
-        return;
+        return [];
       }
       let lines = [];
       const type = event.getType();
@@ -157,7 +157,7 @@ qx.Class.define("cboulanger.eventrecorder.Recorder", {
         case "appear":
         case "disappear":
           if (qx.ui.core.FocusHandler.getInstance().isFocusRoot(qx.core.Id.getQxObject(id))) {
-            return [`check-${type} ${id}`];
+            return [`assert-${type}ed ${id}`];
           }
           return [];
 

@@ -71,6 +71,25 @@ qx.Interface.define("cboulanger.eventrecorder.IPlayer", {
     /***** COMMANDS ******/
 
     /**
+     * Starts a block of statements that return promises. The player will wait for
+     * all of the promises to resolve before proceeding.
+     */
+    cmd_await_all() {},
+
+    /**
+     * Starts the definition of a macro
+     * @param macro_name
+     * @return {null}
+     */
+    cmd_define(macro_name) {},
+
+    /**
+     * Ends the definition of a macro or a block of awaitable statements
+     * @return {null}
+     */
+    cmd_end() {},
+
+    /**
      * Generates code that displays an informational text centered on the screen
      * @param text {String} The text to display
      * @return {String}

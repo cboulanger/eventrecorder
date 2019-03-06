@@ -79,6 +79,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     script: {
       check: "String",
       nullable: true,
+      init: "",
       event: "changeScript",
       apply: "_applyScript"
     },
@@ -282,7 +283,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     // autoplay
     const autoplay = uri_info.queryKey.eventrecorder_autoplay ||
       storage.getItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.AUTOPLAY) ||
-      env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.AUTOPLAY);
+      env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.AUTOPLAY) || false;
     this.setAutoplay(autoplay);
 
     // external script source
@@ -579,7 +580,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
           let code = iface[key].toString();
           tokens.push({
             name: key.substr(4).replace(/_/g, "-"),
-            description: code.slice(code.indexOf("(") + 1, code.indexOf(")")),
+            params: code.slice(code.indexOf("(") + 1, code.indexOf(")")).split(/,/).map(p => p.trim()),
             type: "command"
           });
         }
@@ -607,53 +608,42 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
           type: "id"
         });
       }
-      let player = this.getPlayer();
-
+      const player = this.getPlayer();
       const completer = {
         getCompletions: function (editor, session, pos, prefix, callback) {
           if (prefix.length === 0) {
             callback(null, []);
             return;
           }
-          // the commented-out lines were an attempt to provide a way to display the argument list of a line's command in the popup.
-          // doesn't really work...
-          // https://github.com/ajaxorg/ace/blob/master/lib/ace/autocomplete.js#L179
-          // let row, line, lineTokens, params;
-          // if (this.__description) {
-          //   row = editor.getSelectionRange().start.row;
-          //   line = editor.session.getLine(row);
-          //   lineTokens = player._tokenize(line);
-          //   params = this.__description.split(/ /);
-          // }
+          let line = editor.session.getLine(pos.row).substr(0, pos.column);
+          let numberOfTokens = player._tokenize(line).length;
           let options = tokens
+            // filter on positional argument
+            .filter(token => (token.type === "command" && numberOfTokens === 1) || (token.type === "id" && numberOfTokens === 2))
+            // filter on word match
             .filter(token => token.name.toLocaleLowerCase().substr(0, prefix.length) === prefix.toLocaleLowerCase())
+            // create popup data
             .map(token => {
               let len_diff = token.length - prefix.length;
-              // let description = token.description;
-              // if (this.__description && token.type !== "command") {
-              //   description =
-              //     params.slice(0, lineTokens.length-1).join(" ") +
-              //     "<b>" + params[lineTokens] + "</b>" +
-              //     params.slice(lineTokens.length+1).join(" ");
-              // }
+              let snippet = null;
+              let value = token.name;
+              if (token.type === "command") {
+                snippet = token.name + " " +
+                  token.params
+                    .map((p, i) => `\${${i+1}:${p}}`)
+                    .join(" ") + "\$0";
+                value = null;
+              }
               return {
-                value: token.name,
+                caption: token.name,
+                value,
                 score: 100 - len_diff,
-                meta: token.description
-                // ,completer: this
+                meta: token.description,
+                snippet
               };
             });
           callback(null, options);
         }
-        // ,insertMatch: function(editor, data) {
-        //   console.data(data);
-        //   if (data.type === "command") {
-        //     this.__description = data.description;
-        //   }
-        //   editor.forEachSelection(() => {
-        //     editor.insert(data.value);
-        //   });
-        // }
       };
       langTools.addCompleter(completer);
     },

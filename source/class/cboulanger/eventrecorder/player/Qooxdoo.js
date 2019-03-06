@@ -49,7 +49,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
       let lines = this._translate(script)
         .split(/\n/)
         .map(line => (line.startsWith("(") ? `await ${line};` : line))
-        .filter(line => !!line)
+        .filter(line => Boolean(line))
         .map(line => "  " + line);
       lines.unshift("async function test() {");
       lines.push("}");
@@ -108,7 +108,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @inheritDoc
      */
     cmd_await_property_value(id, property, value) {
-      return this.generateWaitForConditionCode(`JSON.stringify(qx.core.Id.getQxObject("${id}").get${qx.lang.String.firstUp(property)}())==='${JSON.stringify(value).replace(/'/,"\\'")}'`);
+      return this.generateWaitForConditionCode(`JSON.stringify(qx.core.Id.getQxObject("${id}").get${qx.lang.String.firstUp(property)}())==='${JSON.stringify(value).replace(/'/, "\\'")}'`);
     },
 
     /**
@@ -119,7 +119,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
         json = JSON.stringify(json);
       }
       let regExLiteral = this.createRegexpForJsonComparison(json);
-      let timeoutmsg = `Timeout waiting for ID(${id}).${property} to match /${regExLiteral.replace(/"/g,'\\"')}/.`;
+      let timeoutmsg = `Timeout waiting for ID(${id}).${property} to match /${regExLiteral.replace(/"/g, "\\\"")}/.`;
       let type = "change" + qx.lang.String.firstUp(property);
       return this.generateWaitForEventCode(id, type, `{verbatim}/${regExLiteral}/`, timeoutmsg);
     },
@@ -160,7 +160,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @return {String}
      */
     cmd_assert_appeared(id) {
-      return this.generateWaitForConditionCode(`qx.core.Id.getQxObject("${id}").isVisible()`);
+      return `qx.core.Assert.assertTrue(qx.core.Id.getQxObject("${id}").isVisible())`;
     },
 
     /**
@@ -175,7 +175,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @return {String}
      */
     cmd_assert_disappeared(id) {
-      return this.generateWaitForConditionCode(`!qx.core.Id.getQxObject("${id}").isVisible()`);
+      return `qx.core.Assert.assertFalse(qx.core.Id.getQxObject("${id}").isVisible())`;
     },
 
     /**

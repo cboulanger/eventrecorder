@@ -74,7 +74,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
         }, timeout);
         qxObj.addListenerOnce(type, e => {
           let eventdata = e instanceof qx.event.type.Data ? e.getData() : null;
-          if (expectedData !== undefined){
+          if (expectedData !== undefined) {
             if (qx.lang.Type.isRegExp(expectedData)) {
               if (!JSON.stringify(eventdata).match(expectedData)) {
                 console.warn(`When waiting for event '${type}' on object ${qxObj}, expected data to match '${expectedData.toString()}', got '${JSON.stringify(eventdata)}'!"`);
@@ -385,7 +385,6 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
       if (expandVariables) {
         this.__vars = {};
       }
-      console.log(lines);
       return lines;
     },
 
@@ -450,7 +449,6 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      */
     async _play(lines, steps=0, step=0) {
       for (let line of lines) {
-
         // stop if we're not running (user pressed "stop" button
         if (!this.getRunning()) {
           return false;
@@ -547,10 +545,12 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
         }
       }
       // add variable definitions
-      line = this._defineVariables().concat(lines);
+      lines = this._defineVariables().concat(lines);
+
       // replay it!
       let result = await this._play(lines, steps, 0);
       this.setRunning(false);
+      this.cmd_hide_info();
       return result;
     },
 
@@ -578,7 +578,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
         let macro_lines = this._getMacro(command, args);
         let new_lines = (macro_lines || [line])
           .map(l => this._translateLine(l))
-          .filter(l=>!!l);
+          .filter(l => Boolean(l));
         translatedLines = translatedLines.concat(new_lines);
       }
       return translatedLines.join("\n");
@@ -660,7 +660,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      * @return {String}
      */
     escapeRegexpChars(s) {
-      return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+      return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
     },
 
     /**
@@ -675,9 +675,9 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
       if (foundRegExps && foundRegExps.length) {
         let index=0;
         // remove escape sequence
-        foundRegExps = foundRegExps.map(m => m.slice(2,-2));
+        foundRegExps = foundRegExps.map(m => m.slice(2, -2));
         // replace placeholders
-        return this.escapeRegexpChars(s).replace(searchExp,()=> foundRegExps[index++]);
+        return this.escapeRegexpChars(s).replace(searchExp, () => foundRegExps[index++]);
       }
       return this.escapeRegexpChars(s);
     },
@@ -743,12 +743,12 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
     },
 
     /**
-     * Starts a block of statements that return promises
+     * Starts a block of statements that return promises. The player will wait for
+     * all of the promises to resolve before proceeding.
      */
-    cmd_await_all(){
+    cmd_await_all() {
       this.__promises=[];
       return null;
     }
-
   }
 });
