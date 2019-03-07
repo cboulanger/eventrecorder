@@ -5,6 +5,7 @@
   "globals": {
     "cboulanger": false,
     "qookery": false,
-    "ace": false
+    "ace": false,
+    "dialog": false
   }
 }

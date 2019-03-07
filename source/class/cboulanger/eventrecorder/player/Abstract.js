@@ -179,7 +179,8 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
     this.__commands = [];
     this.__macros = [];
     this.__macro_stack = [];
-    //this.addCommands();
+    this._globalRef = "eventrecorder_" + this.basename;
+    window[this._globalRef] = this;
   },
 
   /**
@@ -187,6 +188,10 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
    */
   members :
   {
+    /**
+     * A globally accessible reference to the player implementation
+     */
+    _globalRef: null,
 
     /**
      * A list of available commands
@@ -508,6 +513,10 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
             case "test":
               throw e;
             case "presentation":
+              if (line.startsWith("assert")) {
+                dialog.Dialog.error(e.message);
+                return false;
+              }
               this.error(e);
           }
         }
@@ -524,8 +533,6 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      */
     async replay(script) {
       this.setRunning(true);
-      this._globalRef = "player" + this.toHashCode();
-      window[this._globalRef] = this;
       // register macros & variables
       let lines = this._handleMeta(script);
       // count the steps of the script
@@ -708,6 +715,37 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      */
     isInAwaitBlock() {
       return qx.lang.Type.isArray(this.__promises);
+    },
+
+    /*
+    ============================================================================
+       COMMANDS
+    ============================================================================
+    */
+
+    /**
+     * Asserts that the current url matches the given value (RegExp)
+     * @param uri {String}
+     */
+    cmd_assert_uri(uri) {
+      return `qx.core.Assert.assertEquals(window.location.href, "${uri}", "Script is valid on '${uri}' only'")`;
+    },
+
+    /**
+     * Asserts that the current url matches the given value (RegExp)
+     * @param uri_regexp {String} A string containing a regular expression
+     */
+    cmd_assert_match_uri(uri_regexp) {
+      return `qx.core.Assert.assertMatch(window.location.href, "${uri_regexp}", "Current URL does not match '${uri_regexp}'")`;
+    },
+
+    /**
+     * Sets the player mode
+     * @param mode
+     * @return {string}
+     */
+    cmd_config_set_mode(mode) {
+      return `window["${this._globalRef}"].setMode("${mode}");`;
     },
 
     /**

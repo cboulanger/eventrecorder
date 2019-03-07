@@ -98,7 +98,13 @@ qx.Class.define("cboulanger.eventrecorder.Recorder", {
      * Called by start()
      */
     beforeStart() {
-      this.__lines = [];
+      this.__lines = [
+        `# website to test`,
+        `assert-uri ${window.location.href}`,
+        `# player mode (test|presentation)`,
+        `config-set-mode presentation`,
+        ""
+      ];
       this.__lastEventTimestamp = 0;
     },
 

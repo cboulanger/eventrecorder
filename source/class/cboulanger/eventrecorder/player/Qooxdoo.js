@@ -56,6 +56,12 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
       return lines.join("\n");
     },
 
+    /*
+    ============================================================================
+       COMMANDS
+    ============================================================================
+    */
+
     /**
      * Generates code that displays an informational text centered on the screen
      * @param text {String} The text to display

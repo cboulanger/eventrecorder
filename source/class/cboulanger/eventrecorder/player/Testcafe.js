@@ -70,13 +70,21 @@ qx.Class.define("cboulanger.eventrecorder.player.Testcafe", {
      */
     _translateLine(line) {
       let code = this.base(arguments, line);
-      if (code && !code.startsWith("await t.")) {
+      if (code && !code.startsWith("await t.") && !code.startsWith("//")) {
         code = code.endsWith(";") ?
           `await t.eval(()=>{${code}});`:
           `await t.eval(()=>${code});`;
       }
       return code;
     },
+
+    /*
+    ============================================================================
+       COMMANDS
+    ============================================================================
+    */
+
+
 
     /**
      * Generates code that causes the given delay (in milliseconds).

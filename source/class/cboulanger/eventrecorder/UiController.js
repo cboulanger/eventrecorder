@@ -219,13 +219,28 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       converter: v => Boolean(v)
     });
 
-    // load button
-    let loadButton = new qx.ui.form.Button();
+    // load split button
+    let loadMenu = new qx.ui.menu.Menu();
+
+    let loadUserGistButton = new qx.ui.menu.Button("Load user gist");
+    loadUserGistButton.addListener("execute", this.loadUserGist, this);
+    loadUserGistButton.setQxObjectId("fromUserGist");
+    loadMenu.add(loadUserGistButton);
+
+    let loadGistByIdButton = new qx.ui.menu.Button("Load gist by id");
+    loadGistByIdButton.addListener("execute", this.loadGistById, this);
+    loadGistByIdButton.setQxObjectId("fromGistById");
+    loadMenu.add(loadGistByIdButton);
+
+    let loadButton = new qx.ui.form.SplitButton();
     loadButton.set({
       enabled: false,
       icon:"eventrecorder.icon.load",
-      toolTipText: "Load script"
+      toolTipText: "Load script",
+      menu: loadMenu
     });
+    loadButton.addOwnedQxObject(loadUserGistButton);
+    loadButton.addOwnedQxObject(loadGistByIdButton);
     loadButton.addListener("execute", this.load, this);
     // enable load button only if player can replay scripts in the browser
     this.bind("player.canReplayInBrowser", loadButton, "enabled");
@@ -383,8 +398,8 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     },
 
     /**
-     * Upload content
-     * @return {Promise<*>}
+     * Uploads content to the browser. Returns the content of the file.
+     * @return {Promise<String>}
      * @private
      */
     async _upload() {
@@ -445,6 +460,16 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
         req.addListener("statusError", reject);
         req.send();
       });
+    },
+
+    /**
+     * Returns the name of the application by using the parent directory of the
+     * index.html script
+     * @return {string}
+     * @private
+     */
+    _getApplicationName() {
+      return window.document.location.pathname.split("/").slice(-2, -1).join("");
     },
 
     /**
@@ -578,11 +603,12 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       for (let key of Object.getOwnPropertyNames(iface)) {
         if (key.startsWith("cmd_") && typeof iface[key] == "function") {
           let code = iface[key].toString();
-          tokens.push({
-            name: key.substr(4).replace(/_/g, "-"),
-            params: code.slice(code.indexOf("(") + 1, code.indexOf(")")).split(/,/).map(p => p.trim()),
-            type: "command"
-          });
+          let params = code.slice(code.indexOf("(") + 1, code.indexOf(")")).split(/,/).map(p => p.trim());
+          let caption = key.substr(4).replace(/_/g, "-");
+          let snippet = caption + " " + params.map((p, i) => `\${${i+1}:${p}}`).join(" ") + "\$0";
+          let meta = params.join(" ");
+          let value = null;
+          tokens.push({caption, type: "command", snippet, meta, value});
         }
       }
       let ids = [];
@@ -603,10 +629,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
         traverseObjectTree(obj);
       }
       for (let id of ids) {
-        tokens.push({
-          name: id,
-          type: "id"
-        });
+        tokens.push({caption: id, type: "id", value: id});
       }
       const player = this.getPlayer();
       const completer = {
@@ -621,26 +644,11 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
             // filter on positional argument
             .filter(token => (token.type === "command" && numberOfTokens === 1) || (token.type === "id" && numberOfTokens === 2))
             // filter on word match
-            .filter(token => token.name.toLocaleLowerCase().substr(0, prefix.length) === prefix.toLocaleLowerCase())
+            .filter(token => token.caption.toLocaleLowerCase().substr(0, prefix.length) === prefix.toLocaleLowerCase())
             // create popup data
             .map(token => {
-              let len_diff = token.length - prefix.length;
-              let snippet = null;
-              let value = token.name;
-              if (token.type === "command") {
-                snippet = token.name + " " +
-                  token.params
-                    .map((p, i) => `\${${i+1}:${p}}`)
-                    .join(" ") + "\$0";
-                value = null;
-              }
-              return {
-                caption: token.name,
-                value,
-                score: 100 - len_diff,
-                meta: token.description,
-                snippet
-              };
+              token.score = 100 - (token.caption.length - prefix.length);
+              return token;
             });
           callback(null, options);
         }
@@ -653,11 +661,8 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
      */
     save() {
       qx.event.Timer.once(() => {
-        let filename = prompt("Please enter the name of the file to save");
-        if (!filename) {
-          return;
-        }
-        this._download(filename + ".eventrecorder", this.getScript());
+        let filename = this._getApplicationName() + ".eventrecorder";
+        this._download(filename, this.getScript());
       }, null, 0);
     },
 
@@ -681,7 +686,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
         return translatedText;
       } catch (e) {
         this.error(e);
-        alert(e.message);
+        dialog.Dialog.error(e.message);
       }
       return false;
     },
@@ -700,16 +705,13 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       let translatedScript = this.getQxObject("editor").getModel().getRightEditorContent();
       if (!translatedScript) {
         if (!this.getScript()) {
-          alert("No script to export!");
+          dialog.Dialog.error("No script to export!");
           return false;
         }
         translatedScript = this.translateTo(playerType);
       }
       qx.event.Timer.once(() => {
-        let filename = prompt("Please enter the name of the file to export");
-        if (!filename) {
-          return;
-        }
+        let filename = this._getApplicationName();
         this._download(`${filename}.${exporter.getExportFileExtension()}`, translatedScript);
       }, null, 0);
       return true;
@@ -724,8 +726,89 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
         let script = await this._upload();
         this.setScript(script);
       } catch (e) {
-        alert(e.message);
+        dialog.Dialog.error(e.message);
       }
+    },
+
+    /**
+     * Loads a gist selected from a github user's gists
+     * @return {Promise<void>}
+     */
+    loadUserGist: async function () {
+      let formData = {
+        username: {
+          type: "Textfield",
+          label: "Username",
+          options
+        },
+        show_all: {
+          type: "Checkbox",
+          value: false,
+          label: "Show all scripts (even if URL does not match)"
+        }
+      };
+      let answer = await dialog.Dialog.form("Please enter the GitHub username", formData).promise();
+      if (!answer || !answer.username.trim()) {
+        return;
+      }
+      let username = answer.username;
+      cboulanger.eventrecorder.InfoPane.getInstance().useIcon("waiting").display("Retrieving data from GitHub...");
+      let gist_data = await new Promise((resolve, reject) => {
+        let url = `https://api.github.com/users/${username}/gists`;
+        let req = new qx.io.request.Jsonp(url);
+        req.addListener("success", e => {
+          cboulanger.eventrecorder.InfoPane.getInstance().hide();
+          let response = req.getResponse();
+          if (response.data && response.message) {
+            reject(response.message);
+          } else if (response.data) {
+            resolve(response.data);
+          }
+          reject(new Error("Invalid response."));
+        });
+        req.addListener("statusError", reject);
+        req.send();
+      });
+
+      let suffix = `.eventrecorder`;
+      if (!answer.show_all) {
+        suffix = "." + this._getApplicationName() + suffix;
+      }
+      let options = gist_data
+        .filter(entry => entry.description && Object.values(entry.files).some(file => file.filename.endsWith(suffix)))
+        .map(entry => ({
+          label: entry.description,
+          value: entry.id
+        }));
+      if (options.length===0) {
+        dialog.Dialog.error("No matching gists were found.");
+        return;
+      }
+      formData = {
+        id: {
+          type: "SelectBox",
+          label: "Script",
+          options
+        }
+      };
+      answer = await dialog.Dialog.form("Please select from the following scripts:", formData).promise();
+
+      if (!answer || !answer.id) {
+        return;
+      }
+      this.setScript(await this._getRawGist(answer.id));
+    },
+
+    /**
+     * Loads a gist by its id.
+     * @return {Promise<void>}
+     */
+    async loadGistById() {
+      let answer = await dialog.Dialog.prompt("Please enter the GitHub username");
+      if (!answer || !answer.id) {
+        return;
+      }
+      this.setScript(await this._getRawGist(answer.id));
     }
   },
 

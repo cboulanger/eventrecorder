@@ -68,7 +68,30 @@ qx.Interface.define("cboulanger.eventrecorder.IPlayer", {
     getExportFileExtension() {},
 
 
-    /***** COMMANDS ******/
+    /*
+    ============================================================================
+       COMMANDS
+    ============================================================================
+    */
+
+    /**
+     * Asserts that the current url matches the given value (RegExp)
+     * @param uri {String}
+     */
+    cmd_assert_uri(uri) {},
+
+    /**
+     * Asserts that the current url matches the given value (RegExp)
+     * @param uri_regexp {String} A string containing a regular expression
+     */
+    cmd_assert_match_uri(uri_regexp) {},
+
+    /**
+     * Sets the player mode
+     * @param mode
+     * @return {string}
+     */
+    cmd_config_set_mode(mode) {},
 
     /**
      * Starts a block of statements that return promises. The player will wait for
