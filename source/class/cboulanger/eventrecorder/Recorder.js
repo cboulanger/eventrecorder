@@ -29,8 +29,10 @@ qx.Class.define("cboulanger.eventrecorder.Recorder", {
    */
   construct : function() {
     this.base(arguments);
+
     this.__excludeIds = [];
     this.__lines = [];
+
     this.addGlobalEventListener((target, event) => {
       if (!this.isRunning()) {
         return;
@@ -50,8 +52,11 @@ qx.Class.define("cboulanger.eventrecorder.Recorder", {
   },
 
   properties: {
-
-
+    mode: {
+      check: ["overwrite", "append"],
+      nullable: false,
+      init: "overwrite"
+    }
   },
 
   /**
@@ -95,16 +100,48 @@ qx.Class.define("cboulanger.eventrecorder.Recorder", {
     },
 
     /**
+     * Returns the recorded script
+     * @return {String}
+     */
+    getScript() {
+      return this.__lines.join("\n");
+    },
+
+    /**
+     * Sets the script to which the recorder should append new events
+     * @param script {String}
+     */
+    setScript(script) {
+      if (script) {
+        qx.core.Assert.assertString(script);
+        this.__lines = script.split(/\n/);
+      } else {
+        this.__lines = [];
+      }
+    },
+
+    /**
      * Called by start()
      */
     beforeStart() {
-      this.__lines = [
-        `# website to test`,
-        `assert-uri ${window.location.href}`,
-        `# player mode (test|presentation)`,
-        `config-set-mode presentation`,
-        ""
-      ];
+      switch (this.getMode()) {
+        case "overwrite":
+          this.__lines = [
+            `# website to test`,
+            `assert-uri ${window.location.href}`,
+            `# player mode (test|presentation)`,
+            `config-set-mode presentation`,
+            ""
+          ];
+          break;
+        case "append":
+          this.__lines = this.__lines.concat([
+            "",
+            `# appended at ${(new Date()).toLocaleString()}`,
+            ""
+          ]);
+          break;
+      }
       this.__lastEventTimestamp = 0;
     },
 
@@ -127,6 +164,9 @@ qx.Class.define("cboulanger.eventrecorder.Recorder", {
       return true;
     },
 
+    /**
+     * Executed after stop()
+     */
     afterStop() {
       this.__lastEventTimestamp = 0;
     },
@@ -264,14 +304,6 @@ qx.Class.define("cboulanger.eventrecorder.Recorder", {
         lines.unshift(`delay ${msSinceLastEvent}`);
       }
       return lines;
-    },
-
-    /**
-     * Returns the recorded script
-     * @return {String}
-     */
-    getScript() {
-      return this.__lines.join("\n");
     }
   }
 });

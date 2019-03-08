@@ -101,6 +101,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
    * Constructor
    * @param caption {String} The caption of the window. Will be used to create
    * an object id.
+   * TODO: use child controls, then we don't need to assign object ids to the buttons!
    */
   construct: function(caption="Event Recorder") {
     this.base(arguments);
@@ -359,6 +360,9 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
      */
     _applyScript(value, old) {
       qx.bom.storage.Web.getSession().setItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.SCRIPT, value);
+      if (this.getRecorder()) {
+        this.getRecorder().setScript(value);
+      }
     },
 
     /**
@@ -473,6 +477,103 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     },
 
     /**
+     * Sets up an editor in the given window
+     * @param win {qx.ui.window.Window}
+     * @private
+     */
+    __setupEditor(win) {
+      qookery.contexts.Qookery.loadResource(
+        qx.util.ResourceManager.getInstance().toUri("cboulanger/eventrecorder/forms/editor.xml"), this,
+        xmlSource => {
+          let xmlDocument = qx.xml.Document.fromString(xmlSource);
+          let parser = qookery.Qookery.createFormParser();
+          let formComponent = parser.parseXmlDocument(xmlDocument);
+          formComponent.setQxObjectId("editor");
+          this.addOwnedQxObject(formComponent);
+          let editorWidget = formComponent.getMainWidget();
+          win.add(editorWidget);
+          this.bind("script", formComponent.getModel(), "leftEditorContent");
+          let formModel = formComponent.getModel();
+          formModel.bind("leftEditorContent", this, "script");
+          formModel.addListener("changeTargetScriptType", e => this.translateTo(formModel.getTargetScriptType(), formModel.getTargetMode()));
+          formModel.addListener("changeTargetMode", e => this.translateTo(formModel.getTargetScriptType(), formModel.getTargetMode()));
+          qx.event.Timer.once(() => this.__setupAutocomplete(), this, 1000);
+          parser.dispose();
+          this.edit();
+        });
+    },
+
+    /**
+     * Configures the autocomplete feature in the editor(s)
+     * @private
+     */
+    __setupAutocomplete () {
+      const langTools = ace.require("ace/ext/language_tools");
+      let tokens = [];
+      let iface = qx.Interface.getByName("cboulanger.eventrecorder.IPlayer").$$members;
+      for (let key of Object.getOwnPropertyNames(iface)) {
+        if (key.startsWith("cmd_") && typeof iface[key] == "function") {
+          let code = iface[key].toString();
+          let params = code.slice(code.indexOf("(") + 1, code.indexOf(")")).split(/,/).map(p => p.trim());
+          let caption = key.substr(4).replace(/_/g, "-");
+          let snippet = caption + " " + params.map((p, i) => `\${${i+1}:${p}}`).join(" ") + "\$0";
+          let meta = params.join(" ");
+          let value = null;
+          tokens.push({caption, type: "command", snippet, meta, value});
+        }
+      }
+      let ids = [];
+      let traverseObjectTree = function(obj) {
+        if (typeof obj.getQxObjectId !== "function") {
+          return;
+        }
+        let id = obj.getQxObjectId();
+        if (id) {
+          ids.push(qx.core.Id.getAbsoluteIdOf(obj));
+        }
+        for (let owned of obj.getOwnedQxObjects()) {
+          traverseObjectTree(owned);
+        }
+      };
+      let registeredObjects = Object.values(qx.core.Id.getInstance().__registeredObjects); //FIXME
+      for (let obj of registeredObjects) {
+        traverseObjectTree(obj);
+      }
+      for (let id of ids) {
+        tokens.push({caption: id, type: "id", value: id});
+      }
+      const player = this.getPlayer();
+      const completer = {
+        getCompletions: function (editor, session, pos, prefix, callback) {
+          if (prefix.length === 0) {
+            callback(null, []);
+            return;
+          }
+          let line = editor.session.getLine(pos.row).substr(0, pos.column);
+          let numberOfTokens = player._tokenize(line).length;
+          let options = tokens
+          // filter on positional argument
+            .filter(token => (token.type === "command" && numberOfTokens === 1) || (token.type === "id" && numberOfTokens === 2))
+            // filter on word match
+            .filter(token => token.caption.toLocaleLowerCase().substr(0, prefix.length) === prefix.toLocaleLowerCase())
+            // create popup data
+            .map(token => {
+              token.score = 100 - (token.caption.length - prefix.length);
+              return token;
+            });
+          callback(null, options);
+        }
+      };
+      langTools.addCompleter(completer);
+    },
+
+    /*
+     ===========================================================================
+       PUBLIC API
+     ===========================================================================
+     */
+
+    /**
      * Returns a player instance. Caches the result
      * @param type
      * @private
@@ -494,14 +595,26 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       return player;
     },
 
-    /********* PUBLIC API **********/
-
     /**
      * Starts recording
      */
-    record() {
-      this.resetScript();
-      this.getRecorder().start();
+    async record() {
+      let recorder = this.getRecorder();
+      if (this.getScript().trim()!=="") {
+        let mode = await dialog.Dialog.select(
+          "Do you want to overwrite your script or append new events?",
+          [
+            {label: "Append", value: "append"},
+            {label: "Overwrite", value: "overwrite"}
+          ]
+        ).promise();
+        if (!mode) {
+          this.getQxObject("record").setValue(false);
+          return;
+        }
+        recorder.setMode(mode);
+      }
+      recorder.start();
     },
 
     /**
@@ -571,89 +684,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
         win.center();
       });
       this.__editorWindow = win;
-
-      qookery.contexts.Qookery.loadResource(
-        qx.util.ResourceManager.getInstance().toUri("cboulanger/eventrecorder/forms/editor.xml"), this,
-          xmlSource => {
-        let xmlDocument = qx.xml.Document.fromString(xmlSource);
-        let parser = qookery.Qookery.createFormParser();
-        let formComponent = parser.parseXmlDocument(xmlDocument);
-        formComponent.setQxObjectId("editor");
-        this.addOwnedQxObject(formComponent);
-        let editorWidget = formComponent.getMainWidget();
-        win.add(editorWidget);
-        this.bind("script", formComponent.getModel(), "leftEditorContent");
-        let formModel = formComponent.getModel();
-        formModel.bind("leftEditorContent", this, "script");
-        formModel.addListener("changeTargetScriptType", e => this.translateTo(formModel.getTargetScriptType(), formModel.getTargetMode()));
-        formModel.addListener("changeTargetMode", e => this.translateTo(formModel.getTargetScriptType(), formModel.getTargetMode()));
-        qx.event.Timer.once(() => this.__setupAutocomplete(), this, 1000);
-        parser.dispose();
-        this.edit();
-      });
-    },
-
-    /**
-     * @private
-     */
-    __setupAutocomplete: function () {
-      const langTools = ace.require("ace/ext/language_tools");
-      let tokens = [];
-      let iface = qx.Interface.getByName("cboulanger.eventrecorder.IPlayer").$$members;
-      for (let key of Object.getOwnPropertyNames(iface)) {
-        if (key.startsWith("cmd_") && typeof iface[key] == "function") {
-          let code = iface[key].toString();
-          let params = code.slice(code.indexOf("(") + 1, code.indexOf(")")).split(/,/).map(p => p.trim());
-          let caption = key.substr(4).replace(/_/g, "-");
-          let snippet = caption + " " + params.map((p, i) => `\${${i+1}:${p}}`).join(" ") + "\$0";
-          let meta = params.join(" ");
-          let value = null;
-          tokens.push({caption, type: "command", snippet, meta, value});
-        }
-      }
-      let ids = [];
-      let traverseObjectTree = function(obj) {
-        if (typeof obj.getQxObjectId !== "function") {
-          return;
-        }
-        let id = obj.getQxObjectId();
-        if (id) {
-          ids.push(qx.core.Id.getAbsoluteIdOf(obj));
-        }
-        for (let owned of obj.getOwnedQxObjects()) {
-          traverseObjectTree(owned);
-        }
-      };
-      let registeredObjects = Object.values(qx.core.Id.getInstance().__registeredObjects); //FIXME
-      for (let obj of registeredObjects) {
-        traverseObjectTree(obj);
-      }
-      for (let id of ids) {
-        tokens.push({caption: id, type: "id", value: id});
-      }
-      const player = this.getPlayer();
-      const completer = {
-        getCompletions: function (editor, session, pos, prefix, callback) {
-          if (prefix.length === 0) {
-            callback(null, []);
-            return;
-          }
-          let line = editor.session.getLine(pos.row).substr(0, pos.column);
-          let numberOfTokens = player._tokenize(line).length;
-          let options = tokens
-            // filter on positional argument
-            .filter(token => (token.type === "command" && numberOfTokens === 1) || (token.type === "id" && numberOfTokens === 2))
-            // filter on word match
-            .filter(token => token.caption.toLocaleLowerCase().substr(0, prefix.length) === prefix.toLocaleLowerCase())
-            // create popup data
-            .map(token => {
-              token.score = 100 - (token.caption.length - prefix.length);
-              return token;
-            });
-          callback(null, options);
-        }
-      };
-      langTools.addCompleter(completer);
+      this.__setupEditor(win);
     },
 
     /**
