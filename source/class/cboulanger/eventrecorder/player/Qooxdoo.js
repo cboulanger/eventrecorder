@@ -305,13 +305,17 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
     // },
 
     /**
-     * Generates code that sets a selection on widgets that have a `getSelectables()` method
-     * @param id {String} The id of the widget on which the selection is set
-     * @param index {String|Number}
-     * @return {String}
+     * @inheritDoc
      */
-    cmd_set_from_selectables(id, index) {
+    cmd_set_selection_from_selectables(id, index) {
       return `let o = qx.core.Id.getQxObject("${id}"); o.setSelection([o.getSelectables()[${index}]]);`;
+    },
+
+    /**
+     * @inheritDoc
+     */
+    cmd_await_selection_from_selectables(id, index) {
+      return this.generateWaitForEventCode(id, "changeSelection", `{verbatim}[qx.core.Id.getQxObject("${id}").getSelectables()[${index}]]`);
     },
 
     /**

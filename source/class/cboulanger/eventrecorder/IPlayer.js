@@ -298,10 +298,18 @@ qx.Interface.define("cboulanger.eventrecorder.IPlayer", {
     /**
      * Generates code that sets a selection on widgets that have a `getSelectables()` method
      * @param id {String} The id of the widget on which the selection is set
-     * @param index {String|Number}
+     * @param index {String|Number} The index of the selection in the selectables
      * @return {String}
      */
-    cmd_set_from_selectables(id, index) {},
+    cmd_set_selection_from_selectables(id, index) {},
+
+    /**
+     * Generates code that awaits a selection on widgets that have a `getSelectables()` method
+     * @param id {String} The id of the widget on which the selection is set
+     * @param index {String|Number} The index of the selection in the selectables
+     * @return {String}
+     */
+    cmd_await_selection_from_selectables(id, index) {},
 
     /**
      * Resets the selection of a widget that has a `selection` property or a `resetSelection` method.

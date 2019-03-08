@@ -190,9 +190,8 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     this.bind("player", replayButton, "visibility", {
       converter: player => Boolean(player) && player.getCanReplayInBrowser() ? "visible" : "excluded"
     });
-    // enable replay button only if we have a script
-    this.bind("script", replayButton, "enabled", {
-      converter: script => Boolean(script)
+    this.bind("recorder.running", replayButton, "enabled", {
+      converter: v => !v
     });
 
 
@@ -204,6 +203,10 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       toolTipText: "Edit script"
     });
     editButton.addListener("execute", this.edit, this);
+    this.bind("recorder.running", editButton, "enabled", {
+      converter: v => !v
+    });
+
     // this.bind("script", editButton, "enabled", {
     //   converter: v => Boolean(v)
     // });
@@ -216,8 +219,8 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       toolTipText: "Save script"
     });
     saveButton.addListener("execute", this.save, this);
-    this.bind("script", saveButton, "enabled", {
-      converter: v => Boolean(v)
+    this.bind("recorder.running", saveButton, "enabled", {
+      converter: v => !v
     });
 
     // load split button
@@ -244,8 +247,9 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     loadButton.addOwnedQxObject(loadGistByIdButton);
     loadButton.addListener("execute", this.load, this);
     // enable load button only if player can replay scripts in the browser
-    this.bind("player.canReplayInBrowser", loadButton, "enabled");
-
+    this.bind("recorder.running", loadButton, "enabled", {
+      converter: v => !v
+    });
     // add button to parent
     this.add(loadButton);
     this.addOwnedQxObject(loadButton, "load");

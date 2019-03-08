@@ -278,7 +278,7 @@ qx.Class.define("cboulanger.eventrecorder.Recorder", {
               lines.push(`set-selection ${id} ${selectedId}`);
             } else if (typeof target.getSelectables == "function") {
               let index = target.getSelectables().indexOf(selected);
-              lines.push(`set-from-selectables ${id} ${index}`);
+              lines.push(`set-selection-from-selectables ${id} ${index}`);
             }
             break;
           }
