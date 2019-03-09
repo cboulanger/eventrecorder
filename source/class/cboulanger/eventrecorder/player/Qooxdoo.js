@@ -68,7 +68,10 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @return {String}
      */
     cmd_info(text) {
-      return `cboulanger.eventrecorder.InfoPane.getInstance().useIcon("info").display("${text}");`;
+      if (this.getMode() === "presentation") {
+        return `cboulanger.eventrecorder.InfoPane.getInstance().useIcon("info").display("${text}");`;
+      }
+      return `console.log("${text}"`;
     },
 
     /**
@@ -76,7 +79,10 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @return {String}
      */
     cmd_hide_info(text) {
-      return `cboulanger.eventrecorder.InfoPane.getInstance().hide();`;
+      if (this.getMode() === "presentation" ) {
+        return `cboulanger.eventrecorder.InfoPane.getInstance().hide();`;
+      }
+      return "";
     },
 
     /**
@@ -86,7 +92,10 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @return {String}
      */
     cmd_widget_info(id, text) {
-      return `cboulanger.eventrecorder.InfoPane.getInstance().useIcon("info").display("${text}",qx.core.Id.getQxObject("${id}"));`;
+      if (this.getMode() === "presentation") {
+        return `cboulanger.eventrecorder.InfoPane.getInstance().useIcon("info").display("${text}",qx.core.Id.getQxObject("${id}"));`;
+      }
+      return "";
     },
 
     /**

@@ -38,6 +38,19 @@ qx.Class.define("cboulanger.eventrecorder.player.Testcafe", {
   {
 
     /**
+     * overridden to disallow presentation mode
+     * @param value
+     * @param old
+     * @private
+     */
+    _applyMode(value,old) {
+      if (value === "presentation") {
+        this.warn("Presentation mode is not supported, switching to test mode");
+        this.setMode("test");
+      }
+    },
+
+    /**
      * Returns the file extension of the downloaded file in the target language
      * @return {string}
      */

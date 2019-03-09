@@ -106,7 +106,8 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
     mode: {
       check: ["test", "presentation"],
       event: "changeMode",
-      init: "test"
+      init: "test",
+      apply: "_applyMode"
     },
 
     /**
@@ -226,6 +227,14 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      * An array of promises which are to be awaited
      */
     __promises: null,
+
+    /**
+     * Stub to be overridden if needed
+     * @param value
+     * @param old
+     * @private
+     */
+    _applyMode(value,old) {},
 
     /**
      * NOT IMPLEMENTED
@@ -444,6 +453,14 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
       return line;
     },
 
+    _generateScriptFunctions() {
+      let scriptFuncs = [
+        cboulanger.eventrecorder.waitForEvent,
+        cboulanger.eventrecorder.waitForCondition
+      ];
+      return scriptFuncs.map(fn => fn.toString().split(/\n/).map(line => line.trim()).join(""));
+    },
+
     /**
      * Replays a number of script lines
      * @param lines {String[]}
@@ -533,9 +550,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      */
     async replay(script) {
       this.setRunning(true);
-      // register macros & variables
-      let lines = this._handleMeta(script);
-      // count the steps of the script
+      let lines = this._generateScriptFunctions().concat(this._handleMeta(script));
       let steps = 0;
       let await_block= false;
       for (let line of lines) {
@@ -577,7 +592,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      * @private
      */
     _translate(script) {
-      let lines = this._handleMeta(script);
+      let lines = this._generateScriptFunctions().concat(this._handleMeta(script));
       let translatedLines = this._defineVariables();
       for (let line of lines) {
         line = line.trim();
