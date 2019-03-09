@@ -127,10 +127,8 @@ qx.Class.define("cboulanger.eventrecorder.Recorder", {
       switch (this.getMode()) {
         case "overwrite":
           this.__lines = [
-            `# website to test`,
-            `assert-uri ${window.location.href}`,
-            `# player mode (test|presentation)`,
             `config-set-mode presentation`,
+            `assert-match-uri ${document.location.host + document.location.pathname}`,
             ""
           ];
           break;

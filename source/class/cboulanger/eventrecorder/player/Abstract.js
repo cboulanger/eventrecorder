@@ -68,29 +68,69 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
         qxObj = qx.core.Id.getQxObject(qxObj);
       }
       timeout = timeout || this.getTimeout();
+
       return new Promise(((resolve, reject) => {
+        // create a timeout
         let timeoutId = setTimeout(() => {
+          qxObj.removeListener(type, changeEventHandler);
           reject(new Error(timeoutMsg || `Timeout waiting for event "${type}.`));
         }, timeout);
-        qxObj.addListenerOnce(type, e => {
-          let eventdata = e instanceof qx.event.type.Data ? e.getData() : null;
+
+        // function to create a listener for the change event
+        let changeEventHandler = e => {
+          let app = qx.core.Init.getApplication();
+          let eventdata = e instanceof qx.event.type.Data ? e.getData() : undefined;
           if (expectedData !== undefined) {
-            if (qx.lang.Type.isRegExp(expectedData)) {
-              if (!JSON.stringify(eventdata).match(expectedData)) {
-                console.warn(`When waiting for event '${type}' on object ${qxObj}, expected data to match '${expectedData.toString()}', got '${JSON.stringify(eventdata)}'!"`);
-                return;
-              }
-              //console.log(`Success: '${JSON.stringify(eventdata)}' matches '${expectedData.toString()}'!"`);
-            } else if (JSON.stringify(eventdata) !== JSON.stringify(expectedData)) {
-              console.warn(`When waiting for event '${type}' on object ${qxObj}, expected '${JSON.stringify(expectedData)}', got '${JSON.stringify(eventdata)}'!"`);
+            if (eventdata === undefined) {
+              app.warn(`\n--- When waiting for event '${type}' on object ${qxObj}, received 'undefined'`);
+              qxObj.addListenerOnce(type, changeEventHandler);
               return;
+            }
+            if (qx.lang.Type.isArray(expectedData) && qx.lang.Type.isArray(eventdata) && expectedData.length && expectedData[0] instanceof qx.core.Object) {
+              /** a) either match array and check for "live" qooxdoo objects in the array (this is for selections), */
+              for (let [index, expectedItem] of expectedData.entries()) {
+                if (expectedItem !== eventdata[index]) {
+                  app.warn(`\n--- When waiting for event '${type}' on object ${qxObj}, received non-matching array of qooxdoo objects!`);
+                  qxObj.addListenerOnce(type, changeEventHandler);
+                  return;
+                }
+              }
             } else {
-              //console.log(`Success: '${JSON.stringify(eventdata)}' received!`);
+              // convert event data to JSON
+              try {
+                eventdata = JSON.stringify(e.getData());
+              } catch (e) {
+                throw new Error(`\n--- When waiting for event '${type}' on object ${qxObj}, could not stringify event data for comparison.`);
+              }
+              if (qx.lang.Type.isRegExp(expectedData)) {
+                /** b) or match a regular expression, */
+                if (!eventdata.match(expectedData)) {
+                  app.warn(`\n--- When waiting for event '${type}' on object ${qxObj}, expected data to match '${expectedData.toString()}', got ${eventdata}!`);
+                  qxObj.addListenerOnce(type, changeEventHandler);
+                  return;
+                }
+              } else {
+                /* c) or compare JSON equality */
+                try {
+                  expectedData = JSON.stringify(expectedData);
+                } catch (e) {
+                  throw new Error(`When waiting for event '${type}' on object ${qxObj}, could not stringify expected data for comparison.`);
+                }
+                if (eventdata !== expectedData) {
+                  app.warn(`\n--- When waiting for event '${type}' on object ${qxObj}, expected '${JSON.stringify(expectedData)}', got '${JSON.stringify(eventdata)}'!"`);
+                  qxObj.addListenerOnce(type, changeEventHandler);
+                  return;
+                }
+              }
             }
           }
+          app.info(`\n+++ Received correct event '${type}' on object ${qxObj}."`);
           clearTimeout(timeoutId);
           resolve(eventdata);
-        });
+        };
+
+        // add a listener
+        qxObj.addListenerOnce(type, changeEventHandler);
       }));
     }
   },
@@ -508,33 +548,20 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
           continue;
         }
 
-        try {
-          // translate
-          let code = this._translateLine(line);
-          // skip empty lines
-          if (!code) {
-            continue;
-          }
-          this.debug(`${line}\n${"-".repeat(40)}\n${code}`);
-          // execute
-          let result = window.eval(code);
-          if (result instanceof Promise) {
-            try {
-              await result;
-            } catch (e) {
-              throw e;
-            }
-          }
-        } catch (e) {
-          switch (this.getMode()) {
-            case "test":
-              throw e;
-            case "presentation":
-              if (line.startsWith("assert")) {
-                dialog.Dialog.error(e.message);
-                return false;
-              }
-              this.error(e);
+        // translate
+        let code = this._translateLine(line);
+        // skip empty lines
+        if (!code) {
+          continue;
+        }
+        this.debug(`${line}\n${"-".repeat(40)}\n${code}`);
+        // execute
+        let result = window.eval(code);
+        if (result instanceof Promise) {
+          try {
+            await result;
+          } catch (e) {
+            throw e;
           }
         }
       }
@@ -570,10 +597,23 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
       lines = this._defineVariables().concat(lines);
 
       // replay it!
-      let result = await this._play(lines, steps, 0);
+      let result;
+      try {
+        await this._play(lines, steps, 0);
+      } catch (e) {
+        switch (this.getMode()) {
+          case "test":
+            throw e;
+          case "presentation":
+            if (line.startsWith("assert")) {
+              dialog.Dialog.error(e.message);
+              return false;
+            }
+            this.warn(e);
+        }
+      }
       this.setRunning(false);
       this.cmd_hide_info();
-      return result;
     },
 
     /**
@@ -615,7 +655,8 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      */
     generateWaitForConditionCode(condition, timeoutmsg) {
       qx.core.Assert.assertString(condition);
-      return `(cboulanger.eventrecorder.player.Abstract.waitForCondition(() => ${condition},${this.getInterval()},${this.getTimeout()}, "${timeoutmsg||"Timeout waiting for condition to fulfil."}"))`;
+      timeoutmsg = timeoutmsg || `Timeout waiting for condition '${condition}' to fulfil."`;
+      return `(cboulanger.eventrecorder.player.Abstract.waitForCondition(() => ${condition}, ${this.getInterval()}, ${this.getTimeout()}, "${timeoutmsg}"))`;
     },
 
     /**
@@ -636,7 +677,11 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
       } else {
         data = JSON.stringify(data);
       }
-      return `(cboulanger.eventrecorder.player.Abstract.waitForEvent("${id}", "${type}",${data}, ${this.getTimeout()}, "${timeoutmsg||"Timeout waiting for event '"+type+"'"}"))`;
+      if (!timeoutmsg) {
+        timeoutmsg=`Timeout waiting for event '${type}' on '${id}'`;
+      }
+
+      return `(cboulanger.eventrecorder.player.Abstract.waitForEvent("${id}", "${type}",${data}, ${this.getTimeout()}, "${timeoutmsg}"))`;
     },
 
     /**
