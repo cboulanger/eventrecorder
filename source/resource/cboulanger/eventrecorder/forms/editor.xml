@@ -43,10 +43,13 @@
     <button label="Clear" id="clearEditor">
       <script event="execute">
         $.Form.getModel().setLeftEditorContent("");
+        $.Form.getModel().setRightEditorContent("");
       </script>
     </button>
+
     <!-- spacer to keep following widgets to the right -->
     <spacer flex="1" />
+
     <!-- hidden when rightEditorVisible is false -->
     <composite id="export-menu" layout="h-box" spacing="5">
       <script>

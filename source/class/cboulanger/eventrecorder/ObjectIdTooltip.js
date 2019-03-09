@@ -68,8 +68,8 @@ qx.Class.define("cboulanger.eventrecorder.ObjectIdTooltip", {
             break;
         }
         let msg = data !== null ?
-          `${id}: ${type} -> ${data}` :
-          `${id}: ${type}`;
+          `==> ID ${id}: event '${type}' was fired with data ${data}` :
+          `==> ID ${id}: event ${type} was fired.`;
         switch (type) {
           case "pointerover": {
             if (id) {

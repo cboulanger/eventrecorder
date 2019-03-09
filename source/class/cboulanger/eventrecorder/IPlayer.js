@@ -158,7 +158,7 @@ qx.Interface.define("cboulanger.eventrecorder.IPlayer", {
      * @param json {String} A json expression
      * @return {*|string}
      */
-    cmd_await_match_json(id, property, json) {},
+    cmd_await_property_match_json(id, property, json) {},
 
     /**
      * Generates code that causes the given delay (in milliseconds).
@@ -194,6 +194,19 @@ qx.Interface.define("cboulanger.eventrecorder.IPlayer", {
      * @return {*|string}
      */
     cmd_await_event_data(id, type, data) {},
+
+    /**
+     * Generates code that returns a promise which resolves when the object with
+     * the given id fires an event with the given name with event data that
+     * matches, if serialized to JSON, the given json string, which can contain
+     * regular expressions embedded in <! and !>
+     * @param id {String} The id of the object
+     * @param type {String} The type of the event
+     * @param json {String} A JSON string that can contain regular expressions
+     * embedded in <! and !>
+     * @return {*|string}
+     */
+    cmd_await_event_match_json(id, type, json) {},
 
     /**
      * Generates code that returns a promise with resolves when the object with the given id becomes visible and rejects

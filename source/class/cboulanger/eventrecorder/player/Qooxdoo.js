@@ -63,27 +63,21 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
     */
 
     /**
-     * Generates code that displays an informational text centered on the screen
-     * @param text {String} The text to display
-     * @return {String}
+     * @inheritDoc
      */
     cmd_info(text) {
       return `cboulanger.eventrecorder.InfoPane.getInstance().useIcon("info").display("${text}");`;
     },
 
     /**
-     * Generates code that hides the info pane
-     * @return {String}
+     * @inheritDoc
      */
     cmd_hide_info(text) {
       return `cboulanger.eventrecorder.InfoPane.getInstance().hide();`;
     },
 
     /**
-     * Generates code that displays an informational text placed next to the widget with the given id.
-     * @param id {String} The id of the widget
-     * @param text {String} The text to display
-     * @return {String}
+     * @inheritDoc
      */
     cmd_widget_info(id, text) {
       return `cboulanger.eventrecorder.InfoPane.getInstance().useIcon("info").display("${text}",qx.core.Id.getQxObject("${id}"));`;
@@ -120,12 +114,12 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
     /**
      * @inheritDoc
      */
-    cmd_await_match_json(id, property, json) {
+    cmd_await_property_match_json(id, property, json) {
       if (!qx.lang.Type.isString(json)) {
         json = JSON.stringify(json);
       }
       let regExLiteral = this.createRegexpForJsonComparison(json);
-      let timeoutmsg = `Timeout waiting for ID(${id}).${property} to match /${regExLiteral.replace(/"/g, "\\\"")}/.`;
+      let timeoutmsg = `Timeout waiting for ID(${id}).${property} to match /${regExLiteral.replace(/\\/,"\\\\").replace(/"/g, "\\\"")}/.`;
       let type = "change" + qx.lang.String.firstUp(property);
       return this.generateWaitForEventCode(id, type, `{verbatim}/${regExLiteral}/`, timeoutmsg);
     },
@@ -149,10 +143,36 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * the given id fires an event with the given name.
      * @param id {String} The id of the object
      * @param type {String} The type of the event
-     * @param data {*} The data to expect. Must be serializable to JSON
-     * @return {*|string}
+     * @param data {*|undefined} Optional data to expect. Must be serializable to JSON.
+     * If undefined, accept any or no event data.
+     * @return {String}
      */
     cmd_await_event_data(id, type, data) {
+      if (data !== undefined) {
+        try {
+          JSON.stringify(data);
+        } catch (e) {
+          throw new Error("Data must be serializable to JSON");
+        }
+      }
+      if (this.getMode() === "presentation") {
+        return this.generateWaitForEventTimoutFunction(id, type, data, `if (window["${this._globalRef}"].isRunning()) cboulanger.eventrecorder.InfoPane.getInstance().show().animate(); else return resolve();`);
+      }
+      return this.generateWaitForEventCode(id, type, data);
+    },
+
+    /**
+     * Generates code that returns a promise which resolves when the object with
+     * the given id fires an event with the given name with event data that
+     * matches, if serialized to JSON, the given json string, which can contain
+     * regular expressions embedded in <! and !>
+     * @param id {String} The id of the object
+     * @param type {String} The type of the event
+     * @param json {String} A JSON string that can contain regular expressions
+     * embedded in <! and !>
+     * @return {*|string}
+     */
+    cmd_await_event_match_json(id, type, json) {
       if (this.getMode()==="presentation") {
         return this.generateWaitForEventTimoutFunction(id, type, data, `if (window["${this._globalRef}"].isRunning()) cboulanger.eventrecorder.InfoPane.getInstance().show().animate(); else return resolve();`);
       }
@@ -166,7 +186,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @return {String}
      */
     cmd_assert_appeared(id) {
-      return `qx.core.Assert.assertTrue(qx.core.Id.getQxObject("${id}").isVisible())`;
+      return `qx.core.Assert.assertTrue(qx.core.Id.getQxObject("${id}").isVisible(),"Failed: Object with id ${id} is not visible.")`;
     },
 
     /**
@@ -181,7 +201,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @return {String}
      */
     cmd_assert_disappeared(id) {
-      return `qx.core.Assert.assertFalse(qx.core.Id.getQxObject("${id}").isVisible())`;
+      return `qx.core.Assert.assertFalse(qx.core.Id.getQxObject("${id}").isVisible(),"Failed: Object with id ${id} is visible.")`;
     },
 
     /**
@@ -190,31 +210,21 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
     cmd_check_disappear: this.cmd_assert_disappeared,
 
     /**
-     * Generates code that fires an `execute` event on the object with the given id (Button, Command)
-     * @param id {String}
-     * @return {String}
+     * @inheritDoc
      */
     cmd_execute(id) {
       return `qx.core.Id.getQxObject("${id}").fireEvent("execute");`;
     },
 
     /**
-     * Generates code that sets the `value` property of the object with the given id
-     * @param id {String}
-     * @param data {String} A JSON expression
-     * @return {string}
+     * @inheritDoc
      */
     cmd_set_value(id, data) {
       return `qx.core.Id.getQxObject("${id}").setValue(${JSON.stringify(data)});`;
     },
 
     /**
-     * Generates code that returns a promise which resolves when the value
-     * property of the object with the given id is assigned the given value.
-     * The value must be given in JSON format, i.e. strings must be quoted.
-     * @param id {String} The id of the object
-     * @param value {String} The value, must be serializable to JSON
-     * @return {*|string}
+     * @inheritDoc
      */
     cmd_await_value(id, value) {
       return this.cmd_await_property_value(id, "value", value);
@@ -279,7 +289,8 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @return {String}
      */
     cmd_await_selection(id, selectedId) {
-      return this.generateWaitForEventCode(id, "changeSelection", `{verbatim}[qx.core.Id.getQxObject("${selectedId}")]`);
+      let timeoutmsg = `Timeout when waiting for selection of object '${selectedId}' on '${id}'.`;
+      return this.generateWaitForEventCode(id, "changeSelection", `{verbatim}[qx.core.Id.getQxObject("${selectedId}")]`,timeoutmsg);
     },
 
     /**
