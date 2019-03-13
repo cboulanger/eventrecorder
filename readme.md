@@ -1,6 +1,6 @@
 # Qooxoodo Event Recorder
 
-![GitHub Logo](/docs/eventrecorder-screenshot.png)
+![Eventrecorder screenshot](/docs/eventrecorder-screenshot.png)
 
 This library allows a) to record user interaction for replay in tests, or for use in
 a presentation/screencast/"take-a-tour" scenario and/or b) to edit the scripts that
