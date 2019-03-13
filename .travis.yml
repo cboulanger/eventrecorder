@@ -3,31 +3,29 @@ node_js: "8"
 
 dist: trusty
 
-#addons:
-#  firefox: latest
-#  apt:
-#    sources:
-#      - google-chrome
-#    packages:
-#      - google-chrome-stable fluxbox
+addons:
+  firefox: latest
+  apt:
+    sources:
+      - google-chrome
+    packages:
+      - google-chrome-stable fluxbox
 
-#before_install:
-#  - stty cols 80
+before_install:
+  - stty cols 80
 
 install:
-#  - "export DISPLAY=:99.0"
-#  - "sh -e /etc/init.d/xvfb start"
-#  - sleep 3
-#  - fluxbox >/dev/null 2>&1 &
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+  - sleep 3
+  - fluxbox >/dev/null 2>&1 &
   - npm install -g qxcompiler
-  - qx contrib update --search --token=$GITHUB_TOKEN
   - qx contrib install
-  - qx compile
-#  - qx serve &
-#  - sleep 60 # Wait for compilation to finish
+  - qx serve &
+  - sleep 60 # Wait for compilation to finish
 
 script:
-  - # npx testcafe chrome,firefox tests/testcafe.js  --app-init-delay 10000
+  - npx testcafe chrome,firefox tests/testcafe.js  --app-init-delay 10000
 
 deploy:
   provider: pages

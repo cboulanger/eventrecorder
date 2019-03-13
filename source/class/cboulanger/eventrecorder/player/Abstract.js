@@ -53,7 +53,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
        * the given object fires an event with the given type and will reject if
        * the timeout is reached before that happens.
        *
-       * @param qxObj {qx.core.Object|String} If string, assume it is the object id
+       * @param qxObjOrId {qx.core.Object|String} If string, assume it is the object id
        * @param type {String} Type of the event
        * @param expectedData {*|undefined} The data to expect. If undefined,
        * resolve. If a regular expression, the event data as a JSON literal will
@@ -64,9 +64,13 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
        * @param timeoutMsg {String|undefined} An optional addition to the timeout error message
        * @return {Promise}
        */
-      waitForEvent: function(qxObj, type, expectedData, timeout, timeoutMsg) {
-        if (qx.lang.Type.isString(qxObj)) {
-          qxObj = qx.core.Id.getQxObject(qxObj);
+      waitForEvent: function(qxObjOrId, type, expectedData, timeout, timeoutMsg) {
+        let qxObj = qxObjOrId;
+        if (qx.lang.Type.isString(qxObjOrId)) {
+          qxObj = qx.core.Id.getQxObject(qxObjOrId);
+          if (!qxObj) {
+            throw new Error(`Invalid object id ${qxObjOrId}`);
+          }
         }
         timeout = timeout || this.getTimeout();
 
@@ -222,7 +226,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
     this.__commands = [];
     this.__macros = [];
     this.__macro_stack = [];
-    this._globalRef = "eventrecorder_" + this.basename;
+    this._globalRef = "eventrecorder_player";
     window[this._globalRef] = this;
     // inject utility functions in the statics section into the global scope
     // so that they are available in eval()
@@ -281,7 +285,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      * @param old
      * @private
      */
-    _applyMode(value,old) {},
+    _applyMode(value, old) {},
 
     /**
      * NOT IMPLEMENTED
@@ -502,12 +506,16 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
 
     /**
      * Returns the code of utility functions needed for the command implementations.
+     * @param script {String} Optional script code to be searched for the function name.
+     * If given, omit function if not present in the script code
      * @return {string[]}
      * @private
      */
-    _generateUtilityFunctionsCode() {
-      return Object.values(this.self(arguments).utilityFunctions)
-        .map(fn => fn.toString()
+    _generateUtilityFunctionsCode(script) {
+      return Object.entries(this.self(arguments).utilityFunctions)
+        .filter(([name]) => script ? script.match(new RegExp(name)) : true)
+        .map(([name, fn]) => fn.toString()
+          .replace(/function \(/, `function ${name}(`)
           // remove comments, see https://stackoverflow.com/questions/5989315/regex-for-match-replacing-javascript-comments-both-multiline-and-inline
           .replace(/\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm, "$1")
           .split(/\n/)
@@ -642,7 +650,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      */
     _translate(script) {
       let lines = this._handleMeta(script);
-      let translatedLines = this._generateUtilityFunctionsCode().concat(this._defineVariables());
+      let translatedLines = this._defineVariables();
       for (let line of lines) {
         line = line.trim();
         let [command, ...args] = this._tokenize(line);
@@ -652,7 +660,10 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
           .filter(l => Boolean(l));
         translatedLines = translatedLines.concat(new_lines);
       }
-      return translatedLines.join("\n");
+      let translation = translatedLines.join("\n");
+      return this._generateUtilityFunctionsCode(translation)
+        .concat(translatedLines)
+        .join("\n");
     },
 
     /**
@@ -807,7 +818,6 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      * @param uri_regexp {String} A string containing a regular expression
      */
     cmd_assert_match_uri(uri_regexp) {
-
       if (this.getMode()==="presentation") {
         return `if(!window.location.href.match(new RegExp("${uri_regexp}"))){alert("The eventrecorder script is meant to be played on a website that matches '${uri_regexp}'.");window["${this._globalRef}"].stop();}`;
       }

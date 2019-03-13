@@ -66,13 +66,20 @@ qx.Class.define("cboulanger.eventrecorder.player.Testcafe", {
     translate(script) {
       let lines = this._translate(script).split(/\n/);
       return [
-        "fixture `<Test suite title>`",
+        "fixture `Test suite title`",
         "  .page `" + window.location.href + "`;",
         "",
-        "test('<Test description>', async t => {",
+        "test('Test description', async t => {",
         ...lines.map(line => "  " + line),
         "});"
       ].join("\n");
+    },
+
+    /**
+     * @inheritDoc
+     */
+    _generateUtilityFunctionsCode(script) {
+      return this.base(arguments, script).map(line => `await t.eval(() => {${line}});`);
     },
 
     /**
@@ -84,7 +91,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Testcafe", {
     _translateLine(line) {
       let code = this.base(arguments, line);
       if (code && !code.startsWith("await t.") && !code.startsWith("//")) {
-        code = code.endsWith(";") ?
+        code = (code.endsWith(";") || code.endsWith("}")) ?
           `await t.eval(()=>{${code}});`:
           `await t.eval(()=>${code});`;
       }

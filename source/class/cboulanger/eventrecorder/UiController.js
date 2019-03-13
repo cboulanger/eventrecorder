@@ -180,7 +180,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
 
     // replay
     let replayButton = new qx.ui.form.ToggleButton();
-    replayButton.addListener("changeValue", this._toggleReplay, this);
+    replayButton.addListener("changeValue", this._startReplay, this);
     replayButton.set({
       enabled: false,
       icon:"eventrecorder.icon.start",
@@ -301,16 +301,14 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     this.setPlayer(player);
 
     // autoplay
-    const autoplay = uri_info.queryKey.eventrecorder_autoplay ||
-      storage.getItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.AUTOPLAY) ||
-      env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.AUTOPLAY) || false;
-    this.setAutoplay(autoplay);
+    let autoplay = uri_info.queryKey.eventrecorder_autoplay ||
+      storage.getItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.AUTOPLAY) || false;
 
-    // external script source
+    // play script from gist, unless autoplay is enabled (this means the script has been altered)
     let gist_id = uri_info.queryKey.eventrecorder_gist_id ||
       env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.GIST_ID);
-
-    if (gist_id) {
+    if (gist_id && !autoplay) {
+      autoplay = env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.AUTOPLAY);
       this._getRawGist(gist_id)
         .then(gist => {
           // if the eventrecorder itself is scriptable, run the gist in a separate player without GUI
@@ -322,6 +320,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
             this.setScript(gist);
             if (autoplay) {
               this.replay();
+              this.setAutoplay(false);
             }
           }
         })
@@ -334,6 +333,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
         this.setScript(script);
         if (autoplay) {
           this.replay();
+          this.setAutoplay(false);
         }
       }
     }
@@ -390,11 +390,11 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     },
 
     /**
-     * Event handler for replay toggle button
+     * Event handler for replay button
      * @param e
      * @private
      */
-    _toggleReplay(e) {
+    _startReplay(e) {
       if (e.getData()) {
         // start
         if (this.getScript()) {
@@ -496,6 +496,9 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
           this.addOwnedQxObject(formComponent);
           let editorWidget = formComponent.getMainWidget();
           win.add(editorWidget);
+          win.setQxObjectId("window");
+          formComponent.addOwnedQxObject(win);
+          editorWidget.addListener("appear", () => formComponent.getModel().setLeftEditorContent(this.getScript()));
           this.bind("script", formComponent.getModel(), "leftEditorContent");
           let formModel = formComponent.getModel();
           formModel.bind("leftEditorContent", this, "script");
