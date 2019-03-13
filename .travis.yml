@@ -21,8 +21,8 @@ install:
   - fluxbox >/dev/null 2>&1 &
   - npm install -g qxcompiler
   - qx contrib install
-  - qx serve &
-  - sleep 60 # Wait for compilation to finish
+  - qx serve --target=build &
+  - sleep 120 # Wait for compilation to finish
 
 script:
   - npx testcafe chrome,firefox tests/testcafe.js  --app-init-delay 10000
@@ -31,6 +31,6 @@ deploy:
   provider: pages
   skip-cleanup: true
   github-token: $GITHUB_TOKEN
-  local-dir: compiled/source
+  local-dir: compiled/build
   on:
     branch: master

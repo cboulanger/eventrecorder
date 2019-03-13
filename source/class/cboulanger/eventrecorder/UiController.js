@@ -457,6 +457,9 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
         let req = new qx.io.request.Jsonp(url);
         req.addListener("success", e => {
           let response = req.getResponse();
+          if (!qx.lang.Type.isObject(response.data.files)) {
+            reject(new Error("Unexpected response: " + JSON.stringify(response)));
+          }
           let filenames = Object.getOwnPropertyNames(response.data.files);
           let file = response.data.files[filenames[0]];
           if (!file.filename.endsWith(".eventrecorder")) {
@@ -465,7 +468,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
           let script = file.content;
           resolve(script);
         });
-        req.addListener("statusError", reject);
+        req.addListener("statusError", e => reject(new Error(e.getData())));
         req.send();
       });
     },

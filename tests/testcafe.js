@@ -16,6 +16,6 @@ test('Test the eventrecorder presentation', async t => {
   await t.eval(()=>{qx.core.Id.getQxObject("eventrecorder/stop").fireEvent("execute");});
   await t.eval(()=>{qx.core.Id.getQxObject("eventrecorder/edit").fireEvent("execute");});
   await t.wait(500);
-  await t.eval(()=>qx.core.Assert.assertTrue(qx.core.Id.getQxObject("eventrecorder/editor/window").isVisible(),"Failed: Object with id eventrecorder/editor/window is visible."));
+  await t.eval(()=>qx.core.Assert.assertTrue(qx.core.Id.getQxObject("eventrecorder/editor/window").isVisible(),"Failed: Object with id eventrecorder/editor/window is not visible."));
   await t.eval(()=>{qx.core.Id.getQxObject("eventrecorder/editor/translateButton").fireEvent("execute");});
 });
