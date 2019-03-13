@@ -50,19 +50,19 @@
     },
     {
       "library_name": "Qookery",
-      "library_version": "0.6.0",
+      "library_version": "0.7.0-pre",
       "uri": "ergobyte/qookery/qookery",
       "repo_name": "ergobyte/qookery",
-      "repo_tag": "v0.6.0",
-      "path": "../qookery/qookery" // FIXME
+      "repo_tag": "v0.7.0-pre",
+      "path": "contrib/ergobyte_qookery_v0.7.0-pre/qookery"
     },
     {
       "library_name": "Qookery Ace",
-      "library_version": "0.6.0",
+      "library_version": "0.7.0-pre",
       "uri": "ergobyte/qookery/qookeryace",
       "repo_name": "ergobyte/qookery",
-      "repo_tag": "v0.6.0",
-      "path": "../qookery/qookeryace" // FIXME
+      "repo_tag": "v0.7.0-pre",
+      "path": "contrib/ergobyte_qookery_v0.7.0-pre/qookeryace"
     },
     {
       "library_name": "Dialog",

@@ -69,7 +69,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
       if (this.getMode() === "presentation") {
         return `cboulanger.eventrecorder.InfoPane.getInstance().useIcon("info").display("${text}");`;
       }
-      return `console.log("${text}"`;
+      return `console.log("${text}");`;
     },
 
     /**
@@ -142,19 +142,13 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      */
     cmd_await_event(id, type) {
       if (this.getMode()==="presentation") {
-        return this.generateWaitForEventTimoutFunction(id, type, null, `if (window["${this._globalRef}"].isRunning()) cboulanger.eventrecorder.InfoPane.getInstance().show().animate(); else return resolve(false)`);
+        return this.generateWaitForEventTimoutFunction(id, type, undefined, `if (window["${this._globalRef}"].isRunning()) cboulanger.eventrecorder.InfoPane.getInstance().show().animate(); else return resolve(false)`);
       }
       return this.generateWaitForEventCode(id, type);
     },
 
     /**
-     * Generates code that returns a promise which resolves when the object with
-     * the given id fires an event with the given name.
-     * @param id {String} The id of the object
-     * @param type {String} The type of the event
-     * @param data {*|undefined} Optional data to expect. Must be serializable to JSON.
-     * If undefined, accept any or no event data.
-     * @return {String}
+     * @inheritDoc
      */
     cmd_await_event_data(id, type, data) {
       if (data !== undefined) {
@@ -171,21 +165,13 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
     },
 
     /**
-     * Generates code that returns a promise which resolves when the object with
-     * the given id fires an event with the given name with event data that
-     * matches, if serialized to JSON, the given json string, which can contain
-     * regular expressions embedded in <! and !>
-     * @param id {String} The id of the object
-     * @param type {String} The type of the event
-     * @param json {String} A JSON string that can contain regular expressions
-     * embedded in <! and !>
-     * @return {*|string}
+     * @inheritDoc
      */
     cmd_await_event_match_json(id, type, json) {
       if (this.getMode()==="presentation") {
-        return this.generateWaitForEventTimoutFunction(id, type, data, `if (window["${this._globalRef}"].isRunning()) cboulanger.eventrecorder.InfoPane.getInstance().show().animate(); else return resolve();`);
+        return this.generateWaitForEventTimoutFunction(id, type, json, `if (window["${this._globalRef}"].isRunning()) cboulanger.eventrecorder.InfoPane.getInstance().show().animate(); else return resolve();`);
       }
-      return this.generateWaitForEventCode(id, type, data);
+      return this.generateWaitForEventCode(id, type, json);
     },
 
     /**
@@ -321,7 +307,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
     // cmd_await_model_selection(id, indexArray) {
     //
     //   return `let o = qx.core.Id.getQxObject("${id}"); o.setSelection(new qx.data.Array(${JSON.stringify(indexArray)}.map(i => o.getModel().getItem(i))))`;
-    //   return `(cboulanger.eventrecorder.player.Abstract.waitForEvent(qx.core.Id.getQxObject("${id}").getSelection(), "change",${data}, ${this.getTimeout()}, "${timeoutmsg||"Timeout waiting for event '"+type+"'"}"))`;
+    //   return `(waitForEvent(qx.core.Id.getQxObject("${id}").getSelection(), "change",${data}, ${this.getTimeout()}, "${timeoutmsg||"Timeout waiting for event '"+type+"'"}"))`;
     // },
 
     /**

@@ -202,7 +202,7 @@ qx.Interface.define("cboulanger.eventrecorder.IPlayer", {
      * regular expressions embedded in <! and !>
      * @param id {String} The id of the object
      * @param type {String} The type of the event
-     * @param json {String} A JSON string that can contain regular expressions
+     * @param json {*} A JSON expression that can contain regular expressions
      * embedded in <! and !>
      * @return {*|string}
      */

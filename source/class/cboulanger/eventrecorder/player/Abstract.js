@@ -22,116 +22,118 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
   include : [cboulanger.eventrecorder.MHelperMethods],
 
   statics: {
-    /**
-     * Runs the given function in the interval until it returns true or the
-     * given timeout is reached. Returns a promise that will resolve once the
-     * function returns true or rejects if the timeout is reached.
-     * @param fn {Function} Condition function
-     * @param interval {Number} The interval in which to run the function. Defaults to 100 ms.
-     * @param timeout {Number} The timeout in milliseconds. Defaults to 10 seconds
-     * @param timeoutMsg {String|undefined} An optional addition to the timeout error message
-     * @return {Promise}
-     */
-    waitForCondition: function(fn, interval=100, timeout=10000, timeoutMsg) {
-      return new Promise(((resolve, reject) => {
-        let intervalId = setInterval(() => {
-          if (fn()) {
-            clearInterval(intervalId);
-            resolve();
-          }
-        }, interval);
-        setTimeout(() => {
-          clearInterval(intervalId);
-          reject(new Error(timeoutMsg || `Timeout waiting for condition.`));
-        }, timeout);
-      }));
-    },
-
-    /**
-     * Returns a promise that will resolve (with any potential event data) if
-     * the given object fires an event with the given type and will reject if
-     * the timeout is reached before that happens.
-     *
-     * @param qxObj {qx.core.Object|String} If string, assume it is the object id
-     * @param type {String} Type of the event
-     * @param expectedData {*|undefined} The data to expect. If undefined,
-     * resolve. If a regular expression, the event data as a JSON literal will
-     * be matched with that regex and the promise will resolve when it matches.
-     * Otherwise, the data will be compared with the actual event data both
-     * serialized to JSON.
-     * @param timeout {Number|undefined} The timeout in milliseconds. Defaults to 10 seconds
-     * @param timeoutMsg {String|undefined} An optional addition to the timeout error message
-     * @return {Promise}
-     */
-    waitForEvent: function(qxObj, type, expectedData, timeout, timeoutMsg) {
-      if (qx.lang.Type.isString(qxObj)) {
-        qxObj = qx.core.Id.getQxObject(qxObj);
-      }
-      timeout = timeout || this.getTimeout();
-
-      return new Promise(((resolve, reject) => {
-        // create a timeout
-        let timeoutId = setTimeout(() => {
-          qxObj.removeListener(type, changeEventHandler);
-          reject(new Error(timeoutMsg || `Timeout waiting for event "${type}.`));
-        }, timeout);
-
-        // function to create a listener for the change event
-        let changeEventHandler = e => {
-          let app = qx.core.Init.getApplication();
-          let eventdata = e instanceof qx.event.type.Data ? e.getData() : undefined;
-          if (expectedData !== undefined) {
-            if (eventdata === undefined) {
-              app.warn(`\n--- When waiting for event '${type}' on object ${qxObj}, received 'undefined'`);
-              qxObj.addListenerOnce(type, changeEventHandler);
-              return;
+    utilityFunctions : {
+      /**
+       * Runs the given function in the interval until it returns true or the
+       * given timeout is reached. Returns a promise that will resolve once the
+       * function returns true or rejects if the timeout is reached.
+       * @param fn {Function} Condition function
+       * @param interval {Number} The interval in which to run the function. Defaults to 100 ms.
+       * @param timeout {Number} The timeout in milliseconds. Defaults to 10 seconds
+       * @param timeoutMsg {String|undefined} An optional addition to the timeout error message
+       * @return {Promise}
+       */
+      waitForCondition: function(fn, interval=100, timeout=10000, timeoutMsg) {
+        return new Promise(((resolve, reject) => {
+          let intervalId = setInterval(() => {
+            if (fn()) {
+              clearInterval(intervalId);
+              resolve();
             }
-            if (qx.lang.Type.isArray(expectedData) && qx.lang.Type.isArray(eventdata) && expectedData.length && expectedData[0] instanceof qx.core.Object) {
-              /** a) either match array and check for "live" qooxdoo objects in the array (this is for selections), */
-              for (let [index, expectedItem] of expectedData.entries()) {
-                if (expectedItem !== eventdata[index]) {
-                  app.warn(`\n--- When waiting for event '${type}' on object ${qxObj}, received non-matching array of qooxdoo objects!`);
-                  qxObj.addListenerOnce(type, changeEventHandler);
-                  return;
-                }
+          }, interval);
+          setTimeout(() => {
+            clearInterval(intervalId);
+            reject(new Error(timeoutMsg || `Timeout waiting for condition.`));
+          }, timeout);
+        }));
+      },
+
+      /**
+       * Returns a promise that will resolve (with any potential event data) if
+       * the given object fires an event with the given type and will reject if
+       * the timeout is reached before that happens.
+       *
+       * @param qxObj {qx.core.Object|String} If string, assume it is the object id
+       * @param type {String} Type of the event
+       * @param expectedData {*|undefined} The data to expect. If undefined,
+       * resolve. If a regular expression, the event data as a JSON literal will
+       * be matched with that regex and the promise will resolve when it matches.
+       * Otherwise, the data will be compared with the actual event data both
+       * serialized to JSON.
+       * @param timeout {Number|undefined} The timeout in milliseconds. Defaults to 10 seconds
+       * @param timeoutMsg {String|undefined} An optional addition to the timeout error message
+       * @return {Promise}
+       */
+      waitForEvent: function(qxObj, type, expectedData, timeout, timeoutMsg) {
+        if (qx.lang.Type.isString(qxObj)) {
+          qxObj = qx.core.Id.getQxObject(qxObj);
+        }
+        timeout = timeout || this.getTimeout();
+
+        return new Promise(((resolve, reject) => {
+          // create a timeout
+          let timeoutId = setTimeout(() => {
+            qxObj.removeListener(type, changeEventHandler);
+            reject(new Error(timeoutMsg || `Timeout waiting for event "${type}.`));
+          }, timeout);
+
+          // function to create a listener for the change event
+          let changeEventHandler = e => {
+            let app = qx.core.Init.getApplication();
+            let eventdata = e instanceof qx.event.type.Data ? e.getData() : undefined;
+            if (expectedData !== undefined) {
+              if (eventdata === undefined) {
+                app.warn(`\n--- When waiting for event '${type}' on object ${qxObj}, received 'undefined'`);
+                qxObj.addListenerOnce(type, changeEventHandler);
+                return;
               }
-            } else {
-              // convert event data to JSON
-              try {
-                eventdata = JSON.stringify(e.getData());
-              } catch (e) {
-                throw new Error(`\n--- When waiting for event '${type}' on object ${qxObj}, could not stringify event data for comparison.`);
-              }
-              if (qx.lang.Type.isRegExp(expectedData)) {
-                /** b) or match a regular expression, */
-                if (!eventdata.match(expectedData)) {
-                  app.warn(`\n--- When waiting for event '${type}' on object ${qxObj}, expected data to match '${expectedData.toString()}', got ${eventdata}!`);
-                  qxObj.addListenerOnce(type, changeEventHandler);
-                  return;
+              if (qx.lang.Type.isArray(expectedData) && qx.lang.Type.isArray(eventdata) && expectedData.length && expectedData[0] instanceof qx.core.Object) {
+                /** a) either match array and check for "live" qooxdoo objects in the array (this is for selections), */
+                for (let [index, expectedItem] of expectedData.entries()) {
+                  if (expectedItem !== eventdata[index]) {
+                    app.warn(`\n--- When waiting for event '${type}' on object ${qxObj}, received non-matching array of qooxdoo objects!`);
+                    qxObj.addListenerOnce(type, changeEventHandler);
+                    return;
+                  }
                 }
               } else {
-                /* c) or compare JSON equality */
+                // convert event data to JSON
                 try {
-                  expectedData = JSON.stringify(expectedData);
+                  eventdata = JSON.stringify(e.getData());
                 } catch (e) {
-                  throw new Error(`When waiting for event '${type}' on object ${qxObj}, could not stringify expected data for comparison.`);
+                  throw new Error(`\n--- When waiting for event '${type}' on object ${qxObj}, could not stringify event data for comparison.`);
                 }
-                if (eventdata !== expectedData) {
-                  app.warn(`\n--- When waiting for event '${type}' on object ${qxObj}, expected '${JSON.stringify(expectedData)}', got '${JSON.stringify(eventdata)}'!"`);
-                  qxObj.addListenerOnce(type, changeEventHandler);
-                  return;
+                if (qx.lang.Type.isRegExp(expectedData)) {
+                  /** b) or match a regular expression, */
+                  if (!eventdata.match(expectedData)) {
+                    app.warn(`\n--- When waiting for event '${type}' on object ${qxObj}, expected data to match '${expectedData.toString()}', got ${eventdata}!`);
+                    qxObj.addListenerOnce(type, changeEventHandler);
+                    return;
+                  }
+                } else {
+                  /* c) or compare JSON equality */
+                  try {
+                    expectedData = JSON.stringify(expectedData);
+                  } catch (e) {
+                    throw new Error(`When waiting for event '${type}' on object ${qxObj}, could not stringify expected data for comparison.`);
+                  }
+                  if (eventdata !== expectedData) {
+                    app.warn(`\n--- When waiting for event '${type}' on object ${qxObj}, expected '${JSON.stringify(expectedData)}', got '${JSON.stringify(eventdata)}'!"`);
+                    qxObj.addListenerOnce(type, changeEventHandler);
+                    return;
+                  }
                 }
               }
             }
-          }
-          app.info(`\n+++ Received correct event '${type}' on object ${qxObj}."`);
-          clearTimeout(timeoutId);
-          resolve(eventdata);
-        };
+            app.info(`\n+++ Received correct event '${type}' on object ${qxObj}."`);
+            clearTimeout(timeoutId);
+            resolve(eventdata);
+          };
 
-        // add a listener
-        qxObj.addListenerOnce(type, changeEventHandler);
-      }));
+          // add a listener
+          qxObj.addListenerOnce(type, changeEventHandler);
+        }));
+      }
     }
   },
 
@@ -146,7 +148,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
     mode: {
       check: ["test", "presentation"],
       event: "changeMode",
-      init: "test",
+      init: "presentation",
       apply: "_applyMode"
     },
 
@@ -222,6 +224,11 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
     this.__macro_stack = [];
     this._globalRef = "eventrecorder_" + this.basename;
     window[this._globalRef] = this;
+    // inject utility functions in the statics section into the global scope
+    // so that they are available in eval()
+    for (let [name, fn] of Object.entries(this.self(arguments).utilityFunctions)) {
+      window[name] = fn;
+    }
   },
 
   /**
@@ -493,12 +500,21 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
       return line;
     },
 
-    _generateScriptFunctions() {
-      let scriptFuncs = [
-        cboulanger.eventrecorder.waitForEvent,
-        cboulanger.eventrecorder.waitForCondition
-      ];
-      return scriptFuncs.map(fn => fn.toString().split(/\n/).map(line => line.trim()).join(""));
+    /**
+     * Returns the code of utility functions needed for the command implementations.
+     * @return {string[]}
+     * @private
+     */
+    _generateUtilityFunctionsCode() {
+      return Object.values(this.self(arguments).utilityFunctions)
+        .map(fn => fn.toString()
+          // remove comments, see https://stackoverflow.com/questions/5989315/regex-for-match-replacing-javascript-comments-both-multiline-and-inline
+          .replace(/\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm, "$1")
+          .split(/\n/)
+          .map(line => line.trim())
+          .filter(line => Boolean(line))
+          .join("")
+        );
     },
 
     /**
@@ -577,7 +593,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      */
     async replay(script) {
       this.setRunning(true);
-      let lines = this._generateScriptFunctions().concat(this._handleMeta(script));
+      let lines = this._handleMeta(script);
       let steps = 0;
       let await_block= false;
       for (let line of lines) {
@@ -593,11 +609,8 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
           steps++;
         }
       }
-      // add variable definitions
-      lines = this._defineVariables().concat(lines);
 
       // replay it!
-      let result;
       try {
         await this._play(lines, steps, 0);
       } catch (e) {
@@ -605,10 +618,6 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
           case "test":
             throw e;
           case "presentation":
-            if (line.startsWith("assert")) {
-              dialog.Dialog.error(e.message);
-              return false;
-            }
             this.warn(e);
         }
       }
@@ -632,8 +641,8 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      * @private
      */
     _translate(script) {
-      let lines = this._generateScriptFunctions().concat(this._handleMeta(script));
-      let translatedLines = this._defineVariables();
+      let lines = this._handleMeta(script);
+      let translatedLines = this._generateUtilityFunctionsCode().concat(this._defineVariables());
       for (let line of lines) {
         line = line.trim();
         let [command, ...args] = this._tokenize(line);
@@ -656,7 +665,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
     generateWaitForConditionCode(condition, timeoutmsg) {
       qx.core.Assert.assertString(condition);
       timeoutmsg = timeoutmsg || `Timeout waiting for condition '${condition}' to fulfil."`;
-      return `(cboulanger.eventrecorder.player.Abstract.waitForCondition(() => ${condition}, ${this.getInterval()}, ${this.getTimeout()}, "${timeoutmsg}"))`;
+      return `(waitForCondition(() => ${condition}, ${this.getInterval()}, ${this.getTimeout()}, "${timeoutmsg}"))`;
     },
 
     /**
@@ -665,7 +674,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      * @param id {String} The id of the object to monitor
      * @param type {String} The type of the event to wait for
      * @param data {*|undefined} The data to expect. Must be serializable to JSON. Exception: if the data is a string that
-     * starts with "{verbatim}", use the unquoted string
+     * starts with "{verbatim}", the unquoted string is used
      * @param timeoutmsg {String|undefined} An optional message to be shown if the event hasn't been fired before the timeout.
      * @return {String}
      */
@@ -681,7 +690,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
         timeoutmsg=`Timeout waiting for event '${type}' on '${id}'`;
       }
 
-      return `(cboulanger.eventrecorder.player.Abstract.waitForEvent("${id}", "${type}",${data}, ${this.getTimeout()}, "${timeoutmsg}"))`;
+      return `(waitForEvent("${id}", "${type}",${data}, ${this.getTimeout()}, "${timeoutmsg}"))`;
     },
 
     /**
@@ -692,24 +701,26 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      *
      * @param id {String} The id of the object to monitor
      * @param type {String} The type of the event to wait for
-     * @param data {*|null} The data to expect. Must be serializable to JSON
+     * @param data {*|null} The data to expect. Must be serializable to JSON. In case
+     * of events that do not have data, you MUST explicitly pass 'undefined' as
+     * argument if you use the following arguments
      * @param code {String} The code to execute after the timeout
      * @return {String}
      */
-    generateWaitForEventTimoutFunction(id, type, data=null, code) {
+    generateWaitForEventTimoutFunction(id, type, data, code) {
       qx.core.Assert.assertString(id);
       qx.core.Assert.assertString(type);
       return `(new Promise(async (resolve, reject) => { 
         while (true){
           try {
-            await cboulanger.eventrecorder.player.Abstract.waitForEvent(qx.core.Id.getQxObject("${id}"), "${type}", ${JSON.stringify(data)}, ${this.getTimeout()});
+            await waitForEvent(qx.core.Id.getQxObject("${id}"), "${type}", ${data===undefined?"undefined":JSON.stringify(data)}, ${this.getTimeout()});
             return resolve(); 
           } catch (e) {
             console.debug(e.message);
             ${code};
           }
         }
-      }))`;
+      }))`.split(/\n/).map(l => l.trim()).join("");
     },
 
     /**
@@ -796,6 +807,10 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      * @param uri_regexp {String} A string containing a regular expression
      */
     cmd_assert_match_uri(uri_regexp) {
+
+      if (this.getMode()==="presentation") {
+        return `if(!window.location.href.match(new RegExp("${uri_regexp}"))){alert("The eventrecorder script is meant to be played on a website that matches '${uri_regexp}'.");window["${this._globalRef}"].stop();}`;
+      }
       return `qx.core.Assert.assertMatch(window.location.href, "${uri_regexp}", "Current URL does not match '${uri_regexp}'")`;
     },
 
