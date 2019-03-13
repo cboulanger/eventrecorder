@@ -83,7 +83,8 @@
       "environment": {
         "qx.icontheme": ["Tango" ],
         "eventrecorder.show_progress": true,
-        "eventrecorder.gist_id": "2ce4d5f7107661f1c53b146c498560aa"
+        "eventrecorder.gist_id": "2ce4d5f7107661f1c53b146c498560aa",
+        "eventrecorder.autoplay": true
       }
     },
 //    {
