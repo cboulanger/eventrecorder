@@ -66,13 +66,39 @@ qx serve
 ### As an addition to an existing project
 
 The event recorder can be added to any application without having to change anything
-in the application itself, by simply `include`'ing classes in `compile.json/applications`. 
-(See [this example](compile.json)). 
+in the application itself, by simply including the required classes in the 
+application directives of `compile.json` (See [this example](compile.json)). 
 
 Typically, that would be `"cboulanger.eventrecorder.UiController"`
 and `"cboulanger.eventrecorder.ObjectIdGenerator"`, but it is also possible
 to use the ID generator and a player without the GUI, or a player with or without
 GUI if you assign the `qxObjectId`s yourself. 
+
+Here's a example of the `applications` section of `Manifest.json`
+
+```json5
+{
+ "applications": [
+    {
+      "title": "Foo",
+      "name": "foo",
+      "theme": "foo.theme.Theme",
+      "class": "foo.Application",
+      "bootPath": "source/boot",
+      "include": [
+        "cboulanger.eventrecorder.UiController",
+        "cboulanger.eventrecorder.ObjectIdGenerator",
+        "cboulanger.eventrecorder.ObjectIdTooltip"
+      ],
+      "environment": {
+        "eventrecorder.enabled": true,
+        "eventrecorder.mode": "presentation",
+        "eventrecorder.autoplay": false
+      }
+    },
+    ...
+}
+```
 
 ## API Viewer
 
