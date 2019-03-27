@@ -33,14 +33,6 @@
       "path": "contrib/qooxdoo_qxl.apiviewer_v0.1.12"
     },
     {
-      "library_name": "Playground",
-      "library_version": "0.1.2",
-      "uri": "qooxdoo/qxl.playground",
-      "repo_name": "qooxdoo/qxl.playground",
-      "repo_tag": "v0.1.2",
-      "path": "contrib/qooxdoo_qxl.playground_v0.1.2"
-    },
-    {
       "library_name": "logpane",
       "library_version": "0.1.4",
       "uri": "qooxdoo/qxl.logpane",
@@ -50,19 +42,19 @@
     },
     {
       "library_name": "Qookery",
-      "library_version": "0.7.0-pre",
-      "uri": "ergobyte/qookery/qookery",
-      "repo_name": "ergobyte/qookery",
-      "repo_tag": "v0.7.0-pre",
-      "path": "contrib/ergobyte_qookery_v0.7.0-pre/qookery"
+      "library_version": "0.6.1",
+      "uri": "cboulanger/qookery/qookery",
+      "repo_name": "cboulanger/qookery",
+      "repo_tag": "v0.6.1",
+      "path": "contrib/cboulanger_qookery_v0.6.1/qookery"
     },
     {
       "library_name": "Qookery Ace",
-      "library_version": "0.7.0-pre",
-      "uri": "ergobyte/qookery/qookeryace",
-      "repo_name": "ergobyte/qookery",
-      "repo_tag": "v0.7.0-pre",
-      "path": "contrib/ergobyte_qookery_v0.7.0-pre/qookeryace"
+      "library_version": "0.6.1",
+      "uri": "cboulanger/qookery/qookeryace",
+      "repo_name": "cboulanger/qookery",
+      "repo_tag": "v0.6.1",
+      "path": "contrib/cboulanger_qookery_v0.6.1/qookeryace"
     },
     {
       "library_name": "Dialog",
