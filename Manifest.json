@@ -22,7 +22,7 @@
     "type": "contribution"
   },
   "requires": {
-    "qooxdoo-sdk": "^6.0.0-alpha* || 6.0.0-alpha",
+    "qooxdoo-sdk": "^6.0.0-alpha",
     "cboulanger/qookery/qookery": "^0.6.1",
     "cboulanger/qookery/qookeryace": "^0.6.1",
     "cboulanger/qx-contrib-Dialog": "^2.0.0"

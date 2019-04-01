@@ -91,8 +91,9 @@ Here's a example of the `applications` section of `Manifest.json`
         "cboulanger.eventrecorder.ObjectIdTooltip"
       ],
       "environment": {
+        "module.objectId": true, // the event recorder won't work without this setting
         "eventrecorder.enabled": true,
-        "eventrecorder.mode": "presentation",
+        "eventrecorder.mode": "presentation", // or "test"
         "eventrecorder.autoplay": false
       }
     },
