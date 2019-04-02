@@ -21,7 +21,7 @@ install:
   - fluxbox >/dev/null 2>&1 &
   - npm install -g qxcompiler
   - qx config set github.token $GITHUB_TOKEN
-  - qx contrib update --search
+  - qx contrib update
   - qx contrib install
   - qx serve --target=build &
   - sleep 300 # Wait for compilation to finish
