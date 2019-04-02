@@ -416,13 +416,16 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       let {env, storage, uri_params} = this._getPersistenceProviders();
       let script = storage.getItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.SCRIPT) || "";
       this.initScript(script);
-      let autoplay = uri_params.queryKey.eventrecorder_autoplay || storage.getItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.AUTOPLAY) || env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.AUTOPLAY)|| false;
+      let autoplay = uri_params.queryKey.eventrecorder_autoplay
+        || storage.getItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.AUTOPLAY)
+        || env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.AUTOPLAY)
+        || false;
       this.initAutoplay(autoplay);
       let reloadBeforeReplay = storage.getItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.RELOAD_BEFORE_REPLAY);
       this.initReloadBeforeReplay(reloadBeforeReplay === null ? true : reloadBeforeReplay);
-      let gistId = uri_params.queryKey.eventrecorder_gist_id || env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.GIST_ID);
+      let gistId = uri_params.queryKey.eventrecorder_gist_id || env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.GIST_ID) || null;
       this.initGistId(gistId);
-      let scriptable = Boolean(uri_params.queryKey.eventrecorder_scriptable) || qx.core.Environment.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.SCRIPTABLE);
+      let scriptable = Boolean(uri_params.queryKey.eventrecorder_scriptable) || qx.core.Environment.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.SCRIPTABLE) || false;
       this.initScriptable(scriptable);
       //console.warn({script, autoplay, gistId, reloadBeforeReplay, scriptable});
     },

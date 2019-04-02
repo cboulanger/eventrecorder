@@ -187,7 +187,12 @@ qx.Class.define("cboulanger.eventrecorder.Recorder", {
       const type = event.getType();
       let data = typeof event.getData == "function" ? event.getData() : null;
       let owner = typeof target.getQxOwner == "function" ? target.getQxOwner() : null;
+      console.log({id: id, owner: owner,type: type, data:data, target:target});
       switch (type) {
+        case "dbltap":
+          return [`dbltap ${id}`];
+        case "tap":
+          return [`tap ${id}`];
         case "execute":
           switch (true) {
             case owner instanceof qx.ui.form.DateField:
