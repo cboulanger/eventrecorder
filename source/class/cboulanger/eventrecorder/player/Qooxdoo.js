@@ -211,6 +211,43 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
     },
 
     /**
+     * Generates code that fires an event with the given payload on the object with the given id (Button, Command)
+     * @param id {String}
+     * @param event {String}
+     * @param json {*}
+     * @return {String}
+     */
+    cmd_fire(id,event,data) {
+      if (data) {
+        if (!qx.lang.Type.isString(json)) {
+          json = JSON.stringify(json);
+        }
+        return `qx.core.Id.getQxObject("${id}").fireDataEvent("${event}",${json});`;
+      }
+      else {
+        return `qx.core.Id.getQxObject("${id}").fireEvent("${event}");`;
+      }
+    },/**
+
+    /**
+    * Generates code that fires an `tap` event on the object with the given id (Button, Command)
+    * @param id {String}
+    * @return {String}
+    */
+    cmd_tap(id) {
+      return `qx.core.Id.getQxObject("${id}").fireEvent("tap");`;
+    },
+
+    /**
+    * Generates code that fires an `dbltap` event on the object with the given id (Button, Command)
+    * @param id {String}
+    * @return {String}
+    */
+    cmd_dbltap(id) {
+      return `qx.core.Id.getQxObject("${id}").fireEvent("dbltap");`;
+    },
+
+    /**
      * @inheritDoc
      */
     cmd_set_value(id, data) {
