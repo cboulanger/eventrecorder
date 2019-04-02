@@ -65,14 +65,18 @@ qx serve
 
 ### As an addition to an existing project
 
-The event recorder can be added to any application without having to change anything
-in the application itself, by simply including the required classes in the 
-application directives of `compile.json` (See [this example](compile.json)). 
+The event recorder can be added to any application without having to change
+anything in the application itself. To do this, configure a few environment
+variables and include the required classes in the application directives of
+`compile.json` (See [this example](compile.json)). Typically, that would be
+`"cboulanger.eventrecorder.UiController"` and
+`"cboulanger.eventrecorder.ObjectIdGenerator"`, but it is also possible to use
+the ID generator and a player without the GUI, or a player with or without GUI
+if you assign the `qxObjectId`s yourself.
 
-Typically, that would be `"cboulanger.eventrecorder.UiController"`
-and `"cboulanger.eventrecorder.ObjectIdGenerator"`, but it is also possible
-to use the ID generator and a player without the GUI, or a player with or without
-GUI if you assign the `qxObjectId`s yourself. 
+If you use the UI Controller, you must include "qookery.ace.*" as a depencency.
+A general requirement is to set the environment variables "module.objectId" and
+"eventrecorder.enabled" to `true`.
 
 Here's a example of the `applications` section of `Manifest.json`
 
@@ -88,13 +92,14 @@ Here's a example of the `applications` section of `Manifest.json`
       "include": [
         "cboulanger.eventrecorder.UiController",
         "cboulanger.eventrecorder.ObjectIdGenerator",
-        "cboulanger.eventrecorder.ObjectIdTooltip"
+        "cboulanger.eventrecorder.ObjectIdTooltip",
+        "qookery.ace.*" // required for the UIController
       ],
       "environment": {
-        "module.objectId": true, // the event recorder won't work without this setting
+        "module.objectId": true, // required, the event recorder won't work without this setting
         "eventrecorder.enabled": true,
         "eventrecorder.mode": "presentation", // or "test"
-        "eventrecorder.autoplay": false
+        "eventrecorder.autoplay": false 
       }
     },
     ...

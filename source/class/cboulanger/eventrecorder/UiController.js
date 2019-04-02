@@ -29,7 +29,10 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       PLAYER_MODE:  "eventrecorder.player_mode",
       GIST_ID:      "eventrecorder.gist_id",
       AUTOPLAY:     "eventrecorder.autoplay",
-      SHOW_PROGRESS:"eventrecorder.show_progress"
+      SHOW_PROGRESS:"eventrecorder.show_progress",
+      SCRIPTABLE:   "eventrecorder.scriptable",
+      RELOAD_BEFORE_REPLAY: "eventrecorder.reload_before_replay",
+      SCRIPT_URL:   "eventrecorder.script_url"
     },
     FILE_INPUT_ID : "eventrecorder-fileupload",
     aliases: {
@@ -79,7 +82,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     script: {
       check: "String",
       nullable: true,
-      init: "",
+      deferredInit: true,
       event: "changeScript",
       apply: "_applyScript"
     },
@@ -91,9 +94,42 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     autoplay: {
       check: "Boolean",
       nullable: false,
-      init: false,
+      deferredInit: true,
       event: "changeAutoplay",
       apply: "_applyAutoplay"
+    },
+
+    /**
+     * Whether the application is reloaded before the script is replayed
+     */
+    reloadBeforeReplay: {
+      check: "Boolean",
+      nullable: false,
+      deferredInit: true,
+      event: "changeReloadBeforeReplay",
+      apply: "_applyReloadBeforeReplay"
+    },
+
+    /**
+     * The id of a gist to replay a script from, if any
+     */
+    gistId: {
+      check: "String",
+      nullable: true,
+      deferredInit: true,
+      event: "changeGistId",
+      apply: "_applyGistId"
+    },
+
+    /**
+     * Whether the event recorder is scriptable
+     * (only useful for demos of the eventrecorder itself)
+     */
+    scriptable: {
+      check: "Boolean",
+      nullable: false,
+      deferredInit: true,
+      event: "changeScriptable"
     }
   },
 
@@ -102,9 +138,15 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
    * @param caption {String} The caption of the window. Will be used to create
    * an object id.
    * TODO: use child controls, then we don't need to assign object ids to the buttons!
+   * @ignore(env)
+   * @ignore(storage)
+   * @ignore(uri_params)
+   * @ignore(caption)
    */
   construct: function(caption="Event Recorder") {
     this.base(arguments);
+
+    let {env, storage, uri_params} = this._getPersistenceProviders();
 
     // workaround until icon theme can be mixed into application theme
     const aliasMgr = qx.util.AliasManager.getInstance();
@@ -126,9 +168,9 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       allowGrowY: false
     });
 
+    this._iniPropertiesFromEnvironment();
     this.__players = {};
 
-    const uri_info = qx.util.Uri.parseUri(window.location.href);
     const recorder = new cboulanger.eventrecorder.Recorder();
     this.setRecorder(recorder);
 
@@ -138,8 +180,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     qx.core.Id.getInstance().register(this, objectId);
 
     // do not record events for this widget unless explicitly requested
-    let scriptable = uri_info.queryKey.eventrecorder_scriptable || qx.core.Environment.get("eventrecorder.scriptable");
-    if (!scriptable) {
+    if (!this.getScriptable()) {
       recorder.excludeIds(objectId);
     }
 
@@ -149,6 +190,34 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     });
     this.bind("player.running", this, "caption", {
       converter: v => v ? "Replaying ..." : caption
+    });
+
+    // load split button
+    let loadMenu = new qx.ui.menu.Menu();
+
+    let loadUserGistButton = new qx.ui.menu.Button("Load user gist");
+    loadUserGistButton.addListener("execute", this.loadUserGist, this);
+    loadUserGistButton.setQxObjectId("fromUserGist");
+    loadMenu.add(loadUserGistButton);
+
+    let loadGistByIdButton = new qx.ui.menu.Button("Load gist by id");
+    loadGistByIdButton.addListener("execute", this.loadGistById, this);
+    loadGistByIdButton.setQxObjectId("fromGistById");
+    loadMenu.add(loadGistByIdButton);
+
+    let loadButton = new qx.ui.form.SplitButton();
+    loadButton.set({
+      enabled: false,
+      icon:"eventrecorder.icon.load",
+      toolTipText: "Load script",
+      menu: loadMenu
+    });
+    loadButton.addOwnedQxObject(loadUserGistButton);
+    loadButton.addOwnedQxObject(loadGistByIdButton);
+    loadButton.addListener("execute", this.load, this);
+    // enable load button only if player can replay scripts in the browser
+    this.bind("recorder.running", loadButton, "enabled", {
+      converter: v => !v
     });
 
     // record button
@@ -179,12 +248,20 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     stopButton.addListener("execute", this.stop, this);
 
     // replay
-    let replayButton = new qx.ui.form.ToggleButton();
-    replayButton.addListener("changeValue", this._startReplay, this);
+    let replayMenu = new qx.ui.menu.Menu();
+    replayMenu.add(new qx.ui.menu.Button("Options:"));
+    let optionReload = new qx.ui.menu.CheckBox("Reload page before replay");
+    this.bind("reloadBeforeReplay", optionReload, "value");
+    optionReload.bind("value", this, "reloadBeforeReplay");
+    replayMenu.add(optionReload);
+
+    let replayButton = new cboulanger.eventrecorder.SplitToggleButton();
+    replayButton.addListener("execute", this._startReplay, this);
     replayButton.set({
       enabled: false,
       icon:"eventrecorder.icon.start",
-      toolTipText: "Replay script"
+      toolTipText: "Replay script",
+      menu: replayMenu
     });
     // show replay button only if player is attached and if it can replay a script in the browser
     this.bind("player", replayButton, "visibility", {
@@ -193,6 +270,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     this.bind("recorder.running", replayButton, "enabled", {
       converter: v => !v
     });
+    this.bind("player.running", replayButton, "value");
 
 
     // edit button
@@ -223,33 +301,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       converter: v => !v
     });
 
-    // load split button
-    let loadMenu = new qx.ui.menu.Menu();
 
-    let loadUserGistButton = new qx.ui.menu.Button("Load user gist");
-    loadUserGistButton.addListener("execute", this.loadUserGist, this);
-    loadUserGistButton.setQxObjectId("fromUserGist");
-    loadMenu.add(loadUserGistButton);
-
-    let loadGistByIdButton = new qx.ui.menu.Button("Load gist by id");
-    loadGistByIdButton.addListener("execute", this.loadGistById, this);
-    loadGistByIdButton.setQxObjectId("fromGistById");
-    loadMenu.add(loadGistByIdButton);
-
-    let loadButton = new qx.ui.form.SplitButton();
-    loadButton.set({
-      enabled: false,
-      icon:"eventrecorder.icon.load",
-      toolTipText: "Load script",
-      menu: loadMenu
-    });
-    loadButton.addOwnedQxObject(loadUserGistButton);
-    loadButton.addOwnedQxObject(loadGistByIdButton);
-    loadButton.addListener("execute", this.load, this);
-    // enable load button only if player can replay scripts in the browser
-    this.bind("recorder.running", loadButton, "enabled", {
-      converter: v => !v
-    });
     // add button to parent
     this.add(loadButton);
     this.addOwnedQxObject(loadButton, "load");
@@ -282,14 +334,11 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     input.setAttribute("visibility", "hidden");
     form.appendChild(input);
 
-    const env = qx.core.Environment;
-    const storage = qx.bom.storage.Web.getSession();
-
     // player configuration
-    let playerType = uri_info.queryKey.eventrecorder_type ||
+    let playerType = uri_params.queryKey.eventrecorder_type ||
       env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.PLAYER_TYPE) ||
       "qooxdoo";
-    let mode = uri_info.queryKey.eventrecorder_player_mode ||
+    let mode = uri_params.queryKey.eventrecorder_player_mode ||
       storage.getItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.PLAYER_MODE) ||
       env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.PLAYER_MODE) ||
       "presentation";
@@ -300,42 +349,35 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     });
     this.setPlayer(player);
 
-    // autoplay
-    let autoplay = uri_info.queryKey.eventrecorder_autoplay ||
-      storage.getItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.AUTOPLAY) || false;
 
-    // play script from gist, unless autoplay is enabled (this means the script has been altered)
-    let gist_id = uri_info.queryKey.eventrecorder_gist_id ||
-      env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.GIST_ID);
-    if (gist_id && !autoplay) {
-      autoplay = env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.AUTOPLAY);
-      this._getRawGist(gist_id)
+    let gistId = this.getGistId();
+    let autoplay = this.getAutoplay();
+    let script = this.getScript();
+    if (gistId && !(script && this._scriptUrlMatches())) {
+      this._getRawGist(gistId)
         .then(gist => {
           // if the eventrecorder itself is scriptable, run the gist in a separate player without GUI
-          if (autoplay && scriptable) {
+          if (this.getScriptable()) {
             let gistplayer = new cboulanger.eventrecorder.player.Qooxdoo();
             gistplayer.setMode(mode);
-            gistplayer.replay(gist);
+            if (autoplay) {
+              this.setAutoplay(false);
+              gistplayer.replay(gist);
+            }
           } else {
             this.setScript(gist);
             if (autoplay) {
-              this.replay();
               this.setAutoplay(false);
+              this.replay();
             }
           }
         })
         .catch(e => {
-          throw new Error(`Gist ${gist_id} cannot be loaded: ${e.message}.`);
+          throw new Error(`Gist ${gistId} cannot be loaded: ${e.message}.`);
         });
-    } else {
-      let script = storage.getItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.SCRIPT);
-      if (script) {
-        this.setScript(script);
-        if (autoplay) {
-          this.replay();
-          this.setAutoplay(false);
-        }
-      }
+    } else if (script && autoplay) {
+      this.setAutoplay(false);
+      this.replay();
     }
   },
 
@@ -349,6 +391,41 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
      */
     __editorWindow : null,
     __players : null,
+
+    /**
+     * Returns a map with object providing persistence
+     * @return {{env: qx.core.Environment, storage: qx.bom.storage.Web, uri_params: {}}}
+     * @private
+     */
+    _getPersistenceProviders() {
+      return {
+        env: qx.core.Environment,
+        storage: qx.bom.storage.Web.getSession(),
+        uri_params: qx.util.Uri.parseUri(window.location.href)
+      };
+    },
+
+    /**
+     * Deferred initialization of properties that get their values from the environment
+     * @private
+     * @ignore(env)
+     * @ignore(storage)
+     * @ignore(uri_params)
+     */
+    _iniPropertiesFromEnvironment() {
+      let {env, storage, uri_params} = this._getPersistenceProviders();
+      let script = storage.getItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.SCRIPT) || "";
+      this.initScript(script);
+      let autoplay = uri_params.queryKey.eventrecorder_autoplay || storage.getItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.AUTOPLAY) || env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.AUTOPLAY)|| false;
+      this.initAutoplay(autoplay);
+      let reloadBeforeReplay = storage.getItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.RELOAD_BEFORE_REPLAY);
+      this.initReloadBeforeReplay(reloadBeforeReplay === null ? true : reloadBeforeReplay);
+      let gistId = uri_params.queryKey.eventrecorder_gist_id || env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.GIST_ID);
+      this.initGistId(gistId);
+      let scriptable = Boolean(uri_params.queryKey.eventrecorder_scriptable) || qx.core.Environment.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.SCRIPTABLE);
+      this.initScriptable(scriptable);
+      //console.warn({script, autoplay, gistId, reloadBeforeReplay, scriptable});
+    },
 
     _applyMode(value, old) {
       if (value === "player" && !this.getPlayer()) {
@@ -369,6 +446,18 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       }
     },
 
+    _saveScriptUrl() {
+      qx.bom.storage.Web.getSession().setItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.SCRIPT_URL, document.location.href);
+    },
+
+    _scriptUrlMatches() {
+      return qx.bom.storage.Web.getSession().getItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.SCRIPT_URL) === document.location.href;
+    },
+
+    _applyGistId(value, old) {
+      // todo: add to URI
+    },
+
     /**
      * Apply the "autoplay" property and store it in local storage
      * @param value
@@ -377,6 +466,16 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
      */
     _applyAutoplay(value, old) {
       qx.bom.storage.Web.getSession().setItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.AUTOPLAY, value);
+    },
+
+    /**
+     * Apply the "reloadBeforeReplay" property and storeit in local storage
+     * @param value
+     * @param old
+     * @private
+     */
+    _applyReloadBeforeReplay(value, old) {
+      qx.bom.storage.Web.getSession().setItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.RELOAD_BEFORE_REPLAY, value);
     },
 
     /**
@@ -391,16 +490,19 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
 
     /**
      * Event handler for replay button
-     * @param e
      * @private
      */
-    _startReplay(e) {
-      if (e.getData()) {
-        // start
-        if (this.getScript()) {
+    _startReplay() {
+      // start
+      if (this.getScript() || this.getGistId()) {
+        if (this.getReloadBeforeReplay()) {
           // reload
           this.setAutoplay(true);
           window.location.reload();
+        } else if (this.getScript()) {
+          this.replay();
+        } else {
+          this.getQxObject("replay").setValue(false);
         }
       }
     },
@@ -610,7 +712,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
      */
     async record() {
       let recorder = this.getRecorder();
-      if (this.getScript().trim()!=="") {
+      if (this.getScript().trim()!=="" && !this.getScriptable()) {
         let mode = await dialog.Dialog.select(
           "Do you want to overwrite your script or append new events?",
           [
@@ -634,6 +736,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       if (this.getRecorder().isRunning()) {
         this.getRecorder().stop();
         let script = this.getRecorder().getScript();
+        this._saveScriptUrl();
         this.setScript(script);
       }
       if (this.getPlayer() && this.getPlayer().isRunning()) {
@@ -845,11 +948,12 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
      * @return {Promise<void>}
      */
     async loadGistById() {
-      let answer = await dialog.Dialog.prompt("Please enter the GitHub username");
+      let answer = await dialog.Dialog.prompt("Please enter the id of the gist to replay");
       if (!answer || !answer.id) {
         return;
       }
       this.setScript(await this._getRawGist(answer.id));
+      this.setGistId(answer.id);
     }
   },
 

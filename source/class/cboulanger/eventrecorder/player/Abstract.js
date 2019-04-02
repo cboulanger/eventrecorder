@@ -19,7 +19,10 @@
  */
 qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
   extend : qx.core.Object,
-  include : [cboulanger.eventrecorder.MHelperMethods],
+  include : [
+    cboulanger.eventrecorder.MState,
+    cboulanger.eventrecorder.MHelperMethods
+  ],
 
   statics: {
     utilityFunctions : {

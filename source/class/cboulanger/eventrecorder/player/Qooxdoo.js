@@ -20,7 +20,6 @@
 qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
 
   extend: cboulanger.eventrecorder.player.Abstract,
-  include: [cboulanger.eventrecorder.MState],
   implement: [cboulanger.eventrecorder.IPlayer],
 
   properties: {
