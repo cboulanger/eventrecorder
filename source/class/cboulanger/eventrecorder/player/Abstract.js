@@ -364,6 +364,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      *
      * @param line {String}
      * @return {String}
+     * @ignore(command)
      */
     _translateLine(line) {
       // comment
@@ -492,6 +493,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      * @param line {String}
      * @private
      * @return {String}
+     * @ignore(args)
      */
     _translateVariables(line) {
       if (line.match(/\$([^\s\d\/]+)/)) {
@@ -513,6 +515,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      * If given, omit function if not present in the script code
      * @return {string[]}
      * @private
+     * @ignore(fn)
      */
     _generateUtilityFunctionsCode(script) {
       return Object.entries(this.self(arguments).utilityFunctions)
@@ -630,6 +633,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
             throw e;
           case "presentation":
             this.warn(e);
+            dialog.Dialog.error(e.message);
         }
       }
       this.setRunning(false);

@@ -75,7 +75,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @inheritDoc
      */
     cmd_hide_info(text) {
-      if (this.getMode() === "presentation" ) {
+      if (this.getMode() === "presentation") {
         return `cboulanger.eventrecorder.InfoPane.getInstance().hide();`;
       }
       return "";
@@ -127,7 +127,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
         json = JSON.stringify(json);
       }
       let regExLiteral = this.createRegexpForJsonComparison(json);
-      let timeoutmsg = `Timeout waiting for ID(${id}).${property} to match /${regExLiteral.replace(/\\/,"\\\\").replace(/"/g, "\\\"")}/.`;
+      let timeoutmsg = `Timeout waiting for ID(${id}).${property} to match /${regExLiteral.replace(/\\/, "\\\\").replace(/"/g, "\\\"")}/.`;
       let type = "change" + qx.lang.String.firstUp(property);
       return this.generateWaitForEventCode(id, type, `{verbatim}/${regExLiteral}/`, timeoutmsg);
     },
@@ -217,17 +217,15 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @param json {*}
      * @return {String}
      */
-    cmd_fire(id,event,data) {
-      if (data) {
+    cmd_fire(id, event, json) {
+      if (json) {
         if (!qx.lang.Type.isString(json)) {
           json = JSON.stringify(json);
         }
         return `qx.core.Id.getQxObject("${id}").fireDataEvent("${event}",${json});`;
       }
-      else {
-        return `qx.core.Id.getQxObject("${id}").fireEvent("${event}");`;
-      }
-    },/**
+      return `qx.core.Id.getQxObject("${id}").fireEvent("${event}");`;
+    },
 
     /**
     * Generates code that fires an `tap` event on the object with the given id (Button, Command)
@@ -321,7 +319,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      */
     cmd_await_selection(id, selectedId) {
       let timeoutmsg = `Timeout when waiting for selection of object '${selectedId}' on '${id}'.`;
-      return this.generateWaitForEventCode(id, "changeSelection", `{verbatim}[qx.core.Id.getQxObject("${selectedId}")]`,timeoutmsg);
+      return this.generateWaitForEventCode(id, "changeSelection", `{verbatim}[qx.core.Id.getQxObject("${selectedId}")]`, timeoutmsg);
     },
 
     /**

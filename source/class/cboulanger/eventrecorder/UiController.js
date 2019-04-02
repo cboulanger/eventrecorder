@@ -221,8 +221,14 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     });
 
     // record button
-    let recordButton = new qx.ui.form.ToggleButton();
+    let recordMenu = new qx.ui.menu.Menu();
+    recordMenu.add(new qx.ui.menu.Button("Options:"));
+    let debugEvents = new qx.ui.menu.CheckBox("Log event data");
+    debugEvents.bind("value", this, "recorder.logEvents");
+    recordMenu.add(debugEvents);
+    let recordButton = new cboulanger.eventrecorder.SplitToggleButton();
     recordButton.setIcon("eventrecorder.icon.record");
+    recordButton.setMenu(recordMenu);
     recordButton.addListener("changeValue", this._toggleRecord, this);
     recorder.bind("running", recordButton, "value");
     recorder.bind("running", recordButton, "enabled", {
@@ -416,10 +422,10 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       let {env, storage, uri_params} = this._getPersistenceProviders();
       let script = storage.getItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.SCRIPT) || "";
       this.initScript(script);
-      let autoplay = uri_params.queryKey.eventrecorder_autoplay
-        || storage.getItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.AUTOPLAY)
-        || env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.AUTOPLAY)
-        || false;
+      let autoplay = uri_params.queryKey.eventrecorder_autoplay ||
+        storage.getItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.AUTOPLAY) ||
+        env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.AUTOPLAY) ||
+        false;
       this.initAutoplay(autoplay);
       let reloadBeforeReplay = storage.getItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.RELOAD_BEFORE_REPLAY);
       this.initReloadBeforeReplay(reloadBeforeReplay === null ? true : reloadBeforeReplay);

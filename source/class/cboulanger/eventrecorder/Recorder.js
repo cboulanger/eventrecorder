@@ -52,10 +52,23 @@ qx.Class.define("cboulanger.eventrecorder.Recorder", {
   },
 
   properties: {
+
+    /**
+     * The recorder mode, can be "overwrite" or "append"
+     */
     mode: {
       check: ["overwrite", "append"],
       nullable: false,
       init: "overwrite"
+    },
+
+    /**
+     * Whether to output additional event data to the console
+     */
+    logEvents: {
+      check: "Boolean",
+      nullable: false,
+      init: false
     }
   },
 
@@ -187,7 +200,9 @@ qx.Class.define("cboulanger.eventrecorder.Recorder", {
       const type = event.getType();
       let data = typeof event.getData == "function" ? event.getData() : null;
       let owner = typeof target.getQxOwner == "function" ? target.getQxOwner() : null;
-      console.log({id: id, owner: owner,type: type, data:data, target:target});
+      if (this.getLogEvents()) {
+        this.debug(JSON.stringify({id, owner: owner && owner.toString(), type: type, data:data, target:target.toString()}));
+      }
       switch (type) {
         case "dbltap":
           return [`dbltap ${id}`];
@@ -290,7 +305,7 @@ qx.Class.define("cboulanger.eventrecorder.Recorder", {
         default:
           // record change events if explicitly requested
           if (type.startsWith("change") && typeof target.getTrackPropertyChanges == "function") {
-            if ( target.getTrackPropertyChanges() ) {
+            if (target.getTrackPropertyChanges()) {
               let property = qx.lang.String.firstLow(type.substr(6));
               lines.push(`await-match-json ${id} ${property} ${JSON.stringify(data)}`);
               break;
