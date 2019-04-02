@@ -428,7 +428,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
         false;
       this.initAutoplay(autoplay);
       let reloadBeforeReplay = storage.getItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.RELOAD_BEFORE_REPLAY);
-      this.initReloadBeforeReplay(reloadBeforeReplay === null ? true : reloadBeforeReplay);
+      this.initReloadBeforeReplay(reloadBeforeReplay === null ? false : reloadBeforeReplay);
       let gistId = uri_params.queryKey.eventrecorder_gist_id || env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.GIST_ID) || null;
       this.initGistId(gistId);
       let scriptable = Boolean(uri_params.queryKey.eventrecorder_scriptable) || qx.core.Environment.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.SCRIPTABLE) || false;

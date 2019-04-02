@@ -180,7 +180,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @return {String}
      */
     cmd_assert_appeared(id) {
-      return `qx.core.Assert.assertTrue(qx.core.Id.getQxObject("${id}").isVisible(),"Failed: Object with id ${id} is not visible.")`;
+      return `if(!qx.core.Id.getQxObject("${id}").isVisible()) throw new Error("Failed: Object with id ${id} is not visible.")`;
     },
 
     /**
@@ -195,7 +195,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @return {String}
      */
     cmd_assert_disappeared(id) {
-      return `qx.core.Assert.assertFalse(qx.core.Id.getQxObject("${id}").isVisible(),"Failed: Object with id ${id} is visible.")`;
+      return `if (qx.core.Id.getQxObject("${id}").isVisible()) throw new Error("Failed: Object with id ${id} is visible.")`;
     },
 
     /**
@@ -205,8 +205,13 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
 
     /**
      * @inheritDoc
+     * @return {String}
      */
     cmd_execute(id) {
+      // do not add execute if a button has been tapped already
+      if (this.getLastCommand()==="tap" && this.getLastId()===id) {
+        return;
+      }
       return `qx.core.Id.getQxObject("${id}").fireEvent("execute");`;
     },
 

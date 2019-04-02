@@ -283,6 +283,32 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
     __promises: null,
 
     /**
+     * Last id addressed
+     */
+    __lastId : null,
+
+    /**
+     * Last command used
+     */
+    __lastCmd : null,
+
+    /**
+     * Return the last id used
+     * @return {String|null}
+     */
+    getLastId() {
+      return this.__lastId;
+    },
+
+    /**
+     * Return the last command used
+     * @return {String|null}
+     */
+    getLastCommand() {
+      return this.__lastCmd;
+    },
+
+    /**
      * Stub to be overridden if needed
      * @param value
      * @param old
@@ -373,6 +399,9 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
       }
       // parse command line
       let [command, ...args] = this._tokenize(line);
+      command = command.toLocaleLowerCase();
+      this.__lastCmd = command;
+      this.__lastId = args[0]; // assume first argument is id
       // run command generation implementation
       let method_name = "cmd_" + command.replace(/-/g, "_");
       if (typeof this[method_name] == "function") {
