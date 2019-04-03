@@ -27,7 +27,7 @@ install:
   - sleep 300 # Wait for compilation to finish
 
 script:
-  - npx testcafe chrome,firefox tests/testcafe.js  --app-init-delay 10000
+  - tests/test-travis.sh
 
 deploy:
   provider: pages
