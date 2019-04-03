@@ -208,10 +208,6 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @return {String}
      */
     cmd_execute(id) {
-      // do not add execute if a button has been tapped already
-      if (this.getLastCommand()==="tap" && this.getLastId()===id) {
-        return;
-      }
       return `qx.core.Id.getQxObject("${id}").fireEvent("execute");`;
     },
 
