@@ -391,6 +391,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      * @param line {String}
      * @return {String}
      * @ignore(command)
+     * @ignore(args)
      */
     _translateLine(line) {
       // comment

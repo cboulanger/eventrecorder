@@ -43,6 +43,9 @@ qx.Class.define("cboulanger.eventrecorder.InfoPane", {
         return this;
       }
       let bounds = this.getBounds();
+      if (!bounds) {
+        return this;
+      }
       this.set({
         marginTop: Math.round(
           (qx.bom.Document.getHeight() - bounds.height) / 2
@@ -60,6 +63,7 @@ qx.Class.define("cboulanger.eventrecorder.InfoPane", {
      * @param widgetToPlaceTo {qx.ui.core.Widget|undefined} If given, place the
      * info panel next to this widget
      * @return {cboulanger.eventrecorder.InfoPane}
+     * @ignore(widgetToPlaceTo)
      */
     display(text, widgetToPlaceTo=false) {
       if (!text) {
