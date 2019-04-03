@@ -23,8 +23,6 @@ install:
   - qx config set github.token $GITHUB_TOKEN
   - qx contrib update
   - qx contrib install
-  - qx serve --target=build &
-  - sleep 300 # Wait for compilation to finish
 
 script:
   - tests/test-travis.sh
