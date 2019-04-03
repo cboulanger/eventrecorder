@@ -3,6 +3,9 @@ node_js: "10"
 
 dist: trusty
 
+env:
+  - QX_TARGET=build
+
 addons:
   firefox: latest
   apt:
@@ -31,6 +34,6 @@ deploy:
   provider: pages
   skip-cleanup: true
   github-token: $GITHUB_TOKEN
-  local-dir: compiled/build
+  local-dir: compiled/$QX_TARGET
   on:
     branch: master
