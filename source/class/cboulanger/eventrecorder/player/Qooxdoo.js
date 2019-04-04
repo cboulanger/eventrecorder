@@ -234,7 +234,9 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
     * @return {String}
     */
     cmd_tap(id) {
-      return `qx.core.Id.getQxObject("${id}").fireEvent("tap");`;
+      // doesn't work yet because it needs mouse data etc.
+      return "";
+      //return `qx.core.Id.getQxObject("${id}").fireEvent("tap", qx.event.type.Tap);`;
     },
 
     /**
@@ -243,7 +245,9 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
     * @return {String}
     */
     cmd_dbltap(id) {
-      return `qx.core.Id.getQxObject("${id}").fireEvent("dbltap");`;
+      // doesn't work yet because it needs mouse data etc.
+      return "";
+      //return `qx.core.Id.getQxObject("${id}").fireEvent("dbltap", qx.event.type.Tap);`;
     },
 
     /**
