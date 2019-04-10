@@ -41,28 +41,28 @@
       "path": "contrib/qooxdoo_qxl.logpane_v0.1.4"
     },
     {
-      "library_name": "Qookery",
-      "library_version": "0.6.1",
-      "uri": "cboulanger/qookery/qookery",
-      "repo_name": "cboulanger/qookery",
-      "repo_tag": "v0.6.1",
-      "path": "contrib/cboulanger_qookery_v0.6.1/qookery"
-    },
-    {
-      "library_name": "Qookery Ace",
-      "library_version": "0.6.1",
-      "uri": "cboulanger/qookery/qookeryace",
-      "repo_name": "cboulanger/qookery",
-      "repo_tag": "v0.6.1",
-      "path": "contrib/cboulanger_qookery_v0.6.1/qookeryace"
-    },
-    {
       "library_name": "Dialog",
       "library_version": "2.0.0",
       "uri": "cboulanger/qx-contrib-Dialog",
       "repo_name": "cboulanger/qx-contrib-Dialog",
       "repo_tag": "v2.0.0",
       "path": "contrib/cboulanger_qx-contrib-Dialog_v2.0.0"
+    },
+    {
+      "library_name": "Qookery",
+      "library_version": "0.6.0",
+      "uri": "ergobyte/qookery/qookery",
+      "repo_name": "ergobyte/qookery",
+      "repo_tag": "892f44d1d1ae5d65c7dd99b18da6876de2f2a920",
+      "path": "contrib/ergobyte_qookery_892f44d1d1ae5d65c7dd99b18da6876de2f2a920/qookery"
+    },
+    {
+      "library_name": "Qookery Ace",
+      "library_version": "0.6.0",
+      "uri": "ergobyte/qookery/qookeryace",
+      "repo_name": "ergobyte/qookery",
+      "repo_tag": "892f44d1d1ae5d65c7dd99b18da6876de2f2a920",
+      "path": "contrib/ergobyte_qookery_892f44d1d1ae5d65c7dd99b18da6876de2f2a920/qookeryace"
     }
   ]
 }
