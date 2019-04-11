@@ -227,8 +227,8 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
   construct: function() {
     this.base(arguments);
     this.__commands = [];
-    this.__macros = [];
-    this.__macro_stack = [];
+    this.resetMacros();
+
     this._globalRef = "eventrecorder_player";
     window[this._globalRef] = this;
     // inject utility functions in the statics section into the global scope
@@ -255,7 +255,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
 
     /**
      * An object mapping macro names to arrays containing the macro lines
-     * @var {Object}
+     * @var {qx.core.Object}
      */
     __macros : null,
 
@@ -332,6 +332,92 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      */
     getCommands() {
       return this.__commands;
+    },
+
+    /**
+     * Clears all macro definitions and the macro stack
+     */
+    resetMacros() {
+      if (this.__macros) {
+        this.__macros.dispose();
+      }
+      this.__macro_stack = [];
+      this.__macro_stack_index = -1;
+      this.__macros = qx.data.marshal.Json.createModel({
+        names : [],
+        definitions: []
+      }, true);
+    },
+
+    /**
+     * Returns true if a macro of that name exists.
+     * @param {String} name
+     * @return {boolean}
+     */
+    macroExists(name) {
+      return this.__macros.getNames().indexOf(name) >= 0;
+    },
+
+    /**
+     * Returns an array with the lines of the macro of that name
+     * @param {String} name
+     * @return {Array}
+     */
+    getMacroDefinition(name) {
+      let index = this.__macros.getNames().indexOf(name);
+      if (index < 0) {
+        throw new Error(`Macro '${name}' does not exist`);
+      }
+      return this.__macros.getDefinitions().getItem(index);
+    },
+
+    /**
+     * Adds an empty macro of this name
+     * @param {String} name
+     */
+    addMacro(name) {
+      if (this.macroExists(name)) {
+        throw new Error(`A macro of the name '${name}' alread exists.`);
+      }
+      this.__macros.getNames().push(name);
+      this.__macros.getDefinitions().push([]);
+    },
+
+    /**
+     * Begins the definition of a macro of that name.
+     * @param {String} name
+     */
+    beginMacroDefintion(name) {
+      let index = ++this.__macro_stack_index;
+      this.__macro_stack[index] = { name };
+    },
+
+    /**
+     * Returns true if the player is currently in a macro definition
+     * @return {boolean}
+     */
+    isInMacroDefinition() {
+      return this.__macro_stack_index >= 0;
+    },
+
+    /**
+     * Return the name of the macro that is currently being defined
+     * @return {String}
+     */
+    getCurrentMacroName() {
+      if (!this.isInMacroDefinition()) {
+        throw new Error("No macro is currently defined");
+      }
+      let {name} = this.__macro_stack[this.__macro_stack_index];
+      return name;
+    },
+
+    /**
+     * Leave the current macro, i.e. return to the including script/macro
+     */
+    leaveMacroDefinition() {
+      this.getCurrentMacroName(); // this will throw if none is being defined
+      this.__macro_stack_index--;
     },
 
     /**
@@ -426,9 +512,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      * @private
      */
     _handleMeta(script, expandVariables=true) {
-      this.__macros = {};
-      this.__macro_stack = [];
-      this.__macro_stack_index = -1;
+      this.resetMacros();
       this.__vars = {};
       let lines = [];
       for (let line of script.split(/\n/)) {
@@ -471,9 +555,9 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
         }
 
         // add code to macro
-        if (this.__macro_stack_index >= 0) {
-          let {name} = this.__macro_stack[this.__macro_stack_index];
-          this.__macros[name].push(line);
+        if (this.isInMacroDefinition()) {
+          let name = this.getCurrentMacroName();
+          this.getMacroDefinition(name).push(line);
           continue;
         }
 
@@ -488,23 +572,24 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
     },
 
     /**
-     * Returns the lines for the macro of the given name. If it doesn't exist,
-     * return undefined
-     * @param macro_name {String}
-     * @param args {Array}
+     * Returns the lines for the macro of the given name, with the given arguments
+     * replaced (1st arg -> $1, 2nd arg -> $2, etc.). If it doesn't exist,
+     * return undefined.
+     * @param macro_name {String} The name of the macro
+     * @param args {Array} An array of arguments to be replaced in the macro code
      * @return {Array|undefined}
      * @private
      */
     _getMacro(macro_name, args) {
-      let macro_lines = this.__macros[macro_name];
-      if (macro_lines !== undefined) {
-        // argument placeholders
-        for (let i = 0; i < args.length; i++) {
-          macro_lines = macro_lines.map(l => l.replace(new RegExp("\\$" + (i + 1), "g"), JSON.stringify(args[i])));
-        }
-        return macro_lines;
+      if (!this.macroExists(macro_name)) {
+        return undefined;
       }
-      return undefined;
+      let macro_lines = this.getMacroDefinition(macro_name);
+      // argument placeholders
+      for (let i = 0; i < args.length; i++) {
+        macro_lines = macro_lines.map(l => l.replace(new RegExp("\\$" + (i + 1), "g"), JSON.stringify(args[i])));
+      }
+      return macro_lines;
     },
 
 
@@ -876,12 +961,11 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      * @return {null}
      */
     cmd_define(macro_name) {
-      if (this.__macros[macro_name] !== undefined) {
+      if (this.macroExists(macro_name)) {
         throw new Error(`Cannot define macro '${macro_name}' since a macro of that name already exists.`);
       }
-      let index = ++this.__macro_stack_index;
-      this.__macro_stack[index] = { name: macro_name };
-      this.__macros[macro_name] = [];
+      this.addMacro(macro_name);
+      this.beginMacroDefintion(macro_name);
       return null;
     },
 
@@ -898,7 +982,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
       if (this.__macro_stack_index < 0) {
         throw new Error(`Unexpected 'end'.`);
       }
-      this.__macro_stack_index--;
+      this.leaveMacroDefinition();
       return null;
     },
 
