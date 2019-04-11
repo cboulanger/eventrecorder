@@ -234,6 +234,78 @@ which can be used for application demos.
 
 See [here](https://cboulanger.github.io/eventrecorder/apiviewer/#cboulanger.eventrecorder).
 
+## Use the eventrecorder for testing your application with TestCafé
+
+[TestCafé](https://devexpress.github.io/testcafe/documentation/test-api/) is an
+excellent tool to automatically test your UI. As most if not all testing
+frameworks, it is focussed on HTML-centered web applications, but can be easily
+set up to work with the singel-page-app-design of qooxdoo, where the HTML is
+generated rather than authored.
+
+Here's an example which is used to test the event recorder demo application with
+`bash run-test.sh <build target (defaults to 'source')>`
+
+### run-test.sh \<target\>
+
+```bash
+#!/usr/bin/env bash
+export QX_TARGET=${QX_TARGET:-source}
+
+# stop any running server
+if [[ $(pgrep "qx serve") ]]; then kill -9 $(pgrep "qx serve"); fi
+
+# install testcafe if not already installed
+command -v testcafe || npm install -g testcafe
+
+echo
+echo "Running tests in ${QX_TARGET} mode..."
+
+# start the server and wait for "Web server started" message
+( qx serve --target=$QX_TARGET & ) | while read output; do
+  echo "$output"
+  if [[ $output == *"Web server started"* ]]; then break; fi;
+done
+
+# run tests
+testcafe chrome tests/testcafe.js  --app-init-delay 20000
+testcafe firefox tests/testcafe.js --app-init-delay 20000
+testcafe safari tests/testcafe.js  --app-init-delay 20000
+
+# stop the server
+kill -9 $(pgrep "qx serve")
+```
+
+### testcafe.js
+
+```javascript
+import process from "process";
+
+const target = process.env.QX_TARGET;
+if (!target) {
+  throw new Error("Missing QX_TARGET environment variable");
+}
+
+fixture `Testing eventrecorder demo application`
+  .page `http://127.0.0.1:8080/compiled/${target}/eventrecorder/index.html`;
+
+test('Test the eventrecorder presentation', async t => {
+  await t.wait(10000);
+  await t.eval(()=>{qx.core.Id.getQxObject("eventrecorder/record").fireEvent("execute");});
+  await t.wait(1000);
+  await t.eval(()=>{qx.core.Id.getQxObject("button1").fireEvent("execute");});
+  await t.wait(500);
+  await t.eval(()=>qx.core.Assert.assertTrue(qx.core.Id.getQxObject("button1/window").isVisible(),"Failed: Object with id button1/window is not visible."));
+  await t.eval(()=>{qx.core.Id.getQxObject("button1/window/button2").fireEvent("execute");});
+  await t.wait(500);
+  await t.eval(()=>qx.core.Assert.assertFalse(qx.core.Id.getQxObject("button1/window").isVisible(),"Failed: Object with id button1/window is visible."));
+  await t.eval(()=>{qx.core.Id.getQxObject("eventrecorder/stop").fireEvent("execute");});
+  await t.eval(()=>{qx.core.Id.getQxObject("eventrecorder/edit").fireEvent("execute");});
+  await t.wait(500);
+  await t.eval(()=>qx.core.Assert.assertTrue(qx.core.Id.getQxObject("eventrecorder/editor/window").isVisible(),"Failed: Object with id eventrecorder/editor/window is not visible."));
+  await t.eval(()=>{qx.core.Id.getQxObject("eventrecorder/editor/translateButton").fireEvent("execute");});
+});
+```
+
 ## Issues
 
 - when opening a window or a tab containing complex content that requires a bit of

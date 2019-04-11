@@ -31,10 +31,6 @@
     "eventrecorder.show_progress": false,
     "eventrecorder.gist_id": "",
     "eventrecorder.autoplay": false
-
-    // needed by playground
-    //"qx.testNameSpace": {},
-    //"qx.standaloneAutorun": {}
   },
   "applications": [
     {
@@ -87,35 +83,6 @@
         "eventrecorder.autoplay": true
       }
     },
-//    {
-//      "class": "qxl.playground.Application",
-//      "theme": "qxl.playground.theme.Theme",
-//      "name": "playground",
-//      "title": "Playground in presentation mode",
-//      "include": [
-//        "qx.*",
-//        "qxl.logpane.*",
-//        "cboulanger.eventrecorder.UiController",
-//        "cboulanger.eventrecorder.ObjectIdGenerator"
-//
-//      ],
-//      "exclude": [
-//        "qx.test.*",
-//        "qx.module.Blocker",
-//        "qx.module.Placement",
-//        "qx.dev.unit.*"
-//      ],
-//      "environment": {
-//        "environment": {
-//          "qx.debug" : true,
-//          "qx.debug.ui.queue" : true,
-//          "qx.nativeScrollBars" : true,
-//          "qx.allowUrlSettings" : true,
-//          "qx.mobile.emulatetouch" : true,
-//          "qx.icontheme": ["Tango"]
-//        }
-//      }
-//    },
     {
       "class": "qxl.apiviewer.Application",
       "theme": "qxl.apiviewer.Theme",
