@@ -3,9 +3,6 @@
     {
       "type": "source",
       "outputPath": "compiled/source"
-//      ,"bundle": {
-//        "include": "qx.*"
-//      }
     },
     {
       "type": "build",
@@ -13,16 +10,19 @@
     }
   ],
   "defaultTarget": "source",
-  "locales": ["en"],
+  "locales": [
+    "en"
+  ],
   "include": [
     "qookery.*",
     "qookery.ace.*"
   ],
   "environment": {
-    "qx.icontheme": ["Tango"],
+    "qx.icontheme": [
+      "Tango"
+    ],
     "qx.debug": true,
     "module.objectid": true,
-    // default values, for documentation only
     "eventrecorder.enabled": true,
     "eventrecorder.scriptable": false,
     "eventrecorder.hidden": false,
@@ -61,7 +61,6 @@
         "cboulanger.eventrecorder.ObjectIdTooltip"
       ],
       "environment": {
-        // "This is an empty script to prevent 'leakage' of scripts from other demos",
         "eventrecorder.gist_id": "ae41a3c54b81c0447f1e152a5c6ba4f8"
       }
     },
@@ -77,7 +76,9 @@
         "cboulanger.eventrecorder.ObjectIdTooltip"
       ],
       "environment": {
-        "qx.icontheme": ["Tango" ],
+        "qx.icontheme": [
+          "Tango"
+        ],
         "eventrecorder.show_progress": true,
         "eventrecorder.gist_id": "2ce4d5f7107661f1c53b146c498560aa",
         "eventrecorder.autoplay": true
@@ -89,6 +90,7 @@
       "name": "apiviewer",
       "title": "Qooxdoo API Viewer",
       "environment": {
+        "qx.icontheme": "Tango",
         "excludeFromAPIViewer": [
           "qxl.apiviewer.*"
         ]
@@ -99,8 +101,30 @@
       "exclude": [
         "qx.test.*",
         "qx.module.Blocker",
-        "qx.module.Placement",
-        "qx.dev.unit.*"
+        "qx.module.Placement"
+      ]
+    },
+    {
+      "class": "qxl.widgetbrowser.Application",
+      "theme": "qx.theme.Indigo",
+      "name": "widgetbrowser",
+      "title": "WidgetBrowser",
+      "include": [
+        "qx.theme.Modern",
+        "qx.theme.Simple",
+        "qx.theme.Classic",
+        "qxl.widgetbrowser.pages.Tree",
+        "qxl.widgetbrowser.pages.List",
+        "qxl.widgetbrowser.pages.Table",
+        "qxl.widgetbrowser.pages.Form",
+        "qxl.widgetbrowser.pages.ToolBar",
+        "qxl.widgetbrowser.pages.Window",
+        "qxl.widgetbrowser.pages.Tab",
+        "qxl.widgetbrowser.pages.Control",
+        "qxl.widgetbrowser.pages.Embed",
+        "qxl.widgetbrowser.pages.EmbedFrame",
+        "qxl.widgetbrowser.pages.Basic",
+        "qxl.widgetbrowser.pages.Misc"
       ]
     }
   ]
