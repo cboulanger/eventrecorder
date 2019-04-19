@@ -137,7 +137,6 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
    * Constructor
    * @param caption {String} The caption of the window. Will be used to create
    * an object id.
-   * TODO: use child controls, then we don't need to assign object ids to the buttons!
    * @ignore(env)
    * @ignore(storage)
    * @ignore(uri_params)
@@ -156,7 +155,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
         aliasMgr.add(alias, base);
       }
     }
-
+    //
     this.set({
       caption,
       modal: false,
@@ -191,144 +190,26 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     this.bind("player.running", this, "caption", {
       converter: v => v ? "Replaying ..." : caption
     });
+    // this creates the buttons in this order and adds them to the window
+    this._createControl("load");
+    this._createControl("replay");
+    this._createControl("record");
+    let stopButton = this._createControl("stop");
+    this._createControl("edit");
+    this._createControl("save");
+    // stop button special handling
 
-    // load split button
-    let loadMenu = new qx.ui.menu.Menu();
-
-    let loadUserGistButton = new qx.ui.menu.Button("Load user gist");
-    loadUserGistButton.addListener("execute", this.loadUserGist, this);
-    loadUserGistButton.setQxObjectId("fromUserGist");
-    loadMenu.add(loadUserGistButton);
-
-    let loadGistByIdButton = new qx.ui.menu.Button("Load gist by id");
-    loadGistByIdButton.addListener("execute", this.loadGistById, this);
-    loadGistByIdButton.setQxObjectId("fromGistById");
-    loadMenu.add(loadGistByIdButton);
-
-    let loadButton = new qx.ui.form.SplitButton();
-    loadButton.set({
-      enabled: false,
-      icon:"eventrecorder.icon.load",
-      toolTipText: "Load script",
-      menu: loadMenu
-    });
-    loadButton.addOwnedQxObject(loadUserGistButton);
-    loadButton.addOwnedQxObject(loadGistByIdButton);
-    loadButton.addListener("execute", this.load, this);
-    // enable load button only if player can replay scripts in the browser
-    this.bind("recorder.running", loadButton, "enabled", {
-      converter: v => !v
-    });
-
-    // record button
-    let recordMenu = new qx.ui.menu.Menu();
-    recordMenu.add(new qx.ui.menu.Button("Options:"));
-    let debugEvents = new qx.ui.menu.CheckBox("Log event data");
-    debugEvents.bind("value", this, "recorder.logEvents");
-    recordMenu.add(debugEvents);
-    let recordButton = new cboulanger.eventrecorder.SplitToggleButton();
-    recordButton.setIcon("eventrecorder.icon.record");
-    recordButton.setMenu(recordMenu);
-    recordButton.addListener("changeValue", this._toggleRecord, this);
-    recorder.bind("running", recordButton, "value");
-    recorder.bind("running", recordButton, "enabled", {
-      converter: v => !v
-    });
-    this.bind("mode", recordButton, "enabled", {
-      converter: v => v === "recorder"
-    });
-
-    // stop button
-    let stopButton = new qx.ui.form.Button();
-    stopButton.set({
-      enabled: false,
-      icon: "eventrecorder.icon.stop",
-      toolTipText: "Stop recording"
-    });
     const stopButtonState = () => {
       stopButton.setEnabled(
         recorder.isRunning() || (Boolean(this.getPlayer()) && this.getPlayer().isRunning())
       );
     };
     recorder.addListener("changeRunning", stopButtonState);
-    stopButton.addListener("execute", this.stop, this);
-
-    // replay
-    let replayMenu = new qx.ui.menu.Menu();
-    replayMenu.add(new qx.ui.menu.Button("Options:"));
-    let optionReload = new qx.ui.menu.CheckBox("Reload page before replay");
-    this.bind("reloadBeforeReplay", optionReload, "value");
-    optionReload.bind("value", this, "reloadBeforeReplay");
-    replayMenu.add(optionReload);
-
-    let replayButton = new cboulanger.eventrecorder.SplitToggleButton();
-    replayButton.addListener("execute", this._startReplay, this);
-    replayButton.set({
-      enabled: false,
-      icon:"eventrecorder.icon.start",
-      toolTipText: "Replay script",
-      menu: replayMenu
-    });
-    // show replay button only if player is attached and if it can replay a script in the browser
-    this.bind("player", replayButton, "visibility", {
-      converter: player => Boolean(player) && player.getCanReplayInBrowser() ? "visible" : "excluded"
-    });
-    this.bind("recorder.running", replayButton, "enabled", {
-      converter: v => !v
-    });
-    this.bind("player.running", replayButton, "value");
-
-
-    // edit button
-    let editButton = new qx.ui.form.Button();
-    editButton.set({
-      enabled: true,
-      icon:"eventrecorder.icon.edit",
-      toolTipText: "Edit script"
-    });
-    editButton.addListener("execute", this.edit, this);
-    this.bind("recorder.running", editButton, "enabled", {
-      converter: v => !v
-    });
-
-    // this.bind("script", editButton, "enabled", {
-    //   converter: v => Boolean(v)
-    // });
-
-    // save button
-    let saveButton = new qx.ui.form.Button();
-    saveButton.set({
-      enabled: false,
-      icon:"eventrecorder.icon.save",
-      toolTipText: "Save script"
-    });
-    saveButton.addListener("execute", this.save, this);
-    this.bind("recorder.running", saveButton, "enabled", {
-      converter: v => !v
-    });
-
-
-    // add button to parent
-    this.add(loadButton);
-    this.addOwnedQxObject(loadButton, "load");
-    this.add(replayButton);
-    this.addOwnedQxObject(replayButton, "replay");
-    this.add(recordButton);
-    this.addOwnedQxObject(recordButton, "record");
-    this.add(stopButton);
-    this.addOwnedQxObject(stopButton, "stop");
-    this.add(editButton);
-    this.addOwnedQxObject(editButton, "edit");
-    this.add(saveButton);
-    this.addOwnedQxObject(saveButton, "save");
-
-    // add events for new players
     this.addListener("changePlayer", e => {
       if (e.getData()) {
         this.getPlayer().addListener("changeRunning", stopButtonState);
       }
     });
-
     // form for file uploads
     var form = document.createElement("form");
     form.setAttribute("visibility", "hidden");
@@ -340,7 +221,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     input.setAttribute("visibility", "hidden");
     form.appendChild(input);
 
-    // player configuration
+    // Player configuration
     let playerType = uri_params.queryKey.eventrecorder_type ||
       env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.PLAYER_TYPE) ||
       "qooxdoo";
@@ -355,7 +236,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     });
     this.setPlayer(player);
 
-
+    // Autoplay
     let gistId = this.getGistId();
     let autoplay = this.getAutoplay();
     let script = this.getScript();
@@ -397,6 +278,155 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
      */
     __editorWindow : null,
     __players : null,
+
+
+    /**
+     * Internal method to create child controls
+     * @param id
+     * @return {qx.ui.core.Widget}
+     * @private
+     */
+    _createControl(id) {
+      let control;
+      let recorder = this.getRecorder();
+
+      switch (id) {
+        /**
+         * Load Button
+         */
+        case "load": {
+          let loadMenu = new qx.ui.menu.Menu();
+          let loadUserGistButton = new qx.ui.menu.Button("Load user gist");
+          loadUserGistButton.addListener("execute", this.loadUserGist, this);
+          loadUserGistButton.setQxObjectId("fromUserGist");
+          loadMenu.add(loadUserGistButton);
+          let loadGistByIdButton = new qx.ui.menu.Button("Load gist by id");
+          loadGistByIdButton.addListener("execute", this.loadGistById, this);
+          loadGistByIdButton.setQxObjectId("fromGistById");
+          loadMenu.add(loadGistByIdButton);
+          control = new qx.ui.form.SplitButton();
+          control.set({
+            enabled: false,
+            icon:"eventrecorder.icon.load",
+            toolTipText: "Load script",
+            menu: loadMenu
+          });
+          control.addOwnedQxObject(loadUserGistButton);
+          control.addOwnedQxObject(loadGistByIdButton);
+          control.addListener("execute", this.load, this);
+          // enable load button only if player can replay scripts in the browser
+          this.bind("recorder.running", control, "enabled", {
+            converter: v => !v
+          });
+          break;
+        }
+        /**
+         * Replay button
+         */
+        case "replay": {
+          let replayMenu = new qx.ui.menu.Menu();
+          replayMenu.add(new qx.ui.menu.Button("Options:"));
+          let optionReload = new qx.ui.menu.CheckBox("Reload page before replay");
+          this.bind("reloadBeforeReplay", optionReload, "value");
+          optionReload.bind("value", this, "reloadBeforeReplay");
+          replayMenu.add(optionReload);
+
+          control = new cboulanger.eventrecorder.SplitToggleButton();
+          control.addListener("execute", this._startReplay, this);
+          control.set({
+            enabled: false,
+            icon:"eventrecorder.icon.start",
+            toolTipText: "Replay script",
+            menu: replayMenu
+          });
+          // show replay button only if player is attached and if it can replay a script in the browser
+          this.bind("player", control, "visibility", {
+            converter: player => Boolean(player) && player.getCanReplayInBrowser() ? "visible" : "excluded"
+          });
+          this.bind("recorder.running", control, "enabled", {
+            converter: v => !v
+          });
+          this.bind("player.running", control, "value");
+          break;
+        }
+        /**
+         * Record Button
+         */
+        case "record": {
+          let recordMenu = new qx.ui.menu.Menu();
+          recordMenu.add(new qx.ui.menu.Button("Options:"));
+          let debugEvents = new qx.ui.menu.CheckBox("Log event data");
+          debugEvents.bind("value", this, "recorder.logEvents");
+          recordMenu.add(debugEvents);
+          control = new cboulanger.eventrecorder.SplitToggleButton();
+          control.setIcon("eventrecorder.icon.record");
+          control.setMenu(recordMenu);
+          control.addListener("changeValue", this._toggleRecord, this);
+          recorder.bind("running", control, "value");
+          recorder.bind("running", control, "enabled", {
+            converter: v => !v
+          });
+          this.bind("mode", control, "enabled", {
+            converter: v => v === "recorder"
+          });
+          break;
+        }
+        /**
+         * Stop Button
+         */
+        case "stop": {
+          control = new qx.ui.form.Button();
+          control.set({
+            enabled: false,
+            icon: "eventrecorder.icon.stop",
+            toolTipText: "Stop recording"
+          });
+          control.addListener("execute", this.stop, this);
+          break;
+        }
+        /**
+         * Edit Button
+         */
+        case "edit": {
+          control = new qx.ui.form.Button();
+          control.set({
+            enabled: true,
+            icon:"eventrecorder.icon.edit",
+            toolTipText: "Edit script"
+          });
+          control.addListener("execute", this.edit, this);
+          this.bind("recorder.running", control, "enabled", {
+            converter: v => !v
+          });
+          // this.bind("script", editButton, "enabled", {
+          //   converter: v => Boolean(v)
+          // });
+          break;
+        }
+        /**
+         * Save Button
+         */
+        case "save": {
+          control = new qx.ui.form.Button();
+          control.set({
+            enabled: false,
+            icon:"eventrecorder.icon.save",
+            toolTipText: "Save script"
+          });
+          control.addListener("execute", this.save, this);
+          this.bind("recorder.running", control, "enabled", {
+            converter: v => !v
+          });
+          break;
+        }
+        default:
+          throw new Error(`Control '${id} does not exist.'`);
+      }
+      // add to widget and assign object id
+      this.add(control);
+      this.addOwnedQxObject(control, id);
+      return control;
+    },
 
     /**
      * Returns a map with object providing persistence
