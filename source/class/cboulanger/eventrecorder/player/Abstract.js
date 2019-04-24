@@ -210,6 +210,15 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
       nullable: false,
       init: false,
       event: "changeCanExportExecutableCode"
+    },
+
+    /**
+     * Macro data
+     */
+    macros: {
+      check: "qx.core.Object",
+      init: null,
+      event: "changeMacros"
     }
   },
 
@@ -227,10 +236,9 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
   construct: function() {
     this.base(arguments);
     this.__commands = [];
-    this.resetMacros();
-
     this._globalRef = "eventrecorder_player";
     window[this._globalRef] = this;
+    this.resetMacros();
     // inject utility functions in the statics section into the global scope
     // so that they are available in eval()
     for (let [name, fn] of Object.entries(this.self(arguments).utilityFunctions)) {
@@ -252,12 +260,6 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      * A list of available commands
      */
     __commands: null,
-
-    /**
-     * An object mapping macro names to arrays containing the macro lines
-     * @var {qx.core.Object}
-     */
-    __macros : null,
 
     /**
      * An array of object containing information on the macros that are currently
@@ -338,15 +340,16 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      * Clears all macro definitions and the macro stack
      */
     resetMacros() {
-      if (this.__macros) {
-        this.__macros.dispose();
+      if (this.getMacros()) {
+        this.getMacros().dispose();
       }
       this.__macro_stack = [];
       this.__macro_stack_index = -1;
-      this.__macros = qx.data.marshal.Json.createModel({
+      let macros = qx.data.marshal.Json.createModel({
         names : [],
         definitions: []
       }, true);
+      this.setMacros(macros);
     },
 
     /**
@@ -355,7 +358,15 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      * @return {boolean}
      */
     macroExists(name) {
-      return this.__macros.getNames().indexOf(name) >= 0;
+      return this.getMacros().getNames().indexOf(name) >= 0;
+    },
+
+    /**
+     * Returns the names of the currently defined macros as a qx.data.Array
+     * @return {qx.data.Array}
+     */
+    getMacroNames() {
+      return this.getMacros().getNames();
     },
 
     /**
@@ -364,11 +375,11 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      * @return {Array}
      */
     getMacroDefinition(name) {
-      let index = this.__macros.getNames().indexOf(name);
+      let index = this.getMacros().getNames().indexOf(name);
       if (index < 0) {
         throw new Error(`Macro '${name}' does not exist`);
       }
-      return this.__macros.getDefinitions().getItem(index);
+      return this.getMacros().getDefinitions().getItem(index);
     },
 
     /**
@@ -379,8 +390,8 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
       if (this.macroExists(name)) {
         throw new Error(`A macro of the name '${name}' alread exists.`);
       }
-      this.__macros.getNames().push(name);
-      this.__macros.getDefinitions().push([]);
+      this.getMacros().getNames().push(name);
+      this.getMacros().getDefinitions().push([]);
     },
 
     /**
