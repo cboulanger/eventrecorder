@@ -46,6 +46,22 @@
         $.Form.getModel().setRightEditorContent("");
       </script>
     </button>
+    <button label="Translate" id="translateButton">
+      <script event="execute">
+        $.Form.executeAction("translate");
+      </script>
+      <script>
+        this.getMainWidget().setQxObjectId(this.getId());
+        $.Form.addOwnedQxObject(this.getMainWidget());
+      </script>
+    </button>
+    <select-box connect="targetMode" width="150" id="targetModeSelectBox">
+      <script>this.setItems($.modes);</script>
+      <script>
+        this.getMainWidget().setQxObjectId(this.getId());
+        $.Form.addOwnedQxObject(this.getMainWidget());
+      </script>
+    </select-box>
 
     <!-- spacer to keep following widgets to the right -->
     <spacer flex="1" />
@@ -55,15 +71,6 @@
       <script>
         $.Form.getModel().bind("rightEditorVisible", this, "visibility", { converter: v => v ? "visible" : "excluded"});
       </script>
-      <button label="Translate" id="translateButton">
-        <script event="execute">
-          $.Form.executeAction("translate");
-        </script>
-        <script>
-          this.getMainWidget().setQxObjectId(this.getId());
-          $.Form.addOwnedQxObject(this.getMainWidget());
-        </script>
-      </button>
       <button label="Export" id="exportButton">
         <script event="execute">
           $.Form.executeAction("export");
@@ -75,13 +82,6 @@
       </button>
       <select-box connect="targetScriptType" width="200" id="targetScriptTypeSelectBox">
         <script>this.setItems($.scriptTypes);</script>
-        <script>
-          this.getMainWidget().setQxObjectId(this.getId());
-          $.Form.addOwnedQxObject(this.getMainWidget());
-        </script>
-      </select-box>
-      <select-box connect="targetMode" width="150" id="targetModeSelectBox">
-        <script>this.setItems($.modes);</script>
         <script>
           this.getMainWidget().setQxObjectId(this.getId());
           $.Form.addOwnedQxObject(this.getMainWidget());

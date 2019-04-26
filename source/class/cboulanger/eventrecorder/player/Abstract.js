@@ -346,8 +346,9 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
       this.__macro_stack = [];
       this.__macro_stack_index = -1;
       let macros = qx.data.marshal.Json.createModel({
-        names : [],
-        definitions: []
+        names: [],
+        definitions: [],
+        descriptions: []
       }, true);
       this.setMacros(macros);
     },
@@ -383,15 +384,31 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
     },
 
     /**
+     * Returns the description of the macro
+     * @param {String} name
+     * @return {String}
+     */
+    getMacroDescription(name) {
+      let index = this.getMacros().getNames().indexOf(name);
+      if (index < 0) {
+        throw new Error(`Macro '${name}' does not exist`);
+      }
+      return this.getMacros().getDescriptions().getItem(index);
+    },
+
+    /**
      * Adds an empty macro of this name
      * @param {String} name
+     * @param {String|undefined} description
      */
-    addMacro(name) {
+    addMacro(name, description) {
       if (this.macroExists(name)) {
         throw new Error(`A macro of the name '${name}' alread exists.`);
       }
-      this.getMacros().getNames().push(name);
-      this.getMacros().getDefinitions().push([]);
+      let macros = this.getMacros();
+      macros.getDefinitions().push([]);
+      macros.getDescriptions().push(description||"");
+      macros.getNames().push(name);
     },
 
     /**
@@ -763,7 +780,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
         }
       }
       this.setRunning(false);
-      this.cmd_hide_info();
+      qx.event.Timer.once(()=> this.cmd_hide_info(), null, 100);
     },
 
     /**
@@ -968,14 +985,15 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
 
     /**
      * Starts the definition of a macro
-     * @param macro_name
+     * @param {String} macro_name
+     * @param {String|undefined} macro_description
      * @return {null}
      */
-    cmd_define(macro_name) {
+    cmd_define(macro_name, macro_description) {
       if (this.macroExists(macro_name)) {
         throw new Error(`Cannot define macro '${macro_name}' since a macro of that name already exists.`);
       }
-      this.addMacro(macro_name);
+      this.addMacro(macro_name, macro_description);
       this.beginMacroDefintion(macro_name);
       return null;
     },

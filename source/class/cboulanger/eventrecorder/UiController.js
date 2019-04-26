@@ -324,14 +324,44 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
          * Replay button
          */
         case "replay": {
+          control = new cboulanger.eventrecorder.SplitToggleButton();
           let replayMenu = new qx.ui.menu.Menu();
+          control.addOwnedQxObject(replayMenu, "menu");
+          let macroButton = new qx.ui.menu.Button("Macros");
+          replayMenu.add(macroButton);
+          let macroMenu = new qx.ui.menu.Menu();
+          macroButton.setMenu(macroMenu);
+          this.addListener("changePlayer", () => {
+            let player = this.getPlayer();
+            if (!player) {
+              return;
+            }
+            const updateMenu = async () => {
+              macroMenu.removeAll();
+              for (let name of player.getMacroNames().toArray()) {
+                let description = player.getMacroDescription(name);
+                let label = description.trim() ? (name + ": " + description) : name;
+                let menuButton = new qx.ui.menu.Button(label);
+                menuButton.addListener("execute", async () => {
+                  let macro = player.getMacroDefinition(name).join("\n");
+                  await player.replay(macro);
+                  cboulanger.eventrecorder.InfoPane.getInstance().hide();
+                });
+                macroMenu.add(menuButton);
+              }
+            };
+            player.addListener("changeMacros", () =>{
+              updateMenu();
+              player.getMacros().getNames().addListener("change", updateMenu);
+            });
+          });
+
+          replayMenu.addSeparator();
           replayMenu.add(new qx.ui.menu.Button("Options:"));
           let optionReload = new qx.ui.menu.CheckBox("Reload page before replay");
           this.bind("reloadBeforeReplay", optionReload, "value");
           optionReload.bind("value", this, "reloadBeforeReplay");
           replayMenu.add(optionReload);
-
-          control = new cboulanger.eventrecorder.SplitToggleButton();
           control.addListener("execute", this._startReplay, this);
           control.set({
             enabled: false,
