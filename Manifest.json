@@ -22,12 +22,13 @@
     "type": "contribution"
   },
   "requires": {
-    "qooxdoo-sdk": "^6.0.0-alpha",
-    "qooxdoo-compiler": "^0.3.0-alpha.20190412-1250",
     "cboulanger/qx-contrib-Dialog": "^2.0.0",
     "ergobyte/qookery/qookery": "^0.6.0",
     "ergobyte/qookery/qookeryace": "^0.6.0",
     "qooxdoo/qxl.widgetbrowser": "^0.1.6",
-    "qooxdoo/qxl.apiviewer": "^0.1.13"
-  }
+    "qooxdoo/qxl.apiviewer": "^0.1.13",
+    "@qooxdoo/compiler": "^1.0.0-beta",
+    "@qooxdoo/framework": "^6.0.0-alpha"
+  },
+  "$schema": "https://raw.githubusercontent.com/qooxdoo/qooxdoo-compiler/master/resource/schema/v1/Manifest.json"
 }

@@ -4,7 +4,7 @@
     {
       "library_name": "Dialog",
       "library_version": "2.0.1",
-      "path": "contrib/cboulanger_qx-contrib-Dialog_v2_0_1",
+      "path": "qx_packages/cboulanger_qx-contrib-Dialog_v2_0_1",
       "uri": "cboulanger/qx-contrib-Dialog",
       "repo_name": "cboulanger/qx-contrib-Dialog",
       "repo_tag": "v2.0.1"
@@ -12,7 +12,7 @@
     {
       "library_name": "Qooxdoo API Viewer",
       "library_version": "0.1.15",
-      "path": "contrib/qooxdoo_qxl_apiviewer_v0_1_15",
+      "path": "qx_packages/qooxdoo_qxl_apiviewer_v0_1_15",
       "uri": "qooxdoo/qxl.apiviewer",
       "repo_name": "qooxdoo/qxl.apiviewer",
       "repo_tag": "v0.1.15"
@@ -20,7 +20,7 @@
     {
       "library_name": "Qookery",
       "library_version": "0.6.0",
-      "path": "contrib/ergobyte_qookery_892f44d1d1ae5d65c7dd99b18da6876de2f2a920/qookery",
+      "path": "qx_packages/ergobyte_qookery_892f44d1d1ae5d65c7dd99b18da6876de2f2a920/qookery",
       "uri": "ergobyte/qookery/qookery",
       "repo_name": "ergobyte/qookery",
       "repo_tag": "892f44d1d1ae5d65c7dd99b18da6876de2f2a920"
@@ -28,7 +28,7 @@
     {
       "library_name": "Qookery Ace",
       "library_version": "0.6.0",
-      "path": "contrib/ergobyte_qookery_892f44d1d1ae5d65c7dd99b18da6876de2f2a920/qookeryace",
+      "path": "qx_packages/ergobyte_qookery_892f44d1d1ae5d65c7dd99b18da6876de2f2a920/qookeryace",
       "uri": "ergobyte/qookery/qookeryace",
       "repo_name": "ergobyte/qookery",
       "repo_tag": "892f44d1d1ae5d65c7dd99b18da6876de2f2a920"
@@ -36,7 +36,7 @@
     {
       "library_name": "widgetbrowser",
       "library_version": "0.1.7",
-      "path": "contrib/qooxdoo_qxl_widgetbrowser_v0_1_7",
+      "path": "qx_packages/qooxdoo_qxl_widgetbrowser_v0_1_7",
       "uri": "qooxdoo/qxl.widgetbrowser",
       "repo_name": "qooxdoo/qxl.widgetbrowser",
       "repo_tag": "v0.1.7"
@@ -44,7 +44,7 @@
     {
       "library_name": "formdemo",
       "library_version": "0.1.2",
-      "path": "contrib/qooxdoo_qxl_formdemo_v0_1_2",
+      "path": "qx_packages/qooxdoo_qxl_formdemo_v0_1_2",
       "uri": "qooxdoo/qxl.formdemo",
       "repo_name": "qooxdoo/qxl.formdemo",
       "repo_tag": "v0.1.2"
@@ -52,7 +52,7 @@
     {
       "library_name": "versionlabel",
       "library_version": "0.1.2",
-      "path": "contrib/qooxdoo_qxl_versionlabel_v0_1_2",
+      "path": "qx_packages/qooxdoo_qxl_versionlabel_v0_1_2",
       "uri": "qooxdoo/qxl.versionlabel",
       "repo_name": "qooxdoo/qxl.versionlabel",
       "repo_tag": "v0.1.2"
