@@ -18,8 +18,7 @@
     "encoding": "utf-8",
     "class": "source/class",
     "resource": "source/resource",
-    "translation": "source/translation",
-    "type": "contribution"
+    "translation": "source/translation"
   },
   "requires": {
     "cboulanger/qx-contrib-Dialog": "^2.0.0",
