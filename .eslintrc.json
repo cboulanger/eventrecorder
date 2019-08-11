@@ -1,4 +1,8 @@
 {
+  "env": {
+    "browser": true,
+    "node": true
+  },
   "extends": [
     "qx", "qx/browser"
   ],
@@ -6,6 +10,9 @@
     "cboulanger": false,
     "qookery": false,
     "ace": false,
-    "dialog": false
+    "dialog": false,
+    "fixture":  false,
+    "test": false,
+    "qx": false
   }
 }

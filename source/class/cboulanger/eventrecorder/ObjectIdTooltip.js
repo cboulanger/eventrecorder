@@ -25,6 +25,7 @@ qx.Class.define("cboulanger.eventrecorder.ObjectIdTooltip", {
 
     /**
      * Start automatically displaying the tooltips
+     * @ignore(HTMLElement)
      */
     init: function() {
       const tooltip = new qx.ui.tooltip.ToolTip();

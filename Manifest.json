@@ -21,13 +21,12 @@
     "translation": "source/translation"
   },
   "requires": {
-    "cboulanger/qx-contrib-Dialog": "^2.0.0",
-    "ergobyte/qookery/qookery": "^0.6.0",
-    "ergobyte/qookery/qookeryace": "^0.6.0",
-    "qooxdoo/qxl.widgetbrowser": "^0.1.6",
-    "qooxdoo/qxl.apiviewer": "^0.1.13",
     "@qooxdoo/compiler": "^1.0.0-beta",
-    "@qooxdoo/framework": "^6.0.0-alpha"
+    "@qooxdoo/framework": "^6.0.0-beta",
+    "cboulanger/qx-contrib-Dialog": "^2.0.0",
+    "ergobyte/qookery/qookery": "892f44d1d1ae5d65c7dd99b18da6876de2f2a920",
+    "ergobyte/qookery/qookeryace": "892f44d1d1ae5d65c7dd99b18da6876de2f2a920",
+    "qooxdoo/qxl.widgetbrowser": "^1.0.0-beta"
   },
   "$schema": "https://raw.githubusercontent.com/qooxdoo/qooxdoo-compiler/master/resource/schema/v1/Manifest.json"
 }
