@@ -44,7 +44,7 @@ other amenities to make this as comfortable as possible.
 ## Demos
 
 - [Simple event recorder demo in "tour"
-mode](https://cboulanger.github.io/eventrecorder/): Very simple demo that shows
+mode](https://cboulanger.github.io/eventrecorder/eventrecorder): Very simple demo that shows
 how you can use the event recorder to walk the user through your app, using
 [this gist](https://gist.github.com/cboulanger/64ed4149a27d48de38d9cb176907355e)
 
