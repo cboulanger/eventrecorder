@@ -21,7 +21,7 @@
     "translation": "source/translation"
   },
   "requires": {
-    "@qooxdoo/compiler": "^1.0.0-beta",
+    "@qooxdoo/compiler": "^1.0.0-beta.20190812-1424",
     "@qooxdoo/framework": "^6.0.0-beta",
     "cboulanger/qx-contrib-Dialog": "^2.0.0",
     "ergobyte/qookery/qookery": "892f44d1d1ae5d65c7dd99b18da6876de2f2a920",
