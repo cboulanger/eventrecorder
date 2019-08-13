@@ -1,5 +1,7 @@
 # Qooxoodo Event Recorder
 
+[![Build Status](https://travis-ci.org/cboulanger/eventrecorder.svg?branch=master)](https://github.com/cboulanger/eventrecorder/tree/master)
+
 ![Eventrecorder screenshot](/docs/eventrecorder-screenshot.png)
 
 This library allows a) to record user interaction for replay in tests, or for use in
