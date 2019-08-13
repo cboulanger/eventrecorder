@@ -22,10 +22,10 @@ install:
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3
   - fluxbox >/dev/null 2>&1 &
-  - npm install -g qxcompiler
+  - npm install -g @qooxdoo/compiler
   - qx config set github.token $GITHUB_TOKEN
-  - qx contrib update
-  - qx contrib install
+  - qx pkg update
+  - qx pkg install
 
 script:
   - tests/test-travis.sh
