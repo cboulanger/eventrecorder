@@ -167,7 +167,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       allowGrowY: false
     });
 
-    this._iniPropertiesFromEnvironment();
+    const {playerType, playerMode} = this._iniPropertiesFromEnvironment();
     this.__players = {};
 
     const recorder = new cboulanger.eventrecorder.Recorder();
@@ -222,15 +222,8 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     form.appendChild(input);
 
     // Player configuration
-    let playerType = uri_params.queryKey.eventrecorder_type ||
-      env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.PLAYER_TYPE) ||
-      "qooxdoo";
-    let mode = uri_params.queryKey.eventrecorder_player_mode ||
-      storage.getItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.PLAYER_MODE) ||
-      env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.PLAYER_MODE) ||
-      "presentation";
     let player = this.getPlayerByType(playerType);
-    player.setMode(mode);
+    player.setMode(playerMode);
     player.addListener("changeMode", e => {
       storage.setItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.PLAYER_MODE, e.getData());
     });
@@ -240,7 +233,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     let gistId = this.getGistId();
     let autoplay = this.getAutoplay();
     let script = this.getScript();
-    if (script && !this._scriptUrlMatches()) {
+    if (script && this._getScriptUrl() && !this._scriptUrlMatches()) {
       script = null;
       this.setScript("");
       this.setAutoplay(false);
@@ -251,7 +244,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
           // if the eventrecorder itself is scriptable, run the gist in a separate player without GUI
           if (this.getScriptable()) {
             let gistplayer = new cboulanger.eventrecorder.player.Qooxdoo();
-            gistplayer.setMode(mode);
+            gistplayer.setMode(playerMode);
             if (autoplay) {
               this.setAutoplay(false);
               gistplayer.replay(gist);
@@ -355,7 +348,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
                 macroMenu.add(menuButton);
               }
             };
-            player.addListener("changeMacros", () =>{
+            player.addListener("changeMacros", () => {
               updateMenu();
               player.getMacros().getNames().addListener("change", updateMenu);
             });
@@ -498,6 +491,11 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       this.initGistId(gistId);
       let scriptable = Boolean(uri_params.queryKey.eventrecorder_scriptable) || qx.core.Environment.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.SCRIPTABLE) || false;
       this.initScriptable(scriptable);
+      let playerType = uri_params.queryKey.eventrecorder_type || env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.PLAYER_TYPE) || "qooxdoo";
+      let playerMode = uri_params.queryKey.eventrecorder_player_mode || storage.getItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.PLAYER_MODE) || env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.PLAYER_MODE) || "presentation";
+      let info = {script, autoplay, reloadBeforeReplay, gistId, scriptable, scriptUrl : this._getScriptUrl(), playerType, playerMode };
+      console.warn(info);
+      return info;
     },
 
     _applyMode(value, old) {
