@@ -240,7 +240,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     let gistId = this.getGistId();
     let autoplay = this.getAutoplay();
     let script = this.getScript();
-    if (gistId && !(script && this._scriptUrlMatches())) {
+    if (gistId && (!(script && this._scriptUrlMatches()))) {
       this._getRawGist(gistId)
         .then(gist => {
           // if the eventrecorder itself is scriptable, run the gist in a separate player without GUI
@@ -516,11 +516,16 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     },
 
     _saveScriptUrl() {
+      return qx.bom.storage.Web.getSession().getItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.SCRIPT_URL);
+    },
+
+    _getScriptUrl() {
       qx.bom.storage.Web.getSession().setItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.SCRIPT_URL, document.location.href);
     },
 
+
     _scriptUrlMatches() {
-      return qx.bom.storage.Web.getSession().getItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.SCRIPT_URL) === document.location.href;
+      return this._getScriptUrl() === document.location.href;
     },
 
     _applyGistId(value, old) {

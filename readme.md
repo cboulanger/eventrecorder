@@ -125,6 +125,19 @@ If you want to have readable and easily editable replay scripts, you should
 assign a semantically meaningful `qxObjectId` property to each widget that is 
 used in the script. 
 
+## Loading a script from a file / a gist
+
+To load scripts, you have several options. During development, you can use locally
+stored files, using the "Load" button on the GUI. In a testing pipeline, you can
+use scripts stored in Gists (loading from a URL can be added if need arises). The
+gists can be loaded by either setting the environment variable `eventrecorder.gist_id`
+in the application section of `compile.json`. This will load the script published 
+with this id at [gist.github.com](https://gist.github.com). Alternatively, you can
+provide the `eventrecorder_gist_id` parameter in the querystring, like so:
+
+https://cboulanger.github.io/eventrecorder/widgetbrowser_recorder/?eventrecorder_gist_id=2ce4d5f7107661f1c53b146c498560aa
+
+
 ## Script language reference
 
 The available commands can be gleaned from the methods of the [cboulanger.eventrecorder.IPlayer interface](https://cboulanger.github.io/eventrecorder/apiviewer/index.html#cboulanger.eventrecorder.IPlayer).

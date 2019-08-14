@@ -1,4 +1,5 @@
-/** <h3> Event recorder API Documentation </h3>
+/**
+ * <h3> Event recorder API Documentation </h3>
  *
  * See documentation in the readme.
  *

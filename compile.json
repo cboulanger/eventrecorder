@@ -110,25 +110,19 @@
     {
       "class": "qxl.widgetbrowser.Application",
       "theme": "qx.theme.Indigo",
-      "name": "widgetbrowser",
-      "title": "WidgetBrowser",
+      "name": "widgetbrowser_recorder",
+      "title": "WidgetBrowser with empty script editor",
       "include": [
         "qx.theme.Modern",
-        "qx.theme.Simple",
-        "qx.theme.Classic",
-        "qxl.widgetbrowser.pages.Tree",
-        "qxl.widgetbrowser.pages.List",
-        "qxl.widgetbrowser.pages.Table",
-        "qxl.widgetbrowser.pages.Form",
-        "qxl.widgetbrowser.pages.ToolBar",
-        "qxl.widgetbrowser.pages.Window",
-        "qxl.widgetbrowser.pages.Tab",
-        "qxl.widgetbrowser.pages.Control",
-        "qxl.widgetbrowser.pages.Embed",
-        "qxl.widgetbrowser.pages.EmbedFrame",
-        "qxl.widgetbrowser.pages.Basic",
-        "qxl.widgetbrowser.pages.Misc"
-      ]
+        "cboulanger.eventrecorder.UiController",
+        "cboulanger.eventrecorder.ObjectIdGenerator"
+      ],
+      "environment": {
+        "qx.icontheme": [
+          "Tango"
+        ],
+        "eventrecorder.show_progress": true
+      }
     }
   ],
   "$schema": "https://raw.githubusercontent.com/qooxdoo/qooxdoo-compiler/master/source/resource/qx/tool/schema/compile-1-0-0.json"
