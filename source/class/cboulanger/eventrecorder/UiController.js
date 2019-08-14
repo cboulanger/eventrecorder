@@ -240,7 +240,12 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     let gistId = this.getGistId();
     let autoplay = this.getAutoplay();
     let script = this.getScript();
-    if (gistId && (!(script && this._scriptUrlMatches()))) {
+    if (script && !this._scriptUrlMatches()) {
+      script = null;
+      this.setScript("");
+      this.setAutoplay(false);
+    }
+    if (gistId && !script) {
       this._getRawGist(gistId)
         .then(gist => {
           // if the eventrecorder itself is scriptable, run the gist in a separate player without GUI
@@ -493,7 +498,6 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       this.initGistId(gistId);
       let scriptable = Boolean(uri_params.queryKey.eventrecorder_scriptable) || qx.core.Environment.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.SCRIPTABLE) || false;
       this.initScriptable(scriptable);
-      //console.warn({script, autoplay, gistId, reloadBeforeReplay, scriptable});
     },
 
     _applyMode(value, old) {
