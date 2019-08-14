@@ -34,11 +34,14 @@ qx.Class.define("cboulanger.eventrecorder.ObjectIdTooltip", {
          return;
         }
         const type = event.getType();
-        const id = (typeof target.getAttribute == "function") ?
-          (target.getAttribute("data-qx-object-id") || target.toString() + " (no qx id attribute)") :
-          (target instanceof qx.core.Object ?
-            qx.core.Id.getAbsoluteIdOf(target, true) || (target.toString()+" (no qx id)") :
-            target.toString());
+        let id;
+        if (typeof target.getAttribute == "function") {
+          id = target.getAttribute("data-qx-object-id") || target.toString() + " (no qx id attribute)";
+        } else if (target instanceof qx.core.Object) {
+          id = qx.core.Id.getAbsoluteIdOf(target, true) || (target.toString()+" (no qx id)");
+        } else {
+          id = target.toString();
+        }
         if (!this.isIncludeNodesWithoutQxId() && id.includes("no qx id")) {
           return;
         }
