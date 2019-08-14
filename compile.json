@@ -88,6 +88,23 @@
       }
     },
     {
+      "class": "qxl.widgetbrowser.Application",
+      "theme": "qx.theme.Indigo",
+      "name": "widgetbrowser_playground",
+      "title": "WidgetBrowser with empty script editor",
+      "include": [
+        "qx.theme.Modern",
+        "cboulanger.eventrecorder.UiController",
+        "cboulanger.eventrecorder.ObjectIdGenerator"
+      ],
+      "environment": {
+        "qx.icontheme": [
+          "Tango"
+        ],
+        "eventrecorder.show_progress": true
+      }
+    },
+    {
       "class": "qxl.apiviewer.Application",
       "theme": "qxl.apiviewer.Theme",
       "name": "apiviewer",
@@ -106,23 +123,6 @@
         "qx.module.Blocker",
         "qx.module.Placement"
       ]
-    },
-    {
-      "class": "qxl.widgetbrowser.Application",
-      "theme": "qx.theme.Indigo",
-      "name": "widgetbrowser_recorder",
-      "title": "WidgetBrowser with empty script editor",
-      "include": [
-        "qx.theme.Modern",
-        "cboulanger.eventrecorder.UiController",
-        "cboulanger.eventrecorder.ObjectIdGenerator"
-      ],
-      "environment": {
-        "qx.icontheme": [
-          "Tango"
-        ],
-        "eventrecorder.show_progress": true
-      }
     }
   ],
   "$schema": "https://raw.githubusercontent.com/qooxdoo/qooxdoo-compiler/master/source/resource/qx/tool/schema/compile-1-0-0.json"
