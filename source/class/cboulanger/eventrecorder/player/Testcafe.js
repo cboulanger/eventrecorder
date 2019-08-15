@@ -71,8 +71,8 @@ qx.Class.define("cboulanger.eventrecorder.player.Testcafe", {
      * @param script
      * @return {string} executable code
      */
-    translate(script) {
-      let lines = this._translate(script).split(/\n/);
+    async translate(script) {
+      let lines = (await this._translate(script)).split(/\n/);
       return [
         "fixture `Test suite title`",
         "  .page `" + window.location.href + "`;",
@@ -96,7 +96,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Testcafe", {
      * @return {*|var}
      * @private
      */
-    _translateLine(line) {
+    async translateLine(line) {
       let code = this.base(arguments, line);
       if (code && !code.startsWith("await t.") && !code.startsWith("//")) {
         code = (code.endsWith(";") || code.endsWith("}")) ?

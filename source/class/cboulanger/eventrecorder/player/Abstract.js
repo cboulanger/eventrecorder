@@ -515,7 +515,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      * @ignore(command)
      * @ignore(args)
      */
-    _translateLine(line) {
+    async _translateLine(line) {
       // comment
       if (line.startsWith("#")) {
         return this.addComment(line.substr(1).trim());
@@ -529,6 +529,10 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
       let method_name = "cmd_" + command.replace(/-/g, "_");
       if (typeof this[method_name] == "function") {
         let translatedLine = this[method_name].apply(this, args);
+        // async function
+        if (translatedLine && typeof translatedLine.then == "function") {
+          translatedLine = await translatedLine;
+        }
         if (translatedLine && translatedLine.startsWith("(") && this.isInAwaitBlock()) {
           this._addPromiseToAwaitStack(translatedLine);
           return null;
@@ -547,7 +551,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      * @return {Array}
      * @private
      */
-    _handleMeta(script, expandVariables=true) {
+    async _handleMeta(script, expandVariables=true) {
       this.resetMacros();
       this.__vars = {};
       let lines = [];
@@ -570,24 +574,24 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
           if (this.isInAwaitBlock()) {
             throw new Error("You cannot use a macro in an await block.");
           }
-          this._translateLine(line);
+          await this._translateLine(line);
           continue;
         }
 
         // await block
         if (line.startsWith("await-")) {
-          this._translateLine(line);
+          await this._translateLine(line);
         }
 
         // end await block or macro
         if (line === "end") {
           // macro
           if (!this.isInAwaitBlock()) {
-            this._translateLine(line);
+            await this._translateLine(line);
             continue;
           }
           // await block
-          this._translateLine(line);
+          await this._translateLine(line);
         }
 
         // add code to macro
@@ -728,7 +732,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
         }
 
         // translate
-        let code = this._translateLine(line);
+        let code = await this._translateLine(line);
         // skip empty lines
         if (!code) {
           continue;
@@ -759,7 +763,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      */
     async replay(scriptOrLines) {
       this.setRunning(true);
-      let lines = Array.isArray(scriptOrLines) ? scriptOrLines : this._handleMeta(scriptOrLines);
+      let lines = Array.isArray(scriptOrLines) ? scriptOrLines : await this._handleMeta(scriptOrLines);
       let steps = 0;
       let await_block= false;
       for (let line of lines) {
@@ -800,7 +804,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      *    has already been handled by {@link #_handleMeta) and split into lines
      * @return {string} executable code
      */
-    translate(scriptOrLines) {
+    async translate(scriptOrLines) {
       return this._translate(scriptOrLines);
     },
 
@@ -812,17 +816,18 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      * @return {string}
      * @private
      */
-    _translate(scriptOrLines) {
-      let lines = Array.isArray(scriptOrLines) ? scriptOrLines : this._handleMeta(scriptOrLines);
+    async _translate(scriptOrLines) {
+      let lines = Array.isArray(scriptOrLines) ? scriptOrLines : await this._handleMeta(scriptOrLines);
       let translatedLines = this._defineVariables();
       for (let line of lines) {
         line = line.trim();
         let [command, ...args] = this._tokenize(line);
         let macro_lines = this._getMacro(command, args);
-        let new_lines = (macro_lines || [line])
-          .map(l => this._translateLine(l))
-          .filter(l => Boolean(l));
-        translatedLines = translatedLines.concat(new_lines);
+        let new_lines = [];
+        for (let l of (macro_lines || [line])) {
+          new_lines.push(await this._translateLine(l));
+        }
+        translatedLines = translatedLines.concat(new_lines.filter(l => Boolean(l)));
       }
       let translation = translatedLines.join("\n");
       return this._generateUtilityFunctionsCode(translation)

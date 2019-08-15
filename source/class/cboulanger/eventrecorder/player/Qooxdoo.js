@@ -53,8 +53,8 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @param script
      * @return {string} executable code
      */
-    translate(script) {
-      let lines = this._translate(script)
+    async translate(script) {
+      let lines = (await this._translate(script))
         .split(/\n/)
         .map(line => (line.startsWith("(") ? `await ${line};` : line))
         .filter(line => Boolean(line))

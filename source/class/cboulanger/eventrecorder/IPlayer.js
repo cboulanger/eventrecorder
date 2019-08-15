@@ -64,7 +64,7 @@ qx.Interface.define("cboulanger.eventrecorder.IPlayer", {
      * @param script
      * @return {string} Javasc
      */
-    translate(script) {},
+    async translate(script) {},
 
     /**
      * Returns the file extension of the downloaded file in the target language

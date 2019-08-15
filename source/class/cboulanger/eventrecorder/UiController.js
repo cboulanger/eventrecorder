@@ -165,6 +165,9 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       allowGrowY: false
     });
 
+    const recorder = new cboulanger.eventrecorder.Recorder();
+    this.setRecorder(recorder);
+
     // initialize application parameters
     let {script, reloadBeforeReplay, autoplay, gistId, scriptable, playerType, playerMode} = this._getParamsFromEnvironment();
     this.initScript(script);
@@ -173,9 +176,6 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     this.initGistId(gistId);
     this.initScriptable(scriptable);
     this.__players = {};
-
-    const recorder = new cboulanger.eventrecorder.Recorder();
-    this.setRecorder(recorder);
 
     // assign id to this widget from caption
     const objectId = caption.replace(/ /g, "").toLocaleLowerCase();
@@ -235,7 +235,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     this.setPlayer(player);
 
     // Autoplay
-    if (script && this._getScriptUrl() && !this._scriptUrlMatches()) {
+    if (script && !this._scriptUrlMatches()) {
       script = null;
       this.setScript("");
       this.setAutoplay(false);
@@ -515,19 +515,12 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
      */
     _applyScript(value, old) {
       qx.bom.storage.Web.getSession().setItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.SCRIPT, value);
-      let listenerExists = false;
-      if (this.getRecorder()) {
-        this.getRecorder().setScript(value);
-      } else {
-        this.addListenerOnce("changeRecorder", () => this._applyScript(value, old));
-        listenerExists = true;
-      }
-      // update
-      if (this.getPlayer()) {
-        this.getPlayer().translate(value);
-        this._updateMacroMenu();
-      } else if (!listenerExists) {
-        this.addListenerOnce("changePlayer", () => this._applyScript(value, old));
+      this.getRecorder().setScript(value);
+      if (!this.getPlayer()) {
+        this.addListenerOnce("changePlayer", async () => {
+          await this.getPlayer().translate(value);
+          this._updateMacroMenu();
+        });
       }
     },
 
@@ -916,7 +909,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
      * @param mode {String}
      * @return {String|false}
      */
-    translateTo(playerType, mode) {
+    async translateTo(playerType, mode) {
       const exporter = this.getPlayerByType(playerType);
       const model = this.getQxObject("editor").getModel();
       if (mode) {
@@ -924,7 +917,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       }
       let editedScript = model.getLeftEditorContent();
       try {
-        let translatedText = exporter.translate(editedScript);
+        let translatedText = await exporter.translate(editedScript);
         model.setRightEditorContent(translatedText);
         return translatedText;
       } catch (e) {
@@ -940,7 +933,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
      * @param mode {String}
      * @return {Boolean}
      */
-    exportTo(playerType, mode) {
+    async exportTo(playerType, mode) {
       const exporter = this.getPlayerByType(playerType);
       if (mode) {
         exporter.setMode(mode);
@@ -951,7 +944,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
           dialog.Dialog.error("No script to export!");
           return false;
         }
-        translatedScript = this.translateTo(playerType);
+        translatedScript = await this.translateTo(playerType);
       }
       qx.event.Timer.once(() => {
         let filename = this._getApplicationName();
