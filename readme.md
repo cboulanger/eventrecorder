@@ -235,9 +235,23 @@ by that text before the script is evaluated.
 Inside macros, "$1", "$2" etc. will be replaced with the value of the the nth
 argument passed to the name of the macro in the script.
 
-Do not expect any functionality beyond these rather primitive features (such as
-control structures etc.). Any more complex requirement should be solved in the 
-target script language.
+### Imports
+
+You can modularize your scripts by importing other scripts. This is particularly 
+useful to store often-used macros in separate files. Currently, only importing
+from Gists is supported. To import, for example, [this Gist](https://gist.github.com/cboulanger/dee7efecbb9a2e4268c15395849e30e5),
+just put the line 
+```text
+import gist:dee7efecbb9a2e4268c15395849e30e5
+```
+at the beginning of the script. 
+
+Scripts are cached using
+[qx.bom.storage.Web](http://www.qooxdoo.org/apps/apiviewer/#qx.bom.storage.Web).
+If you need to clear the cache because on of the imported script has changed,
+preceed the imports by the `clear-imports` command. See [this
+example](https://gist.github.com/cboulanger/8a27af215845b16400e98328623b6c13).
+
 
 ## Player mode
 

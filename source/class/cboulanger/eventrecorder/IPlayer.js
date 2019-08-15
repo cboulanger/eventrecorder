@@ -80,6 +80,19 @@ qx.Interface.define("cboulanger.eventrecorder.IPlayer", {
     */
 
     /**
+     * Imports a remote file and caches it locally
+     * @param {String} uri
+     * @return {Promise<array>}
+     */
+    async cmd_import(uri) {},
+
+    /**
+     * Clears locally cached imported scripts in order to force-reload them
+     */
+    cmd_clear_imports() {},
+
+
+    /**
      * Asserts that the current url matches the given value (RegExp)
      * @param uri {String}
      */

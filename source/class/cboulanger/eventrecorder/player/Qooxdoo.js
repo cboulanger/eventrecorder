@@ -74,6 +74,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @inheritDoc
      */
     cmd_info(text) {
+      text = text.replace(/"/g, "");
       if (this.getMode() === "presentation") {
         return `cboulanger.eventrecorder.InfoPane.getInstance().useIcon("info").display("${text}");`;
       }
@@ -94,6 +95,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @inheritDoc
      */
     cmd_widget_info(id, text) {
+      text = text.replace(/"/g, "");
       if (this.getMode() === "presentation") {
         return `cboulanger.eventrecorder.InfoPane.getInstance().useIcon("info").display("${text}",qx.core.Id.getQxObject("${id}"));`;
       }

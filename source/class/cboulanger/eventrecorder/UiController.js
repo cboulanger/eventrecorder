@@ -17,11 +17,13 @@
 /**
  * The UI Controller for the recorder
  * @asset(cboulanger/eventrecorder/*)
+ * @asset(dialog/*)
  * @require(cboulanger.eventrecorder.player.Testcafe)
  * @ignore(ace)
  */
 qx.Class.define("cboulanger.eventrecorder.UiController", {
   extend: qx.ui.window.Window,
+  include: [ cboulanger.eventrecorder.MHelperMethods],
   statics: {
     CONFIG_KEY : {
       SCRIPT:       "eventrecorder.script",
@@ -35,6 +37,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       SCRIPT_URL:   "eventrecorder.script_url"
     },
     FILE_INPUT_ID : "eventrecorder-fileupload",
+
     aliases: {
       "eventrecorder.icon.record":  "cboulanger/eventrecorder/media-record.png",
       "eventrecorder.icon.start":   "cboulanger/eventrecorder/media-playback-start.png",
@@ -43,7 +46,13 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       "eventrecorder.icon.edit":    "cboulanger/eventrecorder/document-properties.png",
       "eventrecorder.icon.save":    "cboulanger/eventrecorder/document-save.png",
       "eventrecorder.icon.load":    "cboulanger/eventrecorder/document-open.png",
-      "eventrecorder.icon.export":  "cboulanger/eventrecorder/emblem-symbolic-link.png"
+      "eventrecorder.icon.export":  "cboulanger/eventrecorder/emblem-symbolic-link.png",
+      // need a way to automatically include this
+      "dialog.icon.cancel" : "dialog/icon/IcoMoonFree/272-cross.svg",
+      "dialog.icon.ok"     : "dialog/icon/IcoMoonFree/273-checkmark.svg",
+      "dialog.icon.info"   : "dialog/icon/IcoMoonFree/269-info.svg",
+      "dialog.icon.error"  : "dialog/icon/IcoMoonFree/270-cancel-circle.svg",
+      "dialog.icon.warning" : "dialog/icon/IcoMoonFree/264-warning.svg"
     }
   },
 
@@ -241,7 +250,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       this.setAutoplay(false);
     }
     if (gistId && !script) {
-      this._getRawGist(gistId)
+      this.getRawGist(gistId)
         .then(gist => {
           // if the eventrecorder itself is scriptable, run the gist in a separate player without GUI
           if (this.getScriptable()) {
@@ -516,6 +525,9 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     _applyScript(value, old) {
       qx.bom.storage.Web.getSession().setItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.SCRIPT, value);
       this.getRecorder().setScript(value);
+      if (!this._getScriptUrl()) {
+        this._saveScriptUrl();
+      }
       if (!this.getPlayer()) {
         this.addListenerOnce("changePlayer", async () => {
           await this.getPlayer().translate(value);
@@ -524,11 +536,11 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       }
     },
 
-    _saveScriptUrl() {
+    _getScriptUrl() {
       return qx.bom.storage.Web.getSession().getItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.SCRIPT_URL);
     },
 
-    _getScriptUrl() {
+    _saveScriptUrl() {
       qx.bom.storage.Web.getSession().setItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.SCRIPT_URL, document.location.href);
     },
 
@@ -628,34 +640,6 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       document.body.appendChild(element);
       element.click();
       document.body.removeChild(element);
-    },
-
-    /**
-     * Get the content of a gist by its id
-     * @param gist_id {String}
-     * @return {Promise<*>}
-     * @private
-     */
-    _getRawGist: async function (gist_id) {
-      return new Promise((resolve, reject) => {
-        let url = `https://api.github.com/gists/${gist_id}`;
-        let req = new qx.io.request.Jsonp(url);
-        req.addListener("success", e => {
-          let response = req.getResponse();
-          if (!qx.lang.Type.isObject(response.data.files)) {
-            reject(new Error("Unexpected response: " + JSON.stringify(response)));
-          }
-          let filenames = Object.getOwnPropertyNames(response.data.files);
-          let file = response.data.files[filenames[0]];
-          if (!file.filename.endsWith(".eventrecorder")) {
-            reject(new Error("Gist is not an eventrecorder script"));
-          }
-          let script = file.content;
-          resolve(script);
-        });
-        req.addListener("statusError", e => reject(new Error(e.getData())));
-        req.send();
-      });
     },
 
     /**
@@ -1032,7 +1016,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       if (!answer || !answer.id) {
         return;
       }
-      this.setScript(await this._getRawGist(answer.id));
+      this.setScript(await this.getRawGist(answer.id));
     },
 
     /**
@@ -1044,7 +1028,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       if (!answer || !answer.id) {
         return;
       }
-      this.setScript(await this._getRawGist(answer.id));
+      this.setScript(await this.getRawGist(answer.id));
       this.setGistId(answer.id);
     }
   },

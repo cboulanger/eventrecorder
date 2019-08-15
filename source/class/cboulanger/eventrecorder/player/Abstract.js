@@ -508,14 +508,19 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
 
     /**
      * Translates a single line from the intermediate code into the target
-     * language. To be overridden by subclasses if neccessary.
+     * language. To be overridden by subclasses if neccessary. Returns a
+     * single line in most cases, an array of lines in case of imports.
      *
      * @param line {String}
-     * @return {String}
+     * @return {String|String[]}
      * @ignore(command)
      * @ignore(args)
      */
     async _translateLine(line) {
+      line = line.trim();
+      if (!line) {
+        return null;
+      }
       // comment
       if (line.startsWith("#")) {
         return this.addComment(line.substr(1).trim());
@@ -532,6 +537,10 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
         // async function
         if (translatedLine && typeof translatedLine.then == "function") {
           translatedLine = await translatedLine;
+        }
+        // imports
+        if (Array.isArray(translatedLine)) {
+          return translatedLine;
         }
         if (translatedLine && translatedLine.startsWith("(") && this.isInAwaitBlock()) {
           this._addPromiseToAwaitStack(translatedLine);
@@ -727,7 +736,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
           this.debug(`\n===== Step ${step} / ${steps} ====`);
         }
         // ignore delay in test mode
-        if (this.getMode()==="test" && line.startsWith("delay")) {
+        if (this.getMode() === "test" && line.startsWith("delay")) {
           continue;
         }
 
@@ -737,6 +746,15 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
         if (!code) {
           continue;
         }
+
+        // handle multiple lines from imports
+        if (Array.isArray(code)) {
+          this.debug(`>>>>>>>>> Start import >>>>>>>>>>>>>`);
+          await this._play(code, code.length, 0);
+          this.debug(`<<<<<<<<< End import ><<<<<<<<<<<<<<`);
+          continue;
+        }
+
         this.debug(`${line}\n${"-".repeat(40)}\n${code}`);
         // execute
         let result = window.eval(code);
@@ -813,26 +831,38 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      * @param scriptOrLines {String|Array}
      *    If String, assume an unhandled script. If Array. assume that script
      *    has already been handled by {@link #_handleMeta) and split into lines
+     * @param {Boolean} includeUtilityFunctions
      * @return {string}
      * @private
      */
-    async _translate(scriptOrLines) {
+    async _translate(scriptOrLines, includeUtilityFunctions=true) {
       let lines = Array.isArray(scriptOrLines) ? scriptOrLines : await this._handleMeta(scriptOrLines);
       let translatedLines = this._defineVariables();
       for (let line of lines) {
         line = line.trim();
+        if (!line) {
+          continue;
+        }
         let [command, ...args] = this._tokenize(line);
         let macro_lines = this._getMacro(command, args);
         let new_lines = [];
         for (let l of (macro_lines || [line])) {
-          new_lines.push(await this._translateLine(l));
+          let code = await this._translateLine(l);
+          if (Array.isArray(code)) {
+            new_lines = new_lines.concat(code);
+          } else {
+            new_lines.push(code);
+          }
         }
         translatedLines = translatedLines.concat(new_lines.filter(l => Boolean(l)));
       }
       let translation = translatedLines.join("\n");
-      return this._generateUtilityFunctionsCode(translation)
-        .concat(translatedLines)
-        .join("\n");
+      if (includeUtilityFunctions) {
+        return this._generateUtilityFunctionsCode(translation)
+          .concat(translatedLines)
+          .join("\n");
+      }
+      return translation;
     },
 
     /**
@@ -968,11 +998,76 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
       return qx.lang.Type.isArray(this.__promises);
     },
 
+    /**
+     * Returns the storage object
+     * @return {qx.bom.storage.Web}
+     * @private
+     */
+    _getStorage() {
+      return qx.bom.storage.Web.getSession();
+    },
+
+    /**
+     * Saves an imported script
+     * @param uri {String}
+     * @param script {String}
+     */
+    _saveImport(uri, script) {
+      this._getStorage().setItem("import:" + uri, script);
+    },
+
+    /**
+     * Retrieves an imported script by its uri, if it exists
+     * @param uri {String}
+     * @return {String}
+     */
+    _getImport(uri) {
+      return this._getStorage().getItem("import:" + uri);
+    },
+
+    /**
+     * Removes all imported scripts
+     */
+    _clearImports() {
+      this._getStorage().forEach(key => {
+        if (key.startsWith("import:")) {
+          this._getStorage().removeItem(key);
+        }
+      });
+    },
+
     /*
     ============================================================================
        COMMANDS
     ============================================================================
     */
+
+    /**
+     * Imports a remote file and caches it locally
+     * @param {String} uri
+     * @return {Promise<array>}
+     */
+    async cmd_import(uri) {
+      const [type, id] = uri.split(":");
+      if (type !== "gist") {
+        throw new Error("Currently, only gists can be imported.");
+      }
+      // use stored script or load from URI
+      let remoteScript = this._getImport(uri);
+      if (!remoteScript) {
+        remoteScript = await this.getRawGist(id);
+        this._saveImport(uri, remoteScript);
+      }
+      return this._translate(remoteScript, false);
+    },
+
+    /**
+     * Clears locally cached imported scripts in order to force-reload them
+     */
+    cmd_clear_imports() {
+      this._clearImports();
+      return "";
+    },
 
     /**
      * Asserts that the current url matches the given value (RegExp)

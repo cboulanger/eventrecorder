@@ -40,7 +40,7 @@
       "class": "cboulanger.eventrecorder.demo.Application",
       "theme": "cboulanger.eventrecorder.theme.Theme",
       "name": "eventrecorder",
-      "title": "Simple event recorder demo, autoplaying a presentation from a gist",
+      "title": "Event recorder demo, autoplaying a presentation from a gist",
       "include": [
         "qx.theme.Modern",
         "qx.data.marshal.Json",
@@ -56,7 +56,7 @@
       "class": "cboulanger.eventrecorder.demo.Application",
       "theme": "cboulanger.eventrecorder.theme.Theme",
       "name": "eventrecorder_tooltips",
-      "title": "Simple event recorder demo with object id tooltips",
+      "title": "Event recorder demo with object id tooltips",
       "include": [
         "qx.theme.Modern",
         "qx.data.marshal.Json",
@@ -65,6 +65,21 @@
       ],
       "environment": {
         "eventrecorder.gist_id": "ae41a3c54b81c0447f1e152a5c6ba4f8"
+      }
+    },
+    {
+      "class": "cboulanger.eventrecorder.demo.Application",
+      "theme": "cboulanger.eventrecorder.theme.Theme",
+      "name": "eventrecorder_imports",
+      "title": "Event recorder demo demonstrating the use of imports",
+      "include": [
+        "qx.theme.Modern",
+        "qx.data.marshal.Json",
+        "cboulanger.eventrecorder.UiController"
+      ],
+      "environment": {
+        "eventrecorder.gist_id": "8a27af215845b16400e98328623b6c13",
+        "eventrecorder.autoplay": true
       }
     },
     {
