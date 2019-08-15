@@ -33,6 +33,15 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
   {
 
     /**
+     * Returns the player type
+     * @return {String}
+     */
+    getType() {
+      return "qooxdoo";
+    },
+
+
+    /**
      * @inheritDoc
      */
     getExportFileExtension() {

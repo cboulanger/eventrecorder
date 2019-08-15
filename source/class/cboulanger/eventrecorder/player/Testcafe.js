@@ -38,6 +38,14 @@ qx.Class.define("cboulanger.eventrecorder.player.Testcafe", {
   {
 
     /**
+     * Returns the player type
+     * @return {String}
+     */
+    getType() {
+      return "testcafe";
+    },
+
+    /**
      * overridden to disallow presentation mode
      * @param value
      * @param old

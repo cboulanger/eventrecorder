@@ -145,8 +145,6 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
   construct: function(caption="Event Recorder") {
     this.base(arguments);
 
-    let {env, storage, uri_params} = this._getPersistenceProviders();
-
     // workaround until icon theme can be mixed into application theme
     const aliasMgr = qx.util.AliasManager.getInstance();
     const aliases = aliasMgr.getAliases();
@@ -167,7 +165,13 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       allowGrowY: false
     });
 
-    const {playerType, playerMode} = this._iniPropertiesFromEnvironment();
+    // initialize application parameters
+    let {script, reloadBeforeReplay, autoplay, gistId, scriptable, playerType, playerMode} = this._getParamsFromEnvironment();
+    this.initScript(script);
+    this.initReloadBeforeReplay(reloadBeforeReplay === null ? false : reloadBeforeReplay);
+    this.initAutoplay(autoplay);
+    this.initGistId(gistId);
+    this.initScriptable(scriptable);
     this.__players = {};
 
     const recorder = new cboulanger.eventrecorder.Recorder();
@@ -224,15 +228,13 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     // Player configuration
     let player = this.getPlayerByType(playerType);
     player.setMode(playerMode);
+    const {storage} = this._getPersistenceProviders();
     player.addListener("changeMode", e => {
       storage.setItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.PLAYER_MODE, e.getData());
     });
     this.setPlayer(player);
 
     // Autoplay
-    let gistId = this.getGistId();
-    let autoplay = this.getAutoplay();
-    let script = this.getScript();
     if (script && this._getScriptUrl() && !this._scriptUrlMatches()) {
       script = null;
       this.setScript("");
@@ -327,30 +329,18 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
           control.addOwnedQxObject(replayMenu, "menu");
           let macroButton = new qx.ui.menu.Button("Macros");
           replayMenu.add(macroButton);
+          replayMenu.addOwnedQxObject(macroButton, "macros");
           let macroMenu = new qx.ui.menu.Menu();
           macroButton.setMenu(macroMenu);
+          macroButton.addOwnedQxObject(macroMenu, "menu");
           this.addListener("changePlayer", () => {
             let player = this.getPlayer();
             if (!player) {
               return;
             }
-            const updateMenu = async () => {
-              macroMenu.removeAll();
-              for (let name of player.getMacroNames().toArray()) {
-                let description = player.getMacroDescription(name);
-                let label = description.trim() ? (name + ": " + description) : name;
-                let menuButton = new qx.ui.menu.Button(label);
-                menuButton.addListener("execute", async () => {
-                  let macro = player.getMacroDefinition(name).join("\n");
-                  await player.replay(macro);
-                  cboulanger.eventrecorder.InfoPane.getInstance().hide();
-                });
-                macroMenu.add(menuButton);
-              }
-            };
             player.addListener("changeMacros", () => {
-              updateMenu();
-              player.getMacros().getNames().addListener("change", updateMenu);
+              this._updateMacroMenu();
+              player.getMacros().getNames().addListener("change", this._updateMacroMenu, this);
             });
           });
 
@@ -456,6 +446,23 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       return control;
     },
 
+    async _updateMacroMenu() {
+      const macroMenu = this.getQxObject("replay/menu/macros/menu");
+      const player = this.getPlayer();
+      macroMenu.removeAll();
+      for (let name of player.getMacroNames().toArray()) {
+        let description = player.getMacroDescription(name);
+        let label = description.trim() ? (name + ": " + description) : name;
+        let menuButton = new qx.ui.menu.Button(label);
+        menuButton.addListener("execute", async () => {
+          let lines = player.getMacroDefinition(name);
+          await player.replay(lines);
+          cboulanger.eventrecorder.InfoPane.getInstance().hide();
+        });
+        macroMenu.add(menuButton);
+      }
+    },
+
     /**
      * Returns a map with object providing persistence
      * @return {{env: qx.core.Environment, storage: qx.bom.storage.Web, uri_params: {}}}
@@ -470,31 +477,27 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     },
 
     /**
-     * Deferred initialization of properties that get their values from the environment
+     * Get application parameters from from environment, which can be query params,
+     * local storage, or qooxdoo environment variables
      * @private
      * @ignore(env)
      * @ignore(storage)
      * @ignore(uri_params)
      */
-    _iniPropertiesFromEnvironment() {
+    _getParamsFromEnvironment() {
       let {env, storage, uri_params} = this._getPersistenceProviders();
       let script = storage.getItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.SCRIPT) || "";
-      this.initScript(script);
       let autoplay = uri_params.queryKey.eventrecorder_autoplay ||
         storage.getItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.AUTOPLAY) ||
         env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.AUTOPLAY) ||
         false;
-      this.initAutoplay(autoplay);
       let reloadBeforeReplay = storage.getItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.RELOAD_BEFORE_REPLAY);
-      this.initReloadBeforeReplay(reloadBeforeReplay === null ? false : reloadBeforeReplay);
       let gistId = uri_params.queryKey.eventrecorder_gist_id || env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.GIST_ID) || null;
-      this.initGistId(gistId);
       let scriptable = Boolean(uri_params.queryKey.eventrecorder_scriptable) || qx.core.Environment.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.SCRIPTABLE) || false;
-      this.initScriptable(scriptable);
       let playerType = uri_params.queryKey.eventrecorder_type || env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.PLAYER_TYPE) || "qooxdoo";
       let playerMode = uri_params.queryKey.eventrecorder_player_mode || storage.getItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.PLAYER_MODE) || env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.PLAYER_MODE) || "presentation";
       let info = {script, autoplay, reloadBeforeReplay, gistId, scriptable, scriptUrl : this._getScriptUrl(), playerType, playerMode };
-      console.warn(info);
+      console.log(info);
       return info;
     },
 
@@ -512,8 +515,19 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
      */
     _applyScript(value, old) {
       qx.bom.storage.Web.getSession().setItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.SCRIPT, value);
+      let listenerExists = false;
       if (this.getRecorder()) {
         this.getRecorder().setScript(value);
+      } else {
+        this.addListenerOnce("changeRecorder", () => this._applyScript(value, old));
+        listenerExists = true;
+      }
+      // update
+      if (this.getPlayer()) {
+        this.getPlayer().translate(value);
+        this._updateMacroMenu();
+      } else if (!listenerExists) {
+        this.addListenerOnce("changePlayer", () => this._applyScript(value, old));
       }
     },
 
@@ -686,6 +700,15 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
           formModel.addListener("changeTargetScriptType", e => this.translateTo(formModel.getTargetScriptType(), formModel.getTargetMode()));
           formModel.addListener("changeTargetMode", e => this.translateTo(formModel.getTargetScriptType(), formModel.getTargetMode()));
           qx.event.Timer.once(() => this.__setupAutocomplete(), this, 1000);
+
+          // setup bindings between editor and player
+          const setupBindings = player => {
+            formModel.bind("targetMode", player, "mode");
+            player.bind("mode", formModel, "targetMode");
+            formModel.setTargetScriptType(player.getType());
+          };
+          setupBindings(this.getPlayer());
+          this.addListener("changePlayer", e => setupBindings(e.getData()));
           parser.dispose();
           this.edit();
         });

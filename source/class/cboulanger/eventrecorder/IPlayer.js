@@ -35,6 +35,11 @@ qx.Interface.define("cboulanger.eventrecorder.IPlayer", {
    */
   members :
   {
+    /**
+     * Returns the player type
+     * @return {String}
+     */
+    getType() {},
 
     /**
      * Starts the player

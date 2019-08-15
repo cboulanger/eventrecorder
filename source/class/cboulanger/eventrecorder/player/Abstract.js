@@ -295,6 +295,14 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
     __lastCmd : null,
 
     /**
+     * Returns the player type
+     * @return {String}
+     */
+    getType() {
+      throw new Error("Abstract method which needs to be implemented");
+    },
+
+    /**
      * Return the last id used
      * @return {String|null}
      */
@@ -588,8 +596,6 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
           this.getMacroDefinition(name).push(line);
           continue;
         }
-
-
         lines.push(line);
       }
       // remove variable registration if they have been expanded
@@ -743,14 +749,17 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
 
     /**
      * Replays the given script of intermediate code
-     * @param script {String} The script to replay
+     * @param scriptOrLines {String|Array}
+     *    The script to replay. If String, assume an unhandled script. If Array,
+     *    assume that script has already been handled by {@link #_handleMeta) and
+     *    split into lines.
      * @return {Promise} Promise which resolves when the script has been replayed, or
      * rejects with an error
      * @todo implement pausing
      */
-    async replay(script) {
+    async replay(scriptOrLines) {
       this.setRunning(true);
-      let lines = this._handleMeta(script);
+      let lines = Array.isArray(scriptOrLines) ? scriptOrLines : this._handleMeta(scriptOrLines);
       let steps = 0;
       let await_block= false;
       for (let line of lines) {
@@ -780,26 +789,31 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
         }
       }
       this.setRunning(false);
-      qx.event.Timer.once(()=> this.cmd_hide_info(), null, 100);
+      qx.event.Timer.once(() => this.cmd_hide_info(), null, 100);
     },
 
     /**
      * Translates the intermediate code into the target language
-     * @param script
+     * @param scriptOrLines {String|Array}
+     *    The script to translate.
+     *    If String, assume an unhandled script. If Array. assume that script
+     *    has already been handled by {@link #_handleMeta) and split into lines
      * @return {string} executable code
      */
-    translate(script) {
-      return this._translate(script);
+    translate(scriptOrLines) {
+      return this._translate(scriptOrLines);
     },
 
     /**
-     * Implementation for #translate()
-     * @param script
+     * Implementation for #translate(). Returns the translated lines.
+     * @param scriptOrLines {String|Array}
+     *    If String, assume an unhandled script. If Array. assume that script
+     *    has already been handled by {@link #_handleMeta) and split into lines
      * @return {string}
      * @private
      */
-    _translate(script) {
-      let lines = this._handleMeta(script);
+    _translate(scriptOrLines) {
+      let lines = Array.isArray(scriptOrLines) ? scriptOrLines : this._handleMeta(scriptOrLines);
       let translatedLines = this._defineVariables();
       for (let line of lines) {
         line = line.trim();
