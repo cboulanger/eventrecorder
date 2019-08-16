@@ -63,7 +63,7 @@ showcasing the use of variables and macros](https://cboulanger.github.io/eventre
 ### As a standalone demo
 
 ```bash
-npm install -g qxcompiler
+npm install -g @qooxdoo/compiler
 git clone https://github.com/cboulanger/eventrecorder.git
 cd eventrecorder
 qx serve
