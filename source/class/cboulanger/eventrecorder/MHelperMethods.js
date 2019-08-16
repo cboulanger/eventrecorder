@@ -25,7 +25,7 @@ qx.Mixin.define("cboulanger.eventrecorder.MHelperMethods", {
      * @return {Promise<*>}
      * @private
      */
-    getRawGist: async function (gist_id) {
+    async getRawGist (gist_id) {
       return new Promise((resolve, reject) => {
         let url = `https://api.github.com/gists/${gist_id}`;
         let req = new qx.io.request.Jsonp(url);
@@ -51,10 +51,13 @@ qx.Mixin.define("cboulanger.eventrecorder.MHelperMethods", {
      * Add a function to the global event monitor.
      * @param fn {Function}
      */
-    addGlobalEventListener: function(fn) {
+    addGlobalEventListener(fn) {
       let evtMonitor = qx.event.Manager.getGlobalEventMonitor();
       qx.event.Manager.setGlobalEventMonitor(
-        evtMonitor ? ((target, event) => {evtMonitor(target, event); fn(target, event)}) : fn
+        evtMonitor ? ((target, event) => {
+         evtMonitor(target, event);
+         fn(target, event);
+        }) : fn
       );
     },
 

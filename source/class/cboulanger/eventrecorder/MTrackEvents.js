@@ -31,13 +31,13 @@ qx.Mixin.define("cboulanger.eventrecorder.MTrackEvents", {
       if (properties === null) {
         return;
       }
-      if (properties.length === 0 ) {
+      if (properties.length === 0) {
         properties = qx.Class.getProperties(this.constructor);
       }
       for (let name of properties) {
         let config = qx.Class.getPropertyDefinition(this.constructor, name);
         if (config.event) {
-          this.addListener(config.event,()=>{});
+          this.addListener(config.event, () => {});
         }
       }
     }

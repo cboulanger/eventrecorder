@@ -51,7 +51,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Testcafe", {
      * @param old
      * @private
      */
-    _applyMode(value,old) {
+    _applyMode(value, old) {
       if (value === "presentation") {
         this.warn("Presentation mode is not supported, switching to test mode");
         this.setMode("test");

@@ -72,7 +72,6 @@ qx.Interface.define("cboulanger.eventrecorder.IPlayer", {
      */
     getExportFileExtension() {},
 
-
     /*
     ============================================================================
        COMMANDS
@@ -256,7 +255,7 @@ qx.Interface.define("cboulanger.eventrecorder.IPlayer", {
      * @param json {*}
      * @return {String}
      */
-    cmd_fire(id,event,json) {},/**
+    cmd_fire(id, event, json) {}, /**
 
     /**
     * Generates code that fires an `tap` event on the object with the given id (Button, Command)
