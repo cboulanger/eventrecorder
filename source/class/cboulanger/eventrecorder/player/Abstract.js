@@ -363,7 +363,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
 
     /**
      * Returns true if a macro of that name exists.
-     * @param {String} name
+     * @param name {String}
      * @return {boolean}
      */
     macroExists(name) {
@@ -380,7 +380,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
 
     /**
      * Returns an array with the lines of the macro of that name
-     * @param {String} name
+     * @param name {String}
      * @return {Array}
      */
     getMacroDefinition(name) {
@@ -393,7 +393,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
 
     /**
      * Returns the description of the macro
-     * @param {String} name
+     * @param name {String}
      * @return {String}
      */
     getMacroDescription(name) {
@@ -406,8 +406,8 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
 
     /**
      * Adds an empty macro of this name
-     * @param {String} name
-     * @param {String|undefined} description
+     * @param name {String}
+     * @param description {String|undefined}
      */
     addMacro(name, description) {
       if (this.macroExists(name)) {
@@ -421,7 +421,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
 
     /**
      * Begins the definition of a macro of that name.
-     * @param {String} name
+     * @param name {String}
      */
     beginMacroDefintion(name) {
       let index = ++this.__macro_stack_index;
@@ -807,7 +807,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
             throw e;
           case "presentation":
             this.warn(e);
-            dialog.Dialog.error(e.message);
+            qxl.dialog.Dialog.error(e.message);
         }
       }
       this.setRunning(false);
@@ -831,7 +831,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      * @param scriptOrLines {String|Array}
      *    If String, assume an unhandled script. If Array. assume that script
      *    has already been handled by {@link #_handleMeta) and split into lines
-     * @param {Boolean} includeUtilityFunctions
+     * @param includeUtilityFunctions {Boolean}
      * @return {string}
      * @private
      */
@@ -1044,7 +1044,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
 
     /**
      * Imports a remote file and caches it locally
-     * @param {String} uri
+     * @param uri {String}
      * @return {Promise<array>}
      */
     async cmd_import(uri) {
@@ -1099,8 +1099,8 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
 
     /**
      * Starts the definition of a macro
-     * @param {String} macro_name
-     * @param {String|undefined} macro_description
+     * @param macro_name {String}
+     * @param macro_description {String|undefined}
      * @return {null}
      */
     cmd_define(macro_name, macro_description) {

@@ -17,7 +17,7 @@
 /**
  * The UI Controller for the recorder
  * @asset(cboulanger/eventrecorder/*)
- * @asset(dialog/*)
+ * @asset(qxl/dialog/*)
  * @require(cboulanger.eventrecorder.player.Testcafe)
  * @ignore(ace)
  */
@@ -48,11 +48,11 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       "eventrecorder.icon.load":    "cboulanger/eventrecorder/document-open.png",
       "eventrecorder.icon.export":  "cboulanger/eventrecorder/emblem-symbolic-link.png",
       // need a way to automatically include this
-      "dialog.icon.cancel" : "dialog/icon/IcoMoonFree/272-cross.svg",
-      "dialog.icon.ok"     : "dialog/icon/IcoMoonFree/273-checkmark.svg",
-      "dialog.icon.info"   : "dialog/icon/IcoMoonFree/269-info.svg",
-      "dialog.icon.error"  : "dialog/icon/IcoMoonFree/270-cancel-circle.svg",
-      "dialog.icon.warning" : "dialog/icon/IcoMoonFree/264-warning.svg"
+      "qxl.dialog.icon.cancel" : "dialog/icon/IcoMoonFree/272-cross.svg",
+      "qxl.dialog.icon.ok"     : "dialog/icon/IcoMoonFree/273-checkmark.svg",
+      "qxl.dialog.icon.info"   : "dialog/icon/IcoMoonFree/269-info.svg",
+      "qxl.dialog.icon.error"  : "dialog/icon/IcoMoonFree/270-cancel-circle.svg",
+      "qxl.dialog.icon.warning" : "dialog/icon/IcoMoonFree/264-warning.svg"
     }
   },
 
@@ -550,7 +550,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     },
 
     _applyGistId(value, old) {
-      // todo: add to URI
+      // to do: add to URI
     },
 
     /**
@@ -723,7 +723,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
           traverseObjectTree(owned);
         }
       };
-      let registeredObjects = Object.values(qx.core.Id.getInstance().__registeredObjects); //FIXME
+      let registeredObjects = Object.values(qx.core.Id.getInstance().getRegisteredObjects());
       for (let obj of registeredObjects) {
         traverseObjectTree(obj);
       }
@@ -774,11 +774,11 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       if (this.__players[type]) {
         return this.__players[type];
       }
-      let clazz = cboulanger.eventrecorder.player[qx.lang.String.firstUp(type)];
-      if (!clazz) {
+      let Clazz = cboulanger.eventrecorder.player[qx.lang.String.firstUp(type)];
+      if (!Clazz) {
         throw new Error(`A player of type '${type}' does not exist.`);
       }
-      const player = new clazz();
+      const player = new Clazz();
       this.__players[type] = player;
       return player;
     },
@@ -789,7 +789,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     async record() {
       let recorder = this.getRecorder();
       if (this.getScript().trim()!=="" && !this.getScriptable()) {
-        let mode = await dialog.Dialog.select(
+        let mode = await qxl.dialog.Dialog.select(
           "Do you want to overwrite your script or append new events?",
           [
             {label: "Append", value: "append"},
@@ -906,7 +906,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
         return translatedText;
       } catch (e) {
         this.error(e);
-        dialog.Dialog.error(e.message);
+        qxl.dialog.Dialog.error(e.message);
       }
       return false;
     },
@@ -925,7 +925,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       let translatedScript = this.getQxObject("editor").getModel().getRightEditorContent();
       if (!translatedScript) {
         if (!this.getScript()) {
-          dialog.Dialog.error("No script to export!");
+          qxl.dialog.Dialog.error("No script to export!");
           return false;
         }
         translatedScript = await this.translateTo(playerType);
@@ -946,7 +946,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
         let script = await this._upload();
         this.setScript(script);
       } catch (e) {
-        dialog.Dialog.error(e.message);
+        qxl.dialog.Dialog.error(e.message);
       }
     },
 
@@ -958,8 +958,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       let formData = {
         username: {
           type: "Textfield",
-          label: "Username",
-          options
+          label: "Username"
         },
         show_all: {
           type: "Checkbox",
@@ -967,7 +966,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
           label: "Show all scripts (even if URL does not match)"
         }
       };
-      let answer = await dialog.Dialog.form("Please enter the GitHub username", formData).promise();
+      let answer = await qxl.dialog.Dialog.form("Please enter the GitHub username", formData).promise();
       if (!answer || !answer.username.trim()) {
         return;
       }
@@ -1001,7 +1000,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
           value: entry.id
         }));
       if (options.length===0) {
-        dialog.Dialog.error("No matching gists were found.");
+        qxl.dialog.Dialog.error("No matching gists were found.");
         return;
       }
       formData = {
@@ -1011,7 +1010,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
           options
         }
       };
-      answer = await dialog.Dialog.form("Please select from the following scripts:", formData).promise();
+      answer = await qxl.dialog.Dialog.form("Please select from the following scripts:", formData).promise();
 
       if (!answer || !answer.id) {
         return;
@@ -1024,7 +1023,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
      * @return {Promise<void>}
      */
     async loadGistById() {
-      let answer = await dialog.Dialog.prompt("Please enter the id of the gist to replay");
+      let answer = await qxl.dialog.Dialog.prompt("Please enter the id of the gist to replay");
       if (!answer || !answer.id) {
         return;
       }

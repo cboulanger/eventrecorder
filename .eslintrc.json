@@ -3,9 +3,29 @@
     "browser": true,
     "node": true
   },
+  "parserOptions": {
+    "ecmaVersion": 8
+  },
   "extends": [
-    "qx", "qx/browser"
+    "@qooxdoo/qx"
   ],
+  "plugins": ["jsdoc"],
+  "rules": {
+    "no-console": "off",
+    "no-eval": "off",
+    "new-cap": "warn",
+
+    // todo: will be integrated into qx ruleset, can go away here
+    "jsdoc/check-param-names": 1,
+    "jsdoc/check-types": "off", // for example, "Boolean -> boolean"
+    "jsdoc/require-jsdoc": 1,
+    "jsdoc/require-param": 1,
+    "jsdoc/require-param-description": "off",
+    "jsdoc/require-param-name": 1,
+    "jsdoc/require-param-type": "off",
+    "jsdoc/require-returns-type": 1,
+    "jsdoc/valid-types": 1
+  },
   "globals": {
     "cboulanger": false,
     "qookery": false,

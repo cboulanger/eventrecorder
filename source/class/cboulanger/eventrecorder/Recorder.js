@@ -186,9 +186,9 @@ qx.Class.define("cboulanger.eventrecorder.Recorder", {
      * Given an object id, the event name and the even target, return one or more
      * pieces of intermediate code from which a player can replay the user action
      * that lead to this event. Return an array, each element is one line of code
-     * @param {String} id The id of the qooxdoo object
-     * @param {qx.event.Event} event The event that was fired
-     * @param {qx.bom.Element|qx.core.Object} target The event target
+     * @param id {String} The id of the qooxdoo object
+     * @param event {qx.event.Event} The event that was fired
+     * @param target {qx.bom.Element|qx.core.Object} The event target
      * @return {String[]} An array of script lines
      */
     createIntermediateCodeFromEvent(id, event, target) {

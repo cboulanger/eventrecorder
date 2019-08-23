@@ -80,7 +80,7 @@ qx.Interface.define("cboulanger.eventrecorder.IPlayer", {
 
     /**
      * Imports a remote file and caches it locally
-     * @param {String} uri
+     * @param uri {String}
      * @return {Promise<array>}
      */
     async cmd_import(uri) {},
@@ -140,7 +140,7 @@ qx.Interface.define("cboulanger.eventrecorder.IPlayer", {
      * Generates code that hides the info pane
      * @return {String}
      */
-    cmd_hide_info(text) {},
+    cmd_hide_info() {},
 
     /**
      * Generates code that displays an informational text placed next to the widget with the given id.
