@@ -113,6 +113,31 @@ qx.Class.define("cboulanger.eventrecorder.Recorder", {
     },
 
     /**
+     * Return an array of object ids that have been assigned in the current application
+     * @return {[]}
+     */
+    getObjectIds() {
+      let ids = [];
+      let traverseObjectTree = function (obj) {
+        if (typeof obj.getQxObjectId !== "function") {
+          return;
+        }
+        let id = obj.getQxObjectId();
+        if (id) {
+          ids.push(qx.core.Id.getAbsoluteIdOf(obj));
+        }
+        for (let owned of obj.getOwnedQxObjects()) {
+          traverseObjectTree(owned);
+        }
+      };
+      let registeredObjects = Object.values(qx.core.Id.getInstance().getRegisteredObjects() || {});
+      for (let obj of registeredObjects) {
+        traverseObjectTree(obj);
+      }
+      return ids;
+    },
+
+    /**
      * Returns the recorded script
      * @return {String}
      */

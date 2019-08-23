@@ -109,7 +109,8 @@
       "name": "eventrecorder_scripteditor",
       "title": "The script editor in a separate browser window",
       "include": [
-        "qx.theme.Modern"
+        "qx.theme.Modern",
+        "cboulanger.eventrecorder.player.*"
       ],
       "environment": {
         "qx.icontheme": [
@@ -121,7 +122,7 @@
       "class": "qxl.widgetbrowser.Application",
       "theme": "qx.theme.Indigo",
       "name": "widgetbrowser_playground",
-      "title": "WidgetBrowser with empty external script editor (not yet functional)",
+      "title": "WidgetBrowser with empty external script editor",
       "include": [
         "qx.theme.Modern",
         "cboulanger.eventrecorder.UiController",
@@ -132,7 +133,7 @@
           "Tango"
         ],
         "eventrecorder.show_progress": true,
-        "eventrecorder.openEditorInBrowserWindow": true
+        "eventrecorder.editor.placement": "outside"
       }
     },
     {

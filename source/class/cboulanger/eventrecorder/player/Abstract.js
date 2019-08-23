@@ -457,56 +457,6 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
     },
 
     /**
-     * Simple tokenizer which splits expressions separated by whitespace, but keeps
-     * expressions in quotes (which can contain whitespace) together. Parses tokens
-     * as JSON expressions, but accepts unquoted text as strings.
-     * @param line {String}
-     * @return {String[]}
-     * @private
-     */
-    _tokenize(line) {
-      qx.core.Assert.assertString(line);
-      let tokens = [];
-      let token = "";
-      let prevChar="";
-      let insideQuotes = false;
-      for (let char of line.trim().split("")) {
-        switch (char) {
-          case "\"":
-            insideQuotes=!insideQuotes;
-            token += char;
-            break;
-          case " ":
-            // add whitespace to token if inside quotes
-            if (insideQuotes) {
-              token += char;
-              break;
-            }
-            // when outside quotes, whitespace is end of token
-            if (prevChar !== " ") {
-              // parse token as json expression or as a string if that fails
-              try {
-                token = JSON.parse(token);
-              } catch (e) {}
-              tokens.push(token);
-              token = "";
-            }
-            break;
-          default:
-            token += char;
-        }
-        prevChar = char;
-      }
-      if (token.length) {
-        try {
-          token = JSON.parse(token);
-        } catch (e) {}
-        tokens.push(token);
-      }
-      return tokens;
-    },
-
-    /**
      * Translates a single line from the intermediate code into the target
      * language. To be overridden by subclasses if neccessary. Returns a
      * single line in most cases, an array of lines in case of imports.
@@ -526,7 +476,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
         return this.addComment(line.substr(1).trim());
       }
       // parse command line
-      let [command, ...args] = this._tokenize(line);
+      let [command, ...args] = this.tokenize(line);
       command = command.toLocaleLowerCase();
       this.__lastCmd = command;
       this.__lastId = args[0]; // assume first argument is id
@@ -717,7 +667,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
         line = this._translateVariables(line);
 
         // play macros recursively
-        let [command, ...args] = this._tokenize(line);
+        let [command, ...args] = this.tokenize(line);
         let macro_lines = this._getMacro(command, args);
         if (macro_lines !== undefined) {
           if (steps) {
@@ -843,7 +793,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
         if (!line) {
           continue;
         }
-        let [command, ...args] = this._tokenize(line);
+        let [command, ...args] = this.tokenize(line);
         let macro_lines = this._getMacro(command, args);
         let new_lines = [];
         for (let l of (macro_lines || [line])) {

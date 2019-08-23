@@ -28,22 +28,6 @@ qx.Class.define("cboulanger.eventrecorder.ScriptEditor", {
   ],
 
   properties: {
-    /**
-     * The recorded script
-     */
-    script: {
-      check: "String",
-      event: "changeScript",
-      apply: "_applyScript",
-      init: ""
-    },
-
-    playerType: {
-      check: "String",
-      event: "changePlayerType",
-      init: "qooxdoo",
-      apply: "_applyPlayerType"
-    },
 
     /**
      * The window with the UI controller
@@ -52,6 +36,34 @@ qx.Class.define("cboulanger.eventrecorder.ScriptEditor", {
       check: "Window",
       event: "changeControllerWindow",
     },
+
+    /**
+     * The script in the editor
+     */
+    script: {
+      check: "String",
+      event: "changeScript",
+      apply: "_applyScript",
+      init: ""
+    },
+
+    /**
+     * The type of the script player
+     */
+    playerType: {
+      check: "String",
+      event: "changePlayerType",
+      init: "qooxdoo",
+      apply: "_applyPlayerType"
+    },
+
+    /**
+     * The object ids defined in the recorded application
+     */
+    objectIds: {
+      check: "Array",
+      event: "changeObjectIds"
+    }
   },
 
   members: {
@@ -61,17 +73,22 @@ qx.Class.define("cboulanger.eventrecorder.ScriptEditor", {
       if (qx.core.Environment.get("qx.debug")) {
         qx.log.appender.Native;
       }
+
+      this.set({
+        objectIds: []
+      });
+
       // establish communication with the window
       this.setControllerWindow(window.opener);
       window.addEventListener("message", e => {
+        this.warn("Received message");
+        this.console(e);
         if (e.source === this.getControllerWindow()) {
           this.set(e.data);
         } else {
           throw new Error("Wrong message source!");
         }
       });
-      const container = new qx.ui.container.Composite(new qx.ui.layout.Grow());
-      this.getRoot().add(container);
 
       const formUrl = qx.util.ResourceManager.getInstance().toUri("cboulanger/eventrecorder/forms/editor.xml");
       qookery.contexts.Qookery.loadResource(formUrl, this, xmlSource => {
@@ -81,7 +98,9 @@ qx.Class.define("cboulanger.eventrecorder.ScriptEditor", {
         this.addOwnedQxObject(formComponent, "editor");
         const editorWidget = formComponent.getMainWidget();
         editorWidget.addListener("appear", this._onEditorAppear, this);
-        container.add(editorWidget);
+
+        editorWidget.set({allowStretchX:true, allowStretchY:true});
+        this.getRoot().add(editorWidget, {edge: 0});
         const formModel = formComponent.getModel();
         this.bind("script", formModel, "leftEditorContent");
         formModel.bind("leftEditorContent", this, "script");
@@ -96,7 +115,7 @@ qx.Class.define("cboulanger.eventrecorder.ScriptEditor", {
     },
 
     _applyScript(script, old) {
-      this.getControllerWindow().postMessage({script});
+      this.getControllerWindow().postMessage({script}, "*");
     },
 
     async __translate() {

@@ -17,9 +17,46 @@
 
 /**
  * This mixin contains methods that are used by script editor widgets
+ *
  */
 qx.Mixin.define("cboulanger.eventrecorder.MEditor", {
+
   members: {
+
+    __players: null,
+
+    /**
+     * Returns the editor component
+     * @return {qookery.IFormComponent}
+     */
+    getEditor() {
+      return this.getQxObject("editor");
+    },
+
+    /**
+     * Returns a player instance. Caches the result
+     * @param type
+     * @private
+     * @return {cboulanger.eventrecorder.IPlayer}
+     */
+    getPlayerByType(type) {
+      if (!type) {
+        throw new Error("No player type given!");
+      }
+      if (!this.__players) {
+        this.__players = [];
+      }
+      if (this.__players[type]) {
+        return this.__players[type];
+      }
+      let Clazz = cboulanger.eventrecorder.player[qx.lang.String.firstUp(type)];
+      if (!Clazz) {
+        throw new Error(`A player of type '${type}' does not exist.`);
+      }
+      const player = new Clazz();
+      this.__players[type] = player;
+      return player;
+    },
 
     /**
      * Translates the text in the left editor into the language produced by the
@@ -72,14 +109,6 @@ qx.Mixin.define("cboulanger.eventrecorder.MEditor", {
       return true;
     },
 
-    /**
-     * Returns the editor component
-     * @return {qookery.IFormComponent}
-     */
-    getEditor() {
-      return this.getQxObject("editor");
-    },
-
     _applyPlayerType(playerType, old) {
       if (old) {
         old = this.getPlayerByType(old);
@@ -102,34 +131,21 @@ qx.Mixin.define("cboulanger.eventrecorder.MEditor", {
       player.bind("mode", formModel, "targetMode");
       formModel.setTargetScriptType(playerType);
       console.warn("window.ace :" + window.ace);
-      if (window.ace) {
-        this._setupAutocomplete(player);
-      }
     },
 
     _onEditorAppear() {
-      if (this.getPlayer()){
-        this._setupAutocomplete(this.getPlayer());
-      }
+      this._setupAutocomplete();
       this.getEditor().getModel().setLeftEditorContent(this.getScript());
     },
 
     /**
-     * Configures the autocomplete feature in the editor(s) for the given
-     * player. This will only be done once for each player.
-     * The question is if we allow a different set of commands for each player
-     * or if the definitive list of commands should be defined by the player
-     * interface.
-     * @param player {cboulanger.eventrecorder.IPlayer}
+     * Configures the autocomplete feature in the editor(s)
      * @private
      */
-    _setupAutocomplete(player) {
-      if (player._autocomplete) {
-        // autocomplete has already been set up for this player
-        return;
-      }
+    _setupAutocomplete() {
       if (window.ace === undefined) {
-        return qx.event.Timer.once(() => this._setupAutocomplete(player), this, 1000);
+        console.log("Deferring setup of autocomplete...");
+        return qx.event.Timer.once(() => this._setupAutocomplete(), this, 1000);
       }
       const langTools = ace.require("ace/ext/language_tools");
       let tokens = [];
@@ -145,24 +161,7 @@ qx.Mixin.define("cboulanger.eventrecorder.MEditor", {
           tokens.push({caption, type: "command", snippet, meta, value});
         }
       }
-      let ids = [];
-      let traverseObjectTree = function (obj) {
-        if (typeof obj.getQxObjectId !== "function") {
-          return;
-        }
-        let id = obj.getQxObjectId();
-        if (id) {
-          ids.push(qx.core.Id.getAbsoluteIdOf(obj));
-        }
-        for (let owned of obj.getOwnedQxObjects()) {
-          traverseObjectTree(owned);
-        }
-      };
-      let registeredObjects = Object.values(qx.core.Id.getInstance().getRegisteredObjects());
-      for (let obj of registeredObjects) {
-        traverseObjectTree(obj);
-      }
-      for (let id of ids) {
+      for (let id of this.getObjectIds()) {
         tokens.push({caption: id, type: "id", value: id});
       }
       const completer = {
@@ -172,7 +171,7 @@ qx.Mixin.define("cboulanger.eventrecorder.MEditor", {
             return;
           }
           let line = editor.session.getLine(pos.row).substr(0, pos.column);
-          let numberOfTokens = player._tokenize(line).length;
+          let numberOfTokens = this.tokenize(line).length;
           let options = tokens
           // filter on positional argument
             .filter(token => (token.type === "command" && numberOfTokens === 1) || (token.type === "id" && numberOfTokens === 2))
@@ -187,7 +186,6 @@ qx.Mixin.define("cboulanger.eventrecorder.MEditor", {
         }
       };
       langTools.addCompleter(completer);
-      player._autocomplete = true;
     }
   }
 });

@@ -41,6 +41,10 @@
  *     <td>"eventrecorder.scriptable": {Boolean}</td>
  *     <td>Whether the UI events of the recorder itself should be recorded</td>
  *   </tr>
+ *   <tr>
+ *     <td>"eventrecorder.editor.placement": {String}</td>
+ *     <td>Whether the script editor should be opened "inside" (default) or "outside" of the document</td>
+ *   </tr>*
  * </table>
  *
  */

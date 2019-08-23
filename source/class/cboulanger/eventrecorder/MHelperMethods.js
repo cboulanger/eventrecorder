@@ -69,25 +69,53 @@ qx.Mixin.define("cboulanger.eventrecorder.MHelperMethods", {
     },
 
     /**
-     * Returns a player instance. Caches the result
-     * @param type
+     * Simple tokenizer which splits expressions separated by whitespace, but keeps
+     * expressions in quotes (which can contain whitespace) together. Parses tokens
+     * as JSON expressions, but accepts unquoted text as strings.
+     * @param line {String}
+     * @return {String[]}
      * @private
-     * @return {cboulanger.eventrecorder.IPlayer}
      */
-    getPlayerByType(type) {
-      if (!type) {
-        throw new Error("No player type given!");
+    tokenize(line) {
+      qx.core.Assert.assertString(line);
+      let tokens = [];
+      let token = "";
+      let prevChar="";
+      let insideQuotes = false;
+      for (let char of line.trim().split("")) {
+        switch (char) {
+          case "\"":
+            insideQuotes=!insideQuotes;
+            token += char;
+            break;
+          case " ":
+            // add whitespace to token if inside quotes
+            if (insideQuotes) {
+              token += char;
+              break;
+            }
+            // when outside quotes, whitespace is end of token
+            if (prevChar !== " ") {
+              // parse token as json expression or as a string if that fails
+              try {
+                token = JSON.parse(token);
+              } catch (e) {}
+              tokens.push(token);
+              token = "";
+            }
+            break;
+          default:
+            token += char;
+        }
+        prevChar = char;
       }
-      if (this.__players[type]) {
-        return this.__players[type];
+      if (token.length) {
+        try {
+          token = JSON.parse(token);
+        } catch (e) {}
+        tokens.push(token);
       }
-      let Clazz = cboulanger.eventrecorder.player[qx.lang.String.firstUp(type)];
-      if (!Clazz) {
-        throw new Error(`A player of type '${type}' does not exist.`);
-      }
-      const player = new Clazz();
-      this.__players[type] = player;
-      return player;
+      return tokens;
     }
   }
 });
