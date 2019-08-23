@@ -162,8 +162,8 @@ qx.Class.define("cboulanger.eventrecorder.ObjectIdGenerator", {
   },
 
   /**
-  * Will be called after class has been loaded, before application startup
-  */
+   * Will be called after class has been loaded, before application startup
+   */
   defer: function() {
     if (qx.core.Environment.get("module.objectid")) {
       qx.bom.Lifecycle.onReady(() => cboulanger.eventrecorder.ObjectIdGenerator.getInstance().init());

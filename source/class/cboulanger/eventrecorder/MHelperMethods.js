@@ -16,8 +16,7 @@
 
 
 qx.Mixin.define("cboulanger.eventrecorder.MHelperMethods", {
-  members :
-  {
+  members: {
 
     /**
      * Get the content of a gist by its id
@@ -25,7 +24,7 @@ qx.Mixin.define("cboulanger.eventrecorder.MHelperMethods", {
      * @return {Promise<*>}
      * @private
      */
-    async getRawGist (gist_id) {
+    async getRawGist(gist_id) {
       return new Promise((resolve, reject) => {
         let url = `https://api.github.com/gists/${gist_id}`;
         let req = new qx.io.request.Jsonp(url);
@@ -53,12 +52,10 @@ qx.Mixin.define("cboulanger.eventrecorder.MHelperMethods", {
      */
     addGlobalEventListener(fn) {
       let evtMonitor = qx.event.Manager.getGlobalEventMonitor();
-      qx.event.Manager.setGlobalEventMonitor(
-        evtMonitor ? ((target, event) => {
-         evtMonitor(target, event);
-         fn(target, event);
-        }) : fn
-      );
+      qx.event.Manager.setGlobalEventMonitor(evtMonitor ? ((target, event) => {
+        evtMonitor(target, event);
+        fn(target, event);
+      }) : fn);
     },
 
     /**
@@ -67,8 +64,30 @@ qx.Mixin.define("cboulanger.eventrecorder.MHelperMethods", {
      * @param id {String}
      * @returns {String}
      */
-    absoluteIdOf : function(domNode, id) {
+    absoluteIdOf: function (domNode, id) {
       return qx.core.Id.getAbsoluteIdOf(qx.ui.core.Widget.getWidgetByElement(domNode).getQxObject(id));
+    },
+
+    /**
+     * Returns a player instance. Caches the result
+     * @param type
+     * @private
+     * @return {cboulanger.eventrecorder.IPlayer}
+     */
+    getPlayerByType(type) {
+      if (!type) {
+        throw new Error("No player type given!");
+      }
+      if (this.__players[type]) {
+        return this.__players[type];
+      }
+      let Clazz = cboulanger.eventrecorder.player[qx.lang.String.firstUp(type)];
+      if (!Clazz) {
+        throw new Error(`A player of type '${type}' does not exist.`);
+      }
+      const player = new Clazz();
+      this.__players[type] = player;
+      return player;
     }
   }
 });

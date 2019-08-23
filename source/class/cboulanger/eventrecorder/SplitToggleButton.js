@@ -13,11 +13,11 @@
 ************************************************************************ */
 
 /**
-* A split button which also acts as a toggle button
-*
-* @childControl button {qx.ui.form.Button} button to execute action
-* @childControl arrow {qx.ui.form.MenuButton} arrow to open the popup
-*/
+ * A split button which also acts as a toggle button
+ *
+ * @childControl button {qx.ui.form.Button} button to execute action
+ * @childControl arrow {qx.ui.form.MenuButton} arrow to open the popup
+ */
 qx.Class.define("cboulanger.eventrecorder.SplitToggleButton",
 {
   extend: qx.ui.form.SplitButton,

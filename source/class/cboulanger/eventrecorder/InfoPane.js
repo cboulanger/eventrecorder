@@ -148,8 +148,8 @@ qx.Class.define("cboulanger.eventrecorder.InfoPane", {
   },
 
   /**
-    * Destructor
-    */
+   * Destructor
+   */
   destruct: function() {
     this._disposeObjects("__atom");
   }

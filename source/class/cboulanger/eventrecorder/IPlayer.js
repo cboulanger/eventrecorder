@@ -256,19 +256,19 @@ qx.Interface.define("cboulanger.eventrecorder.IPlayer", {
      * @return {String}
      */
     cmd_fire(id, event, json) {}, /**
-
+                                   
     /**
-    * Generates code that fires an `tap` event on the object with the given id (Button, Command)
-    * @param id {String}
-    * @return {String}
-    */
+                                   * Generates code that fires an `tap` event on the object with the given id (Button, Command)
+                                   * @param id {String}
+                                   * @return {String}
+                                   */
     cmd_tap(id) {},
 
     /**
-    * Generates code that fires an `dbltap` event on the object with the given id (Button, Command)
-    * @param id {String}
-    * @return {String}
-    */
+     * Generates code that fires an `dbltap` event on the object with the given id (Button, Command)
+     * @param id {String}
+     * @return {String}
+     */
     cmd_dbltap(id) {},
 
     /**

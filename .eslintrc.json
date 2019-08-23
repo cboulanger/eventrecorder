@@ -9,13 +9,10 @@
   "extends": [
     "@qooxdoo/qx"
   ],
-  "plugins": ["jsdoc"],
   "rules": {
     "no-console": "off",
     "no-eval": "off",
     "new-cap": "warn",
-
-    // todo: will be integrated into qx ruleset, can go away here
     "jsdoc/check-param-names": 1,
     "jsdoc/check-types": "off", // for example, "Boolean -> boolean"
     "jsdoc/require-jsdoc": 1,
@@ -24,7 +21,12 @@
     "jsdoc/require-param-name": 1,
     "jsdoc/require-param-type": "off",
     "jsdoc/require-returns-type": 1,
-    "jsdoc/valid-types": 1
+    "jsdoc/valid-types": 1,
+    "jsdoc/no-undefined-types": "off",
+    "jsdoc/newline-after-description": "off",
+    "jsdoc/require-returns": "off",
+    "jsdoc/require-returns-description": "off"
+
   },
   "globals": {
     "cboulanger": false,

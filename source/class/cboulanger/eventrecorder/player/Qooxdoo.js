@@ -240,10 +240,10 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
     },
 
     /**
-    * Generates code that fires an `tap` event on the object with the given id (Button, Command)
-    * @param id {String}
-    * @return {String}
-    */
+     * Generates code that fires an `tap` event on the object with the given id (Button, Command)
+     * @param id {String}
+     * @return {String}
+     */
     cmd_tap(id) {
       // doesn't work yet because it needs mouse data etc.
       return "";
@@ -251,10 +251,10 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
     },
 
     /**
-    * Generates code that fires an `dbltap` event on the object with the given id (Button, Command)
-    * @param id {String}
-    * @return {String}
-    */
+     * Generates code that fires an `dbltap` event on the object with the given id (Button, Command)
+     * @param id {String}
+     * @return {String}
+     */
     cmd_dbltap(id) {
       // doesn't work yet because it needs mouse data etc.
       return "";
