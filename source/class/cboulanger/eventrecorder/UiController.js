@@ -805,11 +805,11 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
           this.__editorWindow = this.__createpQxEditorWindow();
           break;
       }
-      qx.event.Timer.once(() => this._setupAutocomplete, this, 2000);
       this.__lastMode = mode;
     },
 
-    __lastData : null,
+    __lastData: null,
+    __listenersAttached: false,
 
     __createBrowserEditorWindow() {
       let popup = qx.bom.Window.open(
@@ -839,37 +839,41 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
         console.debug(data);
       };
       window.addEventListener("message", e => {
-        if (e.source === popup) {
-          const data = e.data;
-          this.__lastData = data;
-          console.debug(">>> Message received:");
-          console.debug(data);
-          if (data.script !== undefined && data.script === null){
-            console.debug("Received initialization message from external editor.");
-            // initialization message
+        if (e.source !== popup) {
+          this.warn("Ignoring message from unknown source...");
+          return;
+        }
+        const data = e.data;
+        this.__lastData = data;
+        console.debug(">>> Message received:");
+        console.debug(data);
+        if (data.script === null){
+          console.debug("Received initialization message from external editor.");
+          // initialization message
+          sendMessage({
+            script: this.getScript(),
+            playerType: this.getPlayer().getType(),
+            objectIds: this.getObjectIds()
+          });
+          this.__lastData = {};
+          if (!this.__listenersAttached) {
             this.addListener("changeScript", e => {
               const script = e.getData();
-              if (this.__lastData && this.__lastData.script && this.__lastData.script === script) {
-                // do not retransmit received script data
+              if (this.__lastData.script !== script && !qx.bom.Window.isClosed(popup)) {
+                sendMessage({script});
               }
-              sendMessage({ script });
             });
             this.addListener("changePlayer", e => {
-              sendMessage({ playerType: e.getData().getType()});
+              if (!qx.bom.Window.isClosed(popup)) {
+                sendMessage({playerType: e.getData().getType()});
+              }
             });
-            sendMessage({
-              script: this.getScript(),
-              playerType: this.getPlayer().getType(),
-              objectIds: this.getObjectIds()
-            });
-            return;
+            this.__listenersAttached = true;
           }
-          this.set(e.data);
-        } else {
-          this.error("Message from unknown source!");
+          return;
         }
+        this.set(e.data);
       });
-
       return popup;
     },
 
@@ -906,6 +910,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
           formModel.addListener("changeTargetMode", e => this.translateTo(formModel.getTargetScriptType(), formModel.getTargetMode()));
           parser.dispose();
           this.__editorWindow.open();
+          qx.event.Timer.once(this._setupAutocomplete, this, 2000);
         });
       return win;
     },

@@ -132,19 +132,21 @@ qx.Mixin.define("cboulanger.eventrecorder.MEditor", {
       formModel.setTargetScriptType(player.getType());
     },
 
+    __initializedEditor: false,
+
     _updateEditor() {
       try{
         this.getEditorObject().getModel().setLeftEditorContent(this.getScript());
         const leftEditor = this.getEditorObject().getComponent("leftEditor").getEditor();
         leftEditor.resize();
         // the following should not be necessary
-        if (!this.__leftEditorValueListener) {
+        if (!this.__initializedEditor) {
           leftEditor.getSession().on('change', () => {
             if (leftEditor.getValue() !== this.getScript()) {
               this.setScript(leftEditor.getValue());
             }
           });
-          this.__leftEditorValueListener = true;
+          this.__initializedEditor = true;
         }
       } catch (e) {
         //console.warn(e.message);
@@ -180,7 +182,7 @@ qx.Mixin.define("cboulanger.eventrecorder.MEditor", {
         tokens.push({caption: id, type: "id", value: id});
       }
       const completer = {
-        getCompletions: function (editor, session, pos, prefix, callback) {
+        getCompletions:  (editor, session, pos, prefix, callback) => {
           if (prefix.length === 0) {
             callback(null, []);
             return;

@@ -476,17 +476,23 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
         return this.addComment(line.substr(1).trim());
       }
       // parse command line
+
       let [command, ...args] = this.tokenize(line);
-      command = command.toLocaleLowerCase();
+      command = String(command).toLocaleLowerCase();
       this.__lastCmd = command;
       this.__lastId = args[0]; // assume first argument is id
       // run command generation implementation
       let method_name = "cmd_" + command.replace(/-/g, "_");
       if (typeof this[method_name] == "function") {
-        let translatedLine = this[method_name].apply(this, args);
-        // async function
-        if (translatedLine && typeof translatedLine.then == "function") {
-          translatedLine = await translatedLine;
+        let translatedLine;
+        try {
+          translatedLine = this[method_name].apply(this, args);
+          // async function
+          if (translatedLine && typeof translatedLine.then == "function") {
+            translatedLine = await translatedLine;
+          }
+        } catch (e) {
+          throw new Error(`Error translating '${line}': ${e.message}`);
         }
         // imports
         if (Array.isArray(translatedLine)) {

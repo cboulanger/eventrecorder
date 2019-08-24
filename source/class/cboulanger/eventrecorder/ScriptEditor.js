@@ -69,7 +69,7 @@ qx.Class.define("cboulanger.eventrecorder.ScriptEditor", {
 
   members: {
 
-    __lastData : null,
+    __lastData: null,
 
     main() {
       this.base(arguments);
@@ -80,6 +80,7 @@ qx.Class.define("cboulanger.eventrecorder.ScriptEditor", {
       this.set({
         objectIds: []
       });
+      this.__lastData = {};
 
       // establish communication with the window
       if (!window.opener) {
@@ -91,12 +92,14 @@ qx.Class.define("cboulanger.eventrecorder.ScriptEditor", {
         console.debug(">>> Message received:");
         console.debug(e.data);
         this.__lastData = e.data;
-        if (e.source === this.getControllerWindow()) {
-          this.set(e.data);
-        } else {
-          this.error("Message from unknown source!");
+        if (e.source !== this.getControllerWindow()) {
+          this.warn("Ignoring message from unknown source!");
+          return;
         }
+        this.set(e.data);
       });
+
+      this.addListenerOnce("changeObjectIds", this._setupAutocomplete, this);
 
       const formUrl = qx.util.ResourceManager.getInstance().toUri("cboulanger/eventrecorder/forms/editor.xml");
       qookery.contexts.Qookery.loadResource(formUrl, this, xmlSource => {
@@ -127,7 +130,7 @@ qx.Class.define("cboulanger.eventrecorder.ScriptEditor", {
         // do not re-transmit initial state
         return;
       }
-      if (this.__lastData && this.__lastData.script && this.__lastData.script === script) {
+      if ( this.__lastData.script === script) {
         // do not retransmit received script data
         return;
       }
