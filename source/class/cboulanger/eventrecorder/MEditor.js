@@ -17,7 +17,7 @@
 
 /**
  * This mixin contains methods that are used by script editor widgets
- *
+ * @ignore(ace)
  */
 qx.Mixin.define("cboulanger.eventrecorder.MEditor", {
 
@@ -29,7 +29,7 @@ qx.Mixin.define("cboulanger.eventrecorder.MEditor", {
      * Returns the editor component
      * @return {qookery.IFormComponent}
      */
-    getEditor() {
+    getEditorObject() {
       return this.getQxObject("editor");
     },
 
@@ -118,24 +118,39 @@ qx.Mixin.define("cboulanger.eventrecorder.MEditor", {
     },
 
     _applyPlayer(player, old){
-      if (!this.getEditor()) {
+      if (!this.getEditorObject()) {
         // editor hasn't been loaded and rendered yet
         return;
       }
-      const formModel = this.getEditor().getModel();
+      const formModel = this.getEditorObject().getModel();
       if (old) {
         old.removeAllBindings();
         formModel.removeAllBindings();
       }
       formModel.bind("targetMode", player, "mode");
       player.bind("mode", formModel, "targetMode");
-      formModel.setTargetScriptType(playerType);
-      console.warn("window.ace :" + window.ace);
+      formModel.setTargetScriptType(player.getType());
     },
 
-    _onEditorAppear() {
-      this._setupAutocomplete();
-      this.getEditor().getModel().setLeftEditorContent(this.getScript());
+    _updateEditor() {
+      try{
+        this.getEditorObject().getModel().setLeftEditorContent(this.getScript());
+        const leftEditor = this.getEditorObject().getComponent("leftEditor").getEditor();
+        leftEditor.resize();
+        // the following should not be necessary
+        if (!this.__leftEditorValueListener) {
+          leftEditor.getSession().on('change', () => {
+            if (leftEditor.getValue() !== this.getScript()) {
+              this.setScript(leftEditor.getValue());
+            }
+          });
+          this.__leftEditorValueListener = true;
+        }
+      } catch (e) {
+        //console.warn(e.message);
+        //console.debug("Waiting for ACE editor to become available...");
+        qx.event.Timer.once( () => this._updateEditor(), this, 500);
+      }
     },
 
     /**

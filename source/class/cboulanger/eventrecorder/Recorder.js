@@ -124,17 +124,26 @@ qx.Class.define("cboulanger.eventrecorder.Recorder", {
         }
         let id = obj.getQxObjectId();
         if (id) {
-          ids.push(qx.core.Id.getAbsoluteIdOf(obj));
+          try {
+            ids.push(qx.core.Id.getAbsoluteIdOf(obj));
+          } catch (e) {
+            this.error(`Cannot get absolute ID for object with id ${id}.`);
+          }
         }
         for (let owned of obj.getOwnedQxObjects()) {
           traverseObjectTree(owned);
         }
       };
-      let registeredObjects = Object.values(qx.core.Id.getInstance().getRegisteredObjects() || {});
-      for (let obj of registeredObjects) {
-        traverseObjectTree(obj);
+      try {
+        let registeredObjects = qx.core.Id.getInstance().getRegisteredObjects() || {};
+        for (let obj of Object.values(registeredObjects)) {
+          traverseObjectTree(obj);
+        }
+        return ids;
+      } catch(e) {
+        this.error(e.message);
+        return [];
       }
-      return ids;
     },
 
     /**

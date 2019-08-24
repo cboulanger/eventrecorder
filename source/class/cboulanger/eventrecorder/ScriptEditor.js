@@ -43,8 +43,9 @@ qx.Class.define("cboulanger.eventrecorder.ScriptEditor", {
     script: {
       check: "String",
       event: "changeScript",
+      nullable: true,
       apply: "_applyScript",
-      init: ""
+      init: null
     },
 
     /**
@@ -68,6 +69,8 @@ qx.Class.define("cboulanger.eventrecorder.ScriptEditor", {
 
   members: {
 
+    __lastData : null,
+
     main() {
       this.base(arguments);
       if (qx.core.Environment.get("qx.debug")) {
@@ -79,14 +82,19 @@ qx.Class.define("cboulanger.eventrecorder.ScriptEditor", {
       });
 
       // establish communication with the window
+      if (!window.opener) {
+        alert("This application works only if opened from the main application.");
+        return;
+      }
       this.setControllerWindow(window.opener);
       window.addEventListener("message", e => {
-        this.warn("Received message");
-        this.console(e);
+        console.debug(">>> Message received:");
+        console.debug(e.data);
+        this.__lastData = e.data;
         if (e.source === this.getControllerWindow()) {
           this.set(e.data);
         } else {
-          throw new Error("Wrong message source!");
+          this.error("Message from unknown source!");
         }
       });
 
@@ -97,7 +105,7 @@ qx.Class.define("cboulanger.eventrecorder.ScriptEditor", {
         const formComponent = parser.parseXmlDocument(xmlDocument);
         this.addOwnedQxObject(formComponent, "editor");
         const editorWidget = formComponent.getMainWidget();
-        editorWidget.addListener("appear", this._onEditorAppear, this);
+        editorWidget.addListener("appear", this._updateEditor, this);
 
         editorWidget.set({allowStretchX:true, allowStretchY:true});
         this.getRoot().add(editorWidget, {edge: 0});
@@ -115,7 +123,18 @@ qx.Class.define("cboulanger.eventrecorder.ScriptEditor", {
     },
 
     _applyScript(script, old) {
-      this.getControllerWindow().postMessage({script}, "*");
+      if (old === null && script !== null)  {
+        // do not re-transmit initial state
+        return;
+      }
+      if (this.__lastData && this.__lastData.script && this.__lastData.script === script) {
+        // do not retransmit received script data
+        return;
+      }
+      const data = {script};
+      this.getControllerWindow().postMessage(data, "*");
+      console.debug(">>> Message sent:");
+      console.debug(data);
     },
 
     async __translate() {

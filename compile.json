@@ -107,7 +107,9 @@
       "class": "cboulanger.eventrecorder.ScriptEditor",
       "theme": "qx.theme.Indigo",
       "name": "eventrecorder_scripteditor",
-      "title": "The script editor in a separate browser window",
+      "title": "Script Editor",
+      "description": "The script editor in a separate browser window (doesn't work standalone)",
+      "publish": false,
       "include": [
         "qx.theme.Modern",
         "cboulanger.eventrecorder.player.*"

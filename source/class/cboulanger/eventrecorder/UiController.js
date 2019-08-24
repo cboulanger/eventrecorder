@@ -757,25 +757,43 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
      * @param mode {String|undefined}
      */
     edit(mode) {
-      if (this.__editorWindow && !(this.__editorWindow instanceof Window && qx.bom.Window.isClosed(this.__editorWindow))) {
+      const defaultMode = qx.core.Environment.get("eventrecorder.editor.placement");
+      if (mode === undefined && (this.__lastMode || defaultMode)) {
+        mode = this.__lastMode || defaultMode;
+      }
+      if (this.__editorWindow) {
+        console.debug({mode, lastMode:this.__lastMode});
         if (mode === this.__lastMode) {
-          this.__editorWindow.open();
-          return;
+          if (mode === "inside") {
+            console.debug("Opening existing qooxdoo window.");
+            this.__editorWindow.open();
+            return;
+          } else if (qx.bom.Window.isClosed(this.__editorWindow)){
+            console.debug("Destroying existing closed native window and recreating it.");
+            this.__editorWindow = null;
+          } else {
+            console.debug("Bringing existing native window to front.");
+            this.__editorWindow.focus();
+            return;
+          }
         } else {
-          if (this.__editorWindow instanceof qx.ui.window.Window) {
+          console.debug("Windows mode has changed, creating new window...");
+          try {
             this.removeOwnedQxObject( "editor");
+          } catch (e) {}
+          if (this.__lastMode === "inside") {
+            console.debug("Destroying existing qooxdoo native window.");
             this.__editorWindow.close();
             this.__editorWindow.dispose();
           } else {
-            this.__editorWindow.close();
+            if (qx.bom.Window.isClosed(this.__editorWindow)){
+              console.debug("Destroying existing closed native window.");
+              this.__editorWindow = null;
+            } else {
+              console.debug("Closing existing open native window...");
+              this.__editorWindow.close();
+            }
           }
-        }
-      }
-      if (mode === undefined) {
-        if (this.__lastMode) {
-          mode = this.__lastMode;
-        } else {
-          mode = qx.core.Environment.get("eventrecorder.editor.placement");
         }
       }
       switch (mode) {
@@ -787,12 +805,17 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
           this.__editorWindow = this.__createpQxEditorWindow();
           break;
       }
+      qx.event.Timer.once(() => this._setupAutocomplete, this, 2000);
       this.__lastMode = mode;
     },
 
+    __lastData : null,
+
     __createBrowserEditorWindow() {
       let popup = qx.bom.Window.open(
-        "/compiled/source/eventrecorder_scripteditor", "scriptEditor",  {
+        "/compiled/source/eventrecorder_scripteditor",
+        Math.random(),
+        {
           width: 800,
           height: 600,
           dependent: true,
@@ -806,25 +829,47 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
         popup.close();
         popup = null;
       });
+      const sendMessage = data => {
+        if (qx.bom.Window.isClosed(popup)) {
+          // remove listeners instead!!
+          return;
+        }
+        popup.postMessage(data, "*");
+        console.debug(">>> Message sent:");
+        console.debug(data);
+      };
       window.addEventListener("message", e => {
         if (e.source === popup) {
+          const data = e.data;
+          this.__lastData = data;
+          console.debug(">>> Message received:");
+          console.debug(data);
+          if (data.script !== undefined && data.script === null){
+            console.debug("Received initialization message from external editor.");
+            // initialization message
+            this.addListener("changeScript", e => {
+              const script = e.getData();
+              if (this.__lastData && this.__lastData.script && this.__lastData.script === script) {
+                // do not retransmit received script data
+              }
+              sendMessage({ script });
+            });
+            this.addListener("changePlayer", e => {
+              sendMessage({ playerType: e.getData().getType()});
+            });
+            sendMessage({
+              script: this.getScript(),
+              playerType: this.getPlayer().getType(),
+              objectIds: this.getObjectIds()
+            });
+            return;
+          }
           this.set(e.data);
+        } else {
+          this.error("Message from unknown source!");
         }
       });
-      this.addListener("changeScript", e => {
-        popup.postMessage({ script: e.getData()},"*");
-      });
-      this.addListener("changePlayer", e => {
-        popup.postMessage({ playerType: e.getData().getType()},"*");
-      });
-      // this should really be listening for when rendering is done
-      qx.event.Timer.once(() => {
-        popup.postMessage({
-          script: this.getScript(),
-          playerType: this.getPlayer().getType(),
-          objectIds: this.getObjectIds()
-        },"*");
-      }, this, 2000);
+
       return popup;
     },
 
@@ -853,7 +898,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
           let editorWidget = formComponent.getMainWidget();
           win.add(editorWidget);
           formComponent.addOwnedQxObject(win, "window");
-          editorWidget.addListener("appear", this._onEditorAppear, this);
+          editorWidget.addListener("appear", this._updateEditor, this);
           this.bind("script", formComponent.getModel(), "leftEditorContent");
           let formModel = formComponent.getModel();
           formModel.bind("leftEditorContent", this, "script");
