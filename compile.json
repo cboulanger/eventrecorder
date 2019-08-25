@@ -5,11 +5,21 @@
       "outputPath": "compiled/source",
       "babelOptions": {
         "targets": "Chrome >= 73, Firefox >= 66, edge >= 18, safari >= 12"
+      },
+      "bundle": {
+        "include": [
+          "qx.*",
+          "qxl.*",
+          "qookery.*"
+        ]
       }
     },
     {
       "type": "build",
       "outputPath": "compiled/build",
+      "babelOptions": {
+        "targets": "Chrome >= 73, Firefox >= 66, edge >= 18, safari >= 12"
+      },
       "minify": "off"
     }
   ],

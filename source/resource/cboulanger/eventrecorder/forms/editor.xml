@@ -90,8 +90,8 @@
     </composite>
     <!-- toggle visibility of right editor-->
     <button label="Show translation" id="toggleRightEditorButton">
-      <script>$.Form.getModel().bind("leftEditorVisible", this, "enabled");</script>
       <script>
+        $.Form.getModel().bind("leftEditorVisible", this, "enabled");
         this.getMainWidget().setQxObjectId(this.getId());
         $.Form.addOwnedQxObject(this.getMainWidget());
       </script>
@@ -115,12 +115,11 @@
       ]]>
   </script>
   <script action="toggleRightEditor"><![CDATA[
-        let rightEditorVisible = $.Form.getModel().getRightEditorVisible();
-        $.Form.getModel().setRightEditorVisible(!rightEditorVisible);
-        $("#toggleRightEditorButton").setLabel(rightEditorVisible? "Show translation" : "Hide translation");
-        $.Form.executeAction("translate");
-      ]]>
-  </script>
+    let rightEditorVisible = $.Form.getModel().getRightEditorVisible();
+    $.Form.getModel().setRightEditorVisible(!rightEditorVisible);
+    $("#toggleRightEditorButton").setLabel(rightEditorVisible? "Show translation" : "Hide translation");
+    $.Form.executeAction("translate");
+  ]]></script>
 
   <!-- editors -->
   <composite layout="h-box" flex="1">
@@ -132,23 +131,22 @@
       <script>
         $.Form.getModel().bind("leftEditorVisible", this, "visibility", { converter: v => v ? "visible" : "excluded"});
       </script>
-      <script>
+      <script><![CDATA[
         this.getMainWidget().setQxObjectId(this.getId());
         $.Form.addOwnedQxObject(this.getMainWidget());
-      </script>
+      ]]></script>
     </ace:editor>
     <ace:editor xmlns:ace="http://www.qookery.org/ns/Form/Ace"
                 id="rightEditor" mode="javascript"
                 connect="rightEditorContent"
                 flex="1" create-label="false" tab-size="2" theme="eclipse">
-      <script>
-        $.Form.getModel().bind("rightEditorVisible", this, "visibility", { converter: v => v ? "visible" : "excluded"});
-      </script>
-      <script>
+      <script><![CDATA[
+        $.Form.getModel().bind("rightEditorVisible", this, "visibility", {
+          converter: v => (v ? "visible" : "excluded")
+         });
         this.getMainWidget().setQxObjectId(this.getId());
         $.Form.addOwnedQxObject(this.getMainWidget());
-      </script>
+      ]]></script>
     </ace:editor>
   </composite>
-
 </form>

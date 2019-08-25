@@ -18,6 +18,28 @@
 qx.Mixin.define("cboulanger.eventrecorder.MHelperMethods", {
   members: {
 
+    async createQookeryComponent(formUrl) {
+      return new Promise((resolve, reject) => {
+        qookery.contexts.Qookery.loadResource(formUrl, this, xmlSource => {
+          const xmlDocument = qx.xml.Document.fromString(xmlSource);
+          const parser = qookery.Qookery.createFormParser();
+          try {
+            const formComponent = parser.parseXmlDocument(xmlDocument);
+            resolve(formComponent);
+          } catch (e) {
+            reject(e);
+          } finally {
+            parser.dispose();
+          }
+        });
+      });
+    },
+
+    getApplicationParentDir() {
+      let uri = qx.util.Uri.parseUri(location.href);
+      return `${uri.protocol}://${uri.authority}${uri.directory.split("/").slice(0,-2).join("/")}`;
+    },
+
     /**
      * Get the content of a gist by its id
      * @param gist_id {String}
@@ -80,12 +102,12 @@ qx.Mixin.define("cboulanger.eventrecorder.MHelperMethods", {
       qx.core.Assert.assertString(line);
       let tokens = [];
       let token = "";
-      let prevChar="";
+      let prevChar = "";
       let insideQuotes = false;
       for (let char of line.trim().split("")) {
         switch (char) {
           case "\"":
-            insideQuotes=!insideQuotes;
+            insideQuotes = !insideQuotes;
             token += char;
             break;
           case " ":
@@ -99,7 +121,8 @@ qx.Mixin.define("cboulanger.eventrecorder.MHelperMethods", {
               // parse token as json expression or as a string if that fails
               try {
                 token = JSON.parse(token);
-              } catch (e) {}
+              } catch (e) {
+              }
               tokens.push(token);
               token = "";
             }
@@ -112,7 +135,8 @@ qx.Mixin.define("cboulanger.eventrecorder.MHelperMethods", {
       if (token.length) {
         try {
           token = JSON.parse(token);
-        } catch (e) {}
+        } catch (e) {
+        }
         tokens.push(token);
       }
       return tokens;

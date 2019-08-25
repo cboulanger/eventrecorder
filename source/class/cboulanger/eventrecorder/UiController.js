@@ -756,7 +756,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
      * external editor window.
      * @param mode {String|undefined}
      */
-    edit(mode) {
+    async edit(mode) {
       const defaultMode = qx.core.Environment.get("eventrecorder.editor.placement");
       if (mode === undefined && (this.__lastMode || defaultMode)) {
         mode = this.__lastMode || defaultMode;
@@ -798,11 +798,11 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       }
       switch (mode) {
         case "outside":
-          this.__editorWindow = this.__createBrowserEditorWindow();
+          this.__editorWindow = await this.__createBrowserEditorWindow();
           break;
         case "inside":
         default:
-          this.__editorWindow = this.__createpQxEditorWindow();
+          this.__editorWindow = await this.__createpQxEditorWindow();
           break;
       }
       this.__lastMode = mode;
@@ -811,9 +811,9 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     __lastData: null,
     __listenersAttached: false,
 
-    __createBrowserEditorWindow() {
+    async __createBrowserEditorWindow() {
       let popup = qx.bom.Window.open(
-        "/compiled/source/eventrecorder_scripteditor",
+        this.getApplicationParentDir() + "/eventrecorder_scripteditor",
         Math.random(),
         {
           width: 800,
@@ -859,14 +859,12 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
           if (!this.__listenersAttached) {
             this.addListener("changeScript", e => {
               const script = e.getData();
-              if (this.__lastData.script !== script && !qx.bom.Window.isClosed(popup)) {
+              if (this.__lastData.script !== script) {
                 sendMessage({script});
               }
             });
             this.addListener("changePlayer", e => {
-              if (!qx.bom.Window.isClosed(popup)) {
-                sendMessage({playerType: e.getData().getType()});
-              }
+              sendMessage({playerType: e.getData().getType()});
             });
             this.__listenersAttached = true;
           }
@@ -881,8 +879,8 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
      * Sets up an editor in the given window itself
      * @private
      */
-    __createpQxEditorWindow() {
-      let win = new qx.ui.window.Window("Edit script");
+    async __createpQxEditorWindow() {
+      let win = this.__editorWindow = new qx.ui.window.Window("Edit script");
       win.set({
         layout: new qx.ui.layout.VBox(5),
         showMinimize: false,
@@ -892,26 +890,20 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       win.addListener("appear", () => {
         win.center();
       });
-      qookery.contexts.Qookery.loadResource(
-        qx.util.ResourceManager.getInstance().toUri("cboulanger/eventrecorder/forms/editor.xml"), this,
-        xmlSource => {
-          let xmlDocument = qx.xml.Document.fromString(xmlSource);
-          let parser = qookery.Qookery.createFormParser();
-          let formComponent = parser.parseXmlDocument(xmlDocument);
-          this.addOwnedQxObject(formComponent, "editor");
-          let editorWidget = formComponent.getMainWidget();
-          win.add(editorWidget);
-          formComponent.addOwnedQxObject(win, "window");
-          editorWidget.addListener("appear", this._updateEditor, this);
-          this.bind("script", formComponent.getModel(), "leftEditorContent");
-          let formModel = formComponent.getModel();
-          formModel.bind("leftEditorContent", this, "script");
-          formModel.addListener("changeTargetScriptType", e => this.translateTo(formModel.getTargetScriptType(), formModel.getTargetMode()));
-          formModel.addListener("changeTargetMode", e => this.translateTo(formModel.getTargetScriptType(), formModel.getTargetMode()));
-          parser.dispose();
-          this.__editorWindow.open();
-          qx.event.Timer.once(this._setupAutocomplete, this, 2000);
-        });
+      const formUrl = qx.util.ResourceManager.getInstance().toUri("cboulanger/eventrecorder/forms/editor.xml");
+      const formComponent = await this.createQookeryComponent(formUrl);
+      this.addOwnedQxObject(formComponent, "editor");
+      const editorWidget = formComponent.getMainWidget();
+      win.add(editorWidget);
+      formComponent.addOwnedQxObject(win, "window");
+      editorWidget.addListener("appear", this._updateEditor, this);
+      this.bind("script", formComponent.getModel(), "leftEditorContent");
+      let formModel = formComponent.getModel();
+      formModel.bind("leftEditorContent", this, "script");
+      formModel.addListener("changeTargetScriptType", e => this.translateTo(formModel.getTargetScriptType(), formModel.getTargetMode()));
+      formModel.addListener("changeTargetMode", e => this.translateTo(formModel.getTargetScriptType(), formModel.getTargetMode()));
+      win.open();
+      qx.event.Timer.once(this._setupAutocomplete, this, 2000);
       return win;
     },
 

@@ -102,14 +102,11 @@ qx.Class.define("cboulanger.eventrecorder.ScriptEditor", {
       this.addListenerOnce("changeObjectIds", this._setupAutocomplete, this);
 
       const formUrl = qx.util.ResourceManager.getInstance().toUri("cboulanger/eventrecorder/forms/editor.xml");
-      qookery.contexts.Qookery.loadResource(formUrl, this, xmlSource => {
-        let xmlDocument = qx.xml.Document.fromString(xmlSource);
-        let parser = qookery.Qookery.createFormParser();
-        const formComponent = parser.parseXmlDocument(xmlDocument);
+      this.createQookeryComponent(formUrl)
+      .then(formComponent => {
         this.addOwnedQxObject(formComponent, "editor");
         const editorWidget = formComponent.getMainWidget();
         editorWidget.addListener("appear", this._updateEditor, this);
-
         editorWidget.set({allowStretchX:true, allowStretchY:true});
         this.getRoot().add(editorWidget, {edge: 0});
         const formModel = formComponent.getModel();
@@ -117,7 +114,6 @@ qx.Class.define("cboulanger.eventrecorder.ScriptEditor", {
         formModel.bind("leftEditorContent", this, "script");
         formModel.addListener("changeTargetScriptType", this.__translate, this);
         formModel.addListener("changeTargetMode", this.__translate, this);
-        parser.dispose();
       });
     },
 
