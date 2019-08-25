@@ -880,7 +880,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
      * @private
      */
     async __createpQxEditorWindow() {
-      let win = this.__editorWindow = new qx.ui.window.Window("Edit script");
+      let win = new qx.ui.window.Window("Edit script");
       win.set({
         layout: new qx.ui.layout.VBox(5),
         showMinimize: false,

@@ -150,7 +150,7 @@ qx.Mixin.define("cboulanger.eventrecorder.MEditor", {
         }
       } catch (e) {
         //console.warn(e.message);
-        //console.debug("Waiting for ACE editor to become available...");
+        console.debug("Waiting for ACE editor to become available...");
         qx.event.Timer.once( () => this._updateEditor(), this, 500);
       }
     },
@@ -160,11 +160,16 @@ qx.Mixin.define("cboulanger.eventrecorder.MEditor", {
      * @private
      */
     _setupAutocomplete() {
-      if (window.ace === undefined) {
+      let langTools;
+      try {
+        langTools = ace.require("ace/ext/language_tools");
+        if (!langTools) {
+          throw new Error("language_tools not available");
+        }
+      } catch (e) {
         console.log("Deferring setup of autocomplete...");
         return qx.event.Timer.once(() => this._setupAutocomplete(), this, 1000);
       }
-      const langTools = ace.require("ace/ext/language_tools");
       let tokens = [];
       let iface = qx.Interface.getByName("cboulanger.eventrecorder.IPlayer").$$members;
       for (let key of Object.getOwnPropertyNames(iface)) {
