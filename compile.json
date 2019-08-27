@@ -187,6 +187,18 @@
         "qx.module.Blocker",
         "qx.module.Placement"
       ]
+    },
+    {
+      "class": "cboulanger.eventrecorder.window.TestApplication",
+      "theme": "cboulanger.eventrecorder.theme.Theme",
+      "name": "remote_binding_test",
+      "title": "Application for testing remote binding",
+      "environment": {
+        "qx.icontheme": "Tango"
+      },
+      "include": [
+        "cboulanger.eventrecorder.window.*"
+      ]
     }
   ],
   "$schema": "https://raw.githubusercontent.com/qooxdoo/qooxdoo-compiler/master/source/resource/qx/tool/schema/compile-1-0-0.json"
