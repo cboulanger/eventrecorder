@@ -44,7 +44,7 @@ qx.Mixin.define("cboulanger.eventrecorder.window.MRemoteBinding", {
         remoteWindow = win;
         if (win === window.opener) {
           // send ready message to opener
-          this.__sendMessage("ready", win);
+          this.__sendReadyEvent(win);
         }
       } else {
         throw new Error("Argument must be a Window or RemoteApplication object, is " + win);
@@ -55,6 +55,20 @@ qx.Mixin.define("cboulanger.eventrecorder.window.MRemoteBinding", {
       }
       // keep a reference to the window
       this.__remoteWindows.push(remoteWindow);
+    },
+
+    /**
+     * Create a pseudo-UUID to avoid name clashes
+     * @return {string}
+     */
+    createUuid: function() {
+      var dt = new Date().getTime();
+      var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = (dt + Math.random()*16)%16 | 0;
+        dt = Math.floor(dt/16);
+        return (c === 'x' ? r :(r&0x3|0x8)).toString(16);
+      });
+      return uuid;
     },
 
     /**
@@ -136,25 +150,49 @@ qx.Mixin.define("cboulanger.eventrecorder.window.MRemoteBinding", {
       var msgData = message.data;
       console.debug(">>> Message received:");
       console.debug(msgData);
-      if (msgData === "ready") {
-        this._getPropertyNamesToSync().forEach(function(prop){
-          var msg = {
-            event: {
-              type: "change" + qx.lang.String.firstUp(prop),
-              data: this.get(prop)
-            }
-          };
-          this.__sendMessage(msg, message.source);
-        }, this);
-        return;
-      } else if (!qx.lang.Type.isObject(msgData)) {
+      if (!qx.lang.Type.isObject(msgData) || !msgData.event || !msgData.event.type) {
         this.warn("Invalid message");
         return;
       }
-      if (!msgData.event || !msgData.event.type || !msgData.event.type.startsWith("change")) {
-        // nothing of interest to us here
-        return;
+      if (msgData.event.type === "ready") {
+        this.__handleReadyEvent(message.source);
+      } else if (msgData.event.type.startsWith("change")) {
+        this.__handleChangeEvent(message);
       }
+    },
+
+    /**
+     * Send the ready event to another window, usually the opener
+     * @param win {Window}
+     * @private
+     */
+    __sendReadyEvent: function(win) {
+      var eventData = {
+        event: {
+          type: "ready"
+        }
+      };
+      this.__sendMessage(eventData, win);
+    },
+
+    /**
+     * When receiving the "ready" event from a window, send property state
+     * @param win {Window}
+     */
+    __handleReadyEvent: function(win) {
+      this._getPropertyNamesToSync().forEach(function(prop){
+        var eventData = {
+          event: {
+            type: "change" + qx.lang.String.firstUp(prop),
+            data: this.get(prop)
+          }
+        };
+        this.__sendMessage(eventData, win);
+      }, this);
+    },
+
+    __handleChangeEvent: function(message) {
+      var msgData = message.data;
       var prop = qx.lang.String.firstLow(msgData.event.type.slice(6));
       if (msgData.event.oldData !== undefined && msgData.event.oldData !== this.get(prop)) {
         this.warn("Property '" + prop + "' was out of sync - remote old value does not match.");

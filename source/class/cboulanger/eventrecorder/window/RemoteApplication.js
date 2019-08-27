@@ -24,10 +24,6 @@ qx.Class.define("cboulanger.eventrecorder.window.RemoteApplication", {
   extend: qx.core.Object,
   include: [cboulanger.eventrecorder.window.MRemoteBinding],
 
-  statics: {
-    counter: 1
-  },
-
   /**
    * Constructor
    * @param uri {String}
@@ -36,7 +32,7 @@ qx.Class.define("cboulanger.eventrecorder.window.RemoteApplication", {
   construct: function(uri, config) {
     this.base(arguments);
     var url = this._computeApplicationUrl(uri);
-    var window_name = "window" + this.self(arguments).counter++;
+    var window_name = "window-" + this.createUuid();
     config = this._computeWindowConfig(config);
     this.__window = qx.bom.Window.open(url, window_name, config);
     window.addEventListener("beforeunload", () => {
