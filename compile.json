@@ -114,7 +114,7 @@
       }
     },
     {
-      "class": "cboulanger.eventrecorder.ScriptEditor",
+      "class": "cboulanger.eventrecorder.editor.Application",
       "theme": "qx.theme.Indigo",
       "name": "eventrecorder_scripteditor",
       "title": "Script Editor",
@@ -133,7 +133,7 @@
     {
       "class": "qxl.widgetbrowser.Application",
       "theme": "qx.theme.Indigo",
-      "name": "widgetbrowser_playground",
+      "name": "widgetbrowser_externaleditor",
       "title": "WidgetBrowser with empty external script editor",
       "include": [
         "qx.theme.Modern",
@@ -146,6 +146,26 @@
         ],
         "eventrecorder.show_progress": true,
         "eventrecorder.editor.placement": "outside"
+      }
+    },
+    {
+      "class": "qxl.widgetbrowser.Application",
+      "theme": "qx.theme.Indigo",
+      "name": "widgetbrowser_engine",
+      "title": "WidgetBrowser using new decoupled architecture",
+      "include": [
+        "qx.theme.Modern",
+        "cboulanger.eventrecorder.Engine",
+        "cboulanger.eventrecorder.ObjectIdGenerator"
+      ],
+      "exclude": ["cboulanger.eventrecorder.UiController"],
+      "environment": {
+        "qx.icontheme": [
+          "Tango"
+        ],
+        "eventrecorder.show_progress": true,
+        "eventrecorder.editor.placement": "inside",
+        "eventrecorder.uicontroller.placement": "inside"
       }
     },
     {

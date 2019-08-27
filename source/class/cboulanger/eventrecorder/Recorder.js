@@ -140,7 +140,7 @@ qx.Class.define("cboulanger.eventrecorder.Recorder", {
           traverseObjectTree(obj);
         }
         return ids;
-      } catch(e) {
+      } catch (e) {
         this.error(e.message);
         return [];
       }

@@ -20,11 +20,11 @@
  * @asset(dialog/*)
  * @ignore(ace)
  */
-qx.Class.define("cboulanger.eventrecorder.ScriptEditor", {
+qx.Class.define("cboulanger.eventrecorder.editor.Application", {
   extend: qx.application.Standalone,
   include: [
     cboulanger.eventrecorder.MHelperMethods,
-    cboulanger.eventrecorder.MEditor
+    cboulanger.eventrecorder.editor.MEditor
   ],
 
   properties: {
@@ -34,7 +34,7 @@ qx.Class.define("cboulanger.eventrecorder.ScriptEditor", {
      */
     controllerWindow: {
       check: "Window",
-      event: "changeControllerWindow",
+      event: "changeControllerWindow"
     },
 
     /**
@@ -53,7 +53,7 @@ qx.Class.define("cboulanger.eventrecorder.ScriptEditor", {
     playerType: {
       check: "String",
       event: "changePlayerType",
-      init: "qooxdoo",
+      init: "qooxdoo"
       //apply: "_applyPlayerType"
     },
 
@@ -118,11 +118,11 @@ qx.Class.define("cboulanger.eventrecorder.ScriptEditor", {
       });
       this.addListener("changeScript", e => {
         const script = e.getData();
-        if (this.__lastData === null && script === "")  {
+        if (this.__lastData === null && script === "") {
           // do not transmit initial state
           return;
         }
-        if ( this.__lastData.script === script) {
+        if (this.__lastData.script === script) {
           // do not retransmit received script data
           return;
         }

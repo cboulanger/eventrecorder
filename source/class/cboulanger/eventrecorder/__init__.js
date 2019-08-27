@@ -43,8 +43,12 @@
  *   </tr>
  *   <tr>
  *     <td>"eventrecorder.editor.placement": {String}</td>
- *     <td>Whether the script editor should be opened "inside" (default) or "outside" of the document</td>
- *   </tr>*
+ *     <td>Whether the script editor should be displayed "inside" (default) or "outside" of the application window</td>
+ *   </tr>
+ *   <tr>
+ *     <td>"eventrecorder.uicontroller.placement": {String}</td>
+ *     <td>Whether the buttons to control the eventrecorder should be displayed "inside" (default) or "outside" of the application window</td>
+ *   </tr>
  * </table>
  *
  */

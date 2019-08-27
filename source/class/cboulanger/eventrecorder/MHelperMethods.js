@@ -14,7 +14,10 @@
 
 ************************************************************************ */
 
-
+/**
+ * An unsystematic collection of methods that are re-used in more than one class
+ * The methods really need to be put into domain-specific mixins or static classes
+ */
 qx.Mixin.define("cboulanger.eventrecorder.MHelperMethods", {
   members: {
 
@@ -35,9 +38,36 @@ qx.Mixin.define("cboulanger.eventrecorder.MHelperMethods", {
       });
     },
 
+
+
+    /**
+     * Returns a player instance. Caches the result
+     * @param type
+     * @private
+     * @return {cboulanger.eventrecorder.IPlayer}
+     */
+    getPlayerByType(type) {
+      if (!type) {
+        throw new Error("No player type given!");
+      }
+      if (!this.__players) {
+        this.__players = [];
+      }
+      if (this.__players[type]) {
+        return this.__players[type];
+      }
+      let Clazz = cboulanger.eventrecorder.player[qx.lang.String.firstUp(type)];
+      if (!Clazz) {
+        throw new Error(`A player of type '${type}' does not exist.`);
+      }
+      const player = new Clazz();
+      this.__players[type] = player;
+      return player;
+    },
+
     getApplicationParentDir() {
       let uri = qx.util.Uri.parseUri(location.href);
-      return `${uri.protocol}://${uri.authority}${uri.directory.split("/").slice(0,-2).join("/")}`;
+      return `${uri.protocol}://${uri.authority}${uri.directory.split("/").slice(0, -2).join("/")}`;
     },
 
     /**

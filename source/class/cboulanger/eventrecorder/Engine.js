@@ -16,19 +16,16 @@
 
 /**
  * The UI Controller for the recorder
- * @asset(cboulanger/eventrecorder/*)
- * @asset(qxl/dialog/*)
  * @require(cboulanger.eventrecorder.player.Testcafe)
- * @ignore(ace)
  */
-qx.Class.define("cboulanger.eventrecorder.UiController", {
-  extend: qx.ui.window.Window,
+qx.Class.define("cboulanger.eventrecorder.Engine", {
+  extend: qx.core.Object,
   include: [
     cboulanger.eventrecorder.MHelperMethods,
-    cboulanger.eventrecorder.editor.MEditor
+    cboulanger.eventrecorder.editor.MEditor /* needs to be removed once the OnPage editor is factored out into its own class */
   ],
   statics: {
-    CONFIG_KEY : {
+    CONFIG_KEY: {
       SCRIPT:       "eventrecorder.script",
       PLAYER_TYPE:  "eventrecorder.player_type",
       PLAYER_MODE:  "eventrecorder.player_mode",
@@ -38,24 +35,6 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       SCRIPTABLE:   "eventrecorder.scriptable",
       RELOAD_BEFORE_REPLAY: "eventrecorder.reload_before_replay",
       SCRIPT_URL:   "eventrecorder.script_url"
-    },
-    FILE_INPUT_ID : "eventrecorder-fileupload",
-
-    aliases: {
-      "eventrecorder.icon.record":  "cboulanger/eventrecorder/media-record.png",
-      "eventrecorder.icon.start":   "cboulanger/eventrecorder/media-playback-start.png",
-      "eventrecorder.icon.pause":   "cboulanger/eventrecorder/media-playback-pause.png",
-      "eventrecorder.icon.stop":    "cboulanger/eventrecorder/media-playback-stop.png",
-      "eventrecorder.icon.edit":    "cboulanger/eventrecorder/document-properties.png",
-      "eventrecorder.icon.save":    "cboulanger/eventrecorder/document-save.png",
-      "eventrecorder.icon.load":    "cboulanger/eventrecorder/document-open.png",
-      "eventrecorder.icon.export":  "cboulanger/eventrecorder/emblem-symbolic-link.png",
-      // need a way to automatically include this
-      "qxl.dialog.icon.cancel" : "qxl/dialog/icon/IcoMoonFree/272-cross.svg",
-      "qxl.dialog.icon.ok"     : "qxl/dialog/icon/IcoMoonFree/273-checkmark.svg",
-      "qxl.dialog.icon.info"   : "qxl/dialog/icon/IcoMoonFree/269-info.svg",
-      "qxl.dialog.icon.error"  : "qxl/dialog/icon/IcoMoonFree/270-cancel-circle.svg",
-      "qxl.dialog.icon.warning" : "qxl/dialog/icon/IcoMoonFree/264-warning.svg"
     }
   },
 
@@ -85,7 +64,24 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     player: {
       check: "cboulanger.eventrecorder.IPlayer",
       event: "changePlayer",
-      apply: "_applyPlayer",
+      nullable: true
+    },
+
+    /**
+     * The UI controller instance, either an on-page MDI-style window or
+     * an external browser window
+     */
+    uiController: {
+      check: "Object",
+      nullable: true
+    },
+
+    /**
+     * The script editor instance, either an on-page MDI-style window or
+     * an external browser window
+     */
+    scriptEditor: {
+      check: "Object",
       nullable: true
     },
 
@@ -147,37 +143,12 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
   },
 
   /**
-   * Constructor
-   * @param caption {String} The caption of the window. Will be used to create
-   * an object id.
    * @ignore(env)
    * @ignore(storage)
    * @ignore(uri_params)
-   * @ignore(caption)
    */
-  construct: function(caption="Event Recorder") {
+  construct: function() {
     this.base(arguments);
-
-    // workaround until icon theme can be mixed into application theme
-    const aliasMgr = qx.util.AliasManager.getInstance();
-    const aliases = aliasMgr.getAliases();
-    for (let [alias, base] of Object.entries(cboulanger.eventrecorder.UiController.aliases)) {
-      if (!aliases[alias]) {
-        aliasMgr.add(alias, base);
-      }
-    }
-    //
-    this.set({
-      caption,
-      modal: false,
-      showMinimize: false,
-      showMaximize: false,
-      height: 90,
-      layout: new qx.ui.layout.HBox(5),
-      allowGrowX: false,
-      allowGrowY: false
-    });
-
     const recorder = new cboulanger.eventrecorder.Recorder();
     this.setRecorder(recorder);
 
@@ -189,49 +160,12 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     this.initGistId(gistId);
     this.initScriptable(scriptable);
 
-    // assign id to this widget from caption
-    const objectId = caption.replace(/ /g, "").toLocaleLowerCase();
-    this.setQxObjectId(objectId);
-    qx.core.Id.getInstance().register(this, objectId);
-
-    // do not record events for this widget unless explicitly requested
-    if (!this.getScriptable()) {
-      recorder.excludeIds(objectId);
-    }
-
-    // caption
-    this.bind("recorder.running", this, "caption", {
-      converter: v => v ? "Recording ..." : caption
-    });
-    this.bind("player.running", this, "caption", {
-      converter: v => v ? "Replaying ..." : caption
-    });
-    // this creates the buttons in this order and adds them to the window
-    this._createControl("load");
-    this._createControl("replay");
-    this._createControl("record");
-    let stopButton = this._createControl("stop");
-    this._createControl("edit");
-    this._createControl("save");
-    // stop button special handling
-
-    const stopButtonState = () => {
-      stopButton.setEnabled(
-        recorder.isRunning() || (Boolean(this.getPlayer()) && this.getPlayer().isRunning())
-      );
-    };
-    recorder.addListener("changeRunning", stopButtonState);
-    this.addListener("changePlayer", e => {
-      if (e.getData()) {
-        this.getPlayer().addListener("changeRunning", stopButtonState);
-      }
-    });
     // form for file uploads
     var form = document.createElement("form");
     form.setAttribute("visibility", "hidden");
     document.body.appendChild(form);
     let input = document.createElement("input");
-    input.setAttribute("id", cboulanger.eventrecorder.UiController.FILE_INPUT_ID);
+    input.setAttribute("id", cboulanger.eventrecorder.Engine.FILE_INPUT_ID);
     input.setAttribute("type", "file");
     input.setAttribute("name", "file");
     input.setAttribute("visibility", "hidden");
@@ -242,7 +176,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     player.setMode(playerMode);
     const {storage} = this._getPersistenceProviders();
     player.addListener("changeMode", e => {
-      storage.setItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.PLAYER_MODE, e.getData());
+      storage.setItem(cboulanger.eventrecorder.Engine.CONFIG_KEY.PLAYER_MODE, e.getData());
     });
     this.setPlayer(player);
 
@@ -285,202 +219,12 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
    */
   members:
   {
-    /**
-     * @var {qx.ui.window.Window}
-     */
-    __editorWindow : null,
 
     /**
-     * Internal method to create child controls
-     * @param id
-     * @return {qx.ui.core.Widget}
-     * @private
+     * The mode of the script editor "inside"/"outside"
+     * @var {String}
      */
-    _createControl(id) {
-      let control;
-      let recorder = this.getRecorder();
-
-      switch (id) {
-        /**
-         * Load Button
-         */
-        case "load": {
-          let loadMenu = new qx.ui.menu.Menu();
-          let loadUserGistButton = new qx.ui.menu.Button("Load user gist");
-          loadUserGistButton.addListener("execute", this.loadUserGist, this);
-          loadUserGistButton.setQxObjectId("fromUserGist");
-          loadMenu.add(loadUserGistButton);
-          let loadGistByIdButton = new qx.ui.menu.Button("Load gist by id");
-          loadGistByIdButton.addListener("execute", this.loadGistById, this);
-          loadGistByIdButton.setQxObjectId("fromGistById");
-          loadMenu.add(loadGistByIdButton);
-          control = new qx.ui.form.SplitButton();
-          control.set({
-            enabled: false,
-            icon:"eventrecorder.icon.load",
-            toolTipText: "Load script",
-            menu: loadMenu
-          });
-          control.addOwnedQxObject(loadUserGistButton);
-          control.addOwnedQxObject(loadGistByIdButton);
-          control.addListener("execute", this.load, this);
-          // enable load button only if player can replay scripts in the browser
-          this.bind("recorder.running", control, "enabled", {
-            converter: v => !v
-          });
-          break;
-        }
-        /**
-         * Replay button
-         */
-        case "replay": {
-          control = new cboulanger.eventrecorder.SplitToggleButton();
-          let replayMenu = new qx.ui.menu.Menu();
-          control.addOwnedQxObject(replayMenu, "menu");
-          let macroButton = new qx.ui.menu.Button("Macros");
-          replayMenu.add(macroButton);
-          replayMenu.addOwnedQxObject(macroButton, "macros");
-          let macroMenu = new qx.ui.menu.Menu();
-          macroButton.setMenu(macroMenu);
-          macroButton.addOwnedQxObject(macroMenu, "menu");
-          this.addListener("changePlayer", () => {
-            let player = this.getPlayer();
-            if (!player) {
-              return;
-            }
-            player.addListener("changeMacros", () => {
-              this._updateMacroMenu();
-              player.getMacros().getNames().addListener("change", this._updateMacroMenu, this);
-            });
-          });
-
-          replayMenu.addSeparator();
-          replayMenu.add(new qx.ui.menu.Button("Options:"));
-          let optionReload = new qx.ui.menu.CheckBox("Reload page before replay");
-          this.bind("reloadBeforeReplay", optionReload, "value");
-          optionReload.bind("value", this, "reloadBeforeReplay");
-          replayMenu.add(optionReload);
-          control.addListener("execute", this._startReplay, this);
-          control.set({
-            enabled: false,
-            icon:"eventrecorder.icon.start",
-            toolTipText: "Replay script",
-            menu: replayMenu
-          });
-          // show replay button only if player is attached and if it can replay a script in the browser
-          this.bind("player", control, "visibility", {
-            converter: player => Boolean(player) && player.getCanReplayInBrowser() ? "visible" : "excluded"
-          });
-          this.bind("recorder.running", control, "enabled", {
-            converter: v => !v
-          });
-          this.bind("player.running", control, "value");
-          break;
-        }
-        /**
-         * Record Button
-         */
-        case "record": {
-          let recordMenu = new qx.ui.menu.Menu();
-          recordMenu.add(new qx.ui.menu.Button("Options:"));
-          let debugEvents = new qx.ui.menu.CheckBox("Log event data");
-          debugEvents.bind("value", this, "recorder.logEvents");
-          recordMenu.add(debugEvents);
-          control = new cboulanger.eventrecorder.SplitToggleButton();
-          control.setIcon("eventrecorder.icon.record");
-          control.setMenu(recordMenu);
-          control.addListener("changeValue", this._toggleRecord, this);
-          recorder.bind("running", control, "value");
-          recorder.bind("running", control, "enabled", {
-            converter: v => !v
-          });
-          this.bind("mode", control, "enabled", {
-            converter: v => v === "recorder"
-          });
-          break;
-        }
-        /**
-         * Stop Button
-         */
-        case "stop": {
-          control = new qx.ui.form.Button();
-          control.set({
-            enabled: false,
-            icon: "eventrecorder.icon.stop",
-            toolTipText: "Stop recording"
-          });
-          control.addListener("execute", this.stop, this);
-          break;
-        }
-        /**
-         * Edit Button
-         */
-        case "edit": {
-          let editMenu = new qx.ui.menu.Menu();
-          let qxWinBtn = new qx.ui.menu.Button("Open editor in this window");
-          qxWinBtn.addListener("execute", () => this.edit("inside"));
-          editMenu.add(qxWinBtn);
-          let nativeWinBtn = new qx.ui.menu.Button("Open editor in browser window");
-          nativeWinBtn.addListener("execute", () => this.edit("outside"));
-          editMenu.add(nativeWinBtn);
-          control = new qx.ui.form.SplitButton();
-          control.set({
-            enabled: true,
-            icon:"eventrecorder.icon.edit",
-            toolTipText: "Edit script",
-            menu: editMenu
-          });
-          control.addListener("execute", () => this.edit());
-          this.bind("recorder.running", control, "enabled", {
-            converter: v => !v
-          });
-          // this.bind("script", editButton, "enabled", {
-          //   converter: v => Boolean(v)
-          // });
-          break;
-        }
-
-        /**
-         * Save Button
-         */
-        case "save": {
-          control = new qx.ui.form.Button();
-          control.set({
-            enabled: false,
-            icon:"eventrecorder.icon.save",
-            toolTipText: "Save script"
-          });
-          control.addListener("execute", this.save, this);
-          this.bind("recorder.running", control, "enabled", {
-            converter: v => !v
-          });
-          break;
-        }
-        default:
-          throw new Error(`Control '${id} does not exist.'`);
-      }
-      // add to widget and assign object id
-      this.add(control);
-      this.addOwnedQxObject(control, id);
-      return control;
-    },
-
-    async _updateMacroMenu() {
-      const macroMenu = this.getQxObject("replay/menu/macros/menu");
-      const player = this.getPlayer();
-      macroMenu.removeAll();
-      for (let name of player.getMacroNames().toArray()) {
-        let description = player.getMacroDescription(name);
-        let label = description.trim() ? (name + ": " + description) : name;
-        let menuButton = new qx.ui.menu.Button(label);
-        menuButton.addListener("execute", async () => {
-          let lines = player.getMacroDefinition(name);
-          await player.replay(lines);
-          cboulanger.eventrecorder.InfoPane.getInstance().hide();
-        });
-        macroMenu.add(menuButton);
-      }
-    },
+    __lastMode : null,
 
     /**
      * Returns a map with object providing persistence
@@ -505,16 +249,16 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
      */
     _getParamsFromEnvironment() {
       let {env, storage, uri_params} = this._getPersistenceProviders();
-      let script = storage.getItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.SCRIPT) || "";
+      let script = storage.getItem(cboulanger.eventrecorder.Engine.CONFIG_KEY.SCRIPT) || "";
       let autoplay = uri_params.queryKey.eventrecorder_autoplay ||
-        storage.getItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.AUTOPLAY) ||
-        env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.AUTOPLAY) ||
+        storage.getItem(cboulanger.eventrecorder.Engine.CONFIG_KEY.AUTOPLAY) ||
+        env.get(cboulanger.eventrecorder.Engine.CONFIG_KEY.AUTOPLAY) ||
         false;
-      let reloadBeforeReplay = storage.getItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.RELOAD_BEFORE_REPLAY);
-      let gistId = uri_params.queryKey.eventrecorder_gist_id || env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.GIST_ID) || null;
-      let scriptable = Boolean(uri_params.queryKey.eventrecorder_scriptable) || qx.core.Environment.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.SCRIPTABLE) || false;
-      let playerType = uri_params.queryKey.eventrecorder_type || env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.PLAYER_TYPE) || "qooxdoo";
-      let playerMode = uri_params.queryKey.eventrecorder_player_mode || storage.getItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.PLAYER_MODE) || env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.PLAYER_MODE) || "presentation";
+      let reloadBeforeReplay = storage.getItem(cboulanger.eventrecorder.Engine.CONFIG_KEY.RELOAD_BEFORE_REPLAY);
+      let gistId = uri_params.queryKey.eventrecorder_gist_id || env.get(cboulanger.eventrecorder.Engine.CONFIG_KEY.GIST_ID) || null;
+      let scriptable = Boolean(uri_params.queryKey.eventrecorder_scriptable) || qx.core.Environment.get(cboulanger.eventrecorder.Engine.CONFIG_KEY.SCRIPTABLE) || false;
+      let playerType = uri_params.queryKey.eventrecorder_type || env.get(cboulanger.eventrecorder.Engine.CONFIG_KEY.PLAYER_TYPE) || "qooxdoo";
+      let playerMode = uri_params.queryKey.eventrecorder_player_mode || storage.getItem(cboulanger.eventrecorder.Engine.CONFIG_KEY.PLAYER_MODE) || env.get(cboulanger.eventrecorder.Engine.CONFIG_KEY.PLAYER_MODE) || "presentation";
       let info = {script, autoplay, reloadBeforeReplay, gistId, scriptable, scriptUrl : this._getScriptUrl(), playerType, playerMode };
       console.log(info);
       return info;
@@ -533,7 +277,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
      * @private
      */
     _applyScript(value, old) {
-      qx.bom.storage.Web.getSession().setItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.SCRIPT, value);
+      qx.bom.storage.Web.getSession().setItem(cboulanger.eventrecorder.Engine.CONFIG_KEY.SCRIPT, value);
       this.getRecorder().setScript(value);
       if (!this._getScriptUrl()) {
         this._saveScriptUrl();
@@ -541,19 +285,17 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       if (!this.getPlayer()) {
         this.addListenerOnce("changePlayer", async () => {
           await this.getPlayer().translate(value);
-          this._updateMacroMenu();
         });
       }
     },
 
     _getScriptUrl() {
-      return qx.bom.storage.Web.getSession().getItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.SCRIPT_URL);
+      return qx.bom.storage.Web.getSession().getItem(cboulanger.eventrecorder.Engine.CONFIG_KEY.SCRIPT_URL);
     },
 
     _saveScriptUrl() {
-      qx.bom.storage.Web.getSession().setItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.SCRIPT_URL, document.location.href);
+      qx.bom.storage.Web.getSession().setItem(cboulanger.eventrecorder.Engine.CONFIG_KEY.SCRIPT_URL, document.location.href);
     },
-
 
     _scriptUrlMatches() {
       return this._getScriptUrl() === document.location.href;
@@ -570,7 +312,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
      * @private
      */
     _applyAutoplay(value, old) {
-      qx.bom.storage.Web.getSession().setItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.AUTOPLAY, value);
+      qx.bom.storage.Web.getSession().setItem(cboulanger.eventrecorder.Engine.CONFIG_KEY.AUTOPLAY, value);
     },
 
     /**
@@ -580,7 +322,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
      * @private
      */
     _applyReloadBeforeReplay(value, old) {
-      qx.bom.storage.Web.getSession().setItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.RELOAD_BEFORE_REPLAY, value);
+      qx.bom.storage.Web.getSession().setItem(cboulanger.eventrecorder.Engine.CONFIG_KEY.RELOAD_BEFORE_REPLAY, value);
     },
 
     /**
@@ -619,7 +361,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
      */
     async _upload() {
       return new Promise((resolve, reject) => {
-        let input = document.getElementById(cboulanger.eventrecorder.UiController.FILE_INPUT_ID);
+        let input = document.getElementById(cboulanger.eventrecorder.Engine.FILE_INPUT_ID);
         input.addEventListener("change", e => {
           let file = e.target.files[0];
           if (!file.name.endsWith(".eventrecorder")) {
@@ -749,11 +491,10 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       }
     },
 
-    __lastMode : null,
-
     /**
      * Edits the current script, either using the in-window editor or the
      * external editor window.
+     * NOTE: This will be completely rewritten
      * @param mode {String|undefined}
      */
     async edit(mode) {
@@ -761,19 +502,19 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       if (mode === undefined && (this.__lastMode || defaultMode)) {
         mode = this.__lastMode || defaultMode;
       }
-      if (this.__editorWindow) {
+      if (this.getScriptEditor()) {
         console.debug({mode, lastMode:this.__lastMode});
         if (mode === this.__lastMode) {
           if (mode === "inside") {
             console.debug("Opening existing qooxdoo window.");
-            this.__editorWindow.open();
+            this.getScriptEditor().open();
             return;
-          } else if (qx.bom.Window.isClosed(this.__editorWindow)) {
+          } else if (qx.bom.Window.isClosed(this.getScriptEditor())) {
             console.debug("Destroying existing closed native window and recreating it.");
-            this.__editorWindow = null;
+            this.setScriptEditor(null);
           } else {
             console.debug("Bringing existing native window to front.");
-            this.__editorWindow.focus();
+            this.getScriptEditor().focus();
             return;
           }
         } else {
@@ -783,24 +524,24 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
           } catch (e) {}
           if (this.__lastMode === "inside") {
             console.debug("Destroying existing qooxdoo native window.");
-            this.__editorWindow.close();
-            this.__editorWindow.dispose();
-          } else if (qx.bom.Window.isClosed(this.__editorWindow)) {
+            this.getScriptEditor().close();
+            this.getScriptEditor().dispose();
+          } else if (qx.bom.Window.isClosed(this.getScriptEditor())) {
               console.debug("Destroying existing closed native window.");
-              this.__editorWindow = null;
+              this.setScriptEditor(null);
             } else {
               console.debug("Closing existing open native window...");
-              this.__editorWindow.close();
+              this.getScriptEditor().close();
             }
         }
       }
       switch (mode) {
         case "outside":
-          this.__editorWindow = await this.__createBrowserEditorWindow();
+          this.setScriptEditor(await this.__createBrowserEditorWindow());
           break;
         case "inside":
         default:
-          this.__editorWindow = await this.__createpQxEditorWindow();
+          this.setScriptEditor(await this.__createpQxEditorWindow());
           break;
       }
       this.__lastMode = mode;
@@ -1039,11 +780,18 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       if (infoPane.getDisplayedText() === dispayedText) {
         infoPane.hide();
       }
-      // create controller
-      let controller = new cboulanger.eventrecorder.UiController();
-      qx.core.Init.getApplication().getRoot().add(controller, {top:0, right:10});
+      // create engine
+      let engine = new cboulanger.eventrecorder.Engine();
+      // create ui controller
+      let uicontroller;
+      if (qx.core.Environment.get("eventrecorder.uicontroller.placement") === "outside") {
+        throw new Error("Controller in own window not implemented yet");
+      } else {
+        uicontroller = new cboulanger.eventrecorder.uicontroller.OnPage("Event Recorder", engine);
+      }
+      engine.setUiController(uicontroller);
       if (!qx.core.Environment.get("eventrecorder.hidden")) {
-        controller.show();
+        uicontroller.show();
       }
     });
   }

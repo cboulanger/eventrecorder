@@ -19,7 +19,7 @@
  * This mixin contains methods that are used by script editor widgets
  * @ignore(ace)
  */
-qx.Mixin.define("cboulanger.eventrecorder.MEditor", {
+qx.Mixin.define("cboulanger.eventrecorder.editor.MEditor", {
 
   members: {
 
@@ -31,31 +31,6 @@ qx.Mixin.define("cboulanger.eventrecorder.MEditor", {
      */
     getEditorObject() {
       return this.getQxObject("editor");
-    },
-
-    /**
-     * Returns a player instance. Caches the result
-     * @param type
-     * @private
-     * @return {cboulanger.eventrecorder.IPlayer}
-     */
-    getPlayerByType(type) {
-      if (!type) {
-        throw new Error("No player type given!");
-      }
-      if (!this.__players) {
-        this.__players = [];
-      }
-      if (this.__players[type]) {
-        return this.__players[type];
-      }
-      let Clazz = cboulanger.eventrecorder.player[qx.lang.String.firstUp(type)];
-      if (!Clazz) {
-        throw new Error(`A player of type '${type}' does not exist.`);
-      }
-      const player = new Clazz();
-      this.__players[type] = player;
-      return player;
     },
 
     /**
@@ -113,20 +88,23 @@ qx.Mixin.define("cboulanger.eventrecorder.MEditor", {
       if (old) {
         old = this.getPlayerByType(old);
       }
-      const player = this.getPlayerByType(playerType);
-      this._applyPlayer(player, old);
+      this.setPlayer(this.getPlayerByType(playerType));
     },
 
-    _applyPlayer(player, old){
-      if (!this.getEditorObject()) {
-        // editor hasn't been loaded and rendered yet
-        return;
-      }
-      const formModel = this.getEditorObject().getModel();
+    _applyPlayer(player, old) {
       if (old) {
         old.removeAllBindings();
         formModel.removeAllBindings();
       }
+      if (!player) {
+        return;
+      }
+      if (!this.getEditorObject()) {
+        console.debug("Cannot apply player since editor is not ready...");
+        // editor hasn't been loaded and rendered yet
+        return;
+      }
+      const formModel = this.getEditorObject().getModel();
       formModel.bind("targetMode", player, "mode");
       player.bind("mode", formModel, "targetMode");
       formModel.setTargetScriptType(player.getType());
@@ -135,13 +113,13 @@ qx.Mixin.define("cboulanger.eventrecorder.MEditor", {
     __initializedEditor: false,
 
     _updateEditor() {
-      try{
+      try {
         this.getEditorObject().getModel().setLeftEditorContent(this.getScript());
         const leftEditor = this.getEditorObject().getComponent("leftEditor").getEditor();
         leftEditor.resize();
         // the following should not be necessary
         if (!this.__initializedEditor) {
-          leftEditor.getSession().on('change', () => {
+          leftEditor.getSession().on("change", () => {
             if (leftEditor.getValue() !== this.getScript()) {
               this.setScript(leftEditor.getValue());
             }
@@ -151,7 +129,7 @@ qx.Mixin.define("cboulanger.eventrecorder.MEditor", {
       } catch (e) {
         //console.warn(e.message);
         console.debug("Waiting for ACE editor to become available...");
-        qx.event.Timer.once( () => this._updateEditor(), this, 500);
+        qx.event.Timer.once(() => this._updateEditor(), this, 500);
       }
     },
 
@@ -168,7 +146,8 @@ qx.Mixin.define("cboulanger.eventrecorder.MEditor", {
         }
       } catch (e) {
         console.log("Deferring setup of autocomplete...");
-        return qx.event.Timer.once(() => this._setupAutocomplete(), this, 1000);
+        qx.event.Timer.once(() => this._setupAutocomplete(), this, 1000);
+        return;
       }
       let tokens = [];
       let iface = qx.Interface.getByName("cboulanger.eventrecorder.IPlayer").$$members;
