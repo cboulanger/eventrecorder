@@ -319,7 +319,7 @@ qx.Mixin.define("cboulanger.eventrecorder.window.MRemoteBinding", {
       }
       console.debug("-> normal object ");
       for (var prop in object) {
-        result.set(prop, unserialize(object[prop]));
+        result[prop] = unserialize(object[prop]);
       }
       return result;
     }
