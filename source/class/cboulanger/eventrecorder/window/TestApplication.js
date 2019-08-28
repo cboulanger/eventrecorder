@@ -34,8 +34,8 @@ qx.Class.define("cboulanger.eventrecorder.window.TestApplication", {
         qx.log.appender.Native;
       }
       var container = new qx.ui.container.Composite(new qx.ui.layout.VBox(5));
-      var button = new qx.ui.form.Button("1. Open a new window");
-      container.add(button);
+      var button1 = new qx.ui.form.Button("1. Open a new window");
+      container.add(button1);
       container.add(new qx.ui.basic.Label("2. Type a message:"));
       var chatbox = new qx.ui.form.TextField();
       chatbox.setLiveUpdate(true);
@@ -44,12 +44,27 @@ qx.Class.define("cboulanger.eventrecorder.window.TestApplication", {
       container.add(chatbox);
       container.add(new qx.ui.basic.Label("TODO: changeBubble/change events"));
       var list = this.__createList();
+      // setup databinding
       this.bind("listModel", list, "model");
       list.bind("model", this, "listModel");
       container.add(list);
+      var button2 = new qx.ui.form.Button("Add item at the top");
+      var counter = 1;
+      button2.addListener("execute", function() {
+        list.getModel().unshift(qx.data.marshal.Json.createModel({
+          name: "New item " + counter++,
+          online: true
+        }));
+      });
+      container.add(button2);
+      var button3 = new qx.ui.form.Button("Delete first three items");
+      button3.addListener("execute", function() {
+        list.getModel().splice(0, 3);
+      });
+      container.add(button3);
       this.getRoot().add(container, {left:50, top: 50});
       // communicate with a new browser window
-      button.addListener("execute", function() {
+      button1.addListener("execute", function() {
         var remoteWin = new cboulanger.eventrecorder.window.RemoteApplication("remote_binding_test", {
           width: 300,
           height: 500
@@ -57,9 +72,8 @@ qx.Class.define("cboulanger.eventrecorder.window.TestApplication", {
         this.syncProperties(remoteWin);
       }, this);
 
-
       if (window.opener) {
-        // if we're in a new window, sync properties with the window that opened this
+        // if we're in a new window, sync properties with the window that opened us
         this.syncProperties(window.opener);
       } else {
         // we are the main window, create the data for the list to be sync'ed
@@ -76,7 +90,7 @@ qx.Class.define("cboulanger.eventrecorder.window.TestApplication", {
       }
     },
 
-    __createList: function(){
+    __createList: function() {
       // create the widgets
       var list = new qx.ui.list.List();
       list.setWidth(150);

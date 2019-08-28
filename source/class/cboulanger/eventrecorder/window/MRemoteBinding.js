@@ -71,10 +71,10 @@ qx.Mixin.define("cboulanger.eventrecorder.window.MRemoteBinding", {
      */
     createUuid: function() {
       var dt = new Date().getTime();
-      var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var uuid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(c) {
         var r = (dt + Math.random()*16)%16 | 0;
         dt = Math.floor(dt/16);
-        return (c === 'x' ? r :(r&0x3|0x8)).toString(16);
+        return (c === "x" ? r :(r&0x3|0x8)).toString(16);
       });
       return uuid;
     },
@@ -92,54 +92,129 @@ qx.Mixin.define("cboulanger.eventrecorder.window.MRemoteBinding", {
     },
 
     __initialize: function() {
-      var properties =  this._getPropertyNamesToSync();
+      var properties = this._getPropertyNamesToSync();
       this.info("Initializing remote binding with properties " + properties);
       properties.forEach(function(prop) {
         // watch for property changes
-        var eventName = "change" + qx.lang.String.firstUp(prop);
-        this.addListener(eventName, this.__broadcastChangeEvent, this);
+        var firstUpProp = qx.lang.String.firstUp(prop);
+        var eventName = "change" + firstUpProp;
+        if (qx.Class.supportsEvent(this.constructor, eventName)) {
+          this.addListener(eventName, this.__handleLocalPropertyChangeEvent, this);
+        }
+        var value = this["get" + firstUpProp]();
+        if (value instanceof qx.core.Object) {
+
+          if (qx.Class.supportsEvent(value.constructor, "changeBubble")) {
+            value.addListener("changeBubble", function(e) {
+              this.__handleLocalChangeBubbleEvent(e, prop);
+            }, this);
+            // changeBubble event includes information of change event ...
+          } else if (qx.Class.supportsEvent(value.constructor, "change")) {
+            value.addListener("change", function(e) {
+              this.__handleLocalChangeEvent(e, prop);
+            }, this);
+          }
+        }
       }, this);
       var that = this;
-      window.addEventListener("message", function(message){
+      window.addEventListener("message", function(message) {
         that.__handleIncomingMessage(message);
       });
       this.__isInitialized = true;
     },
 
-
-
     /**
-     * Handles the change events of the class properties
+     * Broadcasts the property change events of the instance
      * @param e {qx.event.type.Data}
      * @private
      */
-    __broadcastChangeEvent: function(e) {
+    __handleLocalPropertyChangeEvent: function(e) {
       var type = e.getType();
       var data = this.__serialize(e.getData());
       var oldData = this.__serialize(e.getOldData());
-      var message = {
-        event: {
-          type: type,
-          data: data,
-          oldData: oldData
-        }
-      };
+      this.__broadcastEvent(type, data, oldData);
+    },
+
+    /**
+     * Broadcasts the 'changeBubble' events of the instance properties
+     * @param e {qx.event.type.Data}
+     * @param prop {String} the name of the property that fired the event
+     * @private
+     */
+    __handleLocalChangeBubbleEvent: function(e, prop) {
+      var data = e.getData();
+      data.name = prop + "." + data.name;
+      if (qx.lang.Type.isArray(data.value)) {
+        data.value = data.value.map(this.__serialize, this);
+      } else {
+        data.value = this.__serialize(data.value);
+      }
+      delete data.old;
+      delete data.item;
+      this.__broadcastEvent("changeBubble", data);
+    },
+
+    /**
+     * Broadcasts the 'change' events of instance properties
+     * @param e {qx.event.type.Data}
+     * @param prop {String} the name of the property that fired the event
+     * @private
+     */
+    __handleLocalChangeEvent: function(e, prop) {
+      var data = e.getData();
+      console.warn("change");
+      console.warn(data);
+    },
+
+    /**
+     * Broadcast a message with the given parameters
+     * @param type {String}
+     * @param data {*|undefined}
+     * @param oldData {*|undefined}
+     * @private
+     */
+    __broadcastEvent: function(type, data, oldData) {
       this.__remoteWindows.forEach(function(win) {
         if (win === this.__changeSource) {
           // do not retransmit value change to origin of change
           return;
         }
-        this.__sendMessage(message, win);
+        this.__sendEventMessage(win, type, data, oldData);
       }, this);
     },
 
     /**
-     * Send a message to the peer using the postMessage API
-     * @param message {String}
+     * Sends a event message to the given window.
      * @param win {Window}
+     * @param type {String}
+     * @param data {*|undefined}
+     * @param oldData {*|undefined}
      * @private
      */
-    __sendMessage: function(message, win) {
+    __sendEventMessage: function(win, type, data, oldData) {
+      qx.core.Assert.assertTrue(type && qx.lang.Type.isString(type), "Type must be a non-empty string");
+      var message = {
+        event: {
+          type: type
+        }
+      };
+      if (data !== undefined) {
+        message.event.data = data;
+      }
+      if (oldData !== undefined) {
+        message.event.oldData = oldData;
+      }
+      this.__sendMessage(win, message);
+    },
+
+    /**
+     * Send a message to the peer using the postMessage API
+     * @param win {Window}
+     * @param message {String}
+     * @private
+     */
+    __sendMessage: function(win, message) {
+      qx.core.Assert.assertTrue(win.window === win, "First argument must be a Window object");
       if (qx.bom.Window.isClosed(win)) {
         // don't send messages to closed windows
         return;
@@ -167,11 +242,39 @@ qx.Mixin.define("cboulanger.eventrecorder.window.MRemoteBinding", {
         this.warn("Invalid message");
         return;
       }
-      if (msgData.event.type === "ready") {
-        this.__handleReadyEvent(message.source);
-      } else if (msgData.event.type.startsWith("change")) {
-        this.__handleChangeEvent(message);
+      var type = msgData.event.type;
+      if (type.startsWith("change") && type !== "changeBubble") {
+        this.__handleRemotePropertyChangeEvent(message);
+      } else {
+        switch (type) {
+          case "ready":
+            this.__handleRemoteReadyEvent(message);
+            break;
+          case "changeBubble":
+            this.__handleRemoteChangeBubbleEvent(message);
+            break;
+          case "change":
+            this.__handleRemoteChangeEvent(message);
+            break;
+          default:
+            throw new Error("No handler for event type '" + type + "'.");
+        }
       }
+    },
+
+    /**
+     * When receiving the "ready" event from a window, send property state
+     * @param message {Object}
+     */
+    __handleRemoteReadyEvent: function(message) {
+      var win = message.source;
+      this._getPropertyNamesToSync().forEach(function(prop) {
+        var firstUpProp = qx.lang.String.firstUp(prop);
+        var type = "change" + firstUpProp;
+        var value = this["get" + firstUpProp]();
+        var data = this.__serialize(value);
+        this.__sendEventMessage(win, type, data);
+      }, this);
     },
 
     /**
@@ -180,32 +283,7 @@ qx.Mixin.define("cboulanger.eventrecorder.window.MRemoteBinding", {
      * @private
      */
     __sendReadyEvent: function(win) {
-      var eventData = {
-        event: {
-          type: "ready"
-        }
-      };
-      this.__sendMessage(eventData, win);
-    },
-
-    /**
-     * When receiving the "ready" event from a window, send property state
-     * @param win {Window}
-     */
-    __handleReadyEvent: function(win) {
-      this._getPropertyNamesToSync().forEach(function(prop){
-        var type = "change" + qx.lang.String.firstUp(prop);
-        var value = this.get(prop);
-        var data = this.__serialize(value);
-        console.debug({classname: value.classname, data });
-        var eventData = {
-          event: {
-            type: type,
-            data: data
-          }
-        };
-        this.__sendMessage(eventData, win);
-      }, this);
+      this.__sendEventMessage(win, "ready");
     },
 
     /**
@@ -213,26 +291,66 @@ qx.Mixin.define("cboulanger.eventrecorder.window.MRemoteBinding", {
      * @param message {Object}
      * @private
      */
-    __handleChangeEvent: function(message) {
-      var msgData = message.data;
-      var prop = qx.lang.String.firstLow(msgData.event.type.slice(6));
-      if (msgData.event.oldData !== undefined
-        && !qx.lang.Type.isObject(msgData.event.oldData)
-        && msgData.event.oldData !== this.get(prop)) {
-        this.warn("Property '" + prop + "' was out of sync - remote old value does not match.");
+    __handleRemotePropertyChangeEvent: function(message) {
+      var evtData = message.data.event;
+      var firstUpProp = evtData.type.slice(6);
+      var prop = qx.lang.String.firstLow(firstUpProp);
+      var oldValue = this["get" + firstUpProp]();
+      if (evtData.oldData !== undefined &&
+        !qx.lang.Type.isObject(evtData.oldData) &&
+        evtData.oldData !== oldValue) {
+        this.warn("Property '" + prop + "' was out of sync - remote old value " + evtData.oldData + " does not match " + oldValue);
       }
-      var data = msgData.event.data;
+      var data = evtData.data;
       var value = this.__unserialize(data);
-      console.warn("Setting " + prop + " to");
-      console.debug(value);
+      console.warn("Setting property '" + prop + "':");
+      console.warn(value);
       this.__changeSource = message.source;
-      this.set(prop, value);
+      this["set" + firstUpProp](value);
       this.__changeSource = null;
     },
 
     /**
-     *  Serialize an arbitrary value, including many qooxdoo objects.
-     *  to a JSON value that can be sent to a remote target
+     * Handle the changeBubble event for qooxdoo data objects
+     * @param message {Object}
+     * @private
+     */
+    __handleRemoteChangeBubbleEvent: function(message) {
+      var evtData = message.data.event;
+      var target = this;
+      var parts = evtData.data.name.split(".");
+      var value = this.__unserialize(evtData.data.value);
+      parts.slice(0,-1).forEach(function(part){
+        if (part[0] === "[") {
+          target = target.getItem(parseInt(part.slice(1,-1)));
+        } else {
+          target = target["get" + qx.lang.String.firstUp(part)]();
+        }
+      });
+      var lastPart = parts.pop();
+      if (lastPart.match(/^[0-9]/)) {
+        var range = lastPart.split("-");
+        var start = parseInt(range[0])
+        var deleteCount;
+        if (range.length > 1) {
+          deleteCount = (range[1] - range[0])+1;
+        } else {
+          deleteCount = value.length-1;
+        }
+        args = [start, deleteCount].concat(value);
+        target.splice.apply(target, args);
+      } else {
+        target["set" + qx.lang.String.firstUp(lastPart)](value);
+      }
+    },
+
+    __handleRemoteChangeEvent: function(message) {
+      throw new Error("Not implemented");
+    },
+
+    /**
+     * Serialize an arbitrary value, including many qooxdoo objects,
+     * to a JSON value that can be sent to a remote target
      * @param object {qx.core.Object|*}
      * @return {*|Array|String|Object}
      * @private
@@ -245,14 +363,13 @@ qx.Mixin.define("cboulanger.eventrecorder.window.MRemoteBinding", {
       var data_prop = this.self(arguments).SERIALIZER_DATA_PROP;
       var classname;
       if (object.classname.startsWith("qx.data.model.")) {
-        classname = object.classname.slice(0, 13);
+        classname = "qx.data.model";
       } else {
         classname = object.classname;
       }
       var result = {};
       result[class_prop] = classname;
       if (qx.Class.hasInterface(object.constructor, qx.data.IListData)) {
-        console.debug("qx.data.IListData");
         var data = [];
         for (var i = 0; i < object.getLength(); i++) {
           data.push(serialize(object.getItem(i)));
@@ -276,16 +393,18 @@ qx.Mixin.define("cboulanger.eventrecorder.window.MRemoteBinding", {
      * Unserialize a JSON object, creating suitable qooxdoo objects from the
      * metadata in the JSON
      * @param object {Object|Array|*}
-     * @param includeBubbleEvents {Boolean}
+     *    The json object which will be unserialized into a qooxdoo object if
+     *    it has been serialized from a qooxdoo object. Normal object and
+     *    primitive values will be used as-is.
+     * @param includeBubbleEvents {Boolean} Defaults to true
      * @return {qx.core.Object|*}
      */
     __unserialize: function unserialize(object, includeBubbleEvents=true) {
-      console.debug("unserializing:");
-      console.debug(object);
       var class_prop = this.self(arguments).SERIALIZER_CLASS_PROP;
       var data_prop = this.self(arguments).SERIALIZER_DATA_PROP;
       var result;
-      if (qx.lang.Type.isArray(object)){
+      var prop;
+      if (qx.lang.Type.isArray(object)) {
         return object.map(unserialize);
       }
       if (!qx.lang.Type.isObject(object)) {
@@ -295,20 +414,17 @@ qx.Mixin.define("cboulanger.eventrecorder.window.MRemoteBinding", {
       if (classname) {
         switch (classname) {
           case "qx.data.model":
-            console.debug("-> data object!");
             delete object[class_prop];
             return qx.data.marshal.Json.createModel(object, includeBubbleEvents);
           default:
             var Clazz = qx.Class.getByName(classname);
             result = new Clazz();
             if (qx.Class.hasInterface(result.constructor, qx.data.IListData)) {
-              console.debug("-> IListData ");
-              object[data_prop].forEach(function(item, index){
+              object[data_prop].forEach(function(item, index) {
                 result.setItem(index, unserialize(item));
               });
             } else {
-              console.debug("-> class "+ classname);
-              for (var prop in object) {
+              for (prop in object) {
                 if (prop !== class_prop) {
                   result.set(prop, unserialize(object[prop]));
                 }
@@ -317,8 +433,7 @@ qx.Mixin.define("cboulanger.eventrecorder.window.MRemoteBinding", {
         }
         return result;
       }
-      console.debug("-> normal object ");
-      for (var prop in object) {
+      for (prop in object) {
         result[prop] = unserialize(object[prop]);
       }
       return result;
