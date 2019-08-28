@@ -80,8 +80,6 @@ qx.Class.define("cboulanger.eventrecorder.window.TestApplication", {
       // create the widgets
       var list = new qx.ui.list.List();
       list.setWidth(150);
-      // add the widgets to the document
-      this.getRoot().add(list, {left: 10, top: 80});
 
       // create the delegate to change the bindings
       var delegate = {
