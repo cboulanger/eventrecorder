@@ -22,8 +22,16 @@
  */
 qx.Mixin.define("cboulanger.eventrecorder.window.MRemoteBinding", {
 
+  statics: {
+    SERIALIZER_CLASS_PROP: "$$class",
+    SERIALIZER_DATA_PROP: "$$data"
+  },
+
   construct: function() {
     this.__remoteWindows = [];
+    if (!window.opener && !window.name) {
+      window.name = "Main application";
+    }
   },
 
   members: {
@@ -98,17 +106,22 @@ qx.Mixin.define("cboulanger.eventrecorder.window.MRemoteBinding", {
       this.__isInitialized = true;
     },
 
+
+
     /**
      * Handles the change events of the class properties
      * @param e {qx.event.type.Data}
      * @private
      */
     __broadcastChangeEvent: function(e) {
+      var type = e.getType();
+      var data = this.__serialize(e.getData());
+      var oldData = this.__serialize(e.getOldData());
       var message = {
         event: {
-          type: e.getType(),
-          data: e.getData(),
-          oldData: e.getOldData()
+          type: type,
+          data: data,
+          oldData: oldData
         }
       };
       this.__remoteWindows.forEach(function(win) {
@@ -148,7 +161,7 @@ qx.Mixin.define("cboulanger.eventrecorder.window.MRemoteBinding", {
         return;
       }
       var msgData = message.data;
-      console.debug(">>> Message received:");
+      console.debug(">>> Message received from " + message.source.name + ":");
       console.debug(msgData);
       if (!qx.lang.Type.isObject(msgData) || !msgData.event || !msgData.event.type) {
         this.warn("Invalid message");
@@ -181,25 +194,134 @@ qx.Mixin.define("cboulanger.eventrecorder.window.MRemoteBinding", {
      */
     __handleReadyEvent: function(win) {
       this._getPropertyNamesToSync().forEach(function(prop){
+        var type = "change" + qx.lang.String.firstUp(prop);
+        var value = this.get(prop);
+        var data = this.__serialize(value);
+        console.debug({classname: value.classname, data });
         var eventData = {
           event: {
-            type: "change" + qx.lang.String.firstUp(prop),
-            data: this.get(prop)
+            type: type,
+            data: data
           }
         };
         this.__sendMessage(eventData, win);
       }, this);
     },
 
+    /**
+     * Handle the change event for normal property values
+     * @param message {Object}
+     * @private
+     */
     __handleChangeEvent: function(message) {
       var msgData = message.data;
       var prop = qx.lang.String.firstLow(msgData.event.type.slice(6));
-      if (msgData.event.oldData !== undefined && msgData.event.oldData !== this.get(prop)) {
+      if (msgData.event.oldData !== undefined
+        && !qx.lang.Type.isObject(msgData.event.oldData)
+        && msgData.event.oldData !== this.get(prop)) {
         this.warn("Property '" + prop + "' was out of sync - remote old value does not match.");
       }
+      var data = msgData.event.data;
+      var value = this.__unserialize(data);
+      console.warn("Setting " + prop + " to");
+      console.debug(value);
       this.__changeSource = message.source;
-      this.set(prop, msgData.event.data);
+      this.set(prop, value);
       this.__changeSource = null;
+    },
+
+    /**
+     *  Serialize an arbitrary value, including many qooxdoo objects.
+     *  to a JSON value that can be sent to a remote target
+     * @param object {qx.core.Object|*}
+     * @return {*|Array|String|Object}
+     * @private
+     */
+    __serialize: function serialize(object) {
+      if (!(object instanceof qx.core.Object)) {
+        return qx.util.Serializer.toNativeObject(object);
+      }
+      var class_prop = this.self(arguments).SERIALIZER_CLASS_PROP;
+      var data_prop = this.self(arguments).SERIALIZER_DATA_PROP;
+      var classname;
+      if (object.classname.startsWith("qx.data.model.")) {
+        classname = object.classname.slice(0, 13);
+      } else {
+        classname = object.classname;
+      }
+      var result = {};
+      result[class_prop] = classname;
+      if (qx.Class.hasInterface(object.constructor, qx.data.IListData)) {
+        console.debug("qx.data.IListData");
+        var data = [];
+        for (var i = 0; i < object.getLength(); i++) {
+          data.push(serialize(object.getItem(i)));
+        }
+        result[data_prop] = data;
+        return result;
+      }
+      var properties = qx.util.PropertyUtil.getAllProperties(object.constructor);
+      for (var name in properties) {
+        // ignore property groups
+        if (properties[name].group !== undefined) {
+          continue;
+        }
+        var value = object["get" + qx.lang.String.firstUp(name)]();
+        result[name] = serialize(value);
+      }
+      return result;
+    },
+
+    /**
+     * Unserialize a JSON object, creating suitable qooxdoo objects from the
+     * metadata in the JSON
+     * @param object {Object|Array|*}
+     * @param includeBubbleEvents {Boolean}
+     * @return {qx.core.Object|*}
+     */
+    __unserialize: function unserialize(object, includeBubbleEvents=true) {
+      console.debug("unserializing:");
+      console.debug(object);
+      var class_prop = this.self(arguments).SERIALIZER_CLASS_PROP;
+      var data_prop = this.self(arguments).SERIALIZER_DATA_PROP;
+      var result;
+      if (qx.lang.Type.isArray(object)){
+        return object.map(unserialize);
+      }
+      if (!qx.lang.Type.isObject(object)) {
+        return object;
+      }
+      var classname = object[class_prop];
+      if (classname) {
+        switch (classname) {
+          case "qx.data.model":
+            console.debug("-> data object!");
+            delete object[class_prop];
+            return qx.data.marshal.Json.createModel(object, includeBubbleEvents);
+          default:
+            var Clazz = qx.Class.getByName(classname);
+            result = new Clazz();
+            if (qx.Class.hasInterface(result.constructor, qx.data.IListData)) {
+              console.debug("-> IListData ");
+              object[data_prop].forEach(function(item, index){
+                result.setItem(index, unserialize(item));
+              });
+            } else {
+              console.debug("-> class "+ classname);
+              for (var prop in object) {
+                if (prop !== class_prop) {
+                  result.set(prop, unserialize(object[prop]));
+                }
+              }
+            }
+        }
+        return result;
+      }
+      console.debug("-> normal object ");
+      for (var prop in object) {
+        result.set(prop, unserialize(object[prop]));
+      }
+      return result;
     }
   }
 });
