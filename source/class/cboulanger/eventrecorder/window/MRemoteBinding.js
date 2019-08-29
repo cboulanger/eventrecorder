@@ -93,27 +93,29 @@ qx.Mixin.define("cboulanger.eventrecorder.window.MRemoteBinding", {
 
     __initialize: function() {
       var properties = this._getPropertyNamesToSync();
-      this.info("Initializing remote binding with properties " + properties);
+      this.info("Initializing remote binding with properties " + properties.join(", "));
       properties.forEach(function(prop) {
-        // watch for property changes
         var firstUpProp = qx.lang.String.firstUp(prop);
         var eventName = "change" + firstUpProp;
-        if (qx.Class.supportsEvent(this.constructor, eventName)) {
-          this.addListener(eventName, this.__handleLocalPropertyChangeEvent, this);
-        }
-        var value = this["get" + firstUpProp]();
-        if (value instanceof qx.core.Object) {
-
-          if (qx.Class.supportsEvent(value.constructor, "changeBubble")) {
-            value.addListener("changeBubble", function(e) {
-              this.__handleLocalChangeBubbleEvent(e, prop);
-            }, this);
-            // changeBubble event includes information of change event ...
-          } else if (qx.Class.supportsEvent(value.constructor, "change")) {
-            value.addListener("change", function(e) {
-              this.__handleLocalChangeEvent(e, prop);
-            }, this);
+        var attachChangeBubbleListener = function(value) {
+          if (value instanceof qx.core.Object && !value.__remoteBindingChangeBubbleListenerId) {
+            if (qx.Class.supportsEvent(value.constructor, "changeBubble")) {
+              console.debug("Attaching bubble event listener on " + prop);
+              var id = value.addListener("changeBubble", function(e) {
+                this.__handleLocalChangeBubbleEvent(e, prop);
+              }, this);
+              value.__remoteBindingChangeBubbleListenerId = id;
+            }
           }
+        }.bind(this);
+        // watch for bubble events on existing suitable properties
+        attachChangeBubbleListener(this["get" + firstUpProp]());
+        // watch for property changes
+        if (qx.Class.supportsEvent(this.constructor, eventName)) {
+          this.addListener(eventName, function(e) {
+            attachChangeBubbleListener(e.getData());
+            this.__handleLocalPropertyChangeEvent(e);
+          }, this);
         }
       }, this);
       var that = this;
@@ -124,15 +126,28 @@ qx.Mixin.define("cboulanger.eventrecorder.window.MRemoteBinding", {
     },
 
     /**
-     * Broadcasts the property change events of the instance
+     * Handles the property change events of the instance
      * @param e {qx.event.type.Data}
      * @private
      */
     __handleLocalPropertyChangeEvent: function(e) {
       var type = e.getType();
-      var data = this.__serialize(e.getData());
-      var oldData = this.__serialize(e.getOldData());
+      var value = e.getData();
+      var oldValue = e.getOldData();
+      var data = this.__serialize(value);
+      var oldData = this.__serialize(oldValue);
       this.__broadcastEvent(type, data, oldData);
+    },
+
+    /**
+     * Given a property change event name, return the name of the property
+     * @param type {String}
+     * @return {String}
+     * @private
+     */
+    __computePropertyNameFromEventType: function(type) {
+      var firstUpProp = type.slice(6);
+      return qx.lang.String.firstLow(firstUpProp);
     },
 
     /**
@@ -152,18 +167,6 @@ qx.Mixin.define("cboulanger.eventrecorder.window.MRemoteBinding", {
       delete data.old;
       delete data.item;
       this.__broadcastEvent("changeBubble", data);
-    },
-
-    /**
-     * Broadcasts the 'change' events of instance properties
-     * @param e {qx.event.type.Data}
-     * @param prop {String} the name of the property that fired the event
-     * @private
-     */
-    __handleLocalChangeEvent: function(e, prop) {
-      var data = e.getData();
-      console.warn("change");
-      console.warn(data);
     },
 
     /**
@@ -253,9 +256,6 @@ qx.Mixin.define("cboulanger.eventrecorder.window.MRemoteBinding", {
           case "changeBubble":
             this.__handleRemoteChangeBubbleEvent(message);
             break;
-          case "change":
-            this.__handleRemoteChangeEvent(message);
-            break;
           default:
             throw new Error("No handler for event type '" + type + "'.");
         }
@@ -303,8 +303,8 @@ qx.Mixin.define("cboulanger.eventrecorder.window.MRemoteBinding", {
       }
       var data = evtData.data;
       var value = this.__unserialize(data);
-      console.warn("Setting property '" + prop + "':");
-      console.warn(value);
+      console.debug(">>> Setting property '" + prop + "':");
+      console.debug(value);
       this.__changeSource = message.source;
       this["set" + firstUpProp](value);
       this.__changeSource = null;
@@ -328,6 +328,7 @@ qx.Mixin.define("cboulanger.eventrecorder.window.MRemoteBinding", {
         }
       });
       var lastPart = parts.pop();
+      this.__changeSource = message.source; // prevent re-transmission of changed values
       if (lastPart.match(/^[0-9]/)) {
         var range = lastPart.split("-");
         var start = parseInt(range[0])
@@ -337,16 +338,14 @@ qx.Mixin.define("cboulanger.eventrecorder.window.MRemoteBinding", {
         } else {
           deleteCount = value.length-1;
         }
-        args = [start, deleteCount].concat(value);
+        var args = [start, deleteCount].concat(value);
         target.splice.apply(target, args);
       } else {
         target["set" + qx.lang.String.firstUp(lastPart)](value);
       }
+      this.__changeSource = null;
     },
 
-    __handleRemoteChangeEvent: function(message) {
-      throw new Error("Not implemented");
-    },
 
     /**
      * Serialize an arbitrary value, including many qooxdoo objects,

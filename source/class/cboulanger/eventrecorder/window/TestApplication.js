@@ -34,6 +34,7 @@ qx.Class.define("cboulanger.eventrecorder.window.TestApplication", {
         qx.log.appender.Native;
       }
       var container = new qx.ui.container.Composite(new qx.ui.layout.VBox(5));
+      container.add((new qx.ui.basic.Label("<h3>Remote databinding demo</h3>")).set({rich:true}));
       var button1 = new qx.ui.form.Button("1. Open a new window");
       container.add(button1);
       container.add(new qx.ui.basic.Label("2. Type a message:"));
@@ -42,7 +43,7 @@ qx.Class.define("cboulanger.eventrecorder.window.TestApplication", {
       this.bind("chatMessage", chatbox, "value");
       chatbox.bind("value", this, "chatMessage");
       container.add(chatbox);
-      container.add(new qx.ui.basic.Label("TODO: changeBubble/change events"));
+      container.add(new qx.ui.basic.Label("3. Tick & Click:"));
       var list = this.__createList();
       // setup databinding
       this.bind("listModel", list, "model");
@@ -62,7 +63,7 @@ qx.Class.define("cboulanger.eventrecorder.window.TestApplication", {
         list.getModel().splice(0, 3);
       });
       container.add(button3);
-      this.getRoot().add(container, {left:50, top: 50});
+      this.getRoot().add(container, {left:50, top: 0});
       // communicate with a new browser window
       button1.addListener("execute", function() {
         var remoteWin = new cboulanger.eventrecorder.window.RemoteApplication("remote_binding_test", {
