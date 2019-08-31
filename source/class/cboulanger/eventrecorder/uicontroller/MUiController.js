@@ -40,6 +40,13 @@ qx.Mixin.define("cboulanger.eventrecorder.uicontroller.MUiController", {
     }
   },
 
+  properties: {
+    engine: {
+      check: "Object",
+      event: "changeEngine"
+    }
+  },
+
   members: {
     /**
      * workaround until icon theme can be mixed into application theme
