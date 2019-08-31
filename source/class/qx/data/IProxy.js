@@ -39,6 +39,6 @@ qx.Interface.define("qx.data.IProxy", {
     /**
      * Starts the synchronization of object properties
      */
-    stopPropertySync: function () {},
+    stopPropertySync: function () {}
   }
 });

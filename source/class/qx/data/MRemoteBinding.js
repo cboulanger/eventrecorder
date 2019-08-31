@@ -57,7 +57,7 @@ qx.Mixin.define("qx.data.MRemoteBinding", {
     _syncProperties: function(channel, options) {
       options = options || {};
       qx.core.Assert.assertObject(options);
-      if (! options.properties) {
+      if (!options.properties) {
         options.properties = this._getDefaultPropertyNamesToSync();
       }
       qx.Interface.assertObject(channel, qx.io.channel.IChannel);
@@ -149,10 +149,10 @@ qx.Mixin.define("qx.data.MRemoteBinding", {
         var firstUpProp = qx.lang.String.firstUp(prop);
         var value = this["get" + firstUpProp]();
         if (value instanceof qx.core.Object && value.$$remoteBindingChangeBubbleListenerId) {
-          value.removeListenerById(value.$$remoteBindingChangeBubbleListenerId)
+          value.removeListenerById(value.$$remoteBindingChangeBubbleListenerId);
         }
         if (this.$$remoteBindingChangeBubbleListenerId) {
-          this.removeListenerById(this.$$remoteBindingChangeBubbleListenerId)
+          this.removeListenerById(this.$$remoteBindingChangeBubbleListenerId);
         }
       });
       this.__isInitialized = false;
@@ -379,9 +379,9 @@ qx.Mixin.define("qx.data.MRemoteBinding", {
         useOriginalClasses: options.useOriginalClasses
       };
       var value = this.__unserialize(evtData.data.value, config);
-      parts.slice(0,-1).forEach(function(part){
+      parts.slice(0, -1).forEach(function(part) {
         if (part[0] === "[") {
-          target = target.getItem(parseInt(part.slice(1,-1)));
+          target = target.getItem(parseInt(part.slice(1, -1)));
         } else {
           target = target["get" + qx.lang.String.firstUp(part)]();
         }
@@ -390,7 +390,7 @@ qx.Mixin.define("qx.data.MRemoteBinding", {
       this.__messageSource = channel; // prevent re-transmission of changed values
       if (lastPart.match(/^[0-9]/)) {
         var range = lastPart.split("-");
-        var start = parseInt(range[0])
+        var start = parseInt(range[0]);
         var deleteCount;
         if (range.length > 1) {
           deleteCount = (range[1] - range[0])+1;

@@ -38,6 +38,6 @@ qx.Interface.define("qx.data.channel.transport.ITransport", {
      * Send a message into the channel
      * @param messageObj {Object}
      */
-    sendMessage: function (messageObj){}
+    sendMessage: function (messageObj) {}
   }
 });

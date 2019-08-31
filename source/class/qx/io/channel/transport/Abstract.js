@@ -60,7 +60,7 @@ qx.Interface.define("qx.data.channel.transport.Abstract", {
      * Send a message into the channel
      * @param messageObj {Object}
      */
-    sendMessage: function (messageObj){
+    sendMessage: function (messageObj) {
       throw new Error("Method must be implemented by subclass!");
     }
   }

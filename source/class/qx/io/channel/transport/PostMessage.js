@@ -16,7 +16,6 @@ qx.Class.define("qx.io.channel.transport.PostMessage", {
    * @ignore(self)
    */
   construct: function(endpoint, endpointName) {
-
     this.base(arguments);
     if (typeof endpoint.postMessage !== "function" || endpoint.onmessage === undefined) {
       throw new Error("Endpoint must be an object implementing the postMessage API.");
@@ -35,11 +34,10 @@ qx.Class.define("qx.io.channel.transport.PostMessage", {
       }
     }.bind(this));
     if (endpointIsWindow) {
-      endpoint.attachEventListener("close", function(){
+      endpoint.attachEventListener("close", function() {
         this.close();
       });
     }
-
   },
   members: {
 

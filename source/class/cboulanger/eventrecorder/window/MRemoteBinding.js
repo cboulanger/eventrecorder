@@ -320,9 +320,9 @@ qx.Mixin.define("cboulanger.eventrecorder.window.MRemoteBinding", {
       var target = this;
       var parts = evtData.data.name.split(".");
       var value = this.__unserialize(evtData.data.value);
-      parts.slice(0,-1).forEach(function(part){
+      parts.slice(0, -1).forEach(function(part) {
         if (part[0] === "[") {
-          target = target.getItem(parseInt(part.slice(1,-1)));
+          target = target.getItem(parseInt(part.slice(1, -1)));
         } else {
           target = target["get" + qx.lang.String.firstUp(part)]();
         }
@@ -331,7 +331,7 @@ qx.Mixin.define("cboulanger.eventrecorder.window.MRemoteBinding", {
       this.__changeSource = message.source; // prevent re-transmission of changed values
       if (lastPart.match(/^[0-9]/)) {
         var range = lastPart.split("-");
-        var start = parseInt(range[0])
+        var start = parseInt(range[0]);
         var deleteCount;
         if (range.length > 1) {
           deleteCount = (range[1] - range[0])+1;

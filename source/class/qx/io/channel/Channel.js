@@ -19,15 +19,16 @@ qx.Class.define("qx.io.channel.Channel", {
    * Constructor
    * @param transport {qx.data.channel.transport.ITransport}
    */
-  construct: function(transport){
+  construct: function(transport) {
     this.base(arguments);
     qx.Interface.objectImplements(transport, qx.data.channel.transport.ITransport);
     this.__transport = transport;
 
     // retransmit message, attaching channel information
-    transport.addListener("message", function(e)  {
+    transport.addListener("message", function(e) {
+      var message = e.getData();
       message.channel = this;
-      this.fireDataEvent("message", e.getData());
+      this.fireDataEvent("message", message);
     });
 
     // bind the status of the channel to the status of the transport
@@ -64,7 +65,7 @@ qx.Class.define("qx.io.channel.Channel", {
 
     __transport: null,
 
-    _applyStatus: function(value, old){
+    _applyStatus: function(value, old) {
       // prevent non-transport objects from changing the status?
     },
 
