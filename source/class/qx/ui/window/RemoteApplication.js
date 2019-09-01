@@ -80,7 +80,7 @@ qx.Class.define("qx.ui.window.RemoteApplication", {
      * Exposes the internal window object
      * @return {Window}
      */
-    _getWindow: function() {
+    getWindow: function() {
       return this.__window;
     },
 

@@ -35,7 +35,7 @@ qx.Class.define("qx.io.channel.Channel", {
         message.$$channel = this;
         this.fireDataEvent("message", message);
       }
-    },this);
+    }, this);
 
     // bind the status of the channel to the status of the transport
     this.initStatus(transport.getStatus());
