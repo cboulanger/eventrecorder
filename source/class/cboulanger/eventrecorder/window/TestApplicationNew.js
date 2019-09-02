@@ -11,7 +11,7 @@
 /**
  * This is the main application class of "UI Event Recorder"
  */
-qx.Class.define("cboulanger.eventrecorder.window.TestApplication", {
+qx.Class.define("cboulanger.eventrecorder.window.TestApplicationNew", {
   extend: qx.application.Standalone,
   include: qx.data.MRemoteBinding,
   properties: {
