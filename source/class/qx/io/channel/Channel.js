@@ -24,7 +24,7 @@ qx.Class.define("qx.io.channel.Channel", {
    */
   construct: function(transport, channelId) {
     this.base(arguments);
-    qx.Interface.objectImplements(transport, qx.data.channel.transport.ITransport);
+    qx.Interface.objectImplements(transport, qx.io.channel.transport.ITransport);
     this.__transport = transport;
     this.__channelId = channelId;
 

@@ -3,7 +3,7 @@
  * a remote target using an endpoint object that does the actual communication
  * with the target. It can be used by one or more channels.
  */
-qx.Interface.define("qx.data.channel.transport.ITransport", {
+qx.Interface.define("qx.io.channel.transport.ITransport", {
   events: {
     /**
      * Whenever a endpoint sends a message over this transport,

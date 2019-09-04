@@ -60,7 +60,6 @@ qx.Mixin.define("qx.data.MRemoteBinding", {
       if (!options.properties) {
         options.properties = this._getDefaultPropertyNamesToSync();
       }
-      qx.Interface.assertObject(channel, qx.io.channel.IChannel);
       if (!this.__isInitialized) {
         this.__initialize();
       }
