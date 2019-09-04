@@ -49,6 +49,7 @@
   },
   "applications": [
     {
+      "default": true,
       "class": "cboulanger.eventrecorder.demo.Application",
       "theme": "cboulanger.eventrecorder.theme.Theme",
       "name": "eventrecorder",
@@ -147,14 +148,14 @@
         ],
         "eventrecorder.show_progress": true,
         "eventrecorder.editor.placement": "outside"
-      },
-      "parts": {
-        "boot": {
-          "include": ["qx.*","qxl.*"]
-        },
-        "eventrecorder": {
-          "include": ["cboulanger.eventrecorder.*", "qookery.*"]
-        }
+//      },
+//      "parts": {
+//        "boot": {
+//          "include": ["qx.*","qxl.*"]
+//        },
+//        "eventrecorder": {
+//          "include": ["cboulanger.eventrecorder.*", "qookery.*"]
+//        }
       }
     },
     {
