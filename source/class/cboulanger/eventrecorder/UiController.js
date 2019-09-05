@@ -20,6 +20,7 @@
  * @asset(qxl/dialog/*)
  * @require(cboulanger.eventrecorder.player.Testcafe)
  * @require(cboulanger.eventrecorder.InfoPane)
+ * @require(qookery.ace.internal.AceComponent)
  * @ignore(ace)
  */
 qx.Class.define("cboulanger.eventrecorder.UiController", {

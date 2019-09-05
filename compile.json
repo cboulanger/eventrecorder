@@ -155,7 +155,7 @@
           "include": ["qx.*","qxl.*", "cboulanger.eventrecorder.Loader"]
         },
         "eventrecorder": {
-          "include": ["qookery.*", "cboulanger.eventrecorder.*"],
+          "include": ["qookery.*","cboulanger.eventrecorder.*"],
           "exclude": ["cboulanger.eventrecorder.Loader"]
         }
       }

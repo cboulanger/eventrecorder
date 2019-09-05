@@ -19,7 +19,6 @@
  * to load the eventrecorder into an existing application. If you use parts, you must
  * include it into the part of the main application and exclude it from the part containing
  * the eventrecorder code.
- * @require(qookery.ace.internal.AceComponent)
  */
 qx.Class.define("cboulanger.eventrecorder.Loader", {
  defer: function() {
