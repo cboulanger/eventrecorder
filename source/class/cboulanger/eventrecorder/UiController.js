@@ -518,7 +518,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       let playerType = uri_params.queryKey.eventrecorder_type || env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.PLAYER_TYPE) || "qooxdoo";
       let playerMode = uri_params.queryKey.eventrecorder_player_mode || storage.getItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.PLAYER_MODE) || env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.PLAYER_MODE) || "presentation";
       let info = {script, autoplay, reloadBeforeReplay, gistId, scriptable, scriptUrl : this._getScriptUrl(), playerType, playerMode };
-      console.log(info);
+      //console.debug(info);
       return info;
     },
 
@@ -764,34 +764,34 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
         mode = this.__lastMode || defaultMode;
       }
       if (this.__editorWindow) {
-        console.debug({mode, lastMode:this.__lastMode});
+        //console.debug({mode, lastMode:this.__lastMode});
         if (mode === this.__lastMode) {
           if (mode === "inside") {
-            console.debug("Opening existing qooxdoo window.");
+            //console.debug("Opening existing qooxdoo window.");
             this.__editorWindow.open();
             return;
           } else if (qx.bom.Window.isClosed(this.__editorWindow)) {
-            console.debug("Destroying existing closed native window and recreating it.");
+            //console.debug("Destroying existing closed native window and recreating it.");
             this.__editorWindow = null;
           } else {
-            console.debug("Bringing existing native window to front.");
+            //console.debug("Bringing existing native window to front.");
             this.__editorWindow.focus();
             return;
           }
         } else {
-          console.debug("Windows mode has changed, creating new window...");
+          //console.debug("Windows mode has changed, creating new window...");
           try {
             this.removeOwnedQxObject("editor");
           } catch (e) {}
           if (this.__lastMode === "inside") {
-            console.debug("Destroying existing qooxdoo native window.");
+            //console.debug("Destroying existing qooxdoo native window.");
             this.__editorWindow.close();
             this.__editorWindow.dispose();
           } else if (qx.bom.Window.isClosed(this.__editorWindow)) {
-              console.debug("Destroying existing closed native window.");
+              //console.debug("Destroying existing closed native window.");
               this.__editorWindow = null;
             } else {
-              console.debug("Closing existing open native window...");
+              //console.debug("Closing existing open native window...");
               this.__editorWindow.close();
             }
         }
@@ -835,8 +835,8 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
           return;
         }
         popup.postMessage(data, "*");
-        console.debug(">>> Message sent:");
-        console.debug(data);
+        //console.debug(">>> Message sent:");
+        //console.debug(data);
       };
       window.addEventListener("message", e => {
         if (e.source !== popup) {
@@ -845,10 +845,10 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
         }
         const data = e.data;
         this.__lastData = data;
-        console.debug(">>> Message received:");
-        console.debug(data);
+        //console.debug(">>> Message received:");
+        //console.debug(data);
         if (data.script === null) {
-          console.debug("Received initialization message from external editor.");
+          //console.debug("Received initialization message from external editor.");
           // initialization message
           sendMessage({
             script: this.getScript(),
