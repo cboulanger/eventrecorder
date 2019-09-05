@@ -122,6 +122,7 @@
       "title": "Script Editor",
       "description": "The script editor in a separate browser window (doesn't work standalone)",
       "publish": false,
+      "standalone": false,
       "include": [
         "qx.theme.Modern",
         "cboulanger.eventrecorder.player.*"
@@ -137,25 +138,26 @@
       "theme": "qx.theme.Indigo",
       "name": "widgetbrowser_externaleditor",
       "title": "WidgetBrowser with empty external script editor",
+      "description": "This demo uses an external native window to display the script recorder and is compiled to have all eventrecorder-related code in a separate file ('part').",
       "include": [
         "qx.theme.Modern",
         "cboulanger.eventrecorder.UiController",
-        "cboulanger.eventrecorder.ObjectIdGenerator"
+        "cboulanger.eventrecorder.ObjectIdGenerator",
+        "cboulanger.eventrecorder.Loader"
       ],
       "environment": {
-        "qx.icontheme": [
-          "Tango"
-        ],
+        "qx.icontheme": ["Tango"],
         "eventrecorder.show_progress": true,
         "eventrecorder.editor.placement": "outside"
-//      },
-//      "parts": {
-//        "boot": {
-//          "include": ["qx.*","qxl.*"]
-//        },
-//        "eventrecorder": {
-//          "include": ["cboulanger.eventrecorder.*", "qookery.*"]
-//        }
+      },
+      "parts": {
+        "boot": {
+          "include": ["qx.*","qxl.*", "cboulanger.eventrecorder.Loader"]
+        },
+        "eventrecorder": {
+          "include": ["qookery.*", "cboulanger.eventrecorder.*"],
+          "exclude": ["cboulanger.eventrecorder.Loader"]
+        }
       }
     },
     {
@@ -163,6 +165,7 @@
       "theme": "qx.theme.Indigo",
       "name": "widgetbrowser_engine",
       "title": "WidgetBrowser using new decoupled architecture",
+      "description": "This is the exmperimental new code architecture that tries to completely decouple UI and event recording. Work in progress!",
       "include": [
         "qx.theme.Modern",
         "cboulanger.eventrecorder.Engine",
@@ -182,7 +185,7 @@
       "class": "qxl.apiviewer.Application",
       "theme": "qxl.apiviewer.Theme",
       "name": "apiviewer",
-      "title": "Qooxdoo API Viewer",
+      "title": "Eventrecorder API Viewer",
       "environment": {
         "qx.icontheme": "Tango",
         "excludeFromAPIViewer": [
@@ -203,6 +206,7 @@
       "theme": "cboulanger.eventrecorder.theme.Theme",
       "name": "remote_binding_test",
       "title": "Application for testing remote binding",
+      "description": "This is another experiment that is not part of the eventrecorder but tests new code for the framework that will be used in it.",
       "environment": {
         "qx.icontheme": "Tango"
       },

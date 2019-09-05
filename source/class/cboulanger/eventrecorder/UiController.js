@@ -19,6 +19,7 @@
  * @asset(cboulanger/eventrecorder/*)
  * @asset(qxl/dialog/*)
  * @require(cboulanger.eventrecorder.player.Testcafe)
+ * @require(cboulanger.eventrecorder.InfoPane)
  * @ignore(ace)
  */
 qx.Class.define("cboulanger.eventrecorder.UiController", {
@@ -63,11 +64,11 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     /**
      * Current mode
      */
-    mode: {
+    recorderMode: {
       check: ["player", "recorder"],
       event: "changeMode",
       init: "recorder",
-      apply: "_applyMode"
+      apply: "_applyRecorderMode"
     },
 
     /**
@@ -394,7 +395,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
           recorder.bind("running", control, "enabled", {
             converter: v => !v
           });
-          this.bind("mode", control, "enabled", {
+          this.bind("recorderMode", control, "enabled", {
             converter: v => v === "recorder"
           });
           break;
@@ -520,7 +521,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       return info;
     },
 
-    _applyMode(value, old) {
+    _applyRecorderMode(value, old) {
       if (value === "player" && !this.getPlayer()) {
         throw new Error("Cannot switch to player mode: no player has been set");
       }
@@ -727,7 +728,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       if (!player) {
         throw new Error("No player has been set");
       }
-      this.setMode("player");
+      this.setRecorderMode("player");
       let infoPane = cboulanger.eventrecorder.InfoPane.getInstance();
       infoPane.useIcon("waiting");
       if (qx.core.Environment.get("eventrecorder.show_progress")) {
@@ -743,7 +744,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
         error = e;
       }
       infoPane.hide();
-      this.setMode("recorder");
+      this.setRecorderMode("recorder");
       if (error) {
         throw error;
       }
@@ -1018,11 +1019,11 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
     if (!qx.core.Environment.get("module.objectid") || !qx.core.Environment.get("eventrecorder.enabled")) {
      return;
     }
-    qookery.Qookery.setOption(
-      qookery.Qookery.OPTION_EXTERNAL_LIBRARIES,
-      qx.util.ResourceManager.getInstance().toUri("cboulanger/eventrecorder/js"));
+    let qookeryExternalLibsUrl = qx.util.ResourceManager.getInstance().toUri("cboulanger/eventrecorder/js");
+    qookery.Qookery.setOption( qookery.Qookery.OPTION_EXTERNAL_LIBRARIES, qookeryExternalLibsUrl);
+
     // called when application is ready
-    qx.bom.Lifecycle.onReady(async () => {
+    qx.bom.Lifecycle.onReady(async function onReady() {
       let infoPane = cboulanger.eventrecorder.InfoPane.getInstance();
       infoPane.useIcon("waiting");
       infoPane.display("Initializing Event Recorder, please wait...");
