@@ -111,7 +111,7 @@
   <script action="toggleLeftEditor"><![CDATA[
         let leftEditorVisible = $.Form.getModel().getLeftEditorVisible();
         $.Form.getModel().setLeftEditorVisible(!leftEditorVisible);
-        $("#toggleLeftEditorButton").setLabel(leftEditorVisible? "Hide script" : "Show script");
+        $("#toggleLeftEditorButton").setLabel(leftEditorVisible? "Show script" : "Hide script");
       ]]>
   </script>
   <script action="toggleRightEditor"><![CDATA[
