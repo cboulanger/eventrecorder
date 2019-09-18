@@ -240,6 +240,8 @@ qx.Class.define("cboulanger.eventrecorder.Recorder", {
       switch (type) {
         case "dbltap":
           return [`dbltap ${id}`];
+        case "contextmenu":
+          return [`contextmenu ${id}`];
         case "tap":
           return [`tap ${id}`];
         case "execute":

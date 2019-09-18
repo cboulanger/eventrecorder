@@ -249,6 +249,13 @@ qx.Interface.define("cboulanger.eventrecorder.IPlayer", {
     cmd_execute(id) {},
 
     /**
+     * Generates code that fires a `contextmenu` event on the object with the given id (Button, Command)
+     * @param id {String}
+     * @return {String}
+     */
+    cmd_contextmenu(id) {},
+
+    /**
      * Generates code that fires an event with the given payload on the object with the given id (Button, Command)
      * @param id {String}
      * @param event {String}
@@ -256,7 +263,7 @@ qx.Interface.define("cboulanger.eventrecorder.IPlayer", {
      * @return {String}
      */
     cmd_fire(id, event, json) {}, /**
-                                   
+
     /**
                                    * Generates code that fires an `tap` event on the object with the given id (Button, Command)
                                    * @param id {String}
