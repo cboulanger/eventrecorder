@@ -1,0 +1,34 @@
+{
+  "name": "@cboulanger/eventrecorder",
+  "version": "0.1.0",
+  "description": "This package provides adapters for the automated sever-side testing of user interfaces built with the qooxdoo framework via replay of user actions. Currently it supports the TestCafé framework only.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cboulanger/eventrecorder.git"
+  },
+  "keywords": [
+    "ui",
+    "testing",
+    "qooxdoo",
+    "testcafe"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "Christian Boulanger (cboulanger) info@bibliograph.org",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cboulanger/eventrecorder/issues"
+  },
+  "homepage": "https://github.com/cboulanger/eventrecorder#readme",
+  "dependencies": {
+    "qooxdoo": "^6.0.0-alpha-20190131-7cbcf73"
+  }
+}

@@ -1,0 +1,7 @@
+# .gitignore template for skeleton-based apps built with qxcompiler
+/compiled/
+/qooxdoo/
+/qx_packages/
+node_modules/
+.idea
+.DS_Store

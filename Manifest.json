@@ -1,0 +1,48 @@
+{
+  "info": {
+    "name": "UI Event Recorder",
+    "summary": "",
+    "description": "",
+    "homepage": "",
+    "license": "MIT license",
+    "authors": [
+      {
+        "name": "Christian Boulanger (cboulanger)",
+        "email": "info@bibliograph.org"
+      }
+    ],
+    "version": "0.18.0"
+  },
+  "provides": {
+    "namespace": "cboulanger.eventrecorder",
+    "encoding": "utf-8",
+    "class": "source/class",
+    "resource": "source/resource",
+    "translation": "source/translation",
+    "application": {
+      "class": "cboulanger.eventrecorder.editor.Application",
+      "theme": "qx.theme.Indigo",
+      "name": "eventrecorder_scripteditor",
+      "title": "Script Editor",
+      "description": "The script editor in a separate browser window (doesn't work standalone)",
+      "publish": false,
+      "include": [
+        "qx.theme.Modern",
+        "cboulanger.eventrecorder.player.*"
+      ],
+      "environment": {
+        "qx.icontheme": [
+          "Tango"
+        ]
+      }
+    }
+  },
+  "requires": {
+    "@qooxdoo/compiler": "^1.0.0-beta",
+    "@qooxdoo/framework": "^6.0.0-beta",
+    "ergobyte/qookery/qookery": "0.6.0",
+    "ergobyte/qookery/qookeryace": "0.6.0",
+    "qooxdoo/qxl.dialog": "^3.0.1"
+  },
+  "$schema": "https://raw.githubusercontent.com/qooxdoo/qooxdoo-compiler/master/source/resource/qx/tool/schema/Manifest-1-0-0.json"
+}

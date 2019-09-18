@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.qookery.org/ns/Form"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="
+        http://www.qookery.org/ns/Form https://raw.githubusercontent.com/ergobyte/qookery/master/qookery/docs/form.xsd
+        http://www.qookery.org/ns/Form/Ace https://raw.githubusercontent.com/cboulanger/qookery/master/qookeryace/docs/form-ace.xsd"
+      layout="v-box" flex="1">
+
+  <import class="qx.data.marshal.Json"/>
+
+  <script>
+    $.Form.setModel($.Json.createModel({
+      leftEditorContent: "",
+      leftEditorVisible: true,
+      rightEditorContent: "",
+      rightEditorVisible: false,
+      targetScriptType: "qooxdoo",
+      targetMode: "test"
+    }));
+    $.scriptTypes = {
+      "qooxdoo": "qooxdoo javascript (Browser)",
+      "testcafe": "TestCáfé javascript (NodeJS)"
+    };
+    $.modes = {
+      "test": "Test",
+      "presentation": "Presentation"
+    };
+  </script>
+
+  <!-- toolbar with collapsable part -->
+  <tool-bar spacing="5" padding="2">
+    <!-- button to toggle visibility of left editor-->
+    <button label="Hide script" id="toggleLeftEditorButton">
+      <script>$.Form.getModel().bind("rightEditorVisible", this, "enabled");</script>
+      <script>
+        this.getMainWidget().setQxObjectId(this.getId());
+        $.Form.addOwnedQxObject(this.getMainWidget());
+      </script>
+      <script event="execute">
+        $.Form.executeAction("toggleLeftEditor");
+      </script>
+    </button>
+    <button label="Clear" id="clearEditor">
+      <script event="execute">
+        $.Form.getModel().setLeftEditorContent("");
+        $.Form.getModel().setRightEditorContent("");
+      </script>
+    </button>
+    <button label="Translate" id="translateButton">
+      <script event="execute">
+        $.Form.executeAction("translate");
+      </script>
+      <script>
+        this.getMainWidget().setQxObjectId(this.getId());
+        $.Form.addOwnedQxObject(this.getMainWidget());
+      </script>
+    </button>
+    <select-box connect="targetMode" width="150" id="targetModeSelectBox">
+      <script>this.setItems($.modes);</script>
+      <script>
+        this.getMainWidget().setQxObjectId(this.getId());
+        $.Form.addOwnedQxObject(this.getMainWidget());
+      </script>
+    </select-box>
+
+    <!-- spacer to keep following widgets to the right -->
+    <spacer flex="1" />
+
+    <!-- hidden when rightEditorVisible is false -->
+    <composite id="export-menu" layout="h-box" spacing="5">
+      <script>
+        $.Form.getModel().bind("rightEditorVisible", this, "visibility", { converter: v => v ? "visible" : "excluded"});
+      </script>
+      <button label="Export" id="exportButton">
+        <script event="execute">
+          $.Form.executeAction("export");
+        </script>
+        <script>
+          this.getMainWidget().setQxObjectId(this.getId());
+          $.Form.addOwnedQxObject(this.getMainWidget());
+        </script>
+      </button>
+      <select-box connect="targetScriptType" width="200" id="targetScriptTypeSelectBox">
+        <script>this.setItems($.scriptTypes);</script>
+        <script>
+          this.getMainWidget().setQxObjectId(this.getId());
+          $.Form.addOwnedQxObject(this.getMainWidget());
+        </script>
+      </select-box>
+    </composite>
+    <!-- toggle visibility of right editor-->
+    <button label="Show translation" id="toggleRightEditorButton">
+      <script>
+        $.Form.getModel().bind("leftEditorVisible", this, "enabled");
+        this.getMainWidget().setQxObjectId(this.getId());
+        $.Form.addOwnedQxObject(this.getMainWidget());
+      </script>
+      <script event="execute">
+        $.Form.executeAction("toggleRightEditor");
+      </script>
+    </button>
+  </tool-bar>
+
+  <!-- actions -->
+  <script action="translate">
+    $.Form.getQxOwner().translateTo($.Form.getModel().getTargetScriptType(), $.Form.getModel().getTargetMode());
+  </script>
+  <script action="export">
+    $.Form.getQxOwner().exportTo($.Form.getModel().getTargetScriptType(), $.Form.getModel().getTargetMode());
+  </script>
+  <script action="toggleLeftEditor"><![CDATA[
+        let leftEditorVisible = $.Form.getModel().getLeftEditorVisible();
+        $.Form.getModel().setLeftEditorVisible(!leftEditorVisible);
+        $("#toggleLeftEditorButton").setLabel(leftEditorVisible? "Hide script" : "Show script");
+      ]]>
+  </script>
+  <script action="toggleRightEditor"><![CDATA[
+    let rightEditorVisible = $.Form.getModel().getRightEditorVisible();
+    $.Form.getModel().setRightEditorVisible(!rightEditorVisible);
+    $("#toggleRightEditorButton").setLabel(rightEditorVisible? "Show translation" : "Hide translation");
+    $.Form.executeAction("translate");
+  ]]></script>
+
+  <!-- editors -->
+  <composite layout="h-box" flex="1">
+    <ace:editor xmlns:ace="http://www.qookery.org/ns/Form/Ace" use-wrap-mode="true"
+                id="leftEditor" mode="plain_text"
+                connect="leftEditorContent"
+                auto-complete="basic live"
+                flex="1" create-label="false" tab-size="2" theme="eclipse">
+      <script>
+        $.Form.getModel().bind("leftEditorVisible", this, "visibility", { converter: v => v ? "visible" : "excluded"});
+      </script>
+      <script><![CDATA[
+        this.getMainWidget().setQxObjectId(this.getId());
+        $.Form.addOwnedQxObject(this.getMainWidget());
+      ]]></script>
+    </ace:editor>
+    <ace:editor xmlns:ace="http://www.qookery.org/ns/Form/Ace"
+                id="rightEditor" mode="javascript"
+                connect="rightEditorContent"
+                flex="1" create-label="false" tab-size="2" theme="eclipse">
+      <script><![CDATA[
+        $.Form.getModel().bind("rightEditorVisible", this, "visibility", {
+          converter: v => (v ? "visible" : "excluded")
+         });
+        this.getMainWidget().setQxObjectId(this.getId());
+        $.Form.addOwnedQxObject(this.getMainWidget());
+      ]]></script>
+    </ace:editor>
+  </composite>
+</form>
