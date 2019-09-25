@@ -23,8 +23,8 @@ install:
   - sleep 3
   - fluxbox >/dev/null 2>&1 &
   - npm install -g @qooxdoo/compiler
-  - qx config set github.token $GITHUB_TOKEN
-  - qx pkg update
+#  - qx config set github.token $GITHUB_TOKEN
+#  - qx pkg update
   - qx pkg install
 
 script:
