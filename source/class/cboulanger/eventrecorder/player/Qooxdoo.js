@@ -223,6 +223,14 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
     },
 
     /**
+     * @inheritDoc
+     * @return {String}
+     */
+    cmd_contextmenu(id) {
+      return `qx.core.Id.getQxObject("${id}").fireEvent("contextmenu");`;
+    },
+
+    /**
      * Generates code that fires an event with the given payload on the object with the given id (Button, Command)
      * @param id {String}
      * @param event {String}
