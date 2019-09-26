@@ -212,10 +212,6 @@
       },
       "include": [
         "cboulanger.eventrecorder.window.*"
-      ],
-      "exclude": [
-        "cboulanger.eventrecorder.window.TestApplicationNew",
-        "qx.io.channel.*"
       ]
     }
   ]
