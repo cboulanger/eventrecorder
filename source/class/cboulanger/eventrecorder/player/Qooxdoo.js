@@ -227,7 +227,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @return {String}
      */
     cmd_contextmenu(id) {
-      return `qx.core.Id.getQxObject("${id}").fireEvent("contextmenu");`;
+      return `let tgt = qx.core.Id.getQxObject("${id}").getContentElement().getDomElement(); let r = tgt.getBoundingClientRect(), clientX=parseInt((r.right+r.left)/2), clientY=parseInt((r.bottom+r.top)/2); qx.event.Registration.fireEvent(tgt, "contextmenu", qx.event.type.Mouse, [new MouseEvent("contextmenu", {clientX,clientY}),tgt,null,true,true]);`;
     },
 
     /**

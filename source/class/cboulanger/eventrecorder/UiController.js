@@ -76,7 +76,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
      * The recorder instance
      */
     recorder: {
-      check: "cboulanger.eventrecorder.Recorder",
+      check: "cboulanger.eventrecorder.recorder.Recorder",
       event: "changeRecorder",
       nullable: true
     },
@@ -180,7 +180,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       allowGrowY: false
     });
 
-    const recorder = new cboulanger.eventrecorder.Recorder();
+    const recorder = new cboulanger.eventrecorder.recorder.Recorder();
     this.setRecorder(recorder);
 
     // initialize application parameters
@@ -432,6 +432,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
             toolTipText: "Edit script",
             menu: editMenu
           });
+          control.addOwnedQxObject(editMenu,"menu");
           control.addListener("execute", () => this.edit());
           this.bind("recorder.running", control, "enabled", {
             converter: v => !v

@@ -226,6 +226,7 @@ qx.Class.define("cboulanger.eventrecorder.uicontroller.OnPage", {
             toolTipText: "Edit script",
             menu: editMenu
           });
+          control.addOwnedQxObject(editMenu,"menu");
           control.addListener("execute", () => engine.edit());
           engine.bind("recorder.running", control, "enabled", {
             converter: v => !v

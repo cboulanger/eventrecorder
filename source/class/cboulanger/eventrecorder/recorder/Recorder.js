@@ -17,7 +17,7 @@
  * The base class of all recorder types
  * @require(qx.bom.Element)
  */
-qx.Class.define("cboulanger.eventrecorder.Recorder", {
+qx.Class.define("cboulanger.eventrecorder.recorder.Recorder", {
   extend : qx.core.Object,
   include : [
     cboulanger.eventrecorder.MHelperMethods,

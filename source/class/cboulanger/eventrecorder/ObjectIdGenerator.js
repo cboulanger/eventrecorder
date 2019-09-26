@@ -112,8 +112,9 @@ qx.Class.define("cboulanger.eventrecorder.ObjectIdGenerator", {
         return;
       }
       for (let child of children) {
-       // ignore popups
-       if (child instanceof qx.ui.popup.Popup) {
+
+       // ignore tooltipps
+       if (child instanceof qx.ui.tooltip.ToolTip) {
          continue;
        }
         // assign object id and add to parent if neccessary

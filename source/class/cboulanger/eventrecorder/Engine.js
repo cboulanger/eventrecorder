@@ -53,7 +53,7 @@ qx.Class.define("cboulanger.eventrecorder.Engine", {
      * The recorder instance
      */
     recorder: {
-      check: "cboulanger.eventrecorder.Recorder",
+      check: "cboulanger.eventrecorder.recorder.Recorder",
       event: "changeRecorder",
       nullable: true
     },
@@ -149,7 +149,7 @@ qx.Class.define("cboulanger.eventrecorder.Engine", {
    */
   construct: function() {
     this.base(arguments);
-    const recorder = new cboulanger.eventrecorder.Recorder();
+    const recorder = new cboulanger.eventrecorder.recorder.Recorder();
     this.setRecorder(recorder);
 
     // initialize application parameters
