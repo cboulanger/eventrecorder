@@ -12,6 +12,11 @@ qx.Class.define("cboulanger.eventrecorder.ObjectIdGenerator", {
   type: "singleton",
   extend: qx.core.Object,
   include : [cboulanger.eventrecorder.MHelperMethods],
+  statics: {
+    DEFAULT_LISTENED_EVENTS: [
+      "tap", "dbltap", "contextmenu"
+    ]
+  },
   events: {
     "done" : "qx.event.type.Event"
   },
@@ -113,23 +118,32 @@ qx.Class.define("cboulanger.eventrecorder.ObjectIdGenerator", {
        }
         // assign object id and add to parent if neccessary
         this.generateQxObjectId(child, parent);
-        // recurse into children
-        let realChild = child;
+        // handle special cases
+        let otherChildRoots = [];
         let id;
         switch (child.classname) {
           case "qx.ui.form.ComboBox":
-            realChild = child.getChildControl("textfield");
+            otherChildRoots.push(child.getChildControl("textfield"));
             break;
           case "qx.ui.form.VirtualSelectBox":
-            realChild = child.getSelection();
+            otherChildRoots.push(child.getSelection());
             break;
           case "qx.ui.groupbox.GroupBox":
-            realChild = child.getChildControl("frame");
+            otherChildRoots.push(child.getChildControl("frame"));
             break;
           case "qx.ui.form.MenuButton":
           case "qx.ui.toolbar.MenuButton":
           case "qx.ui.menubar.Button":
-            realChild = child.getMenu();
+            otherChildRoots.push(child.getMenu());
+            break;
+          case "qx.ui.tree.Tree":
+            otherChildRoots.push(child.getChildControl("pane"));
+            break;
+          case "qx.ui.tree.VirtualTree":
+            child.addListener("open", () => {});
+            child.addListener("close", () => {});
+            otherChildRoots.push(child._manager);
+            otherChildRoots.push(child.getPane());
             break;
           case "qx.ui.treevirtual.TreeVirtual":
             child.addListener("treeClose", () => {});
@@ -137,26 +151,36 @@ qx.Class.define("cboulanger.eventrecorder.ObjectIdGenerator", {
             child.addListener("treeOpenWhileEmpty", () => {});
             // fallthrough
           case "qx.ui.table.Table":
-            realChild = child.getSelectionModel();
+            otherChildRoots.push(child.getSelectionModel());
             id = "Selection";
             break;
           case "qx.ui.list.List":
-            realChild = child.getSelection();
+            otherChildRoots.push(child.getSelection());
             id = "Selection";
             break;
           case "qx.ui.tabview.Page":
             this.generateQxObjectId(child.getChildControl("button"), child);
             break;
-          case "qx.ui.tree.VirtualTree":
-            child.addListener("open", () => {});
-            child.addListener("close", () => {});
-            this.generateQxObjectId(child._manager, child);
-            continue;
         }
-        if (realChild !== child) {
-          this.generateQxObjectId(realChild, child, id);
+
+        // add an empty event listener for the defined default events so
+        // that they will be recorded
+        for (let evt_name of this.self(arguments).DEFAULT_LISTENED_EVENTS) {
+          if (qx.event.Registration.getManager(child).findHandler(child, evt_name) && !child.hasListener(evt_name)) {
+            child.addListener(evt_name, () => {});
+          }
         }
-        this.assignObjectIdsToChildren(realChild, level+1);
+
+        // recurse into other child roots outside the layout hierarchy
+        // that fire events relevant to the recorder
+        if (otherChildRoots.length) {
+          otherChildRoots.forEach(childRoot => {
+            this.generateQxObjectId(childRoot, child, id);
+            this.assignObjectIdsToChildren(childRoot, level+1);
+          });
+        }
+        // recurse into layout children
+        this.assignObjectIdsToChildren(child, level+1);
       }
     }
   },

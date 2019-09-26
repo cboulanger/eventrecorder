@@ -24,8 +24,9 @@
       "theme": "qx.theme.Indigo",
       "name": "eventrecorder_scripteditor",
       "title": "Script Editor",
-      "description": "The script editor in a separate browser window (doesn't work standalone)",
+      "description": "The script editor in a separate browser window",
       "publish": false,
+      "standalone": false,
       "include": [
         "qx.theme.Modern",
         "cboulanger.eventrecorder.player.*"
