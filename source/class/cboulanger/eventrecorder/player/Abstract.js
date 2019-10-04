@@ -275,6 +275,16 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
     __macro_stack_index: -1,
 
     /**
+     * Contains the name of the macro that is currently being replayed, if any.
+     */
+    __macro_playing: null,
+
+    /**
+     * Whether the currently replayed code is an import
+     */
+    __import_playing: false,
+
+    /**
      * Variables
      */
     __vars: null,
@@ -484,15 +494,10 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
       // run command generation implementation
       let method_name = "cmd_" + command.replace(/-/g, "_");
       if (typeof this[method_name] == "function") {
-        let translatedLine;
-        try {
-          translatedLine = this[method_name].apply(this, args);
-          // async function
-          if (translatedLine && typeof translatedLine.then == "function") {
-            translatedLine = await translatedLine;
-          }
-        } catch (e) {
-          throw new Error(`Error translating '${line}': ${e.message}`);
+        let translatedLine = this[method_name].apply(this, args);
+        // async translator function
+        if (translatedLine && typeof translatedLine.then == "function") {
+          translatedLine = await translatedLine;
         }
         // imports
         if (Array.isArray(translatedLine)) {
@@ -658,7 +663,8 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
      * @private
      */
     async _play(lines, steps=0, step=0) {
-      for (let line of lines) {
+      for (let index=0; index < lines.length; index++) {
+        let line = lines[index];
         // stop if we're not running (user pressed "stop" button
         if (!this.getRunning()) {
           return false;
@@ -676,11 +682,13 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
         let [command, ...args] = this.tokenize(line);
         let macro_lines = this._getMacro(command, args);
         if (macro_lines !== undefined) {
+          this.__macro_playing = command;
           if (steps) {
             step++;
             this.debug(`\n===== Step ${step} / ${steps}, executing macro ${command} =====`);
           }
           await this._play(macro_lines);
+          this.__macro_playing = null;
           continue;
         }
 
@@ -696,28 +704,52 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
           continue;
         }
 
-        // translate
-        let code = await this._translateLine(line);
-        // skip empty lines
-        if (!code) {
-          continue;
+        let result, code;
+
+        try {
+          // translate
+          code = await this._translateLine(line);
+          // skip empty lines
+          if (!code) {
+            continue;
+          }
+
+          // handle multiple lines from imports
+          if (Array.isArray(code)) {
+            this.__import_playing = true;
+            this.debug(`>>>>>>>>> Start import >>>>>>>>>>>>>`);
+            await this._play(code, code.length, 0);
+            this.__import_playing = false;
+            this.debug(`<<<<<<<<< End import ><<<<<<<<<<<<<<`);
+            continue;
+          }
+
+          this.debug(`${line}\n${"-".repeat(40)}\n${code}`);
+
+          // execute
+          result = window.eval(code);
+        } catch (e) {
+          if (!e.code) {
+            if (this.__macro_playing) {
+              e.macro = this.__macro_playing;
+            }
+            if (this.__import_playing) {
+              e.import = true;
+            }
+            e.code = code;
+            e.scriptcode = line;
+            e.scriptline = index+1;
+          }
+          throw e;
         }
 
-        // handle multiple lines from imports
-        if (Array.isArray(code)) {
-          this.debug(`>>>>>>>>> Start import >>>>>>>>>>>>>`);
-          await this._play(code, code.length, 0);
-          this.debug(`<<<<<<<<< End import ><<<<<<<<<<<<<<`);
-          continue;
-        }
-
-        this.debug(`${line}\n${"-".repeat(40)}\n${code}`);
-        // execute
-        let result = window.eval(code);
         if (result instanceof Promise) {
           try {
             await result;
           } catch (e) {
+            e.code = code;
+            e.scriptcode = line;
+            e.scriptline = index+1;
             throw e;
           }
         }
@@ -758,12 +790,16 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
       try {
         await this._play(lines, steps, 0);
       } catch (e) {
+        let msg;
+        // to do: handle errors in macros and imports
+        msg = `Error executing script, line ${e.scriptline}: ${e.message}.\nCheck console for more information.`;
+        this.error(`Error executing script, line ${e.scriptline}, code:\n${e.scriptcode}\nGenerated code:\n${e.code}`);
         switch (this.getMode()) {
           case "test":
             throw e;
           case "presentation":
-            this.warn(e);
-            qxl.dialog.Dialog.error(e.message);
+            this.error(e);
+            qxl.dialog.Dialog.error(msg);
         }
       }
       this.setRunning(false);
@@ -1092,6 +1128,14 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
     cmd_await_all() {
       this.__promises=[];
       return null;
+    },
+
+    /**
+     * Throws an error
+     * @param msg {String} The error message
+     */
+    cmd_error(msg) {
+      return `throw new Error("${msg}")`;
     }
   }
 });

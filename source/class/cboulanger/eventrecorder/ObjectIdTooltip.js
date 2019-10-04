@@ -29,6 +29,11 @@ qx.Class.define("cboulanger.eventrecorder.ObjectIdTooltip", {
      */
     init: function() {
       const tooltip = new qx.ui.tooltip.ToolTip();
+      // the "useraction" event could be used to determine that an event originated
+      // from user action (as opposed of being triggered programmatically)
+      // qx.event.Registration.addListener(window, "useraction", e => {
+      //   console.log(`useraction event: ${e.getData()}`);
+      // });
       this.addGlobalEventListener((target, event) => {
         if (target === tooltip.getContentElement().getDomElement()) {
          return;
