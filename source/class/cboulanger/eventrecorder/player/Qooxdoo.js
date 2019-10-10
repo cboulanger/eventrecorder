@@ -219,7 +219,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @return {String}
      */
     cmd_execute(id) {
-      return `qx.core.Id.getQxObject("${id}").fireEvent("execute");`;
+      return `if(!qx.core.Id.getQxObject("${id}").isEnabled()) throw new Error("Failed: Object with id ${id} is not enabled."); qx.core.Id.getQxObject("${id}").fireEvent("execute");`;
     },
 
     /**
@@ -227,7 +227,7 @@ qx.Class.define("cboulanger.eventrecorder.player.Qooxdoo", {
      * @return {String}
      */
     cmd_contextmenu(id) {
-      return `let tgt = qx.core.Id.getQxObject("${id}").getContentElement().getDomElement(); let r = tgt.getBoundingClientRect(), clientX=parseInt((r.right+r.left)/2), clientY=parseInt((r.bottom+r.top)/2); qx.event.Registration.fireEvent(tgt, "contextmenu", qx.event.type.Mouse, [new MouseEvent("contextmenu", {clientX,clientY}),tgt,null,true,true]);`;
+      return `if(!qx.core.Id.getQxObject("${id}").isEnabled()) throw new Error("Failed: Object with id ${id} is not enabled."); let tgt = qx.core.Id.getQxObject("${id}").getContentElement().getDomElement(); let r = tgt.getBoundingClientRect(), clientX=parseInt((r.right+r.left)/2), clientY=parseInt((r.bottom+r.top)/2); qx.event.Registration.fireEvent(tgt, "contextmenu", qx.event.type.Mouse, [new MouseEvent("contextmenu", {clientX,clientY}),tgt,null,true,true]);`;
     },
 
     /**
