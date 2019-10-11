@@ -241,7 +241,9 @@ qx.Class.define("cboulanger.eventrecorder.recorder.Recorder", {
         case "dbltap":
           return [`dbltap ${id}`];
         case "contextmenu":
-          return [`contextmenu ${id}`];
+          lines.push(`assert-appeared ${id}`);
+          lines.push(`contextmenu ${id}`);
+          return lines;
         case "tap":
           return [`tap ${id}`];
         case "execute":
@@ -252,6 +254,7 @@ qx.Class.define("cboulanger.eventrecorder.recorder.Recorder", {
             case target instanceof qx.ui.tree.core.FolderOpenButton:
               return [];
           }
+          lines.push(`assert-appeared ${id}`);
           lines.push(`execute ${id}`);
           break;
         case "appear":
