@@ -197,7 +197,7 @@ qx.Class.define("cboulanger.eventrecorder.recorder.Recorder", {
      * @param target {qx.bom.Element}
      * @private
      * @return {boolean} returns true if the event was recorded, false if
-     * it was ignored because of the list of excluded ids.
+     * it was ignored because of the list of excluded ids or an opt-out.
      */
     recordEvent(id, event, target) {
       for (let excluded of this.__excludeIds) {
@@ -205,7 +205,11 @@ qx.Class.define("cboulanger.eventrecorder.recorder.Recorder", {
           return false;
         }
       }
-      this.__lines = this.__lines.concat(this.createIntermediateCodeFromEvent(id, event, target));
+      // opt out of recording
+      if (typeof target.getTrackEvents !== "function" || !target.getTrackEvents()) {
+        return false;
+      }
+      this.__lines = this.__lines.concat(this._eventToCode(id, event, target));
       return true;
     },
 
@@ -219,17 +223,16 @@ qx.Class.define("cboulanger.eventrecorder.recorder.Recorder", {
     /**
      * Given an object id, the event name and the even target, return one or more
      * pieces of intermediate code from which a player can replay the user action
-     * that lead to this event. Return an array, each element is one line of code
+     * that lead to this event. Return an array, each element is one line of code.
+     * This method can be overridden by subclasses. The overriding method should
+     * check the event, and if it decide to not handle it, return the result from the
+     * call to this method.
      * @param id {String} The id of the qooxdoo object
      * @param event {qx.event.Event} The event that was fired
      * @param target {qx.bom.Element|qx.core.Object} The event target
      * @return {String[]} An array of script lines
      */
-    createIntermediateCodeFromEvent(id, event, target) {
-      // opt out of recording
-      if (typeof target.getTrackEvents == "function" && !target.getTrackEvents()) {
-        return [];
-      }
+    _eventToCode(id, event, target) {
       let lines = [];
       const type = event.getType();
       let data = typeof event.getData == "function" ? event.getData() : null;
