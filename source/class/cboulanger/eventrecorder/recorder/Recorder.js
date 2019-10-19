@@ -206,7 +206,7 @@ qx.Class.define("cboulanger.eventrecorder.recorder.Recorder", {
         }
       }
       // opt out of recording
-      if (typeof target.getTrackEvents !== "function" || !target.getTrackEvents()) {
+      if (typeof target.getTrackEvents === "function" && !target.getTrackEvents()) {
         return false;
       }
       this.__lines = this.__lines.concat(this._eventToCode(id, event, target));
