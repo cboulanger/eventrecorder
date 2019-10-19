@@ -209,7 +209,11 @@ qx.Class.define("cboulanger.eventrecorder.recorder.Recorder", {
       if (typeof target.getTrackEvents === "function" && !target.getTrackEvents()) {
         return false;
       }
-      this.__lines = this.__lines.concat(this._eventToCode(id, event, target));
+      let delay = this._createDelay();
+      let lines = this._eventToCode(id, event, target);
+      if (lines.length) {
+        this.__lines = this.__lines.concat(delay).concat(lines);
+      }
       return true;
     },
 
@@ -356,14 +360,22 @@ qx.Class.define("cboulanger.eventrecorder.recorder.Recorder", {
           // ignore all others
           return [];
       }
-      // prepend a wait command to replay delays in user action
+      return lines;
+    },
+
+    /**
+     * Returns an array, containing a "delay" command to replay delays in user action
+     * @return {String[]}
+     * @private
+     */
+    _createDelay() {
       let now = Date.now();
       let msSinceLastEvent = now - (this.__lastEventTimestamp || now);
       this.__lastEventTimestamp = now;
       if (msSinceLastEvent) {
-        lines.unshift(`delay ${msSinceLastEvent}`);
+        return [`delay ${msSinceLastEvent}`];
       }
-      return lines;
+      return [];
     }
   }
 });
