@@ -122,46 +122,60 @@ qx.Class.define("cboulanger.eventrecorder.ObjectIdGenerator", {
         // handle special cases
         let otherChildRoots = [];
         let id;
-        switch (child.classname) {
-          case "qx.ui.form.ComboBox":
-            otherChildRoots.push(child.getChildControl("textfield"));
-            break;
-          case "qx.ui.form.VirtualSelectBox":
-            otherChildRoots.push(child.getSelection());
-            break;
-          case "qx.ui.groupbox.GroupBox":
-            otherChildRoots.push(child.getChildControl("frame"));
-            break;
-          case "qx.ui.form.MenuButton":
-          case "qx.ui.toolbar.MenuButton":
-          case "qx.ui.menubar.Button":
-            otherChildRoots.push(child.getMenu());
-            break;
-          case "qx.ui.tree.Tree":
-            otherChildRoots.push(child.getChildControl("pane"));
-            break;
-          case "qx.ui.tree.VirtualTree":
-            child.addListener("open", () => {});
-            child.addListener("close", () => {});
-            otherChildRoots.push(child._manager);
-            otherChildRoots.push(child.getPane());
-            break;
-          case "qx.ui.treevirtual.TreeVirtual":
-            child.addListener("treeClose", () => {});
-            child.addListener("treeOpenWithContent", () => {});
-            child.addListener("treeOpenWhileEmpty", () => {});
+        let obj = child;
+        // traverse prototype chain to catch extended types
+        while (obj instanceof qx.core.Object) {
+          switch (obj.classname) {
+            case "qx.core.Object":
+              break;
+            case "qx.ui.form.ComboBox":
+              otherChildRoots.push(child.getChildControl("textfield"));
+              break;
+            case "qx.ui.form.VirtualSelectBox":
+              otherChildRoots.push(child.getSelection());
+              break;
+            case "qx.ui.groupbox.GroupBox":
+              otherChildRoots.push(child.getChildControl("frame"));
+              break;
+            case "qx.ui.form.MenuButton":
+            case "qx.ui.toolbar.MenuButton":
+            case "qx.ui.menubar.Button":
+              otherChildRoots.push(child.getMenu());
+              break;
+            case "qx.ui.tree.Tree":
+              otherChildRoots.push(child.getChildControl("pane"));
+              break;
+            case "qx.ui.tree.VirtualTree":
+              child.addListener("open", () => {});
+              child.addListener("close", () => {});
+              otherChildRoots.push(child._manager);
+              otherChildRoots.push(child.getPane());
+              break;
+            case "qx.ui.treevirtual.TreeVirtual":
+              child.addListener("treeClose", () => {});
+              child.addListener("treeOpenWithContent", () => {});
+              child.addListener("treeOpenWhileEmpty", () => {});
             // fallthrough
-          case "qx.ui.table.Table":
-            otherChildRoots.push(child.getSelectionModel());
-            id = "Selection";
-            break;
-          case "qx.ui.list.List":
-            otherChildRoots.push(child.getSelection());
-            id = "Selection";
-            break;
-          case "qx.ui.tabview.Page":
-            this.generateQxObjectId(child.getChildControl("button"), child);
-            break;
+            case "qx.ui.table.Table":
+              otherChildRoots.push(child.getSelectionModel());
+              id = "Selection";
+              break;
+            case "qx.ui.list.List":
+              otherChildRoots.push(child.getSelection());
+              id = "Selection";
+              break;
+            case "qx.ui.tabview.Page":
+              this.generateQxObjectId(child.getChildControl("button"), child);
+              break;
+            default:
+              if (child instanceof qx.core.Object) {
+                obj = Object.getPrototypeOf(obj);
+                // continue while loop
+                continue;
+              }
+          }
+          // break out of while loop
+          break;
         }
 
         // add an empty event listener for the defined default events so
