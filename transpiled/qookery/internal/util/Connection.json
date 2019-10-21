@@ -1,0 +1,197 @@
+{
+  "className": "qookery.internal.util.Connection",
+  "packageName": "qookery.internal.util",
+  "name": "Connection",
+  "superClass": "Object",
+  "interfaces": [],
+  "mixins": [],
+  "functionName": null,
+  "clazz": {
+    "location": {
+      "start": {
+        "line": 19,
+        "column": 0
+      },
+      "end": {
+        "line": 83,
+        "column": 3
+      }
+    },
+    "jsdoc": {
+      "@description": [
+        {
+          "name": "@description",
+          "body": "Qookery - Declarative UI Building for Qooxdoo\n\nCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\nLicensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\nhttp:\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License."
+        }
+      ]
+    }
+  },
+  "type": "class",
+  "construct": {
+    "location": {
+      "start": {
+        "line": 23,
+        "column": 12
+      },
+      "end": {
+        "line": 26,
+        "column": 2
+      }
+    },
+    "jsdoc": {}
+  },
+  "members": {
+    "__editableComponent": {
+      "location": {
+        "start": {
+          "line": 30,
+          "column": 2
+        },
+        "end": {
+          "line": 30,
+          "column": 27
+        }
+      },
+      "type": "variable",
+      "access": "private"
+    },
+    "__propertyPath": {
+      "location": {
+        "start": {
+          "line": 31,
+          "column": 2
+        },
+        "end": {
+          "line": 31,
+          "column": 22
+        }
+      },
+      "type": "variable",
+      "access": "private"
+    },
+    "__disconnectCallback": {
+      "location": {
+        "start": {
+          "line": 32,
+          "column": 2
+        },
+        "end": {
+          "line": 32,
+          "column": 28
+        }
+      },
+      "type": "variable",
+      "access": "private"
+    },
+    "connect": {
+      "location": {
+        "start": {
+          "line": 34,
+          "column": 2
+        },
+        "end": {
+          "line": 44,
+          "column": 3
+        }
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "setModelValue": {
+      "location": {
+        "start": {
+          "line": 46,
+          "column": 2
+        },
+        "end": {
+          "line": 53,
+          "column": 3
+        }
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "getAttribute": {
+      "location": {
+        "start": {
+          "line": 62,
+          "column": 2
+        },
+        "end": {
+          "line": 64,
+          "column": 3
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Return the value of a connection's attribute, if available"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "attributeName {String} name of wanted attribute",
+            "paramName": "attributeName",
+            "description": " name of wanted attribute",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{any} attribute value or second argument if <code>undefined</code>",
+            "type": "any",
+            "description": " attribute value or second argument if <code>undefined</code>"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "disconnect": {
+      "location": {
+        "start": {
+          "line": 66,
+          "column": 2
+        },
+        "end": {
+          "line": 70,
+          "column": 3
+        }
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "equals": {
+      "location": {
+        "start": {
+          "line": 72,
+          "column": 2
+        },
+        "end": {
+          "line": 75,
+          "column": 3
+        }
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "__getPropertyChainArray": {
+      "location": {
+        "start": {
+          "line": 77,
+          "column": 2
+        },
+        "end": {
+          "line": 81,
+          "column": 3
+        }
+      },
+      "type": "function",
+      "access": "private"
+    }
+  },
+  "descendants": []
+}

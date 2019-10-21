@@ -1,0 +1,46 @@
+{
+  "version": 3,
+  "sources": [
+    "/home/travis/build/cboulanger/eventrecorder/qx_packages/ergobyte_qookery_892f44d1d1ae5d65c7dd99b18da6876de2f2a920/qookery/source/class/qookery/IEditableComponent.js"
+  ],
+  "names": [
+    "qx",
+    "Bootstrap",
+    "executePendingDefers",
+    "$$dbClassInfo",
+    "Interface",
+    "define",
+    "extend",
+    "qookery",
+    "IComponent",
+    "properties",
+    "value",
+    "event",
+    "label",
+    "check",
+    "nullable",
+    "toolTipText",
+    "required",
+    "init",
+    "valid",
+    "format",
+    "readOnly",
+    "members",
+    "updateUI",
+    "connect",
+    "connectionSpecification",
+    "disconnect",
+    "addValidation",
+    "validatorType",
+    "invalidMessage",
+    "options",
+    "removeValidation",
+    "validation",
+    "removeAllValidations",
+    "IEditableComponent"
+  ],
+  "mappings": ";;;;;;;;;;;;AAAAA,EAAAA,EAAE,CAACC,SAAH,CAAaC,oBAAb,CAAkCC,aAAlC;;AAAA;;;;;;;;;;;;;;;;;;AAkBA;;;AAGAH,EAAAA,EAAE,CAACI,SAAH,CAAaC,MAAb,CAAoB,4BAApB,EAAkD;AAEjDC,IAAAA,MAAM,EAAEC,OAAO,CAACC,UAFiC;AAIjDC,IAAAA,UAAU,EAAE;AAEX;AACAC,MAAAA,KAAK,EAAE;AAAEC,QAAAA,KAAK,EAAE;AAAT,OAHI;;AAKX;AACAC,MAAAA,KAAK,EAAE;AAAEC,QAAAA,KAAK,EAAE,QAAT;AAAmBC,QAAAA,QAAQ,EAAE;AAA7B,OANI;;AAQX;AACAC,MAAAA,WAAW,EAAE;AAAEF,QAAAA,KAAK,EAAE,QAAT;AAAmBC,QAAAA,QAAQ,EAAE;AAA7B,OATF;;AAWX;AACAE,MAAAA,QAAQ,EAAE;AAAEH,QAAAA,KAAK,EAAE,SAAT;AAAoBC,QAAAA,QAAQ,EAAE,KAA9B;AAAqCG,QAAAA,IAAI,EAAE;AAA3C,OAZC;;AAcX;AACAC,MAAAA,KAAK,EAAE;AAAEL,QAAAA,KAAK,EAAE,SAAT;AAAoBC,QAAAA,QAAQ,EAAE,KAA9B;AAAqCG,QAAAA,IAAI,EAAE;AAA3C,OAfI;;AAiBX;AACAE,MAAAA,MAAM,EAAE;AAAEN,QAAAA,KAAK,EAAE,wBAAT;AAAmCC,QAAAA,QAAQ,EAAE;AAA7C,OAlBG;;AAoBX;AACAM,MAAAA,QAAQ,EAAE;AAAEP,QAAAA,KAAK,EAAE,SAAT;AAAoBC,QAAAA,QAAQ,EAAE,KAA9B;AAAqCG,QAAAA,IAAI,EAAE;AAA3C;AArBC,KAJqC;AA4BjDI,IAAAA,OAAO,EAAE;AAER;;AAEA;;;;;;;;;AASAC,MAAAA,QAAQ,EAAE,kBAASZ,KAAT,EAAgB,CAAG,CAbrB;AAeR;;AAEA;;;;;;;AAOAa,MAAAA,OAAO,EAAE,iBAASC,uBAAT,EAAkC,CAAG,CAxBtC;;AA0BR;;;AAGAC,MAAAA,UAAU,EAAE,sBAAW,CAAG,CA7BlB;AA+BR;;AAEA;;;;;;;;;AASAC,MAAAA,aAAa,EAAE,uBAASC,aAAT,EAAwBC,cAAxB,EAAwCC,OAAxC,EAAiD,CAAG,CA1C3D;;AA4CR;;;;;AAKAC,MAAAA,gBAAgB,EAAE,0BAASC,UAAT,EAAqB,CAAG,CAjDlC;;AAmDR;;;AAGAC,MAAAA,oBAAoB,EAAE,gCAAW,CAAG;AAtD5B;AA5BwC,GAAlD;AArBAzB,EAAAA,OAAO,CAAC0B,kBAAR,CAA2B9B,aAA3B,GAA2CA,aAA3C",
+  "sourcesContent": [
+    "/*\n\tQookery - Declarative UI Building for Qooxdoo\n\n\tCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\n\tLicensed under the Apache License, Version 2.0 (the \"License\");\n\tyou may not use this file except in compliance with the License.\n\tYou may obtain a copy of the License at\n\n\t\thttp://www.apache.org/licenses/LICENSE-2.0\n\n\tUnless required by applicable law or agreed to in writing, software\n\tdistributed under the License is distributed on an \"AS IS\" BASIS,\n\tWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n\tSee the License for the specific language governing permissions and\n\tlimitations under the License.\n*/\n\n/**\n * Interface for components that support value editing\n */\nqx.Interface.define(\"qookery.IEditableComponent\", {\n\n\textend: qookery.IComponent,\n\n\tproperties: {\n\n\t\t/** Component's current value */\n\t\tvalue: { event: \"changeValue\" },\n\n\t\t/** Label which will be displayed close to component's interactive widgets */\n\t\tlabel: { check: \"String\", nullable: true },\n\n\t\t/** Tooltip text to display when the user hovers the mouse over the component's interactive widgets */\n\t\ttoolTipText: { check: \"String\", nullable: true },\n\n\t\t/** Whether the component's value is required */\n\t\trequired: { check: \"Boolean\", nullable: false, init: false },\n\n\t\t/** Whether the component's widget state is valid or not */\n\t\tvalid: { check: \"Boolean\", nullable: false, init: true },\n\n\t\t/** A format to be used when displaying values */\n\t\tformat: { check: \"qx.util.format.IFormat\", nullable: true },\n\n\t\t/** If true, this editor's value cannot be altered by its UI widgets */\n\t\treadOnly: { check: \"Boolean\", nullable: false, init: false }\n\t},\n\n\tmembers: {\n\n\t\t// User interface\n\n\t\t/**\n\t\t * Update the component's user interface to reflect given value\n\t\t *\n\t\t * <p>This method will do nothing in case an update is already in progress or the component has been disposed</p>\n\t\t *\n\t\t * @param value {any?} if <code>undefined</code>, automatically use component's current value\n\t\t *\n\t\t * @retun {Boolean} <code>true</code> in case the update was performed\n\t\t */\n\t\tupdateUI: function(value) { },\n\n\t\t// Model connection\n\n\t\t/**\n\t\t * Create a two way binding between form's model and component's value\n\t\t *\n\t\t * <p>This method will automatically disconnect existing connection, if any.</p>\n\t\t *\n\t\t * @param connectionSpecification {String} a model-provider specific specification, instrumenting connection\n\t\t */\n\t\tconnect: function(connectionSpecification) { },\n\n\t\t/**\n\t\t * Remove connection created by #connect(), if any\n\t\t */\n\t\tdisconnect: function() { },\n\n\t\t// Validation\n\n\t\t/**\n\t\t * Add a validation to this component\n\t\t *\n\t\t * @param validatorType {String} name of a registered Qookery validator\n\t\t * @param invalidMessage {String?null} error message to use in case of validation failure, <code>null</code> for default one(s)\n\t\t * @param options {Map?null} validator specific options\n\t\t *\n\t\t * @return {any} an opaque handle that may be used to remove the validation in the future\n\t\t */\n\t\taddValidation: function(validatorType, invalidMessage, options) { },\n\n\t\t/**\n\t\t * Remove a validation from this component\n\t\t *\n\t\t * @param validation {Object} the value returned by a former call to #addValidation()\n\t\t */\n\t\tremoveValidation: function(validation) { },\n\n\t\t/**\n\t\t * Remove all validations from this component\n\t\t */\n\t\tremoveAllValidations: function() { }\n\t}\n});\n"
+  ]
+}

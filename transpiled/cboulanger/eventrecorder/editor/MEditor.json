@@ -1,0 +1,251 @@
+{
+  "className": "cboulanger.eventrecorder.editor.MEditor",
+  "packageName": "cboulanger.eventrecorder.editor",
+  "name": "MEditor",
+  "superClass": null,
+  "interfaces": [],
+  "mixins": [],
+  "functionName": null,
+  "clazz": {
+    "location": {
+      "start": {
+        "line": 22,
+        "column": 0
+      },
+      "end": {
+        "line": 192,
+        "column": 3
+      }
+    },
+    "jsdoc": {
+      "@description": [
+        {
+          "name": "@description",
+          "body": "***********************************************************************\n\nUI Event Recorder\n\nCopyright:\n2018 Christian Boulanger\n\nLicense:\nMIT license\nSee the LICENSE file in the project's top-level directory for details.\n\nAuthors: Christian Boulanger\n\n\n***********************************************************************"
+        },
+        {
+          "name": "@description",
+          "body": "This mixin contains methods that are used by script editor widgets"
+        }
+      ],
+      "@ignore": [
+        {
+          "name": "@ignore",
+          "body": "ace"
+        }
+      ]
+    }
+  },
+  "type": "mixin",
+  "members": {
+    "__players": {
+      "location": {
+        "start": {
+          "line": 26,
+          "column": 4
+        },
+        "end": {
+          "line": 26,
+          "column": 19
+        }
+      },
+      "type": "variable",
+      "access": "private"
+    },
+    "getEditorObject": {
+      "location": {
+        "start": {
+          "line": 32,
+          "column": 4
+        },
+        "end": {
+          "line": 34,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Returns the editor component"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{qookery.IFormComponent}",
+            "type": "qookery.IFormComponent",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "translateTo": {
+      "location": {
+        "start": {
+          "line": 43,
+          "column": 4
+        },
+        "end": {
+          "line": 59,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Translates the text in the left editor into the language produced by the\ngiven player type. Alerts any errors that occur."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "playerType {String}"
+          },
+          {
+            "name": "@param",
+            "body": "mode {String}"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String|false}",
+            "type": "String|false",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "exportTo": {
+      "location": {
+        "start": {
+          "line": 67,
+          "column": 4
+        },
+        "end": {
+          "line": 85,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Export the script in the given format"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "playerType {String}"
+          },
+          {
+            "name": "@param",
+            "body": "mode {String}"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{Boolean}",
+            "type": "Boolean",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "_applyPlayerType": {
+      "location": {
+        "start": {
+          "line": 87,
+          "column": 4
+        },
+        "end": {
+          "line": 92,
+          "column": 5
+        }
+      },
+      "type": "function",
+      "access": "protected"
+    },
+    "_applyPlayer": {
+      "location": {
+        "start": {
+          "line": 94,
+          "column": 4
+        },
+        "end": {
+          "line": 111,
+          "column": 5
+        }
+      },
+      "type": "function",
+      "access": "protected"
+    },
+    "__initializedEditor": {
+      "location": {
+        "start": {
+          "line": 113,
+          "column": 4
+        },
+        "end": {
+          "line": 113,
+          "column": 30
+        }
+      },
+      "type": "variable",
+      "access": "private"
+    },
+    "_updateEditor": {
+      "location": {
+        "start": {
+          "line": 115,
+          "column": 4
+        },
+        "end": {
+          "line": 134,
+          "column": 5
+        }
+      },
+      "type": "function",
+      "access": "protected"
+    },
+    "_setupAutocomplete": {
+      "location": {
+        "start": {
+          "line": 140,
+          "column": 4
+        },
+        "end": {
+          "line": 190,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Configures the autocomplete feature in the editor(s)"
+          }
+        ],
+        "@private": [
+          {
+            "name": "@private",
+            "body": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "protected"
+    }
+  },
+  "descendants": []
+}

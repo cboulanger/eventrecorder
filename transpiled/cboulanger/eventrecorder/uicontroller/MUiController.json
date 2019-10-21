@@ -1,0 +1,234 @@
+{
+  "className": "cboulanger.eventrecorder.uicontroller.MUiController",
+  "packageName": "cboulanger.eventrecorder.uicontroller",
+  "name": "MUiController",
+  "superClass": null,
+  "interfaces": [],
+  "mixins": [],
+  "functionName": null,
+  "clazz": {
+    "location": {
+      "start": {
+        "line": 22,
+        "column": 0
+      },
+      "end": {
+        "line": 128,
+        "column": 3
+      }
+    },
+    "jsdoc": {
+      "@description": [
+        {
+          "name": "@description",
+          "body": "***********************************************************************\n\nUI Event Recorder\n\nCopyright:\n2018 Christian Boulanger\n\nLicense:\nMIT license\nSee the LICENSE file in the project's top-level directory for details.\n\nAuthors: Christian Boulanger\n\n\n***********************************************************************"
+        },
+        {
+          "name": "@description",
+          "body": "This mixin contains methods that are used by the controller widgets"
+        }
+      ],
+      "@ignore": [
+        {
+          "name": "@ignore",
+          "body": "ace"
+        }
+      ]
+    }
+  },
+  "type": "mixin",
+  "statics": {
+    "aliases": {
+      "location": {
+        "start": {
+          "line": 25,
+          "column": 4
+        },
+        "end": {
+          "line": 40,
+          "column": 5
+        }
+      },
+      "type": "variable",
+      "access": "public"
+    }
+  },
+  "properties": {
+    "engine": {
+      "type": "property",
+      "name": "engine",
+      "abstract": false,
+      "mixin": true,
+      "access": "public"
+    }
+  },
+  "members": {
+    "_setupAliases": {
+      "location": {
+        "start": {
+          "line": 55,
+          "column": 4
+        },
+        "end": {
+          "line": 63,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "workaround until icon theme can be mixed into application theme"
+          }
+        ],
+        "@private": [
+          {
+            "name": "@private",
+            "body": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "protected"
+    },
+    "_setupUi": {
+      "location": {
+        "start": {
+          "line": 65,
+          "column": 4
+        },
+        "end": {
+          "line": 82,
+          "column": 5
+        }
+      },
+      "type": "function",
+      "access": "protected"
+    },
+    "_manageStopButtonState": {
+      "location": {
+        "start": {
+          "line": 84,
+          "column": 4
+        },
+        "end": {
+          "line": 99,
+          "column": 5
+        }
+      },
+      "type": "function",
+      "access": "protected"
+    },
+    "_updateMacroMenu": {
+      "location": {
+        "start": {
+          "line": 101,
+          "column": 4
+        },
+        "end": {
+          "line": 116,
+          "column": 5
+        }
+      },
+      "type": "function",
+      "access": "protected"
+    },
+    "_toggleRecord": {
+      "location": {
+        "start": {
+          "line": 122,
+          "column": 4
+        },
+        "end": {
+          "line": 126,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Event handler for record toggle button"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "e",
+            "paramName": "e",
+            "type": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "protected"
+    },
+    "getEngine": {
+      "type": "function",
+      "name": "getEngine",
+      "abstract": false,
+      "mixin": false,
+      "inherited": false,
+      "access": "public",
+      "property": "get",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>engine</code>.\n\nFor further details take a look at the property definition: {@link #engine}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "Object",
+            "desc": "Returns the value for engine"
+          }
+        ]
+      }
+    },
+    "setEngine": {
+      "type": "function",
+      "name": "setEngine",
+      "abstract": false,
+      "mixin": false,
+      "inherited": false,
+      "access": "public",
+      "property": "set",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Sets the user value of the property <code>engine</code>.\n\nFor further details take a look at the property definition: {@link #engine}."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "type": "Object",
+            "paramName": "value",
+            "desc": "Value for engine"
+          }
+        ]
+      }
+    },
+    "resetEngine": {
+      "type": "function",
+      "name": "resetEngine",
+      "abstract": false,
+      "mixin": false,
+      "inherited": false,
+      "access": "public",
+      "property": "reset",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Resets the user value of the property <code>engine</code>.\n\nThe computed value falls back to the next available value e.g. appearance, init or inheritance value depending on the property configuration and value availability.\n\nFor further details take a look at the property definition: {@link #engine}."
+          }
+        ]
+      }
+    }
+  },
+  "descendants": []
+}

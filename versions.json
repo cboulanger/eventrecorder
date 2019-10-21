@@ -1,0 +1,14 @@
+{
+  "compiler": "1.0.0-beta.20191015-0937",
+  "libraries": {
+    "qookery": "0.6.0",
+    "qookery.ace": "0.6.0",
+    "cboulanger.eventrecorder": "0.18.0",
+    "qxl.apiviewer": "1.0.0-beta.6",
+    "qxl.widgetbrowser": "1.0.0-beta.0",
+    "qxl.formdemo": "1.0.0-beta.1",
+    "qxl.versionlabel": "1.0.0-beta.3",
+    "qxl.dialog": "3.0.1",
+    "qx": "6.0.0-beta-20191014-2017"
+  }
+}

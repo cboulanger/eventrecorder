@@ -1,0 +1,525 @@
+{
+  "className": "qookery.contexts.Qookery",
+  "packageName": "qookery.contexts",
+  "name": "Qookery",
+  "superClass": null,
+  "interfaces": [],
+  "mixins": [],
+  "functionName": null,
+  "clazz": {
+    "location": {
+      "start": {
+        "line": 23,
+        "column": 0
+      },
+      "end": {
+        "line": 213,
+        "column": 3
+      }
+    },
+    "jsdoc": {
+      "@description": [
+        {
+          "name": "@description",
+          "body": "Qookery - Declarative UI Building for Qooxdoo\n\nCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\nLicensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\nhttp:\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License."
+        },
+        {
+          "name": "@description",
+          "body": "The 'Qookery' scripting context is always available to XML authors and provides\na number of commonly used methods."
+        }
+      ]
+    }
+  },
+  "type": "class",
+  "isAbstract": false,
+  "isStatic": true,
+  "isSingleton": false,
+  "statics": {
+    "getOption": {
+      "location": {
+        "start": {
+          "line": 31,
+          "column": 2
+        },
+        "end": {
+          "line": 31,
+          "column": 38
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Methods ported from root Qookery static class"
+          }
+        ]
+      },
+      "type": "variable",
+      "access": "public"
+    },
+    "setOption": {
+      "location": {
+        "start": {
+          "line": 33,
+          "column": 2
+        },
+        "end": {
+          "line": 33,
+          "column": 38
+        }
+      },
+      "type": "variable",
+      "access": "public"
+    },
+    "getRegistry": {
+      "location": {
+        "start": {
+          "line": 35,
+          "column": 2
+        },
+        "end": {
+          "line": 35,
+          "column": 42
+        }
+      },
+      "type": "variable",
+      "access": "public"
+    },
+    "getService": {
+      "location": {
+        "start": {
+          "line": 37,
+          "column": 2
+        },
+        "end": {
+          "line": 37,
+          "column": 40
+        }
+      },
+      "type": "variable",
+      "access": "public"
+    },
+    "loadResource": {
+      "location": {
+        "start": {
+          "line": 51,
+          "column": 2
+        },
+        "end": {
+          "line": 54,
+          "column": 3
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Additional methods of use to XML authors"
+          },
+          {
+            "name": "@description",
+            "body": "Use resource loader to load a resource"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "resourceUri {String} URI of the resource to load",
+            "paramName": "resourceUri",
+            "description": " URI of the resource to load",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "thisArg {Object ? null} object to set as <code>this</code> for callbacks",
+            "paramName": "thisArg",
+            "description": " object to set as <code>this</code> for callbacks",
+            "optional": true,
+            "defaultValue": "null",
+            "type": "Object"
+          },
+          {
+            "name": "@param",
+            "body": "successCallback {Function} callback to call after successful load",
+            "paramName": "successCallback",
+            "description": " callback to call after successful load",
+            "type": "Function"
+          },
+          {
+            "name": "@param",
+            "body": "failCallback {Function} callback to call in case load fails",
+            "paramName": "failCallback",
+            "description": " callback to call in case load fails",
+            "type": "Function"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String|null} loaded resource as text in case call is synchronous",
+            "type": "String|null",
+            "description": " loaded resource as text in case call is synchronous"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "openWindow": {
+      "location": {
+        "start": {
+          "line": 70,
+          "column": 2
+        },
+        "end": {
+          "line": 85,
+          "column": 3
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Open a window with a form as content"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "form {String|qookery.IFormComponent} URL of the XML form to load, or a form component",
+            "paramName": "form",
+            "description": " URL of the XML form to load, or a form component",
+            "type": [
+              "String",
+              "qookery.IFormComponent"
+            ]
+          },
+          {
+            "name": "@param",
+            "body": "options {Map ? null} any of FormWindow options in addition to any of those below\n\t<ul>\n\t<li>model {any} optional model to load into the form</li>\n\t<li>variables {Map ? null} optional variables to pass to the form parser</li>\n\t<li>onClose {Function ? null} callback that will receive the form's result property when window is closed</li>\n\t</ul>",
+            "paramName": "options",
+            "description": " any of FormWindow options in addition to any of those below\n\t<ul>\n\t<li>model {any} optional model to load into the form</li>\n\t<li>variables {Map ? null} optional variables to pass to the form parser</li>\n\t<li>onClose {Function ? null} callback that will receive the form's result property when window is closed</li>\n\t</ul>",
+            "optional": true,
+            "defaultValue": "null",
+            "type": "Map"
+          },
+          {
+            "name": "@param",
+            "body": "thisArg {Object ? null} object to set as <code>this</code> for callbacks",
+            "paramName": "thisArg",
+            "description": " object to set as <code>this</code> for callbacks",
+            "optional": true,
+            "defaultValue": "null",
+            "type": "Object"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{qookery.impl.FormWindow} newly opened form window",
+            "type": "qookery.impl.FormWindow",
+            "description": " newly opened form window"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "createFormat": {
+      "location": {
+        "start": {
+          "line": 95,
+          "column": 2
+        },
+        "end": {
+          "line": 97,
+          "column": 3
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Create a new format instance"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "specification {String} valid format specification or a registered factory or format name",
+            "paramName": "specification",
+            "description": " valid format specification or a registered factory or format name",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "options {Map ? null} any number of options to pass to the format class constructor",
+            "paramName": "options",
+            "description": " any number of options to pass to the format class constructor",
+            "optional": true,
+            "defaultValue": "null",
+            "type": "Map"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{qx.util.format.IFormat} new format instance or null if not available",
+            "type": "qx.util.format.IFormat",
+            "description": " new format instance or null if not available"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "createComponent": {
+      "location": {
+        "start": {
+          "line": 108,
+          "column": 2
+        },
+        "end": {
+          "line": 114,
+          "column": 3
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Programmatically create a new Qookery component"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "parentComponent {qookery.IContainerComponent} parent component to hold new component",
+            "paramName": "parentComponent",
+            "description": " parent component to hold new component",
+            "type": "qookery.IContainerComponent"
+          },
+          {
+            "name": "@param",
+            "body": "componentName {String} qualified or symbolic name of the new component's implementation class",
+            "paramName": "componentName",
+            "description": " qualified or symbolic name of the new component's implementation class",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "attributes {Map ? null} any number of attributes understood by new component implementation",
+            "paramName": "attributes",
+            "description": " any number of attributes understood by new component implementation",
+            "optional": true,
+            "defaultValue": "null",
+            "type": "Map"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{qookery.IComponent} newly created component",
+            "type": "qookery.IComponent",
+            "description": " newly created component"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "ascendForms": {
+      "location": {
+        "start": {
+          "line": 124,
+          "column": 2
+        },
+        "end": {
+          "line": 130,
+          "column": 3
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Ascend the form hierarchy, starting from given form"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "form {qookery.IFormComponent} the form to start ascending from",
+            "paramName": "form",
+            "description": " the form to start ascending from",
+            "type": "qookery.IFormComponent"
+          },
+          {
+            "name": "@param",
+            "body": "callback {Function} a function that will be called with each encountered form\n\t\t- a non-undefined return value breaks the ascension",
+            "paramName": "callback",
+            "description": " a function that will be called with each encountered form\n\t\t- a non-undefined return value breaks the ascension",
+            "type": "Function"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{undefined}",
+            "type": "undefined",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "descendComponents": {
+      "location": {
+        "start": {
+          "line": 140,
+          "column": 2
+        },
+        "end": {
+          "line": 149,
+          "column": 3
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Iterate all components under the hierarchy starting with given component"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "component {qookery.IComponent} the component to start descending from",
+            "paramName": "component",
+            "description": " the component to start descending from",
+            "type": "qookery.IComponent"
+          },
+          {
+            "name": "@param",
+            "body": "callback {Function} a function that will be called with each encountered component\n\t\t- a non-undefined return value breaks the recursion",
+            "paramName": "callback",
+            "description": " a function that will be called with each encountered component\n\t\t- a non-undefined return value breaks the recursion",
+            "type": "Function"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{any} value returned by callback if descending was interrupted or <code>undefined</code>",
+            "type": "any",
+            "description": " value returned by callback if descending was interrupted or <code>undefined</code>"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "setPropertyRecursively": {
+      "location": {
+        "start": {
+          "line": 158,
+          "column": 2
+        },
+        "end": {
+          "line": 163,
+          "column": 3
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Starting from given component, descend all children altering the value of a component property"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "component {qookery.IComponent} the component to start descending from",
+            "paramName": "component",
+            "description": " the component to start descending from",
+            "type": "qookery.IComponent"
+          },
+          {
+            "name": "@param",
+            "body": "propertyName {String} the name of the property to set",
+            "paramName": "propertyName",
+            "description": " the name of the property to set",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "propertyValue {any} the new value to set",
+            "paramName": "propertyValue",
+            "description": " the new value to set",
+            "type": "any"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "loadForm": {
+      "location": {
+        "start": {
+          "line": 181,
+          "column": 2
+        },
+        "end": {
+          "line": 211,
+          "column": 3
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Load a Qookery form from a URL"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "formUrl {String} URI of the resource to load",
+            "paramName": "formUrl",
+            "description": " URI of the resource to load",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "thisArg {Object} object to set as <code>this</code> for callbacks",
+            "paramName": "thisArg",
+            "description": " object to set as <code>this</code> for callbacks",
+            "type": "Object"
+          },
+          {
+            "name": "@param",
+            "body": "options {Map ? null} operation options\n<ul>\n\t<li>async {Boolean} if <code>true</code> load asynchronously - this is the default\n\t<li>fail {Function} callback to call in case load fails</li>\n\t<li>model {Object} form model</li>\n\t<li>success {Function} callback to call after successful load</li>\n\t<li>variables {Object ? null} variables that will be available in xml <code> $.variableName</code></li>\n</ul>",
+            "paramName": "options",
+            "description": " operation options\n<ul>\n\t<li>async {Boolean} if <code>true</code> load asynchronously - this is the default\n\t<li>fail {Function} callback to call in case load fails</li>\n\t<li>model {Object} form model</li>\n\t<li>success {Function} callback to call after successful load</li>\n\t<li>variables {Object ? null} variables that will be available in xml <code> $.variableName</code></li>\n</ul>",
+            "optional": true,
+            "defaultValue": "null",
+            "type": "Map"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{qookery.IComponent|null} loaded form component if synchronous or <code>null</code>",
+            "type": "qookery.IComponent|null",
+            "description": " loaded form component if synchronous or <code>null</code>"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    }
+  },
+  "descendants": []
+}

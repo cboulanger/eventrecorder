@@ -1,0 +1,28 @@
+{
+  "version": 3,
+  "sources": [
+    "/home/travis/build/cboulanger/eventrecorder/source/class/cboulanger/eventrecorder/Loader.js"
+  ],
+  "names": [
+    "qx",
+    "Bootstrap",
+    "executePendingDefers",
+    "$$dbClassInfo",
+    "Class",
+    "define",
+    "defer",
+    "loader",
+    "io",
+    "PartLoader",
+    "getInstance",
+    "hasPart",
+    "require",
+    "cboulanger",
+    "eventrecorder",
+    "Loader"
+  ],
+  "mappings": ";;;;;;;;;;;;AAAAA,EAAAA,EAAE,CAACC,SAAH,CAAaC,oBAAb,CAAkCC,aAAlC;;AAAA;;;;;;;;;;;;;;;;AAgBA;;;;;;AAMAH,EAAAA,EAAE,CAACI,KAAH,CAASC,MAAT,CAAgB,iCAAhB,EAAmD;AAClDC,IAAAA,KAAK,EAAE,iBAAW;AAChB,UAAIC,MAAM,GAAIP,EAAE,CAACQ,EAAH,CAAMC,UAAN,CAAiBC,WAAjB,EAAd;;AACA,UAAIH,MAAM,CAACI,OAAP,CAAe,eAAf,CAAJ,EAAqC;AACnCJ,QAAAA,MAAM,CAACK,OAAP,CAAe,CAAC,eAAD,CAAf;AACD;AACF;AANiD,GAAnD;AAtBAC,EAAAA,UAAU,CAACC,aAAX,CAAyBC,MAAzB,CAAgCZ,aAAhC,GAAgDA,aAAhD",
+  "sourcesContent": [
+    "/* ************************************************************************\n\n  UI Event Recorder\n\n  Copyright:\n    2019 Christian Boulanger\n\n  License:\n    MIT license\n    See the LICENSE file in the project's top-level directory for details.\n\n  Authors: Christian Boulanger\n\n\n************************************************************************ */\n\n/**\n * This class can be put into the \"include\" section of compile.json/applications[]\n * to load the eventrecorder into an existing application. If you use parts, you must\n * include it into the part of the main application and exclude it from the part containing\n * the eventrecorder code.\n */\nqx.Class.define(\"cboulanger.eventrecorder.Loader\", {\n defer: function() {\n   var loader =  qx.io.PartLoader.getInstance();\n   if (loader.hasPart(\"eventrecorder\")) {\n     loader.require([\"eventrecorder\"]);\n   }\n }\n});\n"
+  ]
+}

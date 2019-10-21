@@ -1,0 +1,261 @@
+{
+  "className": "cboulanger.eventrecorder.MHelperMethods",
+  "packageName": "cboulanger.eventrecorder",
+  "name": "MHelperMethods",
+  "superClass": null,
+  "interfaces": [],
+  "mixins": [],
+  "functionName": null,
+  "clazz": {
+    "location": {
+      "start": {
+        "line": 21,
+        "column": 0
+      },
+      "end": {
+        "line": 175,
+        "column": 3
+      }
+    },
+    "jsdoc": {
+      "@description": [
+        {
+          "name": "@description",
+          "body": "***********************************************************************\n\nUI Event Recorder\n\nCopyright:\n2018 Christian Boulanger\n\nLicense:\nMIT license\nSee the LICENSE file in the project's top-level directory for details.\n\nAuthors: Christian Boulanger\n\n\n***********************************************************************"
+        },
+        {
+          "name": "@description",
+          "body": "An unsystematic collection of methods that are re-used in more than one class\nThe methods really need to be put into domain-specific mixins or static classes"
+        }
+      ]
+    }
+  },
+  "type": "mixin",
+  "members": {
+    "createQookeryComponent": {
+      "location": {
+        "start": {
+          "line": 24,
+          "column": 4
+        },
+        "end": {
+          "line": 39,
+          "column": 5
+        }
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "getPlayerByType": {
+      "location": {
+        "start": {
+          "line": 49,
+          "column": 4
+        },
+        "end": {
+          "line": 66,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Returns a player instance. Caches the result"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "type",
+            "paramName": "type",
+            "type": ""
+          }
+        ],
+        "@private": [
+          {
+            "name": "@private",
+            "body": ""
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{cboulanger.eventrecorder.IPlayer}",
+            "type": "cboulanger.eventrecorder.IPlayer",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "getApplicationParentDir": {
+      "location": {
+        "start": {
+          "line": 68,
+          "column": 4
+        },
+        "end": {
+          "line": 71,
+          "column": 5
+        }
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "getRawGist": {
+      "location": {
+        "start": {
+          "line": 79,
+          "column": 4
+        },
+        "end": {
+          "line": 99,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Get the content of a gist by its id"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "gist_id {String}"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{Promise<*>}",
+            "type": "Promise<*>",
+            "description": ""
+          }
+        ],
+        "@private": [
+          {
+            "name": "@private",
+            "body": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "addGlobalEventListener": {
+      "location": {
+        "start": {
+          "line": 105,
+          "column": 4
+        },
+        "end": {
+          "line": 111,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Add a function to the global event monitor."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "fn {Function}"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "absoluteIdOf": {
+      "location": {
+        "start": {
+          "line": 119,
+          "column": 4
+        },
+        "end": {
+          "line": 121,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Returns the absolute id of the owned object with that id"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "domNode {Element}"
+          },
+          {
+            "name": "@param",
+            "body": "id {String}"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "tokenize": {
+      "location": {
+        "start": {
+          "line": 131,
+          "column": 4
+        },
+        "end": {
+          "line": 173,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Simple tokenizer which splits expressions separated by whitespace, but keeps\nexpressions in quotes (which can contain whitespace) together. Parses tokens\nas JSON expressions, but accepts unquoted text as strings."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "line {String}"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String[]}",
+            "type": "String[]",
+            "description": ""
+          }
+        ],
+        "@private": [
+          {
+            "name": "@private",
+            "body": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    }
+  },
+  "descendants": []
+}

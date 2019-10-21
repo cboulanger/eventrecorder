@@ -1,0 +1,130 @@
+{
+  "className": "qookery.IResourceLoader",
+  "packageName": "qookery",
+  "name": "IResourceLoader",
+  "superClass": null,
+  "interfaces": [],
+  "mixins": [],
+  "functionName": null,
+  "clazz": {
+    "location": {
+      "start": {
+        "line": 22,
+        "column": 0
+      },
+      "end": {
+        "line": 51,
+        "column": 3
+      }
+    },
+    "jsdoc": {
+      "@description": [
+        {
+          "name": "@description",
+          "body": "Qookery - Declarative UI Building for Qooxdoo\n\nCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\nLicensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\nhttp:\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License."
+        },
+        {
+          "name": "@description",
+          "body": "Implementations of this interface provide resources requested by Qookery"
+        }
+      ]
+    }
+  },
+  "type": "interface",
+  "members": {
+    "resolveResourceUri": {
+      "location": {
+        "start": {
+          "line": 36,
+          "column": 2
+        },
+        "end": {
+          "line": 36,
+          "column": 40
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Return the URI of a named resource\n\n<p>This method allows applications to extend or replace default resolution performed\nby qx.util.ResourceManager</p>"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "name {String} the name of the resource",
+            "paramName": "name",
+            "description": " the name of the resource",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String} a URI that can be used to load the resource",
+            "type": "String",
+            "description": " a URI that can be used to load the resource"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "loadResource": {
+      "location": {
+        "start": {
+          "line": 49,
+          "column": 2
+        },
+        "end": {
+          "line": 49,
+          "column": 74
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Load a remote resource (sync or async)\n\n<p>Calls to this method imply synchronous loading when no success\ncallback has been set</p>"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "name {String} name of the wanted resource",
+            "paramName": "name",
+            "description": " name of the wanted resource",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "thisArg {Object ? null} optional context for callbacks, may be <code>null</code>",
+            "paramName": "thisArg",
+            "description": " optional context for callbacks, may be <code>null</code>",
+            "optional": true,
+            "defaultValue": "null",
+            "type": "Object"
+          },
+          {
+            "name": "@param",
+            "body": "successCallback {Function} optional function to be called on asynchronous load success",
+            "paramName": "successCallback",
+            "description": " optional function to be called on asynchronous load success",
+            "type": "Function"
+          },
+          {
+            "name": "@param",
+            "body": "failCallback {Function} optional function to be called on asynchronous load failure",
+            "paramName": "failCallback",
+            "description": " optional function to be called on asynchronous load failure",
+            "type": "Function"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    }
+  },
+  "descendants": []
+}

@@ -1,0 +1,44 @@
+{
+  "className": "qookery.ace.Bootstrap",
+  "packageName": "qookery.ace",
+  "name": "Bootstrap",
+  "superClass": null,
+  "interfaces": [],
+  "mixins": [],
+  "functionName": null,
+  "clazz": {
+    "location": {
+      "start": {
+        "line": 19,
+        "column": 0
+      },
+      "end": {
+        "line": 26,
+        "column": 3
+      }
+    },
+    "jsdoc": {
+      "@description": [
+        {
+          "name": "@description",
+          "body": "Qookery - Declarative UI Building for Qooxdoo\n\nCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\nLicensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\nhttp:\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License."
+        }
+      ]
+    }
+  },
+  "type": "class",
+  "defer": {
+    "location": {
+      "start": {
+        "line": 21,
+        "column": 8
+      },
+      "end": {
+        "line": 25,
+        "column": 2
+      }
+    },
+    "jsdoc": {}
+  },
+  "descendants": []
+}

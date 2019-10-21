@@ -1,0 +1,93 @@
+{
+  "className": "qookery.IAttributeSet",
+  "packageName": "qookery",
+  "name": "IAttributeSet",
+  "superClass": null,
+  "interfaces": [],
+  "mixins": [],
+  "functionName": null,
+  "clazz": {
+    "location": {
+      "start": {
+        "line": 22,
+        "column": 0
+      },
+      "end": {
+        "line": 41,
+        "column": 3
+      }
+    },
+    "jsdoc": {
+      "@description": [
+        {
+          "name": "@description",
+          "body": "Qookery - Declarative UI Building for Qooxdoo\n\nCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\nLicensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\nhttp:\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License."
+        },
+        {
+          "name": "@description",
+          "body": "Represents a supplier of attributes"
+        }
+      ]
+    }
+  },
+  "type": "interface",
+  "members": {
+    "getAttribute": {
+      "location": {
+        "start": {
+          "line": 39,
+          "column": 2
+        },
+        "end": {
+          "line": 39,
+          "column": 48
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Return an attribute's value if defined, or a default value if missing\n\n<p>You may supply the <code>Error</code> JS build-in object as the default value parameter\nin order to request that a range error is thrown when attribute is missing.</p>"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "name {String} the name of the wanted attribute",
+            "paramName": "name",
+            "description": " the name of the wanted attribute",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "defaultValue {any} optional default value, <code>undefined</code> will be used if not provided",
+            "paramName": "defaultValue",
+            "description": " optional default value, <code>undefined</code> will be used if not provided",
+            "type": "any"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{any} attribute's value or requested default value if attribute is not defined within the set",
+            "type": "any",
+            "description": " attribute's value or requested default value if attribute is not defined within the set"
+          }
+        ],
+        "@throws": [
+          {
+            "name": "@throws",
+            "body": "{RangeError} in case attribute is not part of the set and the default value was set to <code>Error</code>",
+            "type": "RangeError",
+            "description": " in case attribute is not part of the set and the default value was set to <code>Error</code>"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    }
+  },
+  "descendants": [
+    "qookery.IComponent"
+  ]
+}

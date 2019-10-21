@@ -1,0 +1,384 @@
+{
+  "className": "qookery.IModelProvider",
+  "packageName": "qookery",
+  "name": "IModelProvider",
+  "superClass": null,
+  "interfaces": [],
+  "mixins": [],
+  "functionName": null,
+  "clazz": {
+    "location": {
+      "start": {
+        "line": 22,
+        "column": 0
+      },
+      "end": {
+        "line": 118,
+        "column": 3
+      }
+    },
+    "jsdoc": {
+      "@description": [
+        {
+          "name": "@description",
+          "body": "Qookery - Declarative UI Building for Qooxdoo\n\nCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\nLicensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\nhttp:\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License."
+        },
+        {
+          "name": "@description",
+          "body": "Model providers bridge user-provided data functionality with Qookery interfaces"
+        }
+      ]
+    }
+  },
+  "type": "interface",
+  "members": {
+    "identityOf": {
+      "location": {
+        "start": {
+          "line": 36,
+          "column": 2
+        },
+        "end": {
+          "line": 36,
+          "column": 34
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Return a JavaScript primitive or array of primitives that uniquely identifies model object\n\n<p>The result must be such so that if a == b, then identityOf(a) == identityOf(b) and vice-versa.</p>\n<p>The result must be <code>null</code> when no input was passed.</p>"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "object {any} model object - it may be <code>null</code>",
+            "paramName": "object",
+            "description": " model object - it may be <code>null</code>",
+            "type": "any"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{any} any JavaScript primitive or array of primitives",
+            "type": "any",
+            "description": " any JavaScript primitive or array of primitives"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "areEqual": {
+      "location": {
+        "start": {
+          "line": 50,
+          "column": 2
+        },
+        "end": {
+          "line": 50,
+          "column": 42
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Test two model objects for equality\n\n<p>Method must be null-safe:\n\tequals(null, null) -> true and\n\tequals(null, non-null) -> false</p>"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "object1 {any} model object, may be <code>null</code>",
+            "paramName": "object1",
+            "description": " model object, may be <code>null</code>",
+            "type": "any"
+          },
+          {
+            "name": "@param",
+            "body": "object2 {any} model object, may be <code>null</code>",
+            "paramName": "object2",
+            "description": " model object, may be <code>null</code>",
+            "type": "any"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{Boolean} <code>true</code> if objects are equal or both <code>null</code>",
+            "type": "Boolean",
+            "description": " <code>true</code> if objects are equal or both <code>null</code>"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "compare": {
+      "location": {
+        "start": {
+          "line": 65,
+          "column": 2
+        },
+        "end": {
+          "line": 65,
+          "column": 41
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Returns a negative number, zero, or a positive number as object1 is less than, equal to, or greater than object2\n\n<p>Method must be null-safe:\n\tcompare(null, null) -> 0,\n\tcompare(null, non-null) -> -1 and\n\tcompare(non-null, null) -> 1</p>"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "object1 {any} model object, may be <code>null</code>",
+            "paramName": "object1",
+            "description": " model object, may be <code>null</code>",
+            "type": "any"
+          },
+          {
+            "name": "@param",
+            "body": "object2 {any} model object, may be <code>null</code>",
+            "paramName": "object2",
+            "description": " model object, may be <code>null</code>",
+            "type": "any"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{Number} negative number, positive number or zero according to comparison result",
+            "type": "Number",
+            "description": " negative number, positive number or zero according to comparison result"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "convertFrom": {
+      "location": {
+        "start": {
+          "line": 77,
+          "column": 2
+        },
+        "end": {
+          "line": 77,
+          "column": 45
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Convert values from component specific to model objects\n\n<p>Provider is expected to convert given component specific value to a model object.</p>"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "value {any} component-specific value",
+            "paramName": "value",
+            "description": " component-specific value",
+            "type": "any"
+          },
+          {
+            "name": "@param",
+            "body": "className {String} the name of the value's class",
+            "paramName": "className",
+            "description": " the name of the value's class",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{any} value if no conversion needed, conversion result, or <code>null</code> if conversion was attempted but failed",
+            "type": "any",
+            "description": " value if no conversion needed, conversion result, or <code>null</code> if conversion was attempted but failed"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "convertTo": {
+      "location": {
+        "start": {
+          "line": 89,
+          "column": 2
+        },
+        "end": {
+          "line": 89,
+          "column": 44
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Convert values from model objects to component specific values\n\n<p>Provider is expected to convert given model object into an object of the required class for component specific needs.</p>"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "object {any} model object",
+            "paramName": "object",
+            "description": " model object",
+            "type": "any"
+          },
+          {
+            "name": "@param",
+            "body": "className {String} the name of the wanted value's class",
+            "paramName": "className",
+            "description": " the name of the wanted value's class",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{any} input if no conversion needed, conversion result, or <code>null</code> if conversion was attempted but failed",
+            "type": "any",
+            "description": " input if no conversion needed, conversion result, or <code>null</code> if conversion was attempted but failed"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "getLabel": {
+      "location": {
+        "start": {
+          "line": 99,
+          "column": 2
+        },
+        "end": {
+          "line": 99,
+          "column": 43
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Return a human-friendly label for a model object"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "object {any} model object - it may not be <code>null</code>",
+            "paramName": "object",
+            "description": " model object - it may not be <code>null</code>",
+            "type": "any"
+          },
+          {
+            "name": "@param",
+            "body": "labelType {String?} optional symbolic name of needed label type",
+            "paramName": "labelType",
+            "description": " optional symbolic name of needed label type",
+            "optional": true,
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String} any textual label or <code>null</code> if none available",
+            "type": "String",
+            "description": " any textual label or <code>null</code> if none available"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "connectComponent": {
+      "location": {
+        "start": {
+          "line": 109,
+          "column": 2
+        },
+        "end": {
+          "line": 109,
+          "column": 58
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Connect a component to the form's underlying model, in a way specified by second argument"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "component {qookery.IEditableComponent} editable component that will receive connection",
+            "paramName": "component",
+            "description": " editable component that will receive connection",
+            "type": "qookery.IEditableComponent"
+          },
+          {
+            "name": "@param",
+            "body": "specification {String} an implementation specific text that will be parsed by the model provider",
+            "paramName": "specification",
+            "description": " an implementation specific text that will be parsed by the model provider",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{qookery.internal.util.Connection} new connection instance",
+            "type": "qookery.internal.util.Connection",
+            "description": " new connection instance"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "clone": {
+      "location": {
+        "start": {
+          "line": 116,
+          "column": 2
+        },
+        "end": {
+          "line": 116,
+          "column": 29
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Clone an object"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "object {any} model object to clone",
+            "paramName": "object",
+            "description": " model object to clone",
+            "type": "any"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    }
+  },
+  "descendants": []
+}

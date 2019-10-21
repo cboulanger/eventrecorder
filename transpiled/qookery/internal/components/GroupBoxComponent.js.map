@@ -1,0 +1,45 @@
+{
+  "version": 3,
+  "sources": [
+    "/home/travis/build/cboulanger/eventrecorder/qx_packages/ergobyte_qookery_892f44d1d1ae5d65c7dd99b18da6876de2f2a920/qookery/source/class/qookery/internal/components/GroupBoxComponent.js"
+  ],
+  "names": [
+    "qx",
+    "Bootstrap",
+    "executePendingDefers",
+    "$$dbClassInfo",
+    "Class",
+    "define",
+    "extend",
+    "qookery",
+    "internal",
+    "components",
+    "ContainerComponent",
+    "construct",
+    "parentComponent",
+    "members",
+    "getAttributeType",
+    "attributeName",
+    "_createContainerWidget",
+    "groupBox",
+    "ui",
+    "groupbox",
+    "GroupBox",
+    "getAttribute",
+    "_applyAttribute",
+    "label",
+    "getChildControl",
+    "setAllowGrowX",
+    "setTextAlign",
+    "_applyWidgetAttributes",
+    "getLegend",
+    "getMainWidget",
+    "setLegend",
+    "legend",
+    "GroupBoxComponent"
+  ],
+  "mappings": ";;;;;;;;;;;;;;AAAAA,EAAAA,EAAE,CAACC,SAAH,CAAaC,oBAAb,CAAkCC,aAAlC;;AAAA;;;;;;;;;;;;;;;;;AAkBAH,EAAAA,EAAE,CAACI,KAAH,CAASC,MAAT,CAAgB,+CAAhB,EAAiE;AAEhEC,IAAAA,MAAM,EAAEC,OAAO,CAACC,QAAR,CAAiBC,UAAjB,CAA4BC,kBAF4B;AAIhEC,IAAAA,SAAS,EAAE,mBAASC,eAAT,EAA0B;AACpC,4EAAqBA,eAArB;AACA,KAN+D;AAQhEC,IAAAA,OAAO,EAAE;AAER;AAEAC,MAAAA,gBAAgB,EAAE,0BAASC,aAAT,EAAwB;AACzC,gBAAOA,aAAP;AACA,eAAK,iBAAL;AAAwB,mBAAO,aAAP;;AACxB,eAAK,wBAAL;AAA+B,mBAAO,SAAP;;AAC/B,eAAK,sBAAL;AAA6B,mBAAO,SAAP;;AAC7B,eAAK,uBAAL;AAA8B,mBAAO,SAAP;;AAC9B,eAAK,qBAAL;AAA4B,mBAAO,SAAP;AAL5B;;AAOA,wGAA4BA,aAA5B;AACA,OAbO;AAeR;AAEAC,MAAAA,sBAAsB,EAAE,kCAAW;AAClC,YAAIC,QAAQ,GAAG,IAAIjB,EAAE,CAACkB,EAAH,CAAMC,QAAN,CAAeC,QAAnB,CAA4B,KAAKC,YAAL,CAAkB,OAAlB,CAA5B,EAAwD,KAAKA,YAAL,CAAkB,MAAlB,CAAxD,CAAf;;AACA,aAAKC,eAAL,CAAqB,iBAArB,EAAwCL,QAAxC,EAAkD,gBAAlD,EAAoE,QAApE;;AACA,aAAKK,eAAL,CAAqB,iBAArB,EAAwCL,QAAxC,EAAkD,gBAAlD;;AACA,aAAKK,eAAL,CAAqB,qBAArB,EAA4CL,QAA5C,EAAsD,mBAAtD;;AACA,aAAKK,eAAL,CAAqB,uBAArB,EAA8CL,QAA9C,EAAwD,qBAAxD;;AACA,aAAKK,eAAL,CAAqB,wBAArB,EAA+CL,QAA/C,EAAyD,sBAAzD;;AACA,aAAKK,eAAL,CAAqB,sBAArB,EAA6CL,QAA7C,EAAuD,oBAAvD;;AACA,YAAIM,KAAK,GAAGN,QAAQ,CAACO,eAAT,CAAyB,QAAzB,EAAmCA,eAAnC,CAAmD,OAAnD,CAAZ;AACAD,QAAAA,KAAK,CAACE,aAAN,CAAoB,IAApB;AACAF,QAAAA,KAAK,CAACG,YAAN,CAAmB,KAAKL,YAAL,CAAkB,YAAlB,EAAgC,MAAhC,CAAnB;;AACA,aAAKM,sBAAL,CAA4BV,QAA5B;;AACA,eAAOA,QAAP;AACA,OA9BO;AAgCRW,MAAAA,SAAS,EAAE,qBAAW;AACrB,eAAO,KAAKC,aAAL,GAAqBD,SAArB,EAAP;AACA,OAlCO;AAoCRE,MAAAA,SAAS,EAAE,mBAASC,MAAT,EAAiB;AAC3B,aAAKF,aAAL,GAAqBC,SAArB,CAA+BC,MAA/B;AACA;AAtCO;AARuD,GAAjE;AAlBAxB,EAAAA,OAAO,CAACC,QAAR,CAAiBC,UAAjB,CAA4BuB,iBAA5B,CAA8C7B,aAA9C,GAA8DA,aAA9D",
+  "sourcesContent": [
+    "/*\n\tQookery - Declarative UI Building for Qooxdoo\n\n\tCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\n\tLicensed under the Apache License, Version 2.0 (the \"License\");\n\tyou may not use this file except in compliance with the License.\n\tYou may obtain a copy of the License at\n\n\t\thttp://www.apache.org/licenses/LICENSE-2.0\n\n\tUnless required by applicable law or agreed to in writing, software\n\tdistributed under the License is distributed on an \"AS IS\" BASIS,\n\tWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n\tSee the License for the specific language governing permissions and\n\tlimitations under the License.\n*/\n\nqx.Class.define(\"qookery.internal.components.GroupBoxComponent\", {\n\n\textend: qookery.internal.components.ContainerComponent,\n\n\tconstruct: function(parentComponent) {\n\t\tthis.base(arguments, parentComponent);\n\t},\n\n\tmembers: {\n\n\t\t// Metadata\n\n\t\tgetAttributeType: function(attributeName) {\n\t\t\tswitch(attributeName) {\n\t\t\tcase \"content-padding\": return \"IntegerList\";\n\t\t\tcase \"content-padding-bottom\": return \"Integer\";\n\t\t\tcase \"content-padding-left\": return \"Integer\";\n\t\t\tcase \"content-padding-right\": return \"Integer\";\n\t\t\tcase \"content-padding-top\": return \"Integer\";\n\t\t\t}\n\t\t\treturn this.base(arguments, attributeName);\n\t\t},\n\n\t\t// Construction\n\n\t\t_createContainerWidget: function() {\n\t\t\tvar groupBox = new qx.ui.groupbox.GroupBox(this.getAttribute(\"label\"), this.getAttribute(\"icon\"));\n\t\t\tthis._applyAttribute(\"legend-position\", groupBox, \"legendPosition\", \"middle\");\n\t\t\tthis._applyAttribute(\"content-padding\", groupBox, \"contentPadding\");\n\t\t\tthis._applyAttribute(\"content-padding-top\", groupBox, \"contentPaddingTop\");\n\t\t\tthis._applyAttribute(\"content-padding-right\", groupBox, \"contentPaddingRight\");\n\t\t\tthis._applyAttribute(\"content-padding-bottom\", groupBox, \"contentPaddingBottom\");\n\t\t\tthis._applyAttribute(\"content-padding-left\", groupBox, \"contentPaddingLeft\");\n\t\t\tvar label = groupBox.getChildControl(\"legend\").getChildControl(\"label\");\n\t\t\tlabel.setAllowGrowX(true);\n\t\t\tlabel.setTextAlign(this.getAttribute(\"text-align\", \"left\"));\n\t\t\tthis._applyWidgetAttributes(groupBox);\n\t\t\treturn groupBox;\n\t\t},\n\n\t\tgetLegend: function() {\n\t\t\treturn this.getMainWidget().getLegend();\n\t\t},\n\n\t\tsetLegend: function(legend) {\n\t\t\tthis.getMainWidget().setLegend(legend);\n\t\t}\n\t}\n});\n"
+  ]
+}

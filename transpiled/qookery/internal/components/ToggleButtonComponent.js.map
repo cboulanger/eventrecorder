@@ -1,0 +1,53 @@
+{
+  "version": 3,
+  "sources": [
+    "/home/travis/build/cboulanger/eventrecorder/qx_packages/ergobyte_qookery_892f44d1d1ae5d65c7dd99b18da6876de2f2a920/qookery/source/class/qookery/internal/components/ToggleButtonComponent.js"
+  ],
+  "names": [
+    "qx",
+    "Bootstrap",
+    "executePendingDefers",
+    "$$dbClassInfo",
+    "Class",
+    "define",
+    "extend",
+    "qookery",
+    "internal",
+    "components",
+    "AtomComponent",
+    "construct",
+    "parentComponent",
+    "members",
+    "getAttributeType",
+    "attributeName",
+    "_createAtomWidget",
+    "toggleButton",
+    "ui",
+    "form",
+    "ToggleButton",
+    "_applyAtomAttributes",
+    "_applyAttribute",
+    "setup",
+    "model",
+    "getAttribute",
+    "type",
+    "setModel",
+    "util",
+    "Xml",
+    "parseValue",
+    "getModel",
+    "getMainWidget",
+    "getValue",
+    "setValue",
+    "value",
+    "defer",
+    "patch",
+    "MModelProperty",
+    "MForm",
+    "ToggleButtonComponent"
+  ],
+  "mappings": ";;;;;;;;;;;;;;;;;;;;;;;;AAAAA,EAAAA,EAAE,CAACC,SAAH,CAAaC,oBAAb,CAAkCC,aAAlC;;AAAA;;;;;;;;;;;;;;;;;AAkBAH,EAAAA,EAAE,CAACI,KAAH,CAASC,MAAT,CAAgB,mDAAhB,EAAqE;AAEpEC,IAAAA,MAAM,EAAEC,OAAO,CAACC,QAAR,CAAiBC,UAAjB,CAA4BC,aAFgC;AAIpEC,IAAAA,SAAS,EAAE,mBAASC,eAAT,EAA0B;AACpC,uEAAqBA,eAArB;AACA,KANmE;AAQpEC,IAAAA,OAAO,EAAE;AAER;AAEAC,MAAAA,gBAAgB,EAAE,0BAASC,aAAT,EAAwB;AACzC,gBAAOA,aAAP;AACA,eAAK,WAAL;AAAkB,mBAAO,SAAP;AADlB;;AAGA,4GAA4BA,aAA5B;AACA,OATO;AAWR;AAEAC,MAAAA,iBAAiB,EAAE,6BAAW;AAC7B,YAAIC,YAAY,GAAG,IAAIjB,EAAE,CAACkB,EAAH,CAAMC,IAAN,CAAWC,YAAf,EAAnB;;AACA,aAAKC,oBAAL,CAA0BJ,YAA1B;;AACA,aAAKK,eAAL,CAAqB,WAArB,EAAkCL,YAAlC,EAAgD,UAAhD;;AACA,eAAOA,YAAP;AACA,OAlBO;AAoBRM,MAAAA,KAAK,EAAE,iBAAW;AACjB,YAAIC,KAAK,GAAG,KAAKC,YAAL,CAAkB,OAAlB,CAAZ;;AACA,YAAGD,KAAK,IAAI,IAAZ,EAAkB;AACjB,cAAIE,IAAI,GAAG,KAAKD,YAAL,CAAkB,YAAlB,EAAgC,QAAhC,CAAX;AACA,eAAKE,QAAL,CAAcpB,OAAO,CAACqB,IAAR,CAAaC,GAAb,CAAiBC,UAAjB,CAA4B,IAA5B,EAAkCJ,IAAlC,EAAwCF,KAAxC,CAAd;AACA;;AACD;AACA,OA3BO;AA6BRO,MAAAA,QAAQ,EAAE,oBAAW;AACpB,eAAO,KAAKC,aAAL,GAAqBD,QAArB,EAAP;AACA,OA/BO;AAiCRJ,MAAAA,QAAQ,EAAE,kBAASH,KAAT,EAAgB;AACzB,aAAKQ,aAAL,GAAqBL,QAArB,CAA8BH,KAA9B;AACA,OAnCO;AAqCRS,MAAAA,QAAQ,EAAE,oBAAW;AACpB,eAAO,KAAKD,aAAL,GAAqBC,QAArB,EAAP;AACA,OAvCO;AAyCRC,MAAAA,QAAQ,EAAE,kBAASC,KAAT,EAAgB;AACzB,aAAKH,aAAL,GAAqBE,QAArB,CAA8BC,KAA9B;AACA;AA3CO,KAR2D;AAsDpEC,IAAAA,KAAK,EAAE,iBAAW;AACjB;AACApC,MAAAA,EAAE,CAACI,KAAH,CAASiC,KAAT,CAAerC,EAAE,CAACkB,EAAH,CAAMC,IAAN,CAAWC,YAA1B,EAAwCpB,EAAE,CAACkB,EAAH,CAAMC,IAAN,CAAWmB,cAAnD;AACAtC,MAAAA,EAAE,CAACI,KAAH,CAASiC,KAAT,CAAerC,EAAE,CAACkB,EAAH,CAAMC,IAAN,CAAWC,YAA1B,EAAwCpB,EAAE,CAACkB,EAAH,CAAMC,IAAN,CAAWoB,KAAnD;AACA;AA1DmE,GAArE;AAlBAhC,EAAAA,OAAO,CAACC,QAAR,CAAiBC,UAAjB,CAA4B+B,qBAA5B,CAAkDrC,aAAlD,GAAkEA,aAAlE",
+  "sourcesContent": [
+    "/*\n\tQookery - Declarative UI Building for Qooxdoo\n\n\tCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\n\tLicensed under the Apache License, Version 2.0 (the \"License\");\n\tyou may not use this file except in compliance with the License.\n\tYou may obtain a copy of the License at\n\n\t\thttp://www.apache.org/licenses/LICENSE-2.0\n\n\tUnless required by applicable law or agreed to in writing, software\n\tdistributed under the License is distributed on an \"AS IS\" BASIS,\n\tWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n\tSee the License for the specific language governing permissions and\n\tlimitations under the License.\n*/\n\nqx.Class.define(\"qookery.internal.components.ToggleButtonComponent\", {\n\n\textend: qookery.internal.components.AtomComponent,\n\n\tconstruct: function(parentComponent) {\n\t\tthis.base(arguments, parentComponent);\n\t},\n\n\tmembers: {\n\n\t\t// Metadata\n\n\t\tgetAttributeType: function(attributeName) {\n\t\t\tswitch(attributeName) {\n\t\t\tcase \"tri-state\": return \"Boolean\";\n\t\t\t}\n\t\t\treturn this.base(arguments, attributeName);\n\t\t},\n\n\t\t// Creation\n\n\t\t_createAtomWidget: function() {\n\t\t\tvar toggleButton = new qx.ui.form.ToggleButton();\n\t\t\tthis._applyAtomAttributes(toggleButton);\n\t\t\tthis._applyAttribute(\"tri-state\", toggleButton, \"triState\");\n\t\t\treturn toggleButton;\n\t\t},\n\n\t\tsetup: function() {\n\t\t\tvar model = this.getAttribute(\"model\");\n\t\t\tif(model != null) {\n\t\t\t\tvar type = this.getAttribute(\"model-type\", \"String\");\n\t\t\t\tthis.setModel(qookery.util.Xml.parseValue(this, type, model));\n\t\t\t}\n\t\t\treturn this.base(arguments);\n\t\t},\n\n\t\tgetModel: function() {\n\t\t\treturn this.getMainWidget().getModel();\n\t\t},\n\n\t\tsetModel: function(model) {\n\t\t\tthis.getMainWidget().setModel(model);\n\t\t},\n\n\t\tgetValue: function() {\n\t\t\treturn this.getMainWidget().getValue();\n\t\t},\n\n\t\tsetValue: function(value) {\n\t\t\tthis.getMainWidget().setValue(value);\n\t\t}\n\t},\n\n\tdefer: function() {\n\t\t// TODO Patching a QX class goes against the \"thin wrapper\" spirit of Qookery- consider future removal\n\t\tqx.Class.patch(qx.ui.form.ToggleButton, qx.ui.form.MModelProperty);\n\t\tqx.Class.patch(qx.ui.form.ToggleButton, qx.ui.form.MForm);\n\t}\n});\n"
+  ]
+}

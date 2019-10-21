@@ -1,0 +1,43 @@
+{
+  "version": 3,
+  "sources": [
+    "/home/travis/build/cboulanger/eventrecorder/qx_packages/ergobyte_qookery_892f44d1d1ae5d65c7dd99b18da6876de2f2a920/qookery/source/class/qookery/internal/components/SplitButtonComponent.js"
+  ],
+  "names": [
+    "qx",
+    "Bootstrap",
+    "executePendingDefers",
+    "$$dbClassInfo",
+    "Class",
+    "define",
+    "extend",
+    "qookery",
+    "internal",
+    "components",
+    "Component",
+    "construct",
+    "parentComponent",
+    "members",
+    "getAttributeType",
+    "attributeName",
+    "_createWidgets",
+    "button",
+    "ui",
+    "form",
+    "SplitButton",
+    "_applyAttribute",
+    "commandName",
+    "command",
+    "Qookery",
+    "getRegistry",
+    "getCommand",
+    "Error",
+    "setCommand",
+    "_applyWidgetAttributes",
+    "SplitButtonComponent"
+  ],
+  "mappings": ";;;;;;;;;;;;;;;AAAAA,EAAAA,EAAE,CAACC,SAAH,CAAaC,oBAAb,CAAkCC,aAAlC;;AAAA;;;;;;;;;;;;;;;;;AAkBAH,EAAAA,EAAE,CAACI,KAAH,CAASC,MAAT,CAAgB,kDAAhB,EAAoE;AAEnEC,IAAAA,MAAM,EAAEC,OAAO,CAACC,QAAR,CAAiBC,UAAjB,CAA4BC,SAF+B;AAInEC,IAAAA,SAAS,EAAE,mBAASC,eAAT,EAA0B;AACpC,mEAAqBA,eAArB;AACA,KANkE;AAQnEC,IAAAA,OAAO,EAAE;AAER;AAEAC,MAAAA,gBAAgB,EAAE,0BAASC,aAAT,EAAwB;AACzC,gBAAOA,aAAP;AACA,eAAK,MAAL;AAAa,mBAAO,QAAP;AADb;;AAGA,2GAA4BA,aAA5B;AACA,OATO;AAWR;AAEAC,MAAAA,cAAc,EAAE,0BAAW;AAC1B,YAAIC,MAAM,GAAG,IAAIjB,EAAE,CAACkB,EAAH,CAAMC,IAAN,CAAWC,WAAf,EAAb;;AACA,aAAKC,eAAL,CAAqB,SAArB,EAAgC,IAAhC,EAAsC,UAASC,WAAT,EAAsB;AAC3D,cAAIC,OAAO,GAAGhB,OAAO,CAACiB,OAAR,CAAgBC,WAAhB,GAA8BC,UAA9B,CAAyCJ,WAAzC,CAAd;AACA,cAAGC,OAAO,IAAI,IAAd,EACC,MAAM,IAAII,KAAJ,CAAU,uBAAuBL,WAAjC,CAAN;AACDL,UAAAA,MAAM,CAACW,UAAP,CAAkBL,OAAlB;AACA,SALD;;AAMA,aAAKF,eAAL,CAAqB,MAArB,EAA6BJ,MAA7B,EAAqC,MAArC;;AACA,aAAKI,eAAL,CAAqB,OAArB,EAA8BJ,MAA9B,EAAsC,OAAtC;;AACA,aAAKI,eAAL,CAAqB,MAArB,EAA6BJ,MAA7B,EAAqC,MAArC;;AACA,aAAKY,sBAAL,CAA4BZ,MAA5B;;AACA,eAAO,CAAEA,MAAF,CAAP;AACA;AA1BO;AAR0D,GAApE;AAlBAV,EAAAA,OAAO,CAACC,QAAR,CAAiBC,UAAjB,CAA4BqB,oBAA5B,CAAiD3B,aAAjD,GAAiEA,aAAjE",
+  "sourcesContent": [
+    "/*\n\tQookery - Declarative UI Building for Qooxdoo\n\n\tCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\n\tLicensed under the Apache License, Version 2.0 (the \"License\");\n\tyou may not use this file except in compliance with the License.\n\tYou may obtain a copy of the License at\n\n\t\thttp://www.apache.org/licenses/LICENSE-2.0\n\n\tUnless required by applicable law or agreed to in writing, software\n\tdistributed under the License is distributed on an \"AS IS\" BASIS,\n\tWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n\tSee the License for the specific language governing permissions and\n\tlimitations under the License.\n*/\n\nqx.Class.define(\"qookery.internal.components.SplitButtonComponent\", {\n\n\textend: qookery.internal.components.Component,\n\n\tconstruct: function(parentComponent) {\n\t\tthis.base(arguments, parentComponent);\n\t},\n\n\tmembers: {\n\n\t\t// Metadata\n\n\t\tgetAttributeType: function(attributeName) {\n\t\t\tswitch(attributeName) {\n\t\t\tcase \"show\": return \"String\";\n\t\t\t}\n\t\t\treturn this.base(arguments, attributeName);\n\t\t},\n\n\t\t// Lifecycle\n\n\t\t_createWidgets: function() {\n\t\t\tvar button = new qx.ui.form.SplitButton();\n\t\t\tthis._applyAttribute(\"command\", this, function(commandName) {\n\t\t\t\tvar command = qookery.Qookery.getRegistry().getCommand(commandName);\n\t\t\t\tif(command == null)\n\t\t\t\t\tthrow new Error(\"Undefined command \" + commandName);\n\t\t\t\tbutton.setCommand(command);\n\t\t\t});\n\t\t\tthis._applyAttribute(\"icon\", button, \"icon\");\n\t\t\tthis._applyAttribute(\"label\", button, \"label\");\n\t\t\tthis._applyAttribute(\"show\", button, \"show\");\n\t\t\tthis._applyWidgetAttributes(button);\n\t\t\treturn [ button ];\n\t\t}\n\t}\n});\n"
+  ]
+}

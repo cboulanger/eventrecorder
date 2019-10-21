@@ -1,0 +1,1233 @@
+{
+  "className": "qookery.IRegistry",
+  "packageName": "qookery",
+  "name": "IRegistry",
+  "superClass": null,
+  "interfaces": [],
+  "mixins": [],
+  "functionName": null,
+  "clazz": {
+    "location": {
+      "start": {
+        "line": 22,
+        "column": 0
+      },
+      "end": {
+        "line": 273,
+        "column": 3
+      }
+    },
+    "jsdoc": {
+      "@description": [
+        {
+          "name": "@description",
+          "body": "Qookery - Declarative UI Building for Qooxdoo\n\nCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\nLicensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\nhttp:\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License."
+        },
+        {
+          "name": "@description",
+          "body": "Facility that handles registration of various Qookery artifacts under well known symbolic names"
+        }
+      ]
+    }
+  },
+  "type": "interface",
+  "statics": {
+    "P_ATTRIBUTE": {
+      "location": {
+        "start": {
+          "line": 30,
+          "column": 2
+        },
+        "end": {
+          "line": 30,
+          "column": 26
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Constants"
+          },
+          {
+            "name": "@description",
+            "body": ".\tPartitions"
+          }
+        ]
+      },
+      "type": "variable",
+      "access": "public"
+    },
+    "P_CELL_EDITOR_FACTORY": {
+      "location": {
+        "start": {
+          "line": 31,
+          "column": 2
+        },
+        "end": {
+          "line": 31,
+          "column": 46
+        }
+      },
+      "type": "variable",
+      "access": "public"
+    },
+    "P_CELL_RENDERER_FACTORY": {
+      "location": {
+        "start": {
+          "line": 32,
+          "column": 2
+        },
+        "end": {
+          "line": 32,
+          "column": 50
+        }
+      },
+      "type": "variable",
+      "access": "public"
+    },
+    "P_COMMAND": {
+      "location": {
+        "start": {
+          "line": 33,
+          "column": 2
+        },
+        "end": {
+          "line": 33,
+          "column": 22
+        }
+      },
+      "type": "variable",
+      "access": "public"
+    },
+    "P_COMPONENT": {
+      "location": {
+        "start": {
+          "line": 34,
+          "column": 2
+        },
+        "end": {
+          "line": 34,
+          "column": 26
+        }
+      },
+      "type": "variable",
+      "access": "public"
+    },
+    "P_FORMAT": {
+      "location": {
+        "start": {
+          "line": 35,
+          "column": 2
+        },
+        "end": {
+          "line": 35,
+          "column": 20
+        }
+      },
+      "type": "variable",
+      "access": "public"
+    },
+    "P_FORMAT_FACTORY": {
+      "location": {
+        "start": {
+          "line": 36,
+          "column": 2
+        },
+        "end": {
+          "line": 36,
+          "column": 36
+        }
+      },
+      "type": "variable",
+      "access": "public"
+    },
+    "P_LAYOUT_FACTORY": {
+      "location": {
+        "start": {
+          "line": 37,
+          "column": 2
+        },
+        "end": {
+          "line": 37,
+          "column": 36
+        }
+      },
+      "type": "variable",
+      "access": "public"
+    },
+    "P_LIBRARY": {
+      "location": {
+        "start": {
+          "line": 38,
+          "column": 2
+        },
+        "end": {
+          "line": 38,
+          "column": 22
+        }
+      },
+      "type": "variable",
+      "access": "public"
+    },
+    "P_MAP": {
+      "location": {
+        "start": {
+          "line": 39,
+          "column": 2
+        },
+        "end": {
+          "line": 39,
+          "column": 14
+        }
+      },
+      "type": "variable",
+      "access": "public"
+    },
+    "P_MEDIA_QUERY": {
+      "location": {
+        "start": {
+          "line": 40,
+          "column": 2
+        },
+        "end": {
+          "line": 40,
+          "column": 30
+        }
+      },
+      "type": "variable",
+      "access": "public"
+    },
+    "P_MODEL_PROVIDER": {
+      "location": {
+        "start": {
+          "line": 41,
+          "column": 2
+        },
+        "end": {
+          "line": 41,
+          "column": 36
+        }
+      },
+      "type": "variable",
+      "access": "public"
+    },
+    "P_SERVICE": {
+      "location": {
+        "start": {
+          "line": 42,
+          "column": 2
+        },
+        "end": {
+          "line": 42,
+          "column": 22
+        }
+      },
+      "type": "variable",
+      "access": "public"
+    },
+    "P_VALIDATOR": {
+      "location": {
+        "start": {
+          "line": 43,
+          "column": 2
+        },
+        "end": {
+          "line": 43,
+          "column": 26
+        }
+      },
+      "type": "variable",
+      "access": "public"
+    }
+  },
+  "members": {
+    "createPartition": {
+      "location": {
+        "start": {
+          "line": 57,
+          "column": 2
+        },
+        "end": {
+          "line": 57,
+          "column": 46
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Partitions"
+          },
+          {
+            "name": "@description",
+            "body": "Create a new partition in the registry"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "partitionName {String} the name of the partition to create",
+            "paramName": "partitionName",
+            "description": " the name of the partition to create",
+            "type": "String"
+          }
+        ],
+        "@throws": [
+          {
+            "name": "@throws",
+            "body": "{Error} in case the partition already exists or the name is not acceptable",
+            "type": "Error",
+            "description": " in case the partition already exists or the name is not acceptable"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "get": {
+      "location": {
+        "start": {
+          "line": 70,
+          "column": 2
+        },
+        "end": {
+          "line": 70,
+          "column": 57
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Elements"
+          },
+          {
+            "name": "@description",
+            "body": "Retrieve an element from the registry"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "partitionName {String} the name of the partition to look up",
+            "paramName": "partitionName",
+            "description": " the name of the partition to look up",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "elementName {String} the name of the element to find in partition",
+            "paramName": "elementName",
+            "description": " the name of the element to find in partition",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "required {Boolean?} if <code>true</code>, throw an exception when not found",
+            "paramName": "required",
+            "description": " if <code>true</code>, throw an exception when not found",
+            "optional": true,
+            "type": "Boolean"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{any} the element or <code>undefined</code>",
+            "type": "any",
+            "description": " the element or <code>undefined</code>"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "keys": {
+      "location": {
+        "start": {
+          "line": 79,
+          "column": 2
+        },
+        "end": {
+          "line": 79,
+          "column": 35
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Return a list of the names of all elements registered in a partition"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "partitionName {String} the name of the partition to look up",
+            "paramName": "partitionName",
+            "description": " the name of the partition to look up",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{Array} an array of element names",
+            "type": "Array",
+            "description": " an array of element names"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "put": {
+      "location": {
+        "start": {
+          "line": 88,
+          "column": 2
+        },
+        "end": {
+          "line": 88,
+          "column": 56
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Put an element into the registry"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "partitionName {String} the name of the partition to look up",
+            "paramName": "partitionName",
+            "description": " the name of the partition to look up",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "elementName {String} the name of the element to put in the partition",
+            "paramName": "elementName",
+            "description": " the name of the element to put in the partition",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "element {any} the element itself, <code>undefined</code> is not a valid value",
+            "paramName": "element",
+            "description": " the element itself, <code>undefined</code> is not a valid value",
+            "type": "any"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "remove": {
+      "location": {
+        "start": {
+          "line": 96,
+          "column": 2
+        },
+        "end": {
+          "line": 96,
+          "column": 50
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Remove an element from the registry"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "partitionName {String} the name of the partition to look up",
+            "paramName": "partitionName",
+            "description": " the name of the partition to look up",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "elementName {String} the name of the element to remove from the partition",
+            "paramName": "elementName",
+            "description": " the name of the element to remove from the partition",
+            "type": "String"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "registerService": {
+      "location": {
+        "start": {
+          "line": 106,
+          "column": 2
+        },
+        "end": {
+          "line": 106,
+          "column": 58
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Services"
+          },
+          {
+            "name": "@description",
+            "body": "Register a new service"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "serviceName {String} symbolic name of the service",
+            "paramName": "serviceName",
+            "description": " symbolic name of the service",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "serviceClass {qx.Class|Object} singleton class of service or any object with a getInstance() member function",
+            "paramName": "serviceClass",
+            "description": " singleton class of service or any object with a getInstance() member function",
+            "type": [
+              "qx.Class",
+              "Object"
+            ]
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "getService": {
+      "location": {
+        "start": {
+          "line": 115,
+          "column": 2
+        },
+        "end": {
+          "line": 115,
+          "column": 39
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Return a service's instance"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "serviceName {String} symbolic name of the service",
+            "paramName": "serviceName",
+            "description": " symbolic name of the service",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{Object} the instance of the required service or <code>null</code> if not available",
+            "type": "Object",
+            "description": " the instance of the required service or <code>null</code> if not available"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "registerComponentType": {
+      "location": {
+        "start": {
+          "line": 125,
+          "column": 2
+        },
+        "end": {
+          "line": 125,
+          "column": 69
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Components"
+          },
+          {
+            "name": "@description",
+            "body": "Register a new component type"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "componentQName {String} qualified name of the component to register",
+            "paramName": "componentQName",
+            "description": " qualified name of the component to register",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "componentClass {qx.Class} class that implements (at least) qookery.IComponent",
+            "paramName": "componentClass",
+            "description": " class that implements (at least) qookery.IComponent",
+            "type": "qx.Class"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "isComponentTypeAvailable": {
+      "location": {
+        "start": {
+          "line": 134,
+          "column": 2
+        },
+        "end": {
+          "line": 134,
+          "column": 56
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Check if a component type is available"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "componentQName {String} qualified name of a possibly registered component type",
+            "paramName": "componentQName",
+            "description": " qualified name of a possibly registered component type",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{boolean} <code>true</code> in case the component type is available",
+            "type": "boolean",
+            "description": " <code>true</code> in case the component type is available"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "createComponent": {
+      "location": {
+        "start": {
+          "line": 144,
+          "column": 2
+        },
+        "end": {
+          "line": 144,
+          "column": 64
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Create a new component instance"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "componentQName {String} qualified name of a registered component type",
+            "paramName": "componentQName",
+            "description": " qualified name of a registered component type",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "parentComponent {IComponent?null} component that will contain new component",
+            "paramName": "parentComponent",
+            "description": " component that will contain new component",
+            "optional": true,
+            "defaultValue": "null",
+            "type": "IComponent"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{IComponent} newly created component, an exception is thrown on error",
+            "type": "qookery.IComponent",
+            "description": " newly created component, an exception is thrown on error"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "registerValidator": {
+      "location": {
+        "start": {
+          "line": 154,
+          "column": 2
+        },
+        "end": {
+          "line": 154,
+          "column": 50
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Validators"
+          },
+          {
+            "name": "@description",
+            "body": "Register a validator under provided name"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "name {String} the name of the validator for subsequent access",
+            "paramName": "name",
+            "description": " the name of the validator for subsequent access",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "validator {qookery.IValidator} the validator itself",
+            "paramName": "validator",
+            "description": " the validator itself",
+            "type": "qookery.IValidator"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "getValidator": {
+      "location": {
+        "start": {
+          "line": 163,
+          "column": 2
+        },
+        "end": {
+          "line": 163,
+          "column": 34
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Get a previously registered validator by name"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "name {String} name of the validator",
+            "paramName": "name",
+            "description": " name of the validator",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{qookery.IValidator} the validator or <code>undefined</code> if not found",
+            "type": "qookery.IValidator",
+            "description": " the validator or <code>undefined</code> if not found"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "getMediaQuery": {
+      "location": {
+        "start": {
+          "line": 174,
+          "column": 2
+        },
+        "end": {
+          "line": 174,
+          "column": 35
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Media queries"
+          },
+          {
+            "name": "@description",
+            "body": "Get a previously registered media query by name"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "name {String} name of the media query",
+            "paramName": "name",
+            "description": " name of the media query",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{qx.bom.MediaQuery} the media query or <code>null</code> if not found",
+            "type": "qx.bom.MediaQuery",
+            "description": " the media query or <code>null</code> if not found"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "registerModelProvider": {
+      "location": {
+        "start": {
+          "line": 185,
+          "column": 2
+        },
+        "end": {
+          "line": 185,
+          "column": 78
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Model providers"
+          },
+          {
+            "name": "@description",
+            "body": "Register a model provider, optionally setting it as the default one"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "providerName {String} symbolic name of provider",
+            "paramName": "providerName",
+            "description": " symbolic name of provider",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "providerClass {qx.Class} class of the provider",
+            "paramName": "providerClass",
+            "description": " class of the provider",
+            "type": "qx.Class"
+          },
+          {
+            "name": "@param",
+            "body": "setDefault {Boolean} if <code>true</code>, provider will be set as the default one",
+            "paramName": "setDefault",
+            "description": " if <code>true</code>, provider will be set as the default one",
+            "type": "Boolean"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "getModelProvider": {
+      "location": {
+        "start": {
+          "line": 192,
+          "column": 2
+        },
+        "end": {
+          "line": 192,
+          "column": 46
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Return a registered model provider"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "providerName {String} symbolic name of provider",
+            "paramName": "providerName",
+            "description": " symbolic name of provider",
+            "type": "String"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "registerFormat": {
+      "location": {
+        "start": {
+          "line": 202,
+          "column": 2
+        },
+        "end": {
+          "line": 202,
+          "column": 50
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Formats"
+          },
+          {
+            "name": "@description",
+            "body": "Register an IFormat under a symbolic name"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "formatName {String} symbolic name of the format for easy referencing",
+            "paramName": "formatName",
+            "description": " symbolic name of the format for easy referencing",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "format {qx.util.format.IFormat} format class",
+            "paramName": "format",
+            "description": " format class",
+            "type": "qx.util.format.IFormat"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "registerFormatFactory": {
+      "location": {
+        "start": {
+          "line": 210,
+          "column": 2
+        },
+        "end": {
+          "line": 210,
+          "column": 63
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Register an IFormat factory for easy instance creation by XML authors"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "factoryName {String} name of the format class for easy referencing",
+            "paramName": "factoryName",
+            "description": " name of the format class for easy referencing",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "formatClass {qx.Class} format class",
+            "paramName": "formatClass",
+            "description": " format class",
+            "type": "qx.Class"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "getFormat": {
+      "location": {
+        "start": {
+          "line": 217,
+          "column": 2
+        },
+        "end": {
+          "line": 217,
+          "column": 37
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Return a previously registered format"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "formatName {String} symbolic name of the wanted format",
+            "paramName": "formatName",
+            "description": " symbolic name of the wanted format",
+            "type": "String"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "createFormat": {
+      "location": {
+        "start": {
+          "line": 231,
+          "column": 2
+        },
+        "end": {
+          "line": 231,
+          "column": 52
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Parse a format specification\n\n<p>Format specification syntax is:</p>\n\n<pre>{formatName} | ( {factoryName} [ ':' {option1} '=' {value1} [ ',' {option2} '=' {value2} ]* ]? )</pre>"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "specification {String} a specification according to above syntax",
+            "paramName": "specification",
+            "description": " a specification according to above syntax",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "options {Map} any additional options to pass to the format constructor - forces factory lookup if provided",
+            "paramName": "options",
+            "description": " any additional options to pass to the format constructor - forces factory lookup if provided",
+            "type": "Map"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{qx.util.format.IFormat} the newly created format instance",
+            "type": "qx.util.format.IFormat",
+            "description": " the newly created format instance"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "registerMap": {
+      "location": {
+        "start": {
+          "line": 241,
+          "column": 2
+        },
+        "end": {
+          "line": 241,
+          "column": 41
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Maps"
+          },
+          {
+            "name": "@description",
+            "body": "Register a map"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "mapName {String} symbolic name of the map for subsequent access",
+            "paramName": "mapName",
+            "description": " symbolic name of the map for subsequent access",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "map {Map} map object",
+            "paramName": "map",
+            "description": " map object",
+            "type": "Map"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "getMap": {
+      "location": {
+        "start": {
+          "line": 250,
+          "column": 2
+        },
+        "end": {
+          "line": 250,
+          "column": 31
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Return a registered map"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "mapName {String} symbolic name of the map sought",
+            "paramName": "mapName",
+            "description": " symbolic name of the map sought",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{Map} map object or <code>null</code> if map was not found",
+            "type": "Map",
+            "description": " map object or <code>null</code> if map was not found"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "registerLibrary": {
+      "location": {
+        "start": {
+          "line": 262,
+          "column": 2
+        },
+        "end": {
+          "line": 262,
+          "column": 90
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Libraries"
+          },
+          {
+            "name": "@description",
+            "body": "Register a library for future use"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "libraryName {String} symbolic name of the library",
+            "paramName": "libraryName",
+            "description": " symbolic name of the library",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "resourceUris {Array?} array of URIs of resources to load when library is used for the first time",
+            "paramName": "resourceUris",
+            "description": " array of URIs of resources to load when library is used for the first time",
+            "optional": true,
+            "type": "Array"
+          },
+          {
+            "name": "@param",
+            "body": "dependencies {Array?} array of names of other libraries that must be loaded prior to this one",
+            "paramName": "dependencies",
+            "description": " array of names of other libraries that must be loaded prior to this one",
+            "optional": true,
+            "type": "Array"
+          },
+          {
+            "name": "@param",
+            "body": "postLoadCallback {Function?} function that will be called when loading finished for further library initialization",
+            "paramName": "postLoadCallback",
+            "description": " function that will be called when loading finished for further library initialization",
+            "optional": true,
+            "type": "Function"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "loadLibrary": {
+      "location": {
+        "start": {
+          "line": 271,
+          "column": 2
+        },
+        "end": {
+          "line": 271,
+          "column": 63
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Request one or more libraries for usage, loading them if needed"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "libraryName {String|Array?} symbolic name(s) of libraries to load - may be empty",
+            "paramName": "libraryName",
+            "description": " symbolic name(s) of libraries to load - may be empty",
+            "optional": true,
+            "type": [
+              "String",
+              "Array"
+            ]
+          },
+          {
+            "name": "@param",
+            "body": "continuation {Function} called once finished; on failure, the cause will be found in the first argument as an instance of Error",
+            "paramName": "continuation",
+            "description": " called once finished; on failure, the cause will be found in the first argument as an instance of Error",
+            "type": "Function"
+          },
+          {
+            "name": "@param",
+            "body": "thisArg {any} optional <code>this</code> argument for continuation",
+            "paramName": "thisArg",
+            "description": " optional <code>this</code> argument for continuation",
+            "type": "any"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    }
+  },
+  "descendants": []
+}

@@ -1,0 +1,1851 @@
+{
+  "className": "cboulanger.eventrecorder.IPlayer",
+  "packageName": "cboulanger.eventrecorder",
+  "name": "IPlayer",
+  "superClass": null,
+  "interfaces": [],
+  "mixins": [],
+  "functionName": null,
+  "clazz": {
+    "location": {
+      "start": {
+        "line": 20,
+        "column": 0
+      },
+      "end": {
+        "line": 397,
+        "column": 3
+      }
+    },
+    "jsdoc": {
+      "@description": [
+        {
+          "name": "@description",
+          "body": "***********************************************************************\n\nUI Event Recorder\n\nCopyright:\n2019 Christian Boulanger\n\nLicense:\nMIT license\nSee the LICENSE file in the project's top-level directory for details.\n\nAuthors:\nChristian Boulanger (cboulanger) info@bibliograph.org\n\n***********************************************************************"
+        },
+        {
+          "name": "@description",
+          "body": "This interface defines the events and methods a player must implement"
+        }
+      ]
+    }
+  },
+  "type": "interface",
+  "events": {
+    "progress": {
+      "location": {
+        "start": {
+          "line": 30,
+          "column": 4
+        },
+        "end": {
+          "line": 30,
+          "column": 37
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Fired with each step of the replayed script. The event data is an array\ncontaining the number of the step and the number of steps"
+          }
+        ]
+      },
+      "name": "progress",
+      "type": "qx.event.type.Data"
+    }
+  },
+  "members": {
+    "getType": {
+      "location": {
+        "start": {
+          "line": 42,
+          "column": 4
+        },
+        "end": {
+          "line": 42,
+          "column": 16
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Returns the player type"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "start": {
+      "location": {
+        "start": {
+          "line": 47,
+          "column": 4
+        },
+        "end": {
+          "line": 47,
+          "column": 14
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Starts the player"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "stop": {
+      "location": {
+        "start": {
+          "line": 52,
+          "column": 4
+        },
+        "end": {
+          "line": 52,
+          "column": 13
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Stops the recording."
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "replay": {
+      "location": {
+        "start": {
+          "line": 60,
+          "column": 4
+        },
+        "end": {
+          "line": 60,
+          "column": 27
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Replays the given script of intermediate code"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "script {String} The script to replay",
+            "paramName": "script",
+            "description": " The script to replay",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{Promise} Promise which resolves when the script has been replayed, or\nrejecdts with an error",
+            "type": "Promise",
+            "description": " Promise which resolves when the script has been replayed, or\nrejecdts with an error"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "translate": {
+      "location": {
+        "start": {
+          "line": 67,
+          "column": 4
+        },
+        "end": {
+          "line": 67,
+          "column": 30
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Translates the intermediate code into the target language"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "script",
+            "paramName": "script",
+            "type": ""
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{string} Javasc",
+            "type": "string",
+            "description": " Javasc"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "getExportFileExtension": {
+      "location": {
+        "start": {
+          "line": 73,
+          "column": 4
+        },
+        "end": {
+          "line": 73,
+          "column": 31
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Returns the file extension of the downloaded file in the target language"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{string}",
+            "type": "string",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "cmd_import": {
+      "location": {
+        "start": {
+          "line": 86,
+          "column": 4
+        },
+        "end": {
+          "line": 86,
+          "column": 28
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "============================================================================\nCOMMANDS\n============================================================================"
+          },
+          {
+            "name": "@description",
+            "body": "Imports a remote file and caches it locally"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "uri {String}"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{Promise<array>}",
+            "type": "Promise<array>",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "cmd_clear_imports": {
+      "location": {
+        "start": {
+          "line": 91,
+          "column": 4
+        },
+        "end": {
+          "line": 91,
+          "column": 26
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Clears locally cached imported scripts in order to force-reload them"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "cmd_assert_uri": {
+      "location": {
+        "start": {
+          "line": 98,
+          "column": 4
+        },
+        "end": {
+          "line": 98,
+          "column": 26
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Asserts that the current url matches the given value (RegExp)"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "uri {String}"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "cmd_assert_match_uri": {
+      "location": {
+        "start": {
+          "line": 104,
+          "column": 4
+        },
+        "end": {
+          "line": 104,
+          "column": 39
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Asserts that the current url matches the given value (RegExp)"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "uri_regexp {String} A string containing a regular expression",
+            "paramName": "uri_regexp",
+            "description": " A string containing a regular expression",
+            "type": "String"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "cmd_config_set_mode": {
+      "location": {
+        "start": {
+          "line": 111,
+          "column": 4
+        },
+        "end": {
+          "line": 111,
+          "column": 32
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Sets the player mode"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "mode",
+            "paramName": "mode",
+            "type": ""
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{string}",
+            "type": "string",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "cmd_await_all": {
+      "location": {
+        "start": {
+          "line": 117,
+          "column": 4
+        },
+        "end": {
+          "line": 117,
+          "column": 22
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Starts a block of statements that return promises. The player will wait for\nall of the promises to resolve before proceeding."
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "cmd_define": {
+      "location": {
+        "start": {
+          "line": 124,
+          "column": 4
+        },
+        "end": {
+          "line": 124,
+          "column": 29
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Starts the definition of a macro"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "macro_name",
+            "paramName": "macro_name",
+            "type": ""
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{null}",
+            "type": "null",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "cmd_end": {
+      "location": {
+        "start": {
+          "line": 130,
+          "column": 4
+        },
+        "end": {
+          "line": 130,
+          "column": 16
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Ends the definition of a macro or a block of awaitable statements"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{null}",
+            "type": "null",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "cmd_info": {
+      "location": {
+        "start": {
+          "line": 137,
+          "column": 4
+        },
+        "end": {
+          "line": 137,
+          "column": 21
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that displays an informational text centered on the screen"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "text {String} The text to display",
+            "paramName": "text",
+            "description": " The text to display",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "cmd_hide_info": {
+      "location": {
+        "start": {
+          "line": 143,
+          "column": 4
+        },
+        "end": {
+          "line": 143,
+          "column": 22
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that hides the info pane"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "cmd_widget_info": {
+      "location": {
+        "start": {
+          "line": 151,
+          "column": 4
+        },
+        "end": {
+          "line": 151,
+          "column": 32
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that displays an informational text placed next to the widget with the given id."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String} The id of the widget",
+            "paramName": "id",
+            "description": " The id of the widget",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "text {String} The text to display",
+            "paramName": "text",
+            "description": " The text to display",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "cmd_await_property_value": {
+      "location": {
+        "start": {
+          "line": 163,
+          "column": 4
+        },
+        "end": {
+          "line": 163,
+          "column": 52
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that returns a promise which resolves when the given\nproperty of the object with the given id is assigned the given value.\nThis works also with properties without a change event because the\nvalue is periodically checked."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String} The id of the object",
+            "paramName": "id",
+            "description": " The id of the object",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "property {String} The name of the property",
+            "paramName": "property",
+            "description": " The name of the property",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "value {*} The value, must be serializable to JSON",
+            "paramName": "value",
+            "description": " The value, must be serializable to JSON",
+            "type": "*"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{*|string}",
+            "type": "*|string",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "cmd_await_property_match_json": {
+      "location": {
+        "start": {
+          "line": 178,
+          "column": 4
+        },
+        "end": {
+          "line": 178,
+          "column": 56
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that returns a promise which resolves when the following\ncondition is met: the property with the given name of the object with the\ngiven id changes to a value that, if serialized to json, matches the given\njson literal. The json can contain regular expressions enclosed in\n<! and !> as placeholders (and validators) for unknown values\n(See {@link cboulanger.eventrecorder.player.Abstract#createRegexpForJsonComparison}"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String} The id of the object",
+            "paramName": "id",
+            "description": " The id of the object",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "property {String} The name of the property",
+            "paramName": "property",
+            "description": " The name of the property",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "json {String} A json expression",
+            "paramName": "json",
+            "description": " A json expression",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{*|string}",
+            "type": "*|string",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "cmd_delay": {
+      "location": {
+        "start": {
+          "line": 187,
+          "column": 4
+        },
+        "end": {
+          "line": 187,
+          "column": 27
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that causes the given delay (in milliseconds).\nThe delay is capped by the {@link cboulanger.eventrecorder.player.Abstract#maxDelay} property\nand will only be caused in presentation mode"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "delayInMs {Number}"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{string}",
+            "type": "string",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "cmd_wait": {
+      "location": {
+        "start": {
+          "line": 194,
+          "column": 4
+        },
+        "end": {
+          "line": 194,
+          "column": 25
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that waits the given time in milliseconds, regardless of player mode"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "timeInMs {Number}"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{string}",
+            "type": "string",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "cmd_await_event": {
+      "location": {
+        "start": {
+          "line": 203,
+          "column": 4
+        },
+        "end": {
+          "line": 203,
+          "column": 32
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that returns a promise which resolves when the object with\nthe given id fires an event with the given name."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String} The id of the object",
+            "paramName": "id",
+            "description": " The id of the object",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "type {String} The type of the event",
+            "paramName": "type",
+            "description": " The type of the event",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{*|string}",
+            "type": "*|string",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "cmd_await_event_data": {
+      "location": {
+        "start": {
+          "line": 213,
+          "column": 4
+        },
+        "end": {
+          "line": 213,
+          "column": 43
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that returns a promise which resolves when the object with\nthe given id fires an event with the given name."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String} The id of the object",
+            "paramName": "id",
+            "description": " The id of the object",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "type {String} The type of the event",
+            "paramName": "type",
+            "description": " The type of the event",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "data {*} The data to expect. Must be serializable to JSON",
+            "paramName": "data",
+            "description": " The data to expect. Must be serializable to JSON",
+            "type": "*"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{*|string}",
+            "type": "*|string",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "cmd_await_event_match_json": {
+      "location": {
+        "start": {
+          "line": 226,
+          "column": 4
+        },
+        "end": {
+          "line": 226,
+          "column": 49
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that returns a promise which resolves when the object with\nthe given id fires an event with the given name with event data that\nmatches, if serialized to JSON, the given json string, which can contain\nregular expressions embedded in <! and !>"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String} The id of the object",
+            "paramName": "id",
+            "description": " The id of the object",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "type {String} The type of the event",
+            "paramName": "type",
+            "description": " The type of the event",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "json {*} A JSON expression that can contain regular expressions\nembedded in <! and !>",
+            "paramName": "json",
+            "description": " A JSON expression that can contain regular expressions\nembedded in <! and !>",
+            "type": "*"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{*|string}",
+            "type": "*|string",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "cmd_assert_appeared": {
+      "location": {
+        "start": {
+          "line": 234,
+          "column": 4
+        },
+        "end": {
+          "line": 234,
+          "column": 30
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that returns a promise with resolves when the object with the given id becomes visible and rejects\nif the timeout is reached before that happens."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String}"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "cmd_assert_disappeared": {
+      "location": {
+        "start": {
+          "line": 242,
+          "column": 4
+        },
+        "end": {
+          "line": 242,
+          "column": 33
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that returns a promise with resolves when the object with the given id disappears and rejects\nif the timeout is reached before that happens."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String}"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "cmd_execute": {
+      "location": {
+        "start": {
+          "line": 249,
+          "column": 4
+        },
+        "end": {
+          "line": 249,
+          "column": 22
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that fires an `execute` event on the object with the given id (Button, Command)"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String}"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "cmd_contextmenu": {
+      "location": {
+        "start": {
+          "line": 256,
+          "column": 4
+        },
+        "end": {
+          "line": 256,
+          "column": 26
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that fires a `contextmenu` event on the object with the given id (Button, Command)"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String}"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "cmd_fire": {
+      "location": {
+        "start": {
+          "line": 265,
+          "column": 4
+        },
+        "end": {
+          "line": 265,
+          "column": 32
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that fires an event with the given payload on the object with the given id (Button, Command)"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String}"
+          },
+          {
+            "name": "@param",
+            "body": "event {String}"
+          },
+          {
+            "name": "@param",
+            "body": "json {*}"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "cmd_tap": {
+      "location": {
+        "start": {
+          "line": 272,
+          "column": 4
+        },
+        "end": {
+          "line": 272,
+          "column": 18
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "/**\nGenerates code that fires an `tap` event on the object with the given id (Button, Command)"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String}"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "cmd_dbltap": {
+      "location": {
+        "start": {
+          "line": 279,
+          "column": 4
+        },
+        "end": {
+          "line": 279,
+          "column": 21
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that fires an `dbltap` event on the object with the given id (Button, Command)"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String}"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "cmd_set_value": {
+      "location": {
+        "start": {
+          "line": 287,
+          "column": 4
+        },
+        "end": {
+          "line": 287,
+          "column": 30
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that sets the `value` property of the object with the given id"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String}"
+          },
+          {
+            "name": "@param",
+            "body": "data {String} A JSON expression",
+            "paramName": "data",
+            "description": " A JSON expression",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{string}",
+            "type": "string",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "cmd_await_value": {
+      "location": {
+        "start": {
+          "line": 297,
+          "column": 4
+        },
+        "end": {
+          "line": 297,
+          "column": 33
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that returns a promise which resolves when the value\nproperty of the object with the given id is assigned the given value.\nThe value must be given in JSON format, i.e. strings must be quoted."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String} The id of the object",
+            "paramName": "id",
+            "description": " The id of the object",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "value {String} The value, must be serializable to JSON",
+            "paramName": "value",
+            "description": " The value, must be serializable to JSON",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{*|string}",
+            "type": "*|string",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "cmd_open_tree_node": {
+      "location": {
+        "start": {
+          "line": 305,
+          "column": 4
+        },
+        "end": {
+          "line": 305,
+          "column": 40
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that opens a the node with the given node id on the {@link qx.ui.tree.VirtualTree} with the given id"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String} The id of the {@link qx.ui.tree.VirtualTree}",
+            "paramName": "id",
+            "description": " The id of the {@link qx.ui.tree.VirtualTree}",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "nodeIndex {String|Number} The index of the node in the tree data model",
+            "paramName": "nodeIndex",
+            "description": " The index of the node in the tree data model",
+            "type": [
+              "String",
+              "Number"
+            ]
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "cmd_close_tree_node": {
+      "location": {
+        "start": {
+          "line": 313,
+          "column": 4
+        },
+        "end": {
+          "line": 313,
+          "column": 41
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that closes a the node with the given node id on the {@link qx.ui.tree.VirtualTree} with the given id"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String} Id of the {@link qx.ui.treevirtual.TreeVirtual}",
+            "paramName": "id",
+            "description": " Id of the {@link qx.ui.treevirtual.TreeVirtual}",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "nodeIndex {String|Number} The index of the node in the tree data model",
+            "paramName": "nodeIndex",
+            "description": " The index of the node in the tree data model",
+            "type": [
+              "String",
+              "Number"
+            ]
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "cmd_open_tree_node_treevirtual": {
+      "location": {
+        "start": {
+          "line": 321,
+          "column": 4
+        },
+        "end": {
+          "line": 321,
+          "column": 52
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that opens a the node with the given node id on the {@link qx.ui.treevirtual.TreeVirtual} with the given id"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String} Id of the {@link qx.ui.treevirtual.TreeVirtual}",
+            "paramName": "id",
+            "description": " Id of the {@link qx.ui.treevirtual.TreeVirtual}",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "nodeIndex {String|Number} The index of the node in the tree data model",
+            "paramName": "nodeIndex",
+            "description": " The index of the node in the tree data model",
+            "type": [
+              "String",
+              "Number"
+            ]
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "cmd_close_tree_node_treevirtual": {
+      "location": {
+        "start": {
+          "line": 329,
+          "column": 4
+        },
+        "end": {
+          "line": 329,
+          "column": 53
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that closes a the node with the given node id on the {@link qx.ui.treevirtual.TreeVirtual} with the given id"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String} Id of the {@link qx.ui.treevirtual.TreeVirtual}",
+            "paramName": "id",
+            "description": " Id of the {@link qx.ui.treevirtual.TreeVirtual}",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "nodeIndex {String|Number} The index of the node in the tree data model",
+            "paramName": "nodeIndex",
+            "description": " The index of the node in the tree data model",
+            "type": [
+              "String",
+              "Number"
+            ]
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "cmd_set_selection": {
+      "location": {
+        "start": {
+          "line": 338,
+          "column": 4
+        },
+        "end": {
+          "line": 338,
+          "column": 40
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that sets a selection for all objects which have a `setSelection` method that\ntakes an array of qooxdoo widgets that should be selected."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String} Id of the object ón which the selection is set",
+            "paramName": "id",
+            "description": " Id of the object ón which the selection is set",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "selectedId {String} The id of the widget that is selected. Only one widget can be selected at this time",
+            "paramName": "selectedId",
+            "description": " The id of the widget that is selected. Only one widget can be selected at this time",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "cmd_await_selection": {
+      "location": {
+        "start": {
+          "line": 347,
+          "column": 4
+        },
+        "end": {
+          "line": 347,
+          "column": 42
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that awaits a selection for all objects which have a `setSelection` method that\ntakes an array of qooxdoo widgets that should be selected within the timeout"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String} Id of the object ón which the selection is set",
+            "paramName": "id",
+            "description": " Id of the object ón which the selection is set",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "selectedId {String} The id of the widget that should be selected",
+            "paramName": "selectedId",
+            "description": " The id of the widget that should be selected",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "cmd_set_model_selection": {
+      "location": {
+        "start": {
+          "line": 356,
+          "column": 4
+        },
+        "end": {
+          "line": 356,
+          "column": 46
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that sets a selection for all (virtual) widgets that have a data model"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String} The id of the widget on which the selection is set",
+            "paramName": "id",
+            "description": " The id of the widget on which the selection is set",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "indexArray {String} An array literal containing the indexes of the models",
+            "paramName": "indexArray",
+            "description": " An array literal containing the indexes of the models",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "cmd_set_selection_from_selectables": {
+      "location": {
+        "start": {
+          "line": 364,
+          "column": 4
+        },
+        "end": {
+          "line": 364,
+          "column": 52
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that sets a selection on widgets that have a `getSelectables()` method"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String} The id of the widget on which the selection is set",
+            "paramName": "id",
+            "description": " The id of the widget on which the selection is set",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "index {String|Number} The index of the selection in the selectables",
+            "paramName": "index",
+            "description": " The index of the selection in the selectables",
+            "type": [
+              "String",
+              "Number"
+            ]
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "cmd_await_selection_from_selectables": {
+      "location": {
+        "start": {
+          "line": 372,
+          "column": 4
+        },
+        "end": {
+          "line": 372,
+          "column": 54
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that awaits a selection on widgets that have a `getSelectables()` method"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String} The id of the widget on which the selection is set",
+            "paramName": "id",
+            "description": " The id of the widget on which the selection is set",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "index {String|Number} The index of the selection in the selectables",
+            "paramName": "index",
+            "description": " The index of the selection in the selectables",
+            "type": [
+              "String",
+              "Number"
+            ]
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "cmd_reset_selection": {
+      "location": {
+        "start": {
+          "line": 379,
+          "column": 4
+        },
+        "end": {
+          "line": 379,
+          "column": 30
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Resets the selection of a widget that has a `selection` property or a `resetSelection` method."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String} The id of the widget",
+            "paramName": "id",
+            "description": " The id of the widget",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{string}",
+            "type": "string",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "cmd_set_table_selection": {
+      "location": {
+        "start": {
+          "line": 387,
+          "column": 4
+        },
+        "end": {
+          "line": 387,
+          "column": 44
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that sets an selection interval on a {@link qx.ui.table.Table}"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String} The id of a {@link qx.ui.table.Table}",
+            "paramName": "id",
+            "description": " The id of a {@link qx.ui.table.Table}",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "interval {String} The first and the last row to be selected, separated by comma.",
+            "paramName": "interval",
+            "description": " The first and the last row to be selected, separated by comma.",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "cmd_set_row_selection": {
+      "location": {
+        "start": {
+          "line": 395,
+          "column": 4
+        },
+        "end": {
+          "line": 395,
+          "column": 42
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that set the selection on a {@link qx.ui.virtual.selection.Row} object"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String} The id of a qx.ui.virtual.selection.Row object",
+            "paramName": "id",
+            "description": " The id of a qx.ui.virtual.selection.Row object",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "rowIndex {String|Number} The index of the row to be selected",
+            "paramName": "rowIndex",
+            "description": " The index of the row to be selected",
+            "type": [
+              "String",
+              "Number"
+            ]
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    }
+  },
+  "descendants": []
+}

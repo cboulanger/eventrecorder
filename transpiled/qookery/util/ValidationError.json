@@ -1,0 +1,244 @@
+{
+  "className": "qookery.util.ValidationError",
+  "packageName": "qookery.util",
+  "name": "ValidationError",
+  "superClass": "Error",
+  "interfaces": [],
+  "mixins": [],
+  "functionName": null,
+  "clazz": {
+    "location": {
+      "start": {
+        "line": 22,
+        "column": 0
+      },
+      "end": {
+        "line": 95,
+        "column": 3
+      }
+    },
+    "jsdoc": {
+      "@description": [
+        {
+          "name": "@description",
+          "body": "Qookery - Declarative UI Building for Qooxdoo\n\nCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\nLicensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\nhttp:\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License."
+        },
+        {
+          "name": "@description",
+          "body": "Instances of this class pack helpful information about discovered validation errors"
+        }
+      ]
+    }
+  },
+  "type": "class",
+  "construct": {
+    "location": {
+      "start": {
+        "line": 33,
+        "column": 13
+      },
+      "end": {
+        "line": 45,
+        "column": 2
+      }
+    },
+    "jsdoc": {
+      "@description": [
+        {
+          "name": "@description",
+          "body": "Construct a new validation error"
+        }
+      ],
+      "@param": [
+        {
+          "name": "@param",
+          "body": "source {any} value that represents the source of error",
+          "paramName": "source",
+          "description": " value that represents the source of error",
+          "type": "any"
+        },
+        {
+          "name": "@param",
+          "body": "message {String?} error message",
+          "paramName": "message",
+          "description": " error message",
+          "optional": true,
+          "type": "String"
+        },
+        {
+          "name": "@param",
+          "body": "cause {Array?} array of underlying errors",
+          "paramName": "cause",
+          "description": " array of underlying errors",
+          "optional": true,
+          "type": "Array"
+        }
+      ]
+    }
+  },
+  "members": {
+    "__source": {
+      "location": {
+        "start": {
+          "line": 49,
+          "column": 2
+        },
+        "end": {
+          "line": 49,
+          "column": 16
+        }
+      },
+      "type": "variable",
+      "access": "private"
+    },
+    "__message": {
+      "location": {
+        "start": {
+          "line": 50,
+          "column": 2
+        },
+        "end": {
+          "line": 50,
+          "column": 17
+        }
+      },
+      "type": "variable",
+      "access": "private"
+    },
+    "__cause": {
+      "location": {
+        "start": {
+          "line": 51,
+          "column": 2
+        },
+        "end": {
+          "line": 51,
+          "column": 15
+        }
+      },
+      "type": "variable",
+      "access": "private"
+    },
+    "getSource": {
+      "location": {
+        "start": {
+          "line": 58,
+          "column": 2
+        },
+        "end": {
+          "line": 60,
+          "column": 3
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Return the source of this error, if available"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{any} value that represents the source of error, may be <code>null</code>",
+            "type": "any",
+            "description": " value that represents the source of error, may be <code>null</code>"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "getMessage": {
+      "location": {
+        "start": {
+          "line": 67,
+          "column": 2
+        },
+        "end": {
+          "line": 69,
+          "column": 3
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Return a message for this error"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String} error message, may be <code>null</code>",
+            "type": "String",
+            "description": " error message, may be <code>null</code>"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "getCause": {
+      "location": {
+        "start": {
+          "line": 76,
+          "column": 2
+        },
+        "end": {
+          "line": 78,
+          "column": 3
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Return an array of errors that are the underlying cause of this error"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{Array} array of underlying errors or <code>null</code> if not set",
+            "type": "Array",
+            "description": " array of underlying errors or <code>null</code> if not set"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "getFormattedMessage": {
+      "location": {
+        "start": {
+          "line": 85,
+          "column": 2
+        },
+        "end": {
+          "line": 93,
+          "column": 3
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Return the computed formatted message which describes this error is more detail"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String} an error message, <code>null</code> is never returned",
+            "type": "String",
+            "description": " an error message, <code>null</code> is never returned"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    }
+  },
+  "descendants": []
+}

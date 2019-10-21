@@ -1,0 +1,25 @@
+{
+  "version": 3,
+  "sources": [
+    "/home/travis/build/cboulanger/eventrecorder/source/class/cboulanger/eventrecorder/theme/Font.js"
+  ],
+  "names": [
+    "qx",
+    "Bootstrap",
+    "executePendingDefers",
+    "$$dbClassInfo",
+    "Theme",
+    "define",
+    "extend",
+    "theme",
+    "indigo",
+    "Font",
+    "fonts",
+    "cboulanger",
+    "eventrecorder"
+  ],
+  "mappings": ";;;;;;;;;;;;AAAAA,EAAAA,EAAE,CAACC,SAAH,CAAaC,oBAAb,CAAkCC,aAAlC;;AAAA;;;;;;;;;AAUAH,EAAAA,EAAE,CAACI,KAAH,CAASC,MAAT,CAAgB,qCAAhB,EACA;AACEC,IAAAA,MAAM,EAAGN,EAAE,CAACO,KAAH,CAASC,MAAT,CAAgBC,IAD3B;AAGEC,IAAAA,KAAK,EACL;AAJF,GADA;AAVAC,EAAAA,UAAU,CAACC,aAAX,CAAyBL,KAAzB,CAA+BE,IAA/B,CAAoCN,aAApC,GAAoDA,aAApD",
+  "sourcesContent": [
+    "/* ************************************************************************\n\n   Copyright: 2018 Christian Boulanger\n\n   License: MIT license\n\n   Authors: Christian Boulanger (cboulanger) info@bibliograph.org\n\n************************************************************************ */\n\nqx.Theme.define(\"cboulanger.eventrecorder.theme.Font\",\n{\n  extend : qx.theme.indigo.Font,\n\n  fonts :\n  {\n  }\n});\n"
+  ]
+}

@@ -1,0 +1,421 @@
+{
+  "className": "qookery.internal.util.Library",
+  "packageName": "qookery.internal.util",
+  "name": "Library",
+  "superClass": "Object",
+  "interfaces": [],
+  "mixins": [
+    "qx.core.MLogging"
+  ],
+  "functionName": null,
+  "clazz": {
+    "location": {
+      "start": {
+        "line": 19,
+        "column": 0
+      },
+      "end": {
+        "line": 175,
+        "column": 3
+      }
+    },
+    "jsdoc": {
+      "@description": [
+        {
+          "name": "@description",
+          "body": "Qookery - Declarative UI Building for Qooxdoo\n\nCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\nLicensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\nhttp:\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License."
+        }
+      ]
+    }
+  },
+  "type": "class",
+  "construct": {
+    "location": {
+      "start": {
+        "line": 24,
+        "column": 12
+      },
+      "end": {
+        "line": 31,
+        "column": 2
+      }
+    },
+    "jsdoc": {}
+  },
+  "members": {
+    "__name": {
+      "location": {
+        "start": {
+          "line": 35,
+          "column": 2
+        },
+        "end": {
+          "line": 35,
+          "column": 14
+        }
+      },
+      "type": "variable",
+      "access": "private"
+    },
+    "__resourceNames": {
+      "location": {
+        "start": {
+          "line": 36,
+          "column": 2
+        },
+        "end": {
+          "line": 36,
+          "column": 23
+        }
+      },
+      "type": "variable",
+      "access": "private"
+    },
+    "__dependencies": {
+      "location": {
+        "start": {
+          "line": 37,
+          "column": 2
+        },
+        "end": {
+          "line": 37,
+          "column": 22
+        }
+      },
+      "type": "variable",
+      "access": "private"
+    },
+    "__isLoaded": {
+      "location": {
+        "start": {
+          "line": 38,
+          "column": 2
+        },
+        "end": {
+          "line": 38,
+          "column": 18
+        }
+      },
+      "type": "variable",
+      "access": "private"
+    },
+    "__continuations": {
+      "location": {
+        "start": {
+          "line": 39,
+          "column": 2
+        },
+        "end": {
+          "line": 39,
+          "column": 23
+        }
+      },
+      "type": "variable",
+      "access": "private"
+    },
+    "__postLoadCallback": {
+      "location": {
+        "start": {
+          "line": 40,
+          "column": 2
+        },
+        "end": {
+          "line": 40,
+          "column": 26
+        }
+      },
+      "type": "variable",
+      "access": "private"
+    },
+    "getName": {
+      "location": {
+        "start": {
+          "line": 42,
+          "column": 2
+        },
+        "end": {
+          "line": 44,
+          "column": 3
+        }
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "addResource": {
+      "location": {
+        "start": {
+          "line": 46,
+          "column": 2
+        },
+        "end": {
+          "line": 50,
+          "column": 3
+        }
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "isLoaded": {
+      "location": {
+        "start": {
+          "line": 52,
+          "column": 2
+        },
+        "end": {
+          "line": 54,
+          "column": 3
+        }
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "load": {
+      "location": {
+        "start": {
+          "line": 56,
+          "column": 2
+        },
+        "end": {
+          "line": 72,
+          "column": 3
+        }
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "__loadLibrary": {
+      "location": {
+        "start": {
+          "line": 74,
+          "column": 2
+        },
+        "end": {
+          "line": 96,
+          "column": 3
+        }
+      },
+      "type": "function",
+      "access": "private"
+    },
+    "__onLibraryLoaded": {
+      "location": {
+        "start": {
+          "line": 98,
+          "column": 2
+        },
+        "end": {
+          "line": 105,
+          "column": 3
+        }
+      },
+      "type": "function",
+      "access": "private"
+    },
+    "__loadNextDependency": {
+      "location": {
+        "start": {
+          "line": 107,
+          "column": 2
+        },
+        "end": {
+          "line": 116,
+          "column": 3
+        }
+      },
+      "type": "function",
+      "access": "private"
+    },
+    "__loadNextResource": {
+      "location": {
+        "start": {
+          "line": 118,
+          "column": 2
+        },
+        "end": {
+          "line": 168,
+          "column": 3
+        }
+      },
+      "type": "function",
+      "access": "private"
+    },
+    "__invokeContinuations": {
+      "location": {
+        "start": {
+          "line": 170,
+          "column": 2
+        },
+        "end": {
+          "line": 173,
+          "column": 3
+        }
+      },
+      "type": "function",
+      "access": "private"
+    },
+    "debug": {
+      "type": "function",
+      "name": "debug",
+      "abstract": false,
+      "mixin": true,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qx.core.MLogging",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Logs a debug message."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "varargs {var} The item(s) to log. Any number of arguments is\nsupported. If an argument is not a string, the object dump will be\nlogged.",
+            "paramName": "varargs",
+            "description": " The item(s) to log. Any number of arguments is\nsupported. If an argument is not a string, the object dump will be\nlogged.",
+            "type": "var"
+          }
+        ]
+      }
+    },
+    "info": {
+      "type": "function",
+      "name": "info",
+      "abstract": false,
+      "mixin": true,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qx.core.MLogging",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Logs an info message."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "varargs {var} The item(s) to log. Any number of arguments is\nsupported. If an argument is not a string, the object dump will be\nlogged.",
+            "paramName": "varargs",
+            "description": " The item(s) to log. Any number of arguments is\nsupported. If an argument is not a string, the object dump will be\nlogged.",
+            "type": "var"
+          }
+        ]
+      }
+    },
+    "warn": {
+      "type": "function",
+      "name": "warn",
+      "abstract": false,
+      "mixin": true,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qx.core.MLogging",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Logs a warning message."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "varargs {var} The item(s) to log. Any number of arguments is\nsupported. If an argument is not a string, the object dump will be\nlogged.",
+            "paramName": "varargs",
+            "description": " The item(s) to log. Any number of arguments is\nsupported. If an argument is not a string, the object dump will be\nlogged.",
+            "type": "var"
+          }
+        ]
+      }
+    },
+    "error": {
+      "type": "function",
+      "name": "error",
+      "abstract": false,
+      "mixin": true,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qx.core.MLogging",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Logs an error message."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "varargs {var} The item(s) to log. Any number of arguments is\nsupported. If an argument is not a string, the object dump will be\nlogged.",
+            "paramName": "varargs",
+            "description": " The item(s) to log. Any number of arguments is\nsupported. If an argument is not a string, the object dump will be\nlogged.",
+            "type": "var"
+          }
+        ]
+      }
+    },
+    "trace": {
+      "type": "function",
+      "name": "trace",
+      "abstract": false,
+      "mixin": true,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qx.core.MLogging",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Logs an error message with the current stack trace"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "varargs {var} The item(s) to log. Any number of arguments is\nsupported. If an argument is not a string, the object dump will be\nlogged.",
+            "paramName": "varargs",
+            "description": " The item(s) to log. Any number of arguments is\nsupported. If an argument is not a string, the object dump will be\nlogged.",
+            "type": "var"
+          }
+        ]
+      }
+    },
+    "__logMessage": {
+      "type": "function",
+      "name": "__logMessage",
+      "abstract": false,
+      "mixin": true,
+      "inherited": true,
+      "access": "private",
+      "overriddenFrom": "qx.core.MLogging",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Helper that calls the appropriate logger function with the current object\nand any number of items."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "level {String} The log level of the message",
+            "paramName": "level",
+            "description": " The log level of the message",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "varargs {arguments} Arguments list to be logged",
+            "paramName": "varargs",
+            "description": " Arguments list to be logged",
+            "type": "arguments"
+          }
+        ]
+      }
+    }
+  },
+  "descendants": []
+}

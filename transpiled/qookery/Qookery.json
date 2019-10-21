@@ -1,0 +1,534 @@
+{
+  "className": "qookery.Qookery",
+  "packageName": "qookery",
+  "name": "Qookery",
+  "superClass": null,
+  "interfaces": [],
+  "mixins": [],
+  "functionName": null,
+  "clazz": {
+    "location": {
+      "start": {
+        "line": 22,
+        "column": 0
+      },
+      "end": {
+        "line": 183,
+        "column": 3
+      }
+    },
+    "jsdoc": {
+      "@description": [
+        {
+          "name": "@description",
+          "body": "Qookery - Declarative UI Building for Qooxdoo\n\nCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\nLicensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\nhttp:\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License."
+        },
+        {
+          "name": "@description",
+          "body": "Static class providing access to main Qookery features"
+        }
+      ]
+    }
+  },
+  "type": "class",
+  "isAbstract": false,
+  "isStatic": true,
+  "isSingleton": false,
+  "statics": {
+    "A_FORMAT": {
+      "location": {
+        "start": {
+          "line": 30,
+          "column": 2
+        },
+        "end": {
+          "line": 30,
+          "column": 52
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Prefixed attributes - see XSD for their definition"
+          }
+        ]
+      },
+      "type": "variable",
+      "access": "public"
+    },
+    "A_ICON": {
+      "location": {
+        "start": {
+          "line": 32,
+          "column": 2
+        },
+        "end": {
+          "line": 32,
+          "column": 48
+        }
+      },
+      "type": "variable",
+      "access": "public"
+    },
+    "A_MAP": {
+      "location": {
+        "start": {
+          "line": 34,
+          "column": 2
+        },
+        "end": {
+          "line": 34,
+          "column": 46
+        }
+      },
+      "type": "variable",
+      "access": "public"
+    },
+    "A_TOOL_TIP_TEXT": {
+      "location": {
+        "start": {
+          "line": 36,
+          "column": 2
+        },
+        "end": {
+          "line": 36,
+          "column": 66
+        }
+      },
+      "type": "variable",
+      "access": "public"
+    },
+    "OPTION_DEFAULT_LAYOUT_SPACING_X": {
+      "location": {
+        "start": {
+          "line": 43,
+          "column": 2
+        },
+        "end": {
+          "line": 43,
+          "column": 63
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Options"
+          },
+          {
+            "name": "@description",
+            "body": "Default value of <code>spacing-x</code> attribute for layout managers that support it"
+          }
+        ]
+      },
+      "type": "variable",
+      "access": "public"
+    },
+    "OPTION_DEFAULT_LAYOUT_SPACING_Y": {
+      "location": {
+        "start": {
+          "line": 48,
+          "column": 2
+        },
+        "end": {
+          "line": 48,
+          "column": 63
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Default value of <code>spacing-y</code> attribute for layout managers that support it"
+          }
+        ]
+      },
+      "type": "variable",
+      "access": "public"
+    },
+    "OPTION_DEFAULT_LIVE_UPDATE": {
+      "location": {
+        "start": {
+          "line": 53,
+          "column": 2
+        },
+        "end": {
+          "line": 53,
+          "column": 53
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Default value of <code>live-update</code> attribute for components that support it"
+          }
+        ]
+      },
+      "type": "variable",
+      "access": "public"
+    },
+    "OPTION_DEFAULT_NATIVE_CONTEXT_MENU": {
+      "location": {
+        "start": {
+          "line": 58,
+          "column": 2
+        },
+        "end": {
+          "line": 58,
+          "column": 69
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Default value of <code>native-context-menu</code> attribute for components that support it"
+          }
+        ]
+      },
+      "type": "variable",
+      "access": "public"
+    },
+    "OPTION_EXTERNAL_LIBRARIES": {
+      "location": {
+        "start": {
+          "line": 63,
+          "column": 2
+        },
+        "end": {
+          "line": 63,
+          "column": 51
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "{String} Path to directory containing external libraries used by Qookery, defaults to <code>qookery/lib</code>."
+          }
+        ]
+      },
+      "type": "variable",
+      "access": "public"
+    },
+    "SERVICE_APPLICATION": {
+      "location": {
+        "start": {
+          "line": 70,
+          "column": 2
+        },
+        "end": {
+          "line": 70,
+          "column": 52
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Services"
+          },
+          {
+            "name": "@description",
+            "body": "Currently running Qooxdoo application"
+          }
+        ]
+      },
+      "type": "variable",
+      "access": "public"
+    },
+    "SERVICE_MODEL_PROVIDER": {
+      "location": {
+        "start": {
+          "line": 75,
+          "column": 2
+        },
+        "end": {
+          "line": 75,
+          "column": 50
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Default model provider"
+          }
+        ]
+      },
+      "type": "variable",
+      "access": "public"
+    },
+    "SERVICE_REGISTRY": {
+      "location": {
+        "start": {
+          "line": 80,
+          "column": 2
+        },
+        "end": {
+          "line": 80,
+          "column": 39
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Qookery registry"
+          }
+        ]
+      },
+      "type": "variable",
+      "access": "public"
+    },
+    "SERVICE_RESOURCE_LOADER": {
+      "location": {
+        "start": {
+          "line": 85,
+          "column": 2
+        },
+        "end": {
+          "line": 85,
+          "column": 52
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Currently set resource loader"
+          }
+        ]
+      },
+      "type": "variable",
+      "access": "public"
+    },
+    "__OPTIONS": {
+      "location": {
+        "start": {
+          "line": 87,
+          "column": 2
+        },
+        "end": {
+          "line": 92,
+          "column": 3
+        }
+      },
+      "type": "variable",
+      "access": "private"
+    },
+    "getOption": {
+      "location": {
+        "start": {
+          "line": 102,
+          "column": 2
+        },
+        "end": {
+          "line": 108,
+          "column": 3
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Return an option's value"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "optionName {String} name of option",
+            "paramName": "optionName",
+            "description": " name of option",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "defaultValue {any} value to return in case option is not set",
+            "paramName": "defaultValue",
+            "description": " value to return in case option is not set",
+            "type": "any"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{any} option value",
+            "type": "any",
+            "description": " option value"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "setOption": {
+      "location": {
+        "start": {
+          "line": 116,
+          "column": 2
+        },
+        "end": {
+          "line": 119,
+          "column": 3
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Set an option's value"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "optionName {String} name of option",
+            "paramName": "optionName",
+            "description": " name of option",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "value {any} new option value",
+            "paramName": "value",
+            "description": " new option value",
+            "type": "any"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "getRegistry": {
+      "location": {
+        "start": {
+          "line": 126,
+          "column": 2
+        },
+        "end": {
+          "line": 128,
+          "column": 3
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Return the Qookery registry"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{qookery.IRegistry} the registry",
+            "type": "qookery.IRegistry",
+            "description": " the registry"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "getService": {
+      "location": {
+        "start": {
+          "line": 138,
+          "column": 2
+        },
+        "end": {
+          "line": 143,
+          "column": 3
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Return a service"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "serviceName {String} symbolic name of the service",
+            "paramName": "serviceName",
+            "description": " symbolic name of the service",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "required {Boolean} if <code>true</code>, throw an exception when service is not found",
+            "paramName": "required",
+            "description": " if <code>true</code>, throw an exception when service is not found",
+            "type": "Boolean"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{Object} the instance of the required service or <code>null</code> if not available",
+            "type": "Object",
+            "description": " the instance of the required service or <code>null</code> if not available"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "createFormParser": {
+      "location": {
+        "start": {
+          "line": 175,
+          "column": 2
+        },
+        "end": {
+          "line": 181,
+          "column": 3
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Create a new Qookery form parser\n\n<p>You can use the parser for parsing XML documents in order to create a new form\ncomponents. Form components may then be displayed at any time by adding their\nmain widget (currently always a composite) to the children list\nof container widgets.</p>\n\n<p>A demonstration of how to correctly use the form parser is:</p>\n\n<pre class=\"javascript\">\nvar parser = qookery.Qookery.createNewParser();\ntry {\nvar formComponent = parser.parse(xmlDocument);\nvar mainWidget = formComponent.getMainWidget();\ncontainer.add(mainWidget);\n}\ncatch(error) {\n\n}\nfinally {\nparser.dispose();\n}\n</pre>"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "variables {Map ? null} optional variables to pass to generated forms",
+            "paramName": "variables",
+            "description": " optional variables to pass to generated forms",
+            "optional": true,
+            "defaultValue": "null",
+            "type": "Map"
+          },
+          {
+            "name": "@param",
+            "body": "serviceResolver {Function ? null} optional function that will be called when resolving services",
+            "paramName": "serviceResolver",
+            "description": " optional function that will be called when resolving services",
+            "optional": true,
+            "defaultValue": "null",
+            "type": "Function"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{qookery.IFormParser} newly created instance of form parser",
+            "type": "qookery.IFormParser",
+            "description": " newly created instance of form parser"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    }
+  },
+  "descendants": []
+}

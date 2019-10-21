@@ -1,0 +1,723 @@
+{
+  "className": "cboulanger.eventrecorder.window.MRemoteBinding",
+  "packageName": "cboulanger.eventrecorder.window",
+  "name": "MRemoteBinding",
+  "superClass": null,
+  "interfaces": [],
+  "mixins": [],
+  "functionName": null,
+  "clazz": {
+    "location": {
+      "start": {
+        "line": 23,
+        "column": 0
+      },
+      "end": {
+        "line": 441,
+        "column": 3
+      }
+    },
+    "jsdoc": {
+      "@description": [
+        {
+          "name": "@description",
+          "body": "***********************************************************************\n\nqooxdoo - the new era of web development\n\nhttp:\n\nCopyright:\n2018 The authors\n\nLicense:\nMIT: https:\nSee the LICENSE file in the project's top-level directory for details.\n\nAuthors:\nChristian Boulanger (cboulanger)\n\n***********************************************************************"
+        },
+        {
+          "name": "@description",
+          "body": "A mixin providing methods for binding properties between applications\nrunning in separate browser windows"
+        }
+      ]
+    }
+  },
+  "type": "mixin",
+  "statics": {
+    "SERIALIZER_CLASS_PROP": {
+      "location": {
+        "start": {
+          "line": 26,
+          "column": 4
+        },
+        "end": {
+          "line": 26,
+          "column": 36
+        }
+      },
+      "type": "variable",
+      "access": "public"
+    },
+    "SERIALIZER_DATA_PROP": {
+      "location": {
+        "start": {
+          "line": 27,
+          "column": 4
+        },
+        "end": {
+          "line": 27,
+          "column": 34
+        }
+      },
+      "type": "variable",
+      "access": "public"
+    }
+  },
+  "construct": {
+    "location": {
+      "start": {
+        "line": 30,
+        "column": 13
+      },
+      "end": {
+        "line": 35,
+        "column": 3
+      }
+    },
+    "jsdoc": {}
+  },
+  "members": {
+    "__changeSource": {
+      "location": {
+        "start": {
+          "line": 39,
+          "column": 4
+        },
+        "end": {
+          "line": 39,
+          "column": 24
+        }
+      },
+      "type": "variable",
+      "access": "private"
+    },
+    "__remoteWindows": {
+      "location": {
+        "start": {
+          "line": 40,
+          "column": 4
+        },
+        "end": {
+          "line": 40,
+          "column": 25
+        }
+      },
+      "type": "variable",
+      "access": "private"
+    },
+    "__isInitialized": {
+      "location": {
+        "start": {
+          "line": 41,
+          "column": 4
+        },
+        "end": {
+          "line": 41,
+          "column": 26
+        }
+      },
+      "type": "variable",
+      "access": "private"
+    },
+    "syncProperties": {
+      "location": {
+        "start": {
+          "line": 47,
+          "column": 4
+        },
+        "end": {
+          "line": 66,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Initializes property synchronization with the remote window"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "win {Window|cboulanger.eventrecorder.window.RemoteApplication}"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "createUuid": {
+      "location": {
+        "start": {
+          "line": 72,
+          "column": 4
+        },
+        "end": {
+          "line": 80,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Create a pseudo-UUID to avoid name clashes"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{string}",
+            "type": "string",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "_getPropertyNamesToSync": {
+      "location": {
+        "start": {
+          "line": 87,
+          "column": 4
+        },
+        "end": {
+          "line": 92,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Returns an array with all the property names to synchronize. Override\nto refine behavior."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{Array}",
+            "type": "Array",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "protected"
+    },
+    "__initialize": {
+      "location": {
+        "start": {
+          "line": 94,
+          "column": 4
+        },
+        "end": {
+          "line": 126,
+          "column": 5
+        }
+      },
+      "type": "function",
+      "access": "private"
+    },
+    "__handleLocalPropertyChangeEvent": {
+      "location": {
+        "start": {
+          "line": 133,
+          "column": 4
+        },
+        "end": {
+          "line": 140,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Handles the property change events of the instance"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "e {qx.event.type.Data}"
+          }
+        ],
+        "@private": [
+          {
+            "name": "@private",
+            "body": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "private"
+    },
+    "__computePropertyNameFromEventType": {
+      "location": {
+        "start": {
+          "line": 148,
+          "column": 4
+        },
+        "end": {
+          "line": 151,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Given a property change event name, return the name of the property"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "type {String}"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ],
+        "@private": [
+          {
+            "name": "@private",
+            "body": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "private"
+    },
+    "__handleLocalChangeBubbleEvent": {
+      "location": {
+        "start": {
+          "line": 159,
+          "column": 4
+        },
+        "end": {
+          "line": 170,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Broadcasts the 'changeBubble' events of the instance properties"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "e {qx.event.type.Data}"
+          },
+          {
+            "name": "@param",
+            "body": "prop {String} the name of the property that fired the event",
+            "paramName": "prop",
+            "description": " the name of the property that fired the event",
+            "type": "String"
+          }
+        ],
+        "@private": [
+          {
+            "name": "@private",
+            "body": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "private"
+    },
+    "__broadcastEvent": {
+      "location": {
+        "start": {
+          "line": 179,
+          "column": 4
+        },
+        "end": {
+          "line": 187,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Broadcast a message with the given parameters"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "type {String}"
+          },
+          {
+            "name": "@param",
+            "body": "data {*|undefined}"
+          },
+          {
+            "name": "@param",
+            "body": "oldData {*|undefined}"
+          }
+        ],
+        "@private": [
+          {
+            "name": "@private",
+            "body": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "private"
+    },
+    "__sendEventMessage": {
+      "location": {
+        "start": {
+          "line": 197,
+          "column": 4
+        },
+        "end": {
+          "line": 211,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Sends a event message to the given window."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "win {Window}"
+          },
+          {
+            "name": "@param",
+            "body": "type {String}"
+          },
+          {
+            "name": "@param",
+            "body": "data {*|undefined}"
+          },
+          {
+            "name": "@param",
+            "body": "oldData {*|undefined}"
+          }
+        ],
+        "@private": [
+          {
+            "name": "@private",
+            "body": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "private"
+    },
+    "__sendMessage": {
+      "location": {
+        "start": {
+          "line": 219,
+          "column": 4
+        },
+        "end": {
+          "line": 228,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Send a message to the peer using the postMessage API"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "win {Window}"
+          },
+          {
+            "name": "@param",
+            "body": "message {String}"
+          }
+        ],
+        "@private": [
+          {
+            "name": "@private",
+            "body": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "private"
+    },
+    "__handleIncomingMessage": {
+      "location": {
+        "start": {
+          "line": 236,
+          "column": 4
+        },
+        "end": {
+          "line": 263,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "If the incoming message is a property change event sent by the peer,\napply the new value"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "message {Object}"
+          }
+        ],
+        "@private": [
+          {
+            "name": "@private",
+            "body": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "private"
+    },
+    "__handleRemoteReadyEvent": {
+      "location": {
+        "start": {
+          "line": 269,
+          "column": 4
+        },
+        "end": {
+          "line": 278,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "When receiving the \"ready\" event from a window, send property state"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "message {Object}"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "private"
+    },
+    "__sendReadyEvent": {
+      "location": {
+        "start": {
+          "line": 285,
+          "column": 4
+        },
+        "end": {
+          "line": 287,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Send the ready event to another window, usually the opener"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "win {Window}"
+          }
+        ],
+        "@private": [
+          {
+            "name": "@private",
+            "body": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "private"
+    },
+    "__handleRemotePropertyChangeEvent": {
+      "location": {
+        "start": {
+          "line": 294,
+          "column": 4
+        },
+        "end": {
+          "line": 311,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Handle the change event for normal property values"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "message {Object}"
+          }
+        ],
+        "@private": [
+          {
+            "name": "@private",
+            "body": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "private"
+    },
+    "__handleRemoteChangeBubbleEvent": {
+      "location": {
+        "start": {
+          "line": 318,
+          "column": 4
+        },
+        "end": {
+          "line": 347,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Handle the changeBubble event for qooxdoo data objects"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "message {Object}"
+          }
+        ],
+        "@private": [
+          {
+            "name": "@private",
+            "body": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "private"
+    },
+    "__serialize": {
+      "location": {
+        "start": {
+          "line": 357,
+          "column": 4
+        },
+        "end": {
+          "line": 389,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Serialize an arbitrary value, including many qooxdoo objects,\nto a JSON value that can be sent to a remote target"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "object {qx.core.Object|*}"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{*|Array|String|Object}",
+            "type": "*|Array|String|Object",
+            "description": ""
+          }
+        ],
+        "@private": [
+          {
+            "name": "@private",
+            "body": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "private"
+    },
+    "__unserialize": {
+      "location": {
+        "start": {
+          "line": 401,
+          "column": 4
+        },
+        "end": {
+          "line": 439,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Unserialize a JSON object, creating suitable qooxdoo objects from the\nmetadata in the JSON"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "object {Object|Array|*}\n   The json object which will be unserialized into a qooxdoo object if\n   it has been serialized from a qooxdoo object. Normal object and\n   primitive values will be used as-is.",
+            "paramName": "object",
+            "description": "\n   The json object which will be unserialized into a qooxdoo object if\n   it has been serialized from a qooxdoo object. Normal object and\n   primitive values will be used as-is.",
+            "type": [
+              "Object",
+              "Array",
+              "*"
+            ]
+          },
+          {
+            "name": "@param",
+            "body": "includeBubbleEvents {Boolean} Defaults to true",
+            "paramName": "includeBubbleEvents",
+            "description": " Defaults to true",
+            "type": "Boolean"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{qx.core.Object|*}",
+            "type": "qx.core.Object|*",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "private"
+    }
+  },
+  "descendants": []
+}

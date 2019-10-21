@@ -1,0 +1,42 @@
+{
+  "version": 3,
+  "sources": [
+    "/home/travis/build/cboulanger/eventrecorder/qx_packages/ergobyte_qookery_892f44d1d1ae5d65c7dd99b18da6876de2f2a920/qookery/source/class/qookery/internal/formats/CustomFormat.js"
+  ],
+  "names": [
+    "qx",
+    "Bootstrap",
+    "executePendingDefers",
+    "$$dbClassInfo",
+    "Class",
+    "define",
+    "extend",
+    "core",
+    "Object",
+    "implement",
+    "util",
+    "format",
+    "IFormat",
+    "construct",
+    "options",
+    "expression",
+    "__formatFunction",
+    "Function",
+    "Error",
+    "members",
+    "obj",
+    "apply",
+    "e",
+    "error",
+    "parse",
+    "str",
+    "qookery",
+    "internal",
+    "formats",
+    "CustomFormat"
+  ],
+  "mappings": ";;;;;;;;;;;;;;;;AAAAA,EAAAA,EAAE,CAACC,SAAH,CAAaC,oBAAb,CAAkCC,aAAlC;;AAAA;;;;;;;;;;;;;;;;;AAkBAH,EAAAA,EAAE,CAACI,KAAH,CAASC,MAAT,CAAgB,uCAAhB,EAAyD;AAExDC,IAAAA,MAAM,EAAEN,EAAE,CAACO,IAAH,CAAQC,MAFwC;AAGxDC,IAAAA,SAAS,EAAE,CAAET,EAAE,CAACU,IAAH,CAAQC,MAAR,CAAeC,OAAjB,CAH6C;AAKxDC,IAAAA,SAAS,EAAE,mBAASC,OAAT,EAAkB;AAC5B;AACA,UAAIC,UAAU,GAAGD,OAAO,CAAC,YAAD,CAAxB;;AACA,UAAGC,UAAH,EAAe;AACd,aAAKC,gBAAL,GAAwB,IAAIC,QAAJ,CAAa,CAAE,OAAF,CAAb,EAA0B,YAAYF,UAAZ,GAAyB,IAAnD,CAAxB;AACA;AACA;;AACD,UAAIJ,MAAM,GAAGG,OAAO,CAAC,QAAD,CAApB;;AACA,UAAGH,MAAH,EAAW;AACV,aAAKK,gBAAL,GAAwBL,MAAxB;AACA;AACA;;AACD,YAAM,IAAIO,KAAJ,CAAU,4CAAV,CAAN;AACA,KAlBuD;AAoBxDC,IAAAA,OAAO,EAAE;AAERH,MAAAA,gBAAgB,EAAE,IAFV;AAIRL,MAAAA,MAAM,EAAE,gBAASS,GAAT,EAAc;AACrB,YAAG,CAAC,KAAKJ,gBAAT,EAA2B,OAAOI,GAAP;;AAC3B,YAAI;AACH,iBAAO,KAAKJ,gBAAL,CAAsBK,KAAtB,CAA4B,IAA5B,EAAkC,CAAED,GAAF,CAAlC,CAAP;AACA,SAFD,CAGA,OAAME,CAAN,EAAS;AACR,eAAKC,KAAL,CAAW,8BAAX,EAA2CD,CAA3C;AACA,iBAAO,EAAP;AACA;AACD,OAbO;AAeRE,MAAAA,KAAK,EAAE,eAASC,GAAT,EAAc;AACpB,cAAM,IAAIP,KAAJ,CAAU,0BAAV,CAAN;AACA;AAjBO;AApB+C,GAAzD;AAlBAQ,EAAAA,OAAO,CAACC,QAAR,CAAiBC,OAAjB,CAAyBC,YAAzB,CAAsC1B,aAAtC,GAAsDA,aAAtD",
+  "sourcesContent": [
+    "/*\n\tQookery - Declarative UI Building for Qooxdoo\n\n\tCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\n\tLicensed under the Apache License, Version 2.0 (the \"License\");\n\tyou may not use this file except in compliance with the License.\n\tYou may obtain a copy of the License at\n\n\t\thttp://www.apache.org/licenses/LICENSE-2.0\n\n\tUnless required by applicable law or agreed to in writing, software\n\tdistributed under the License is distributed on an \"AS IS\" BASIS,\n\tWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n\tSee the License for the specific language governing permissions and\n\tlimitations under the License.\n*/\n\nqx.Class.define(\"qookery.internal.formats.CustomFormat\", {\n\n\textend: qx.core.Object,\n\timplement: [ qx.util.format.IFormat ],\n\n\tconstruct: function(options) {\n\t\tthis.base(arguments);\n\t\tvar expression = options[\"expression\"];\n\t\tif(expression) {\n\t\t\tthis.__formatFunction = new Function([ \"value\" ], \"return(\" + expression + \");\");\n\t\t\treturn;\n\t\t}\n\t\tvar format = options[\"format\"];\n\t\tif(format) {\n\t\t\tthis.__formatFunction = format;\n\t\t\treturn;\n\t\t}\n\t\tthrow new Error(\"An expression or function must be provided\");\n\t},\n\n\tmembers: {\n\n\t\t__formatFunction: null,\n\n\t\tformat: function(obj) {\n\t\t\tif(!this.__formatFunction) return obj;\n\t\t\ttry {\n\t\t\t\treturn this.__formatFunction.apply(this, [ obj ]);\n\t\t\t}\n\t\t\tcatch(e) {\n\t\t\t\tthis.error(\"Error applying custom format\", e);\n\t\t\t\treturn \"\";\n\t\t\t}\n\t\t},\n\n\t\tparse: function(str) {\n\t\t\tthrow new Error(\"Parsing is not supported\");\n\t\t}\n\t}\n});\n"
+  ]
+}

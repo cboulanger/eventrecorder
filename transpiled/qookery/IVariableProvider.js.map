@@ -1,0 +1,25 @@
+{
+  "version": 3,
+  "sources": [
+    "/home/travis/build/cboulanger/eventrecorder/qx_packages/ergobyte_qookery_892f44d1d1ae5d65c7dd99b18da6876de2f2a920/qookery/source/class/qookery/IVariableProvider.js"
+  ],
+  "names": [
+    "qx",
+    "Bootstrap",
+    "executePendingDefers",
+    "$$dbClassInfo",
+    "Interface",
+    "define",
+    "members",
+    "getVariable",
+    "variableName",
+    "setVariable",
+    "value",
+    "qookery",
+    "IVariableProvider"
+  ],
+  "mappings": ";;;;;;;;;AAAAA,EAAAA,EAAE,CAACC,SAAH,CAAaC,oBAAb,CAAkCC,aAAlC;;AAAA;;;;;;;;;;;;;;;;;;AAkBA;;;AAGAH,EAAAA,EAAE,CAACI,SAAH,CAAaC,MAAb,CAAoB,2BAApB,EAAiD;AAEhDC,IAAAA,OAAO,EAAE;AAER;;;;;;;AAOAC,MAAAA,WAAW,EAAE,qBAASC,YAAT,EAAuB,CAAG,CAT/B;;AAWR;;;;;;AAMAC,MAAAA,WAAW,EAAE,qBAASD,YAAT,EAAuBE,KAAvB,EAA8B,CAAG;AAjBtC;AAFuC,GAAjD;AArBAC,EAAAA,OAAO,CAACC,iBAAR,CAA0BT,aAA1B,GAA0CA,aAA1C",
+  "sourcesContent": [
+    "/*\n\tQookery - Declarative UI Building for Qooxdoo\n\n\tCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\n\tLicensed under the Apache License, Version 2.0 (the \"License\");\n\tyou may not use this file except in compliance with the License.\n\tYou may obtain a copy of the License at\n\n\t\thttp://www.apache.org/licenses/LICENSE-2.0\n\n\tUnless required by applicable law or agreed to in writing, software\n\tdistributed under the License is distributed on an \"AS IS\" BASIS,\n\tWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n\tSee the License for the specific language governing permissions and\n\tlimitations under the License.\n*/\n\n/**\n * Interface for classes that provide the value of variables when asked\n */\nqx.Interface.define(\"qookery.IVariableProvider\", {\n\n\tmembers: {\n\n\t\t/**\n\t\t * Get a variable's value\n\t\t *\n\t\t * @param variableName {String} the name of the variable\n\t\t *\n\t\t * @return {any} variable value or <code>undefined</code>\n\t\t */\n\t\tgetVariable: function(variableName) { },\n\n\t\t/**\n\t\t * Set a variable's value\n\t\t *\n\t\t * @param variableName {String} the name of the variable\n\t\t * @param value {any} the new variable value\n\t\t */\n\t\tsetVariable: function(variableName, value) { }\n\t}\n});\n"
+  ]
+}

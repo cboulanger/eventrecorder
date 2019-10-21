@@ -1,0 +1,37 @@
+{
+  "version": 3,
+  "sources": [
+    "/home/travis/build/cboulanger/eventrecorder/qx_packages/ergobyte_qookery_892f44d1d1ae5d65c7dd99b18da6876de2f2a920/qookery/source/class/qookery/internal/components/TabViewPageComponent.js"
+  ],
+  "names": [
+    "qx",
+    "Bootstrap",
+    "executePendingDefers",
+    "$$dbClassInfo",
+    "Class",
+    "define",
+    "extend",
+    "qookery",
+    "internal",
+    "components",
+    "ContainerComponent",
+    "construct",
+    "parentComponent",
+    "members",
+    "getAttributeType",
+    "attributeName",
+    "_createContainerWidget",
+    "page",
+    "ui",
+    "tabview",
+    "Page",
+    "getAttribute",
+    "_applyAttribute",
+    "_applyWidgetAttributes",
+    "TabViewPageComponent"
+  ],
+  "mappings": ";;;;;;;;;;;;;;AAAAA,EAAAA,EAAE,CAACC,SAAH,CAAaC,oBAAb,CAAkCC,aAAlC;;AAAA;;;;;;;;;;;;;;;;;AAkBAH,EAAAA,EAAE,CAACI,KAAH,CAASC,MAAT,CAAgB,kDAAhB,EAAoE;AAEnEC,IAAAA,MAAM,EAAEC,OAAO,CAACC,QAAR,CAAiBC,UAAjB,CAA4BC,kBAF+B;AAInEC,IAAAA,SAAS,EAAE,mBAASC,eAAT,EAA0B;AACpC,4EAAqBA,eAArB;AACA,KANkE;AAQnEC,IAAAA,OAAO,EAAE;AAER;AAEAC,MAAAA,gBAAgB,EAAE,0BAASC,aAAT,EAAwB;AACzC,gBAAOA,aAAP;AACA,eAAK,mBAAL;AAA0B,mBAAO,SAAP;AAD1B;;AAGA,2GAA4BA,aAA5B;AACA,OATO;AAWR;AAEAC,MAAAA,sBAAsB,EAAE,kCAAW;AAClC,YAAIC,IAAI,GAAG,IAAIjB,EAAE,CAACkB,EAAH,CAAMC,OAAN,CAAcC,IAAlB,CAAuB,KAAKC,YAAL,CAAkB,OAAlB,EAA2B,IAA3B,CAAvB,EAAyD,KAAKA,YAAL,CAAkB,MAAlB,EAA0B,IAA1B,CAAzD,CAAX;;AACA,aAAKC,eAAL,CAAqB,mBAArB,EAA0CL,IAA1C,EAAgD,iBAAhD;;AACA,aAAKM,sBAAL,CAA4BN,IAA5B;;AACA,eAAOA,IAAP;AACA;AAlBO;AAR0D,GAApE;AAlBAV,EAAAA,OAAO,CAACC,QAAR,CAAiBC,UAAjB,CAA4Be,oBAA5B,CAAiDrB,aAAjD,GAAiEA,aAAjE",
+  "sourcesContent": [
+    "/*\n\tQookery - Declarative UI Building for Qooxdoo\n\n\tCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\n\tLicensed under the Apache License, Version 2.0 (the \"License\");\n\tyou may not use this file except in compliance with the License.\n\tYou may obtain a copy of the License at\n\n\t\thttp://www.apache.org/licenses/LICENSE-2.0\n\n\tUnless required by applicable law or agreed to in writing, software\n\tdistributed under the License is distributed on an \"AS IS\" BASIS,\n\tWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n\tSee the License for the specific language governing permissions and\n\tlimitations under the License.\n*/\n\nqx.Class.define(\"qookery.internal.components.TabViewPageComponent\", {\n\n\textend: qookery.internal.components.ContainerComponent,\n\n\tconstruct: function(parentComponent) {\n\t\tthis.base(arguments, parentComponent);\n\t},\n\n\tmembers: {\n\n\t\t// Metadata\n\n\t\tgetAttributeType: function(attributeName) {\n\t\t\tswitch(attributeName) {\n\t\t\tcase \"show-close-button\": return \"Boolean\";\n\t\t\t}\n\t\t\treturn this.base(arguments, attributeName);\n\t\t},\n\n\t\t// Construction\n\n\t\t_createContainerWidget: function() {\n\t\t\tvar page = new qx.ui.tabview.Page(this.getAttribute(\"label\", null), this.getAttribute(\"icon\", null));\n\t\t\tthis._applyAttribute(\"show-close-button\", page, \"showCloseButton\");\n\t\t\tthis._applyWidgetAttributes(page);\n\t\t\treturn page;\n\t\t}\n\t}\n});\n"
+  ]
+}

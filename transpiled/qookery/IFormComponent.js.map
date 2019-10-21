@@ -1,0 +1,52 @@
+{
+  "version": 3,
+  "sources": [
+    "/home/travis/build/cboulanger/eventrecorder/qx_packages/ergobyte_qookery_892f44d1d1ae5d65c7dd99b18da6876de2f2a920/qookery/source/class/qookery/IFormComponent.js"
+  ],
+  "names": [
+    "qx",
+    "Bootstrap",
+    "executePendingDefers",
+    "$$dbClassInfo",
+    "Interface",
+    "define",
+    "extend",
+    "qookery",
+    "IContainerComponent",
+    "IVariableProvider",
+    "statics",
+    "A_SERVICE_RESOLVER",
+    "A_TRANSLATION_PREFIX",
+    "A_VARIABLES",
+    "events",
+    "properties",
+    "icon",
+    "check",
+    "nullable",
+    "model",
+    "dereference",
+    "event",
+    "title",
+    "valid",
+    "init",
+    "members",
+    "isReady",
+    "markAsReady",
+    "getComponent",
+    "componentId",
+    "required",
+    "getParentForm",
+    "getModelProvider",
+    "resolveService",
+    "serviceName",
+    "getScriptingContext",
+    "validate",
+    "close",
+    "result",
+    "IFormComponent"
+  ],
+  "mappings": ";;;;;;;;;;;;;;;AAAAA,EAAAA,EAAE,CAACC,SAAH,CAAaC,oBAAb,CAAkCC,aAAlC;;AAAA;;;;;;;;;;;;;;;;;;AAkBA;;;;;;;;;;;;;;;;;AAiBAH,EAAAA,EAAE,CAACI,SAAH,CAAaC,MAAb,CAAoB,wBAApB,EAA8C;AAE7CC,IAAAA,MAAM,EAAE,CAAEC,OAAO,CAACC,mBAAV,EAA+BD,OAAO,CAACE,iBAAvC,CAFqC;AAI7CC,IAAAA,OAAO,EAAE;AAER;;AAEA;AACAC,MAAAA,kBAAkB,EAAE,kDALZ;;AAOR;AACAC,MAAAA,oBAAoB,EAAE,oDARd;;AAUR;AACAC,MAAAA,WAAW,EAAE;AAXL,KAJoC;AAkB7CC,IAAAA,MAAM,EAAE;AAEP;AACA,eAAS;AAHF,KAlBqC;AAwB7CC,IAAAA,UAAU,EAAE;AAEX;AACAC,MAAAA,IAAI,EAAE;AAAEC,QAAAA,KAAK,EAAE,QAAT;AAAmBC,QAAAA,QAAQ,EAAE;AAA7B,OAHK;;AAKX;AACAC,MAAAA,KAAK,EAAE;AAAED,QAAAA,QAAQ,EAAE,IAAZ;AAAkBE,QAAAA,WAAW,EAAE,IAA/B;AAAqCC,QAAAA,KAAK,EAAE;AAA5C,OANI;;AAQX;AACAC,MAAAA,KAAK,EAAE;AAAEL,QAAAA,KAAK,EAAE,QAAT;AAAmBC,QAAAA,QAAQ,EAAE;AAA7B,OATI;;AAWX;AACAK,MAAAA,KAAK,EAAE;AAAEN,QAAAA,KAAK,EAAE,SAAT;AAAoBC,QAAAA,QAAQ,EAAE,KAA9B;AAAqCM,QAAAA,IAAI,EAAE,IAA3C;AAAiDH,QAAAA,KAAK,EAAE;AAAxD;AAZI,KAxBiC;AAuC7CI,IAAAA,OAAO,EAAE;AAER;;AAEA;;;;;AAKAC,MAAAA,OAAO,EAAE,mBAAW,CAAG,CATf;;AAWR;;;AAGAC,MAAAA,WAAW,EAAE,uBAAW,CAAG,CAdnB;AAgBR;;AAEA;;;;;;;;AAQAC,MAAAA,YAAY,EAAE,sBAASC,WAAT,EAAsBC,QAAtB,EAAgC,CAAG,CA1BzC;;AA4BR;;;AAGAC,MAAAA,aAAa,EAAE,yBAAW,CAAG,CA/BrB;AAiCR;;AAEA;;;AAGAC,MAAAA,gBAAgB,EAAE,4BAAW,CAAG,CAtCxB;;AAwCR;;;;;;;;;AASAC,MAAAA,cAAc,EAAE,wBAASC,WAAT,EAAsB,CAAG,CAjDjC;AAmDR;;AAEA;;;;;AAKAC,MAAAA,mBAAmB,EAAE,+BAAW,CAAG,CA1D3B;AA4DR;;AAEA;;;;;AAKAC,MAAAA,QAAQ,EAAE,oBAAW,CAAG,CAnEhB;;AAqER;;;;;AAKAC,MAAAA,KAAK,EAAE,eAASC,MAAT,EAAiB,CAAG;AA1EnB;AAvCoC,GAA9C;AAnCA/B,EAAAA,OAAO,CAACgC,cAAR,CAAuBpC,aAAvB,GAAuCA,aAAvC",
+  "sourcesContent": [
+    "/*\n\tQookery - Declarative UI Building for Qooxdoo\n\n\tCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\n\tLicensed under the Apache License, Version 2.0 (the \"License\");\n\tyou may not use this file except in compliance with the License.\n\tYou may obtain a copy of the License at\n\n\t\thttp://www.apache.org/licenses/LICENSE-2.0\n\n\tUnless required by applicable law or agreed to in writing, software\n\tdistributed under the License is distributed on an \"AS IS\" BASIS,\n\tWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n\tSee the License for the specific language governing permissions and\n\tlimitations under the License.\n*/\n\n/**\n * Forms are container components that provide a number of facilities to their descendants\n *\n * <p>Descendant components can rely on their containing form to:</p>\n *\n * <ul>\n *\t<li>Maintain and resolve URI prefixes</li>\n *\t<li>Resolve services via dependency injection</li>\n *\t<li>Require, define or otherwise access form-level variables</li>\n *\t<li>Execute JavaScript source code into a common scripting context</li>\n *\t<li>Interact with a model, either directly of through connections</li>\n *\t<li>Use unique, in the scope of the form, component identifiers</li>\n *\t<li>Run form-level validation of current model</li>\n *\t<li>Translate messages using form-local translation identifiers</li>\n *\t<li>Register objects for disposal on form destruction</li>\n *</ul>\n */\nqx.Interface.define(\"qookery.IFormComponent\", {\n\n\textend: [ qookery.IContainerComponent, qookery.IVariableProvider ],\n\n\tstatics: {\n\n\t\t// Attribute names\n\n\t\t/** {Function} The service resolver associated with form */\n\t\tA_SERVICE_RESOLVER: \"{http://www.qookery.org/ns/Form}service-resolver\",\n\n\t\t/** {String} A string to prepend to all form-local translation message IDs */\n\t\tA_TRANSLATION_PREFIX: \"{http://www.qookery.org/ns/Form}translation-prefix\",\n\n\t\t/** {Map} Additional variables provided by the caller of the form parser */\n\t\tA_VARIABLES: \"{http://www.qookery.org/ns/Form}variables\"\n\t},\n\n\tevents: {\n\n\t\t/** This event is fired when the form has been closed. Its value is set to the form's <code>result</code> variable. */\n\t\t\"close\": \"qx.event.type.Data\"\n\t},\n\n\tproperties: {\n\n\t\t/** An icon for UI elements that present this form */\n\t\ticon: { check: \"String\", nullable: true },\n\n\t\t/** The form's model for data binding */\n\t\tmodel: { nullable: true, dereference: true, event: \"changeModel\" },\n\n\t\t/** A title for UI elements that present this form */\n\t\ttitle: { check: \"String\", nullable: true },\n\n\t\t/** A boolean value set to <code>false</code> when the most recent validation failed */\n\t\tvalid: { check: \"Boolean\", nullable: false, init: true, event: \"changeValid\" }\n\t},\n\n\tmembers: {\n\n\t\t// Lifecycle\n\n\t\t/**\n\t\t * Test if form is ready for processing user input\n\t\t *\n\t\t * <p>A form's readiness is asserted by the application via the markAsReady() method.</p>\n\t\t */\n\t\tisReady: function() { },\n\n\t\t/**\n\t\t * Assert that the form is ready for processing user input\n\t\t */\n\t\tmarkAsReady: function() { },\n\n\t\t// Access to other components\n\n\t\t/**\n\t\t * Return a component registered within this form\n\t\t *\n\t\t * @param componentId {String} the unique identifier of the requested component\n\t\t * @param required {Boolean?} if <code>true</code>, throw an error in case component is not found\n\t\t *\n\t\t * @return {qookery.IComponent} component or <code>null</code> if not found\n\t\t */\n\t\tgetComponent: function(componentId, required) { },\n\n\t\t/**\n\t\t * Return the form that is the parent of this form, or <code>null</code> if no such linkage exists\n\t\t */\n\t\tgetParentForm: function() { },\n\n\t\t// Services\n\n\t\t/**\n\t\t * Return the form's model provider if set, or the default one otherwise\n\t\t */\n\t\tgetModelProvider: function() { },\n\n\t\t/**\n\t\t * Attempt to resolve a service by using installed service resolver\n\t\t *\n\t\t * <p>This method will delegate the request to parent form if service is unavailable</p>\n\t\t *\n\t\t * @param serviceName {String} the name of wanted service\n\t\t *\n\t\t * @return {any} required service or <code>null</code> if not available\n\t\t */\n\t\tresolveService: function(serviceName) { },\n\n\t\t// Scripting\n\n\t\t/**\n\t\t * Return the JavaScript context that is used by Qookery scripting code\n\t\t *\n\t\t * @return {Object} a suitable JavaScript context\n\t\t */\n\t\tgetScriptingContext: function() { },\n\n\t\t// Operations\n\n\t\t/**\n\t\t * Validate form contents\n\t\t *\n\t\t * @return {qookery.util.ValidationError?} error found or <code>null</code> in case form is valid\n\t\t */\n\t\tvalidate: function() { },\n\n\t\t/**\n\t\t * Close the form\n\t\t *\n\t\t * @param result {any} optional value to set into the <code>result</code> variable\n\t\t */\n\t\tclose: function(result) { }\n\t}\n});\n"
+  ]
+}

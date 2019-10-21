@@ -1,0 +1,42 @@
+{
+  "version": 3,
+  "sources": [
+    "/home/travis/build/cboulanger/eventrecorder/qx_packages/ergobyte_qookery_892f44d1d1ae5d65c7dd99b18da6876de2f2a920/qookery/source/class/qookery/internal/components/ScrollComponent.js"
+  ],
+  "names": [
+    "qx",
+    "Bootstrap",
+    "executePendingDefers",
+    "$$dbClassInfo",
+    "Class",
+    "define",
+    "extend",
+    "qookery",
+    "internal",
+    "components",
+    "ContainerComponent",
+    "construct",
+    "parentComponent",
+    "members",
+    "__composite",
+    "getAttributeType",
+    "attributeName",
+    "_createContainerWidget",
+    "scroll",
+    "ui",
+    "container",
+    "Scroll",
+    "Composite",
+    "add",
+    "_applyAttribute",
+    "_applyWidgetAttributes",
+    "getAttribute",
+    "defaultValue",
+    "getMainWidget",
+    "ScrollComponent"
+  ],
+  "mappings": ";;;;;;;;;;;;;;;AAAAA,EAAAA,EAAE,CAACC,SAAH,CAAaC,oBAAb,CAAkCC,aAAlC;;AAAA;;;;;;;;;;;;;;;;;;AAkBA;;;AAGAH,EAAAA,EAAE,CAACI,KAAH,CAASC,MAAT,CAAgB,6CAAhB,EAA+D;AAE9DC,IAAAA,MAAM,EAAEC,OAAO,CAACC,QAAR,CAAiBC,UAAjB,CAA4BC,kBAF0B;AAI9DC,IAAAA,SAAS,EAAE,mBAASC,eAAT,EAA0B;AACpC,4EAAqBA,eAArB;AACA,KAN6D;AAQ9DC,IAAAA,OAAO,EAAE;AAERC,MAAAA,WAAW,EAAE,IAFL;AAIR;AAEAC,MAAAA,gBAAgB,EAAE,0BAASC,aAAT,EAAwB;AACzC,gBAAOA,aAAP;AACA,eAAK,iBAAL;AAAwB,mBAAO,aAAP;;AACxB,eAAK,wBAAL;AAA+B,mBAAO,SAAP;;AAC/B,eAAK,sBAAL;AAA6B,mBAAO,SAAP;;AAC7B,eAAK,uBAAL;AAA8B,mBAAO,SAAP;;AAC9B,eAAK,qBAAL;AAA4B,mBAAO,SAAP;;AAC5B,eAAK,aAAL;AAAoB,mBAAO,QAAP;;AACpB,eAAK,aAAL;AAAoB,mBAAO,QAAP;AAPpB;;AASA,sGAA4BA,aAA5B;AACA,OAjBO;AAmBR;AAEAC,MAAAA,sBAAsB,EAAE,kCAAW;AAClC,YAAIC,MAAM,GAAG,IAAIlB,EAAE,CAACmB,EAAH,CAAMC,SAAN,CAAgBC,MAApB,EAAb;AACA,aAAKP,WAAL,GAAmB,IAAId,EAAE,CAACmB,EAAH,CAAMC,SAAN,CAAgBE,SAApB,EAAnB;AACAJ,QAAAA,MAAM,CAACK,GAAP,CAAW,KAAKT,WAAhB;;AACA,aAAKU,eAAL,CAAqB,iBAArB,EAAwCN,MAAxC,EAAgD,gBAAhD;;AACA,aAAKM,eAAL,CAAqB,qBAArB,EAA4CN,MAA5C,EAAoD,mBAApD;;AACA,aAAKM,eAAL,CAAqB,uBAArB,EAA8CN,MAA9C,EAAsD,qBAAtD;;AACA,aAAKM,eAAL,CAAqB,wBAArB,EAA+CN,MAA/C,EAAuD,sBAAvD;;AACA,aAAKM,eAAL,CAAqB,sBAArB,EAA6CN,MAA7C,EAAqD,oBAArD;;AACA,aAAKM,eAAL,CAAqB,aAArB,EAAoCN,MAApC,EAA4C,YAA5C;;AACA,aAAKM,eAAL,CAAqB,aAArB,EAAoCN,MAApC,EAA4C,YAA5C;;AACA,aAAKO,sBAAL,CAA4BP,MAA5B;;AACA,eAAOA,MAAP;AACA,OAlCO;AAoCRQ,MAAAA,YAAY,EAAE,sBAASV,aAAT,EAAwBW,YAAxB,EAAsC;AACnD,YAAGX,aAAa,KAAK,QAArB,EAA+B,OAAO,MAAP;AAC/B,kGAA4BA,aAA5B,EAA2CW,YAA3C;AACA,OAvCO;AAyCRC,MAAAA,aAAa,EAAE,yBAAW;AACzB,eAAO,KAAKd,WAAZ;AACA;AA3CO;AARqD,GAA/D;AArBAP,EAAAA,OAAO,CAACC,QAAR,CAAiBC,UAAjB,CAA4BoB,eAA5B,CAA4C1B,aAA5C,GAA4DA,aAA5D",
+  "sourcesContent": [
+    "/*\n\tQookery - Declarative UI Building for Qooxdoo\n\n\tCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\n\tLicensed under the Apache License, Version 2.0 (the \"License\");\n\tyou may not use this file except in compliance with the License.\n\tYou may obtain a copy of the License at\n\n\t\thttp://www.apache.org/licenses/LICENSE-2.0\n\n\tUnless required by applicable law or agreed to in writing, software\n\tdistributed under the License is distributed on an \"AS IS\" BASIS,\n\tWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n\tSee the License for the specific language governing permissions and\n\tlimitations under the License.\n*/\n\n/**\n * Component wrapping a Qooxdoo qx.ui.container.Scroll\n */\nqx.Class.define(\"qookery.internal.components.ScrollComponent\", {\n\n\textend: qookery.internal.components.ContainerComponent,\n\n\tconstruct: function(parentComponent) {\n\t\tthis.base(arguments, parentComponent);\n\t},\n\n\tmembers: {\n\n\t\t__composite: null,\n\n\t\t// Metadata\n\n\t\tgetAttributeType: function(attributeName) {\n\t\t\tswitch(attributeName) {\n\t\t\tcase \"content-padding\": return \"IntegerList\";\n\t\t\tcase \"content-padding-bottom\": return \"Integer\";\n\t\t\tcase \"content-padding-left\": return \"Integer\";\n\t\t\tcase \"content-padding-right\": return \"Integer\";\n\t\t\tcase \"content-padding-top\": return \"Integer\";\n\t\t\tcase \"scrollbar-x\": return \"String\";\n\t\t\tcase \"scrollbar-y\": return \"String\";\n\t\t\t}\n\t\t\treturn this.base(arguments, attributeName);\n\t\t},\n\n\t\t// Construction\n\n\t\t_createContainerWidget: function() {\n\t\t\tvar scroll = new qx.ui.container.Scroll();\n\t\t\tthis.__composite = new qx.ui.container.Composite();\n\t\t\tscroll.add(this.__composite);\n\t\t\tthis._applyAttribute(\"content-padding\", scroll, \"contentPadding\");\n\t\t\tthis._applyAttribute(\"content-padding-top\", scroll, \"contentPaddingTop\");\n\t\t\tthis._applyAttribute(\"content-padding-right\", scroll, \"contentPaddingRight\");\n\t\t\tthis._applyAttribute(\"content-padding-bottom\", scroll, \"contentPaddingBottom\");\n\t\t\tthis._applyAttribute(\"content-padding-left\", scroll, \"contentPaddingLeft\");\n\t\t\tthis._applyAttribute(\"scrollbar-x\", scroll, \"scrollbarX\");\n\t\t\tthis._applyAttribute(\"scrollbar-y\", scroll, \"scrollbarY\");\n\t\t\tthis._applyWidgetAttributes(scroll);\n\t\t\treturn scroll;\n\t\t},\n\n\t\tgetAttribute: function(attributeName, defaultValue) {\n\t\t\tif(attributeName === \"layout\") return \"none\";\n\t\t\treturn this.base(arguments, attributeName, defaultValue);\n\t\t},\n\n\t\tgetMainWidget: function() {\n\t\t\treturn this.__composite;\n\t\t}\n\t}\n});\n"
+  ]
+}

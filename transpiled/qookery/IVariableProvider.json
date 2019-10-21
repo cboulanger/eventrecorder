@@ -1,0 +1,114 @@
+{
+  "className": "qookery.IVariableProvider",
+  "packageName": "qookery",
+  "name": "IVariableProvider",
+  "superClass": null,
+  "interfaces": [],
+  "mixins": [],
+  "functionName": null,
+  "clazz": {
+    "location": {
+      "start": {
+        "line": 22,
+        "column": 0
+      },
+      "end": {
+        "line": 43,
+        "column": 3
+      }
+    },
+    "jsdoc": {
+      "@description": [
+        {
+          "name": "@description",
+          "body": "Qookery - Declarative UI Building for Qooxdoo\n\nCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\nLicensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\nhttp:\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License."
+        },
+        {
+          "name": "@description",
+          "body": "Interface for classes that provide the value of variables when asked"
+        }
+      ]
+    }
+  },
+  "type": "interface",
+  "members": {
+    "getVariable": {
+      "location": {
+        "start": {
+          "line": 33,
+          "column": 2
+        },
+        "end": {
+          "line": 33,
+          "column": 41
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Get a variable's value"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "variableName {String} the name of the variable",
+            "paramName": "variableName",
+            "description": " the name of the variable",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{any} variable value or <code>undefined</code>",
+            "type": "any",
+            "description": " variable value or <code>undefined</code>"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "setVariable": {
+      "location": {
+        "start": {
+          "line": 41,
+          "column": 2
+        },
+        "end": {
+          "line": 41,
+          "column": 48
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Set a variable's value"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "variableName {String} the name of the variable",
+            "paramName": "variableName",
+            "description": " the name of the variable",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "value {any} the new variable value",
+            "paramName": "value",
+            "description": " the new variable value",
+            "type": "any"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    }
+  },
+  "descendants": []
+}

@@ -1,0 +1,31 @@
+{
+  "className": "cboulanger.eventrecorder.theme.Color",
+  "packageName": "cboulanger.eventrecorder.theme",
+  "name": "Color",
+  "superClass": "qx.theme.indigo.Color",
+  "interfaces": [],
+  "mixins": [],
+  "functionName": null,
+  "clazz": {
+    "location": {
+      "start": {
+        "line": 11,
+        "column": 0
+      },
+      "end": {
+        "line": 14,
+        "column": 3
+      }
+    },
+    "jsdoc": {
+      "@description": [
+        {
+          "name": "@description",
+          "body": "***********************************************************************\n\nCopyright: 2018 Christian Boulanger\n\nLicense: MIT license\n\nAuthors: Christian Boulanger (cboulanger) info@bibliograph.org\n\n***********************************************************************"
+        }
+      ]
+    }
+  },
+  "type": "theme",
+  "descendants": []
+}

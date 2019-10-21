@@ -1,0 +1,48 @@
+{
+  "version": 3,
+  "sources": [
+    "/home/travis/build/cboulanger/eventrecorder/qx_packages/ergobyte_qookery_892f44d1d1ae5d65c7dd99b18da6876de2f2a920/qookery/source/class/qookery/internal/components/HtmlComponent.js"
+  ],
+  "names": [
+    "qx",
+    "Bootstrap",
+    "executePendingDefers",
+    "$$dbClassInfo",
+    "Class",
+    "define",
+    "extend",
+    "qookery",
+    "internal",
+    "components",
+    "Component",
+    "construct",
+    "parentComponent",
+    "members",
+    "_createWidgets",
+    "html",
+    "ui",
+    "embed",
+    "Html",
+    "getAttribute",
+    "_applyAttribute",
+    "_applyWidgetAttributes",
+    "parseXmlElement",
+    "elementName",
+    "xmlElement",
+    "indexOf",
+    "xml",
+    "Element",
+    "serialize",
+    "setHtml",
+    "getHtml",
+    "getMainWidget",
+    "getDomElement",
+    "getContentElement",
+    "updateAppearance",
+    "HtmlComponent"
+  ],
+  "mappings": ";;;;;;;;;;;;;;;AAAAA,EAAAA,EAAE,CAACC,SAAH,CAAaC,oBAAb,CAAkCC,aAAlC;;AAAA;;;;;;;;;;;;;;;;;AAkBAH,EAAAA,EAAE,CAACI,KAAH,CAASC,MAAT,CAAgB,2CAAhB,EAA6D;AAE5DC,IAAAA,MAAM,EAAEC,OAAO,CAACC,QAAR,CAAiBC,UAAjB,CAA4BC,SAFwB;AAI5DC,IAAAA,SAAS,EAAE,mBAASC,eAAT,EAA0B;AACpC,mEAAqBA,eAArB;AACA,KAN2D;AAQ5DC,IAAAA,OAAO,EAAE;AAERC,MAAAA,cAAc,EAAE,0BAAW;AAC1B,YAAIC,IAAI,GAAG,IAAIf,EAAE,CAACgB,EAAH,CAAMC,KAAN,CAAYC,IAAhB,CAAqB,KAAKC,YAAL,CAAkB,MAAlB,EAA0B,IAA1B,CAArB,CAAX;;AACA,aAAKC,eAAL,CAAqB,YAArB,EAAmCL,IAAnC,EAAyC,WAAzC;;AACA,aAAKK,eAAL,CAAqB,YAArB,EAAmCL,IAAnC,EAAyC,WAAzC;;AACA,aAAKK,eAAL,CAAqB,WAArB,EAAkCL,IAAlC,EAAwC,UAAxC;;AACA,aAAKM,sBAAL,CAA4BN,IAA5B;;AACA,eAAO,CAAEA,IAAF,CAAP;AACA,OATO;AAWRO,MAAAA,eAAe,EAAE,yBAASC,WAAT,EAAsBC,UAAtB,EAAkC;AAClD,YAAGD,WAAW,CAACE,OAAZ,CAAoB,gCAApB,MAA0D,CAA7D,EAAgE,OAAO,KAAP;AAChE,YAAIV,IAAI,GAAGf,EAAE,CAAC0B,GAAH,CAAOC,OAAP,CAAeC,SAAf,CAAyBJ,UAAzB,CAAX;AACA,aAAKK,OAAL,CAAad,IAAb;AACA,eAAO,IAAP;AACA,OAhBO;AAkBRe,MAAAA,OAAO,EAAE,mBAAW;AACnB,eAAO,KAAKC,aAAL,GAAqBD,OAArB,EAAP;AACA,OApBO;AAsBRD,MAAAA,OAAO,EAAE,iBAASd,IAAT,EAAe;AACvB,aAAKgB,aAAL,GAAqBF,OAArB,CAA6Bd,IAA7B;AACA,OAxBO;AA0BRiB,MAAAA,aAAa,EAAE,yBAAW;AACzB,eAAO,KAAKD,aAAL,GAAqBE,iBAArB,GAAyCD,aAAzC,EAAP;AACA,OA5BO;AA8BRE,MAAAA,gBAAgB,EAAE,4BAAW;AAC5B,aAAKH,aAAL,GAAqBG,gBAArB;AACA;AAhCO;AARmD,GAA7D;AAlBA3B,EAAAA,OAAO,CAACC,QAAR,CAAiBC,UAAjB,CAA4B0B,aAA5B,CAA0ChC,aAA1C,GAA0DA,aAA1D",
+  "sourcesContent": [
+    "/*\n\tQookery - Declarative UI Building for Qooxdoo\n\n\tCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\n\tLicensed under the Apache License, Version 2.0 (the \"License\");\n\tyou may not use this file except in compliance with the License.\n\tYou may obtain a copy of the License at\n\n\t\thttp://www.apache.org/licenses/LICENSE-2.0\n\n\tUnless required by applicable law or agreed to in writing, software\n\tdistributed under the License is distributed on an \"AS IS\" BASIS,\n\tWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n\tSee the License for the specific language governing permissions and\n\tlimitations under the License.\n*/\n\nqx.Class.define(\"qookery.internal.components.HtmlComponent\", {\n\n\textend: qookery.internal.components.Component,\n\n\tconstruct: function(parentComponent) {\n\t\tthis.base(arguments, parentComponent);\n\t},\n\n\tmembers: {\n\n\t\t_createWidgets: function() {\n\t\t\tvar html = new qx.ui.embed.Html(this.getAttribute(\"html\", null));\n\t\t\tthis._applyAttribute(\"overflow-x\", html, \"overflowX\");\n\t\t\tthis._applyAttribute(\"overflow-y\", html, \"overflowY\");\n\t\t\tthis._applyAttribute(\"css-class\", html, \"cssClass\");\n\t\t\tthis._applyWidgetAttributes(html);\n\t\t\treturn [ html ];\n\t\t},\n\n\t\tparseXmlElement: function(elementName, xmlElement) {\n\t\t\tif(elementName.indexOf(\"{http://www.w3.org/1999/xhtml}\") !== 0) return false;\n\t\t\tvar html = qx.xml.Element.serialize(xmlElement);\n\t\t\tthis.setHtml(html);\n\t\t\treturn true;\n\t\t},\n\n\t\tgetHtml: function() {\n\t\t\treturn this.getMainWidget().getHtml();\n\t\t},\n\n\t\tsetHtml: function(html) {\n\t\t\tthis.getMainWidget().setHtml(html);\n\t\t},\n\n\t\tgetDomElement: function() {\n\t\t\treturn this.getMainWidget().getContentElement().getDomElement();\n\t\t},\n\n\t\tupdateAppearance: function() {\n\t\t\tthis.getMainWidget().updateAppearance();\n\t\t}\n\t}\n});\n"
+  ]
+}

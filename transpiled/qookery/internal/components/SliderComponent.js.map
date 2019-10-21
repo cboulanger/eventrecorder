@@ -1,0 +1,43 @@
+{
+  "version": 3,
+  "sources": [
+    "/home/travis/build/cboulanger/eventrecorder/qx_packages/ergobyte_qookery_892f44d1d1ae5d65c7dd99b18da6876de2f2a920/qookery/source/class/qookery/internal/components/SliderComponent.js"
+  ],
+  "names": [
+    "qx",
+    "Bootstrap",
+    "executePendingDefers",
+    "$$dbClassInfo",
+    "Class",
+    "define",
+    "extend",
+    "qookery",
+    "internal",
+    "components",
+    "EditableComponent",
+    "construct",
+    "parentComponent",
+    "members",
+    "_createMainWidget",
+    "widget",
+    "ui",
+    "form",
+    "Slider",
+    "_applyWidgetAttributes",
+    "_applyAttribute",
+    "addListener",
+    "event",
+    "_disableValueEvents",
+    "setValue",
+    "getData",
+    "_updateUI",
+    "value",
+    "getMainWidget",
+    "resetValue",
+    "SliderComponent"
+  ],
+  "mappings": ";;;;;;;;;;;;;;AAAAA,EAAAA,EAAE,CAACC,SAAH,CAAaC,oBAAb,CAAkCC,aAAlC;;AAAA;;;;;;;;;;;;;;;;;AAkBAH,EAAAA,EAAE,CAACI,KAAH,CAASC,MAAT,CAAgB,6CAAhB,EAA+D;AAE9DC,IAAAA,MAAM,EAAEC,OAAO,CAACC,QAAR,CAAiBC,UAAjB,CAA4BC,iBAF0B;AAI9DC,IAAAA,SAAS,EAAE,mBAASC,eAAT,EAA0B;AACpC,2EAAqBA,eAArB;AACA,KAN6D;AAQ9DC,IAAAA,OAAO,EAAE;AAERC,MAAAA,iBAAiB,EAAE,6BAAW;AAC7B,YAAIC,MAAM,GAAG,IAAIf,EAAE,CAACgB,EAAH,CAAMC,IAAN,CAAWC,MAAf,EAAb;;AACA,aAAKC,sBAAL,CAA4BJ,MAA5B;;AACA,aAAKK,eAAL,CAAqB,SAArB,EAAgCL,MAAhC,EAAwC,SAAxC;;AACA,aAAKK,eAAL,CAAqB,SAArB,EAAgCL,MAAhC,EAAwC,SAAxC;;AACA,aAAKK,eAAL,CAAqB,WAArB,EAAkCL,MAAlC,EAA0C,UAA1C;;AACA,aAAKK,eAAL,CAAqB,aAArB,EAAoCL,MAApC,EAA4C,YAA5C;;AACAA,QAAAA,MAAM,CAACM,WAAP,CAAmB,aAAnB,EAAkC,UAASC,KAAT,EAAgB;AACjD,cAAG,KAAKC,mBAAR,EAA6B;AAC7B,eAAKC,QAAL,CAAcF,KAAK,CAACG,OAAN,EAAd;AACA,SAHD,EAGG,IAHH;AAIA,eAAOV,MAAP;AACA,OAdO;AAgBRW,MAAAA,SAAS,EAAE,mBAASC,KAAT,EAAgB;AAC1B,YAAG,CAACA,KAAJ,EACC,KAAKC,aAAL,GAAqBC,UAArB,GADD,KAGC,KAAKD,aAAL,GAAqBJ,QAArB,CAA8BG,KAA9B;AACD;AArBO;AARqD,GAA/D;AAlBApB,EAAAA,OAAO,CAACC,QAAR,CAAiBC,UAAjB,CAA4BqB,eAA5B,CAA4C3B,aAA5C,GAA4DA,aAA5D",
+  "sourcesContent": [
+    "/*\n\tQookery - Declarative UI Building for Qooxdoo\n\n\tCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\n\tLicensed under the Apache License, Version 2.0 (the \"License\");\n\tyou may not use this file except in compliance with the License.\n\tYou may obtain a copy of the License at\n\n\t\thttp://www.apache.org/licenses/LICENSE-2.0\n\n\tUnless required by applicable law or agreed to in writing, software\n\tdistributed under the License is distributed on an \"AS IS\" BASIS,\n\tWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n\tSee the License for the specific language governing permissions and\n\tlimitations under the License.\n*/\n\nqx.Class.define(\"qookery.internal.components.SliderComponent\", {\n\n\textend: qookery.internal.components.EditableComponent,\n\n\tconstruct: function(parentComponent) {\n\t\tthis.base(arguments, parentComponent);\n\t},\n\n\tmembers: {\n\n\t\t_createMainWidget: function() {\n\t\t\tvar widget = new qx.ui.form.Slider();\n\t\t\tthis._applyWidgetAttributes(widget);\n\t\t\tthis._applyAttribute(\"minimum\", widget, \"minimum\");\n\t\t\tthis._applyAttribute(\"maximum\", widget, \"maximum\");\n\t\t\tthis._applyAttribute(\"page-step\", widget, \"pageStep\");\n\t\t\tthis._applyAttribute(\"single-step\", widget, \"singleStep\");\n\t\t\twidget.addListener(\"changeValue\", function(event) {\n\t\t\t\tif(this._disableValueEvents) return;\n\t\t\t\tthis.setValue(event.getData());\n\t\t\t}, this);\n\t\t\treturn widget;\n\t\t},\n\n\t\t_updateUI: function(value) {\n\t\t\tif(!value)\n\t\t\t\tthis.getMainWidget().resetValue();\n\t\t\telse\n\t\t\t\tthis.getMainWidget().setValue(value);\n\t\t}\n\t}\n});\n"
+  ]
+}

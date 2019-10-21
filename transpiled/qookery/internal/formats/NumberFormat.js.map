@@ -1,0 +1,40 @@
+{
+  "version": 3,
+  "sources": [
+    "/home/travis/build/cboulanger/eventrecorder/qx_packages/ergobyte_qookery_892f44d1d1ae5d65c7dd99b18da6876de2f2a920/qookery/source/class/qookery/internal/formats/NumberFormat.js"
+  ],
+  "names": [
+    "qx",
+    "Bootstrap",
+    "executePendingDefers",
+    "$$dbClassInfo",
+    "Class",
+    "define",
+    "extend",
+    "util",
+    "format",
+    "NumberFormat",
+    "construct",
+    "options",
+    "__setOptions",
+    "members",
+    "key",
+    "__setOption",
+    "value",
+    "setGroupingUsed",
+    "setPrefix",
+    "setPostfix",
+    "setMinimumFractionDigits",
+    "parseInt",
+    "setMaximumFractionDigits",
+    "setMinimumIntegerDigits",
+    "setMaximumIntegerDigits",
+    "qookery",
+    "internal",
+    "formats"
+  ],
+  "mappings": ";;;;;;;;;;;;;AAAAA,EAAAA,EAAE,CAACC,SAAH,CAAaC,oBAAb,CAAkCC,aAAlC;;AAAA;;;;;;;;;;;;;;;;;AAkBAH,EAAAA,EAAE,CAACI,KAAH,CAASC,MAAT,CAAgB,uCAAhB,EAAyD;AAExDC,IAAAA,MAAM,EAAEN,EAAE,CAACO,IAAH,CAAQC,MAAR,CAAeC,YAFiC;AAIxDC,IAAAA,SAAS,EAAE,mBAASC,OAAT,EAAkB;AAC5B;;AACA,WAAKC,YAAL,CAAkBD,OAAlB;AACA,KAPuD;AASxDE,IAAAA,OAAO,EAAE;AAERD,MAAAA,YAAY,EAAE,sBAASD,OAAT,EAAkB;AAC/B,aAAI,IAAIG,GAAR,IAAeH,OAAf,EACC,KAAKI,WAAL,CAAiBD,GAAjB,EAAsBH,OAAO,CAACG,GAAD,CAA7B;AACD,OALO;AAORC,MAAAA,WAAW,EAAE,qBAASD,GAAT,EAAcE,KAAd,EAAqB;AACjC,gBAAOF,GAAP;AACA,eAAK,cAAL;AACC,iBAAKG,eAAL,CAAqB,CAAC,CAACD,KAAvB;AACA;;AACD,eAAK,QAAL;AACC,iBAAKE,SAAL,CAAeF,KAAf;AACA;;AACD,eAAK,SAAL;AACC,iBAAKG,UAAL,CAAgBH,KAAhB;AACA;;AACD,eAAK,gBAAL;AAAuB;AACtB,iBAAKI,wBAAL,CAA8BC,QAAQ,CAACL,KAAD,CAAtC;AACA,iBAAKM,wBAAL,CAA8BD,QAAQ,CAACL,KAAD,CAAtC;AACA;;AACD,eAAK,uBAAL;AACC,iBAAKI,wBAAL,CAA8BC,QAAQ,CAACL,KAAD,CAAtC;AACA;;AACD,eAAK,uBAAL;AACC,iBAAKM,wBAAL,CAA8BD,QAAQ,CAACL,KAAD,CAAtC;AACA;;AACD,eAAK,eAAL;AAAsB;AACrB,iBAAKO,uBAAL,CAA6BF,QAAQ,CAACL,KAAD,CAArC;AACA,iBAAKQ,uBAAL,CAA6BH,QAAQ,CAACL,KAAD,CAArC;AACA;;AACD,eAAK,sBAAL;AACC,iBAAKO,uBAAL,CAA6BF,QAAQ,CAACL,KAAD,CAArC;AACA;;AACD,eAAK,sBAAL;AACC,iBAAKQ,uBAAL,CAA6BH,QAAQ,CAACL,KAAD,CAArC;AACA;AA7BD;AA+BA;AAvCO;AAT+C,GAAzD;AAlBAS,EAAAA,OAAO,CAACC,QAAR,CAAiBC,OAAjB,CAAyBlB,YAAzB,CAAsCN,aAAtC,GAAsDA,aAAtD",
+  "sourcesContent": [
+    "/*\n\tQookery - Declarative UI Building for Qooxdoo\n\n\tCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\n\tLicensed under the Apache License, Version 2.0 (the \"License\");\n\tyou may not use this file except in compliance with the License.\n\tYou may obtain a copy of the License at\n\n\t\thttp://www.apache.org/licenses/LICENSE-2.0\n\n\tUnless required by applicable law or agreed to in writing, software\n\tdistributed under the License is distributed on an \"AS IS\" BASIS,\n\tWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n\tSee the License for the specific language governing permissions and\n\tlimitations under the License.\n*/\n\nqx.Class.define(\"qookery.internal.formats.NumberFormat\", {\n\n\textend: qx.util.format.NumberFormat,\n\n\tconstruct: function(options) {\n\t\tthis.base(arguments);\n\t\tthis.__setOptions(options);\n\t},\n\n\tmembers: {\n\n\t\t__setOptions: function(options) {\n\t\t\tfor(var key in options)\n\t\t\t\tthis.__setOption(key, options[key]);\n\t\t},\n\n\t\t__setOption: function(key, value) {\n\t\t\tswitch(key) {\n\t\t\tcase \"groupingUsed\":\n\t\t\t\tthis.setGroupingUsed(!!value);\n\t\t\t\treturn;\n\t\t\tcase \"prefix\":\n\t\t\t\tthis.setPrefix(value);\n\t\t\t\treturn;\n\t\t\tcase \"postfix\":\n\t\t\t\tthis.setPostfix(value);\n\t\t\t\treturn;\n\t\t\tcase \"fractionDigits\": // Shorthand for setting both min and max\n\t\t\t\tthis.setMinimumFractionDigits(parseInt(value));\n\t\t\t\tthis.setMaximumFractionDigits(parseInt(value));\n\t\t\t\treturn;\n\t\t\tcase \"minimumFractionDigits\":\n\t\t\t\tthis.setMinimumFractionDigits(parseInt(value));\n\t\t\t\treturn;\n\t\t\tcase \"maximumFractionDigits\":\n\t\t\t\tthis.setMaximumFractionDigits(parseInt(value));\n\t\t\t\treturn;\n\t\t\tcase \"integerDigits\": // Shorthand for setting both min and max\n\t\t\t\tthis.setMinimumIntegerDigits(parseInt(value));\n\t\t\t\tthis.setMaximumIntegerDigits(parseInt(value));\n\t\t\t\treturn;\n\t\t\tcase \"minimumIntegerDigits\":\n\t\t\t\tthis.setMinimumIntegerDigits(parseInt(value));\n\t\t\t\treturn;\n\t\t\tcase \"maximumIntegerDigits\":\n\t\t\t\tthis.setMaximumIntegerDigits(parseInt(value));\n\t\t\t\treturn;\n\t\t\t}\n\t\t}\n\t}\n});\n"
+  ]
+}

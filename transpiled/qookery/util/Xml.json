@@ -1,0 +1,344 @@
+{
+  "className": "qookery.util.Xml",
+  "packageName": "qookery.util",
+  "name": "Xml",
+  "superClass": null,
+  "interfaces": [],
+  "mixins": [],
+  "functionName": null,
+  "clazz": {
+    "location": {
+      "start": {
+        "line": 22,
+        "column": 0
+      },
+      "end": {
+        "line": 240,
+        "column": 3
+      }
+    },
+    "jsdoc": {
+      "@description": [
+        {
+          "name": "@description",
+          "body": "Qookery - Declarative UI Building for Qooxdoo\n\nCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\nLicensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\nhttp:\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License."
+        },
+        {
+          "name": "@description",
+          "body": "Various utility methods helpful when working with XML documents"
+        }
+      ]
+    }
+  },
+  "type": "class",
+  "statics": {
+    "getNamespaceDeclarations": {
+      "location": {
+        "start": {
+          "line": 33,
+          "column": 2
+        },
+        "end": {
+          "line": 44,
+          "column": 3
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Return namespace declarations defined onto element, if any"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "element {Element} the XML element to search for namespace declarations",
+            "paramName": "element",
+            "description": " the XML element to search for namespace declarations",
+            "type": "Element"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{Map?} prefix-to-URI map, or <code>null</code> if no xmlns attributes found",
+            "type": "Map?",
+            "description": " prefix-to-URI map, or <code>null</code> if no xmlns attributes found"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "resolveQName": {
+      "location": {
+        "start": {
+          "line": 59,
+          "column": 2
+        },
+        "end": {
+          "line": 85,
+          "column": 3
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Resolve a QName using provided namespace resolver\n\n<p>The result format is \"{\" + Namespace URI + \"}\" + local part. If the namespace URI is empty,\nonly the local part is returned.</p>"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "namespaceResolver {Function} A prefix => namespaceUri function, returning <code>null</code> when prefix is unknown",
+            "paramName": "namespaceResolver",
+            "description": " A prefix => namespaceUri function, returning <code>null</code> when prefix is unknown",
+            "type": "Function"
+          },
+          {
+            "name": "@param",
+            "body": "qName {String} the QName to resolve",
+            "paramName": "qName",
+            "description": " the QName to resolve",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String} the string representation of the resolved QName",
+            "type": "String",
+            "description": " the string representation of the resolved QName"
+          }
+        ],
+        "@throws": [
+          {
+            "name": "@throws",
+            "body": "{Error} in case the QName prefix could not be resolved",
+            "type": "Error",
+            "description": " in case the QName prefix could not be resolved"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "getNodeText": {
+      "location": {
+        "start": {
+          "line": 94,
+          "column": 2
+        },
+        "end": {
+          "line": 102,
+          "column": 3
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Return the text value of an XML node, after trimming leading and trailing whitespace"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "node {Node} XML node to get text from",
+            "paramName": "node",
+            "description": " XML node to get text from",
+            "type": "Node"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String?} whitespace trimmed text or <code>null</code> if empty",
+            "type": "String?",
+            "description": " whitespace trimmed text or <code>null</code> if empty"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "getAttribute": {
+      "location": {
+        "start": {
+          "line": 116,
+          "column": 2
+        },
+        "end": {
+          "line": 134,
+          "column": 3
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Return the text value of an element's attribute, after trimming leading and trailing whitespace\n\n<p>You may supply the <code>Error</code> build-in object as the defaultValue parameter\nin order to request that an exception is thrown when value is missing.</p>"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "element {Element} XML element holding required attribute",
+            "paramName": "element",
+            "description": " XML element holding required attribute",
+            "type": "Element"
+          },
+          {
+            "name": "@param",
+            "body": "attributeName {String} name of required attribute, may be fully qualified",
+            "paramName": "attributeName",
+            "description": " name of required attribute, may be fully qualified",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "defaultValue {String?} the text to return in case the attribute is empty/missing",
+            "paramName": "defaultValue",
+            "description": " the text to return in case the attribute is empty/missing",
+            "optional": true,
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String} whitespace trimmed attribute value or the default value if empty/missing",
+            "type": "String",
+            "description": " whitespace trimmed attribute value or the default value if empty/missing"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "parseValue": {
+      "location": {
+        "start": {
+          "line": 145,
+          "column": 2
+        },
+        "end": {
+          "line": 190,
+          "column": 3
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Parse a string of specified value type against provided component"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "component {qookery.IComponent} the component that will serve as the context for evaluations",
+            "paramName": "component",
+            "description": " the component that will serve as the context for evaluations",
+            "type": "qookery.IComponent"
+          },
+          {
+            "name": "@param",
+            "body": "type {String} one of the known value types",
+            "paramName": "type",
+            "description": " one of the known value types",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "text {String} the string to parse",
+            "paramName": "text",
+            "description": " the string to parse",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{any} the parsing result",
+            "type": "any",
+            "description": " the parsing result"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "parseAllAttributes": {
+      "location": {
+        "start": {
+          "line": 203,
+          "column": 2
+        },
+        "end": {
+          "line": 227,
+          "column": 3
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Parse XML element attributes according to component's attribute type mapping\n\n<p>Supported types are those of qookery.util.Xml#parseValue()</p>"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "component {qookery.IComponent} Qookery component to serve as the base of any conversion",
+            "paramName": "component",
+            "description": " Qookery component to serve as the base of any conversion",
+            "type": "qookery.IComponent"
+          },
+          {
+            "name": "@param",
+            "body": "element {Element} XML element to read attributes from",
+            "paramName": "element",
+            "description": " XML element to read attributes from",
+            "type": "Element"
+          },
+          {
+            "name": "@param",
+            "body": "typeMap {Map?} custom type mapping; if provided, it overrides the component's type mapping",
+            "paramName": "typeMap",
+            "description": " custom type mapping; if provided, it overrides the component's type mapping",
+            "optional": true,
+            "type": "Map"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{Map} attribute name to converted attribute value map",
+            "type": "Map",
+            "description": " attribute name to converted attribute value map"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "__NAMED_SIZES": {
+      "location": {
+        "start": {
+          "line": 229,
+          "column": 2
+        },
+        "end": {
+          "line": 238,
+          "column": 3
+        }
+      },
+      "type": "variable",
+      "access": "private"
+    }
+  },
+  "descendants": []
+}

@@ -1,0 +1,41 @@
+{
+  "version": 3,
+  "sources": [
+    "/home/travis/build/cboulanger/eventrecorder/qx_packages/ergobyte_qookery_892f44d1d1ae5d65c7dd99b18da6876de2f2a920/qookery/source/class/qookery/util/ValidationError.js"
+  ],
+  "names": [
+    "qx",
+    "Bootstrap",
+    "executePendingDefers",
+    "$$dbClassInfo",
+    "Class",
+    "define",
+    "extend",
+    "Error",
+    "construct",
+    "source",
+    "message",
+    "cause",
+    "__source",
+    "__message",
+    "__cause",
+    "Object",
+    "defineProperties",
+    "enumerable",
+    "get",
+    "getFormattedMessage",
+    "members",
+    "getSource",
+    "getMessage",
+    "getCause",
+    "map",
+    "join",
+    "qookery",
+    "util",
+    "ValidationError"
+  ],
+  "mappings": ";;;;;;;;;AAAAA,EAAAA,EAAE,CAACC,SAAH,CAAaC,oBAAb,CAAkCC,aAAlC;;AAAA;;;;;;;;;;;;;;;;;;AAkBA;;;AAGAH,EAAAA,EAAE,CAACI,KAAH,CAASC,MAAT,CAAgB,8BAAhB,EAAgD;AAE/CC,IAAAA,MAAM,EAAEC,KAFuC;;AAI/C;;;;;;;AAOAC,IAAAA,SAAS,EAAG,mBAASC,MAAT,EAAiBC,OAAjB,EAA0BC,KAA1B,EAAiC;AAC5C,WAAKC,QAAL,GAAgBH,MAAhB;AACA,WAAKI,SAAL,GAAiBH,OAAjB;AACA,WAAKI,OAAL,GAAeH,KAAf;AACAI,MAAAA,MAAM,CAACC,gBAAP,CAAwB,IAAxB,EAA8B;AAC7B,mBAAW;AACVC,UAAAA,UAAU,EAAE,KADF;AAEVC,UAAAA,GAAG,EAAE,eAAW;AACf,mBAAO,KAAKC,mBAAL,EAAP;AACA;AAJS;AADkB,OAA9B;AAQA,KAvB8C;AAyB/CC,IAAAA,OAAO,EAAE;AAERR,MAAAA,QAAQ,EAAE,IAFF;AAGRC,MAAAA,SAAS,EAAE,IAHH;AAIRC,MAAAA,OAAO,EAAE,IAJD;;AAMR;;;;;AAKAO,MAAAA,SAAS,EAAE,qBAAW;AACrB,eAAO,KAAKT,QAAZ;AACA,OAbO;;AAeR;;;;;AAKAU,MAAAA,UAAU,EAAE,sBAAW;AACtB,eAAO,KAAKT,SAAZ;AACA,OAtBO;;AAwBR;;;;;AAKAU,MAAAA,QAAQ,EAAE,oBAAW;AACpB,eAAO,KAAKT,OAAZ;AACA,OA/BO;;AAiCR;;;;;AAKAK,MAAAA,mBAAmB,EAAE,+BAAW;AAC/B,YAAIT,OAAO,GAAG,KAAKG,SAAL,IAAkB,EAAhC;;AACA,YAAG,KAAKC,OAAL,IAAgB,IAAnB,EAAyB;AACxB,cAAGJ,OAAH,EAAYA,OAAO,IAAI,IAAX;AACZA,UAAAA,OAAO,IAAI,KAAKI,OAAL,CAAaU,GAAb,CAAiB,UAASb,KAAT,EAAgB;AAAE,mBAAOA,KAAK,CAACQ,mBAAN,EAAP;AAAqC,WAAxE,EAA0EM,IAA1E,CAA+E,IAA/E,CAAX;AACA;;AACD,YAAG,CAACf,OAAJ,EAAaA,OAAO,GAAG,mBAAV;AACb,eAAOA,OAAP;AACA;AA9CO;AAzBsC,GAAhD;AArBAgB,EAAAA,OAAO,CAACC,IAAR,CAAaC,eAAb,CAA6BzB,aAA7B,GAA6CA,aAA7C",
+  "sourcesContent": [
+    "/*\n\tQookery - Declarative UI Building for Qooxdoo\n\n\tCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\n\tLicensed under the Apache License, Version 2.0 (the \"License\");\n\tyou may not use this file except in compliance with the License.\n\tYou may obtain a copy of the License at\n\n\t\thttp://www.apache.org/licenses/LICENSE-2.0\n\n\tUnless required by applicable law or agreed to in writing, software\n\tdistributed under the License is distributed on an \"AS IS\" BASIS,\n\tWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n\tSee the License for the specific language governing permissions and\n\tlimitations under the License.\n*/\n\n/**\n * Instances of this class pack helpful information about discovered validation errors\n */\nqx.Class.define(\"qookery.util.ValidationError\", {\n\n\textend: Error,\n\n\t/**\n\t * Construct a new validation error\n\t *\n\t * @param source {any} value that represents the source of error\n\t * @param message {String?} error message\n\t * @param cause {Array?} array of underlying errors\n\t */\n\tconstruct : function(source, message, cause) {\n\t\tthis.__source = source;\n\t\tthis.__message = message;\n\t\tthis.__cause = cause;\n\t\tObject.defineProperties(this, {\n\t\t\t\"message\": {\n\t\t\t\tenumerable: false,\n\t\t\t\tget: function() {\n\t\t\t\t\treturn this.getFormattedMessage();\n\t\t\t\t}\n\t\t\t}\n\t\t});\n\t},\n\n\tmembers: {\n\n\t\t__source: null,\n\t\t__message: null,\n\t\t__cause: null,\n\n\t\t/**\n\t\t * Return the source of this error, if available\n\t\t *\n\t\t * @return {any} value that represents the source of error, may be <code>null</code>\n\t\t */\n\t\tgetSource: function() {\n\t\t\treturn this.__source;\n\t\t},\n\n\t\t/**\n\t\t * Return a message for this error\n\t\t *\n\t\t * @return {String} error message, may be <code>null</code>\n\t\t */\n\t\tgetMessage: function() {\n\t\t\treturn this.__message;\n\t\t},\n\n\t\t/**\n\t\t * Return an array of errors that are the underlying cause of this error\n\t\t *\n\t\t * @return {Array} array of underlying errors or <code>null</code> if not set\n\t\t */\n\t\tgetCause: function() {\n\t\t\treturn this.__cause;\n\t\t},\n\n\t\t/**\n\t\t * Return the computed formatted message which describes this error is more detail\n\t\t *\n\t\t * @return {String} an error message, <code>null</code> is never returned\n\t\t */\n\t\tgetFormattedMessage: function() {\n\t\t\tvar message = this.__message || \"\";\n\t\t\tif(this.__cause != null) {\n\t\t\t\tif(message) message += \": \";\n\t\t\t\tmessage += this.__cause.map(function(cause) { return cause.getFormattedMessage(); }).join(\"; \");\n\t\t\t}\n\t\t\tif(!message) message = \"Nondescript error\";\n\t\t\treturn message;\n\t\t}\n\t}\n});\n"
+  ]
+}

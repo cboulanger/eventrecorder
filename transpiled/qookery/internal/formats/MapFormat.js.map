@@ -1,0 +1,48 @@
+{
+  "version": 3,
+  "sources": [
+    "/home/travis/build/cboulanger/eventrecorder/qx_packages/ergobyte_qookery_892f44d1d1ae5d65c7dd99b18da6876de2f2a920/qookery/source/class/qookery/internal/formats/MapFormat.js"
+  ],
+  "names": [
+    "qx",
+    "Bootstrap",
+    "executePendingDefers",
+    "$$dbClassInfo",
+    "Class",
+    "define",
+    "extend",
+    "core",
+    "Object",
+    "implement",
+    "util",
+    "format",
+    "IFormat",
+    "construct",
+    "options",
+    "mapName",
+    "__map",
+    "qookery",
+    "Qookery",
+    "getRegistry",
+    "getMap",
+    "Error",
+    "lang",
+    "String",
+    "__fallback",
+    "members",
+    "value",
+    "mappedValue",
+    "data",
+    "Conversion",
+    "toString",
+    "parse",
+    "text",
+    "internal",
+    "formats",
+    "MapFormat"
+  ],
+  "mappings": ";;;;;;;;;;;;;;;;;;;;;;;AAAAA,EAAAA,EAAE,CAACC,SAAH,CAAaC,oBAAb,CAAkCC,aAAlC;;AAAA;;;;;;;;;;;;;;;;;AAkBAH,EAAAA,EAAE,CAACI,KAAH,CAASC,MAAT,CAAgB,oCAAhB,EAAsD;AAErDC,IAAAA,MAAM,EAAEN,EAAE,CAACO,IAAH,CAAQC,MAFqC;AAGrDC,IAAAA,SAAS,EAAE,CAAET,EAAE,CAACU,IAAH,CAAQC,MAAR,CAAeC,OAAjB,CAH0C;AAKrDC,IAAAA,SAAS,EAAE,mBAASC,OAAT,EAAkB;AAC5B;AACA,UAAIC,OAAO,GAAGD,OAAO,CAAC,KAAD,CAArB;AACA,WAAKE,KAAL,GAAaC,OAAO,CAACC,OAAR,CAAgBC,WAAhB,GAA8BC,MAA9B,CAAqCL,OAArC,CAAb;AACA,UAAG,CAAC,KAAKC,KAAT,EACC,MAAM,IAAIK,KAAJ,CAAUrB,EAAE,CAACsB,IAAH,CAAQC,MAAR,CAAeZ,MAAf,CAAsB,yBAAtB,EAAiD,CAAEI,OAAF,CAAjD,CAAV,CAAN;AACD,WAAKS,UAAL,GAAkBV,OAAO,CAAC,UAAD,CAAzB;AACA,KAZoD;AAcrDW,IAAAA,OAAO,EAAE;AAERT,MAAAA,KAAK,EAAE,IAFC;AAGRQ,MAAAA,UAAU,EAAE,IAHJ;AAKRb,MAAAA,MAAM,EAAE,gBAASe,KAAT,EAAgB;AACvB,YAAGA,KAAK,IAAI,IAAZ,EAAkB,OAAO,EAAP;AAClB,YAAIC,WAAW,GAAG,KAAKX,KAAL,CAAWU,KAAX,CAAlB;AACA,YAAGC,WAAW,IAAI,IAAlB,EAAwBD,KAAK,GAAGC,WAAR,CAAxB,KACK,IAAG,KAAKH,UAAL,IAAmB,IAAtB,EAA4BE,KAAK,GAAG,KAAKF,UAAb;AACjC,eAAOxB,EAAE,CAAC4B,IAAH,CAAQC,UAAR,CAAmBC,QAAnB,CAA4BJ,KAA5B,CAAP;AACA,OAXO;AAaRK,MAAAA,KAAK,EAAE,eAASC,IAAT,EAAe;AACrB,eAAOA,IAAP;AACA;AAfO;AAd4C,GAAtD;AAlBAf,EAAAA,OAAO,CAACgB,QAAR,CAAiBC,OAAjB,CAAyBC,SAAzB,CAAmChC,aAAnC,GAAmDA,aAAnD",
+  "sourcesContent": [
+    "/*\n\tQookery - Declarative UI Building for Qooxdoo\n\n\tCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\n\tLicensed under the Apache License, Version 2.0 (the \"License\");\n\tyou may not use this file except in compliance with the License.\n\tYou may obtain a copy of the License at\n\n\t\thttp://www.apache.org/licenses/LICENSE-2.0\n\n\tUnless required by applicable law or agreed to in writing, software\n\tdistributed under the License is distributed on an \"AS IS\" BASIS,\n\tWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n\tSee the License for the specific language governing permissions and\n\tlimitations under the License.\n*/\n\nqx.Class.define(\"qookery.internal.formats.MapFormat\", {\n\n\textend: qx.core.Object,\n\timplement: [ qx.util.format.IFormat ],\n\n\tconstruct: function(options) {\n\t\tthis.base(arguments);\n\t\tvar mapName = options[\"map\"];\n\t\tthis.__map = qookery.Qookery.getRegistry().getMap(mapName);\n\t\tif(!this.__map)\n\t\t\tthrow new Error(qx.lang.String.format(\"Map '%1' not registered\", [ mapName ]));\n\t\tthis.__fallback = options[\"fallback\"];\n\t},\n\n\tmembers: {\n\n\t\t__map: null,\n\t\t__fallback: null,\n\n\t\tformat: function(value) {\n\t\t\tif(value == null) return \"\";\n\t\t\tvar mappedValue = this.__map[value];\n\t\t\tif(mappedValue != null) value = mappedValue;\n\t\t\telse if(this.__fallback != null) value = this.__fallback;\n\t\t\treturn qx.data.Conversion.toString(value);\n\t\t},\n\n\t\tparse: function(text) {\n\t\t\treturn text;\n\t\t}\n\t}\n});\n"
+  ]
+}

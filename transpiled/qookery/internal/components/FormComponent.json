@@ -1,0 +1,1634 @@
+{
+  "className": "qookery.internal.components.FormComponent",
+  "packageName": "qookery.internal.components",
+  "name": "FormComponent",
+  "superClass": "qookery.internal.components.CompositeComponent",
+  "interfaces": [
+    "qookery.IFormComponent"
+  ],
+  "mixins": [],
+  "functionName": null,
+  "clazz": {
+    "location": {
+      "start": {
+        "line": 19,
+        "column": 0
+      },
+      "end": {
+        "line": 427,
+        "column": 3
+      }
+    },
+    "jsdoc": {
+      "@description": [
+        {
+          "name": "@description",
+          "body": "Qookery - Declarative UI Building for Qooxdoo\n\nCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\nLicensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\nhttp:\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License."
+        }
+      ]
+    }
+  },
+  "type": "class",
+  "construct": {
+    "location": {
+      "start": {
+        "line": 24,
+        "column": 12
+      },
+      "end": {
+        "line": 29,
+        "column": 2
+      }
+    },
+    "jsdoc": {}
+  },
+  "events": {
+    "close": {
+      "location": {
+        "start": {
+          "line": 32,
+          "column": 2
+        },
+        "end": {
+          "line": 32,
+          "column": 31
+        }
+      },
+      "name": "close",
+      "type": "qx.event.type.Data"
+    }
+  },
+  "properties": {
+    "icon": {
+      "location": {
+        "start": {
+          "line": 36,
+          "column": 2
+        },
+        "end": {
+          "line": 36,
+          "column": 28
+        }
+      },
+      "name": "icon",
+      "propertyType": "new",
+      "nullable": true,
+      "allowNull": true
+    },
+    "title": {
+      "location": {
+        "start": {
+          "line": 37,
+          "column": 2
+        },
+        "end": {
+          "line": 37,
+          "column": 68
+        }
+      },
+      "name": "title",
+      "propertyType": "new",
+      "event": "changeTitle",
+      "nullable": true,
+      "allowNull": true,
+      "check": "String"
+    },
+    "valid": {
+      "location": {
+        "start": {
+          "line": 38,
+          "column": 2
+        },
+        "end": {
+          "line": 38,
+          "column": 82
+        }
+      },
+      "name": "valid",
+      "propertyType": "new",
+      "event": "changeValid",
+      "nullable": false,
+      "init": true,
+      "allowNull": false,
+      "check": "Boolean",
+      "defaultValue": true
+    },
+    "model": {
+      "location": {
+        "start": {
+          "line": 39,
+          "column": 2
+        },
+        "end": {
+          "line": 39,
+          "column": 92
+        }
+      },
+      "name": "model",
+      "propertyType": "new",
+      "event": "changeModel",
+      "apply": "_applyModel",
+      "nullable": true,
+      "allowNull": true
+    }
+  },
+  "members": {
+    "__status": {
+      "location": {
+        "start": {
+          "line": 44,
+          "column": 2
+        },
+        "end": {
+          "line": 44,
+          "column": 16
+        }
+      },
+      "type": "variable",
+      "access": "private"
+    },
+    "__components": {
+      "location": {
+        "start": {
+          "line": 45,
+          "column": 2
+        },
+        "end": {
+          "line": 45,
+          "column": 20
+        }
+      },
+      "type": "variable",
+      "access": "private"
+    },
+    "__connections": {
+      "location": {
+        "start": {
+          "line": 46,
+          "column": 2
+        },
+        "end": {
+          "line": 46,
+          "column": 21
+        }
+      },
+      "type": "variable",
+      "access": "private"
+    },
+    "__scriptingContext": {
+      "location": {
+        "start": {
+          "line": 47,
+          "column": 2
+        },
+        "end": {
+          "line": 47,
+          "column": 26
+        }
+      },
+      "type": "variable",
+      "access": "private"
+    },
+    "__serviceResolver": {
+      "location": {
+        "start": {
+          "line": 48,
+          "column": 2
+        },
+        "end": {
+          "line": 48,
+          "column": 25
+        }
+      },
+      "type": "variable",
+      "access": "private"
+    },
+    "__translationPrefix": {
+      "location": {
+        "start": {
+          "line": 49,
+          "column": 2
+        },
+        "end": {
+          "line": 49,
+          "column": 27
+        }
+      },
+      "type": "variable",
+      "access": "private"
+    },
+    "__operationQueue": {
+      "location": {
+        "start": {
+          "line": 50,
+          "column": 2
+        },
+        "end": {
+          "line": 50,
+          "column": 24
+        }
+      },
+      "type": "variable",
+      "access": "private"
+    },
+    "__modelProvider": {
+      "location": {
+        "start": {
+          "line": 51,
+          "column": 2
+        },
+        "end": {
+          "line": 51,
+          "column": 23
+        }
+      },
+      "type": "variable",
+      "access": "private"
+    },
+    "getAttributeType": {
+      "location": {
+        "start": {
+          "line": 55,
+          "column": 2
+        },
+        "end": {
+          "line": 60,
+          "column": 3
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Metadata"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "attributeName {String} name of the attribute",
+            "paramName": "attributeName",
+            "description": " name of the attribute",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String} attribute's type or <code>null</code> if unknown",
+            "type": "String",
+            "description": " attribute's type or <code>null</code> if unknown"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "qookery.IFormComponent",
+      "appearsIn": [
+        "qookery.IFormComponent",
+        "qookery.IContainerComponent",
+        "qookery.IComponent",
+        "qookery.internal.components.ContainerComponent",
+        "qookery.internal.components.Component"
+      ]
+    },
+    "setAttribute": {
+      "location": {
+        "start": {
+          "line": 62,
+          "column": 2
+        },
+        "end": {
+          "line": 75,
+          "column": 3
+        }
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "qookery.IFormComponent",
+      "appearsIn": [
+        "qookery.IFormComponent",
+        "qookery.IContainerComponent",
+        "qookery.IComponent",
+        "qookery.internal.components.Component"
+      ],
+      "jsdoc": {
+        "@param": [
+          {
+            "name": "@param",
+            "body": "attributeName {String} the name of the attribute to change",
+            "paramName": "attributeName",
+            "description": " the name of the attribute to change",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "value {any} the new attribute value, <code>undefined</code> clears attribute",
+            "paramName": "value",
+            "description": " the new attribute value, <code>undefined</code> clears attribute",
+            "type": "any"
+          }
+        ]
+      }
+    },
+    "create": {
+      "location": {
+        "start": {
+          "line": 79,
+          "column": 2
+        },
+        "end": {
+          "line": 85,
+          "column": 3
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Lifecycle"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "attributes {Map} preprocessed attributes found in the defining XML document",
+            "paramName": "attributes",
+            "description": " preprocessed attributes found in the defining XML document",
+            "type": "Map"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "qookery.IFormComponent",
+      "appearsIn": [
+        "qookery.IFormComponent",
+        "qookery.IContainerComponent",
+        "qookery.IComponent",
+        "qookery.internal.components.ContainerComponent",
+        "qookery.internal.components.Component"
+      ]
+    },
+    "setup": {
+      "location": {
+        "start": {
+          "line": 87,
+          "column": 2
+        },
+        "end": {
+          "line": 93,
+          "column": 3
+        }
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "qookery.IFormComponent",
+      "appearsIn": [
+        "qookery.IFormComponent",
+        "qookery.IContainerComponent",
+        "qookery.IComponent",
+        "qookery.internal.components.Component"
+      ]
+    },
+    "focus": {
+      "location": {
+        "start": {
+          "line": 95,
+          "column": 2
+        },
+        "end": {
+          "line": 100,
+          "column": 3
+        }
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "qookery.IFormComponent",
+      "appearsIn": [
+        "qookery.IFormComponent",
+        "qookery.IContainerComponent",
+        "qookery.IComponent",
+        "qookery.internal.components.Component"
+      ]
+    },
+    "isReady": {
+      "location": {
+        "start": {
+          "line": 102,
+          "column": 2
+        },
+        "end": {
+          "line": 104,
+          "column": 3
+        }
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "qookery.IFormComponent",
+      "appearsIn": [
+        "qookery.IFormComponent"
+      ]
+    },
+    "markAsReady": {
+      "location": {
+        "start": {
+          "line": 106,
+          "column": 2
+        },
+        "end": {
+          "line": 108,
+          "column": 3
+        }
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "qookery.IFormComponent",
+      "appearsIn": [
+        "qookery.IFormComponent"
+      ]
+    },
+    "getForm": {
+      "location": {
+        "start": {
+          "line": 112,
+          "column": 2
+        },
+        "end": {
+          "line": 114,
+          "column": 3
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Getters and setters"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{qookery.IFormComponent} the form containing this component",
+            "type": "qookery.IFormComponent",
+            "description": " the form containing this component"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "qookery.IFormComponent",
+      "appearsIn": [
+        "qookery.IFormComponent",
+        "qookery.IContainerComponent",
+        "qookery.IComponent",
+        "qookery.internal.components.Component"
+      ]
+    },
+    "getParentForm": {
+      "location": {
+        "start": {
+          "line": 116,
+          "column": 2
+        },
+        "end": {
+          "line": 122,
+          "column": 3
+        }
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "qookery.IFormComponent",
+      "appearsIn": [
+        "qookery.IFormComponent"
+      ]
+    },
+    "getTranslationPrefix": {
+      "location": {
+        "start": {
+          "line": 124,
+          "column": 2
+        },
+        "end": {
+          "line": 126,
+          "column": 3
+        }
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "getModelProvider": {
+      "location": {
+        "start": {
+          "line": 128,
+          "column": 2
+        },
+        "end": {
+          "line": 130,
+          "column": 3
+        }
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "qookery.IFormComponent",
+      "appearsIn": [
+        "qookery.IFormComponent"
+      ]
+    },
+    "resolveService": {
+      "location": {
+        "start": {
+          "line": 134,
+          "column": 2
+        },
+        "end": {
+          "line": 145,
+          "column": 3
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Services"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "serviceName {String} the name of wanted service",
+            "paramName": "serviceName",
+            "description": " the name of wanted service",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{any} required service or <code>null</code> if not available",
+            "type": "any",
+            "description": " required service or <code>null</code> if not available"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "qookery.IFormComponent",
+      "appearsIn": [
+        "qookery.IFormComponent"
+      ]
+    },
+    "getVariable": {
+      "location": {
+        "start": {
+          "line": 149,
+          "column": 2
+        },
+        "end": {
+          "line": 153,
+          "column": 3
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Variables"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "variableName {String} the name of the variable",
+            "paramName": "variableName",
+            "description": " the name of the variable",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{any} variable value or <code>undefined</code>",
+            "type": "any",
+            "description": " variable value or <code>undefined</code>"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "qookery.IFormComponent",
+      "appearsIn": [
+        "qookery.IFormComponent",
+        "qookery.IVariableProvider"
+      ]
+    },
+    "setVariable": {
+      "location": {
+        "start": {
+          "line": 155,
+          "column": 2
+        },
+        "end": {
+          "line": 157,
+          "column": 3
+        }
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "qookery.IFormComponent",
+      "appearsIn": [
+        "qookery.IFormComponent",
+        "qookery.IVariableProvider"
+      ],
+      "jsdoc": {
+        "@param": [
+          {
+            "name": "@param",
+            "body": "variableName {String} the name of the variable",
+            "paramName": "variableName",
+            "description": " the name of the variable",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "value {any} the new variable value",
+            "paramName": "value",
+            "description": " the new variable value",
+            "type": "any"
+          }
+        ]
+      }
+    },
+    "getComponent": {
+      "location": {
+        "start": {
+          "line": 161,
+          "column": 2
+        },
+        "end": {
+          "line": 166,
+          "column": 3
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Component registration"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "componentId {String} the unique identifier of the requested component",
+            "paramName": "componentId",
+            "description": " the unique identifier of the requested component",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "required {Boolean?} if <code>true</code>, throw an error in case component is not found",
+            "paramName": "required",
+            "description": " if <code>true</code>, throw an error in case component is not found",
+            "optional": true,
+            "type": "Boolean"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{qookery.IComponent} component or <code>null</code> if not found",
+            "type": "qookery.IComponent",
+            "description": " component or <code>null</code> if not found"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "qookery.IFormComponent",
+      "appearsIn": [
+        "qookery.IFormComponent"
+      ]
+    },
+    "putComponent": {
+      "location": {
+        "start": {
+          "line": 168,
+          "column": 2
+        },
+        "end": {
+          "line": 170,
+          "column": 3
+        }
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "getScriptingContext": {
+      "location": {
+        "start": {
+          "line": 174,
+          "column": 2
+        },
+        "end": {
+          "line": 179,
+          "column": 3
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Client scripting context"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{Object} a suitable JavaScript context",
+            "type": "Object",
+            "description": " a suitable JavaScript context"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "qookery.IFormComponent",
+      "appearsIn": [
+        "qookery.IFormComponent"
+      ]
+    },
+    "validate": {
+      "location": {
+        "start": {
+          "line": 183,
+          "column": 2
+        },
+        "end": {
+          "line": 202,
+          "column": 3
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Validation"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{qookery.util.ValidationError?} error found or <code>null</code> in case form is valid",
+            "type": "qookery.util.ValidationError?",
+            "description": " error found or <code>null</code> in case form is valid"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "qookery.IFormComponent",
+      "appearsIn": [
+        "qookery.IFormComponent",
+        "qookery.IContainerComponent",
+        "qookery.IComponent",
+        "qookery.internal.components.ContainerComponent",
+        "qookery.internal.components.Component"
+      ]
+    },
+    "parseXmlElement": {
+      "location": {
+        "start": {
+          "line": 204,
+          "column": 2
+        },
+        "end": {
+          "line": 217,
+          "column": 3
+        }
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "qookery.IFormComponent",
+      "appearsIn": [
+        "qookery.IFormComponent",
+        "qookery.IContainerComponent",
+        "qookery.IComponent",
+        "qookery.internal.components.Component"
+      ],
+      "jsdoc": {
+        "@param": [
+          {
+            "name": "@param",
+            "body": "elementName {String} the resolved fully-qualified name of encountered DOM element",
+            "paramName": "elementName",
+            "description": " the resolved fully-qualified name of encountered DOM element",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "element {Element} the DOM element that is not understood by parser",
+            "paramName": "element",
+            "description": " the DOM element that is not understood by parser",
+            "type": "Element"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{Boolean} <code>true</code> in case the component was able to do something with input",
+            "type": "Boolean",
+            "description": " <code>true</code> in case the component was able to do something with input"
+          }
+        ]
+      }
+    },
+    "__createScriptingContext": {
+      "location": {
+        "start": {
+          "line": 221,
+          "column": 2
+        },
+        "end": {
+          "line": 238,
+          "column": 3
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Internals"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "private"
+    },
+    "__parseImport": {
+      "location": {
+        "start": {
+          "line": 240,
+          "column": 2
+        },
+        "end": {
+          "line": 302,
+          "column": 3
+        }
+      },
+      "type": "function",
+      "access": "private"
+    },
+    "__parseTranslation": {
+      "location": {
+        "start": {
+          "line": 304,
+          "column": 2
+        },
+        "end": {
+          "line": 322,
+          "column": 3
+        }
+      },
+      "type": "function",
+      "access": "private"
+    },
+    "__parseVariable": {
+      "location": {
+        "start": {
+          "line": 324,
+          "column": 2
+        },
+        "end": {
+          "line": 355,
+          "column": 3
+        }
+      },
+      "type": "function",
+      "access": "private"
+    },
+    "close": {
+      "location": {
+        "start": {
+          "line": 359,
+          "column": 2
+        },
+        "end": {
+          "line": 363,
+          "column": 3
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Operations"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "result {any} optional value to set into the <code>result</code> variable",
+            "paramName": "result",
+            "description": " optional value to set into the <code>result</code> variable",
+            "type": "any"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "qookery.IFormComponent",
+      "appearsIn": [
+        "qookery.IFormComponent"
+      ]
+    },
+    "addConnection": {
+      "location": {
+        "start": {
+          "line": 367,
+          "column": 2
+        },
+        "end": {
+          "line": 372,
+          "column": 3
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Model connection"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "removeConnection": {
+      "location": {
+        "start": {
+          "line": 374,
+          "column": 2
+        },
+        "end": {
+          "line": 380,
+          "column": 3
+        }
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "_applyModel": {
+      "location": {
+        "start": {
+          "line": 382,
+          "column": 2
+        },
+        "end": {
+          "line": 387,
+          "column": 3
+        }
+      },
+      "type": "function",
+      "access": "protected",
+      "applyFor": [
+        "model"
+      ]
+    },
+    "__enableOperationQueuing": {
+      "location": {
+        "start": {
+          "line": 398,
+          "column": 2
+        },
+        "end": {
+          "line": 400,
+          "column": 3
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Operation queuing"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "private"
+    },
+    "__queueOperation": {
+      "location": {
+        "start": {
+          "line": 402,
+          "column": 2
+        },
+        "end": {
+          "line": 407,
+          "column": 3
+        }
+      },
+      "type": "function",
+      "access": "private"
+    },
+    "__flushOperationQueue": {
+      "location": {
+        "start": {
+          "line": 409,
+          "column": 2
+        },
+        "end": {
+          "line": 418,
+          "column": 3
+        }
+      },
+      "type": "function",
+      "access": "private"
+    },
+    "getEnabled": {
+      "type": "function",
+      "name": "getEnabled",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.CompositeComponent",
+      "property": "get",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>enabled</code>.\n\nFor further details take a look at the property definition: {@link #enabled}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "any",
+            "desc": "Returns the value for enabled"
+          }
+        ]
+      }
+    },
+    "isEnabled": {
+      "type": "function",
+      "name": "isEnabled",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.IFormComponent",
+      "property": "is",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>enabled</code>.\n\nFor further details take a look at the property definition: {@link #enabled}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "Boolean",
+            "desc": "Returns the value for enabled"
+          }
+        ]
+      }
+    },
+    "setEnabled": {
+      "type": "function",
+      "name": "setEnabled",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.CompositeComponent",
+      "property": "set",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Sets the user value of the property <code>enabled</code>.\n\nFor further details take a look at the property definition: {@link #enabled}."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "type": "any",
+            "paramName": "value",
+            "desc": "Value for enabled"
+          }
+        ]
+      }
+    },
+    "resetEnabled": {
+      "type": "function",
+      "name": "resetEnabled",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.CompositeComponent",
+      "property": "reset",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Resets the user value of the property <code>enabled</code>.\n\nThe computed value falls back to the next available value e.g. appearance, init or inheritance value depending on the property configuration and value availability.\n\nFor further details take a look at the property definition: {@link #enabled}."
+          }
+        ]
+      }
+    },
+    "getVisibility": {
+      "type": "function",
+      "name": "getVisibility",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.CompositeComponent",
+      "property": "get",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>visibility</code>.\n\nFor further details take a look at the property definition: {@link #visibility}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "any",
+            "desc": "Returns the value for visibility"
+          }
+        ]
+      }
+    },
+    "setVisibility": {
+      "type": "function",
+      "name": "setVisibility",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.CompositeComponent",
+      "property": "set",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Sets the user value of the property <code>visibility</code>.\n\nFor further details take a look at the property definition: {@link #visibility}."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "type": "any",
+            "paramName": "value",
+            "desc": "Value for visibility"
+          }
+        ]
+      }
+    },
+    "resetVisibility": {
+      "type": "function",
+      "name": "resetVisibility",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.CompositeComponent",
+      "property": "reset",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Resets the user value of the property <code>visibility</code>.\n\nThe computed value falls back to the next available value e.g. appearance, init or inheritance value depending on the property configuration and value availability.\n\nFor further details take a look at the property definition: {@link #visibility}."
+          }
+        ]
+      }
+    },
+    "getIcon": {
+      "type": "function",
+      "name": "getIcon",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "property": "get",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>icon</code>.\n\nFor further details take a look at the property definition: {@link #icon}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "any",
+            "desc": "Returns the value for icon"
+          }
+        ]
+      }
+    },
+    "setIcon": {
+      "type": "function",
+      "name": "setIcon",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "property": "set",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Sets the user value of the property <code>icon</code>.\n\nFor further details take a look at the property definition: {@link #icon}."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "type": "any",
+            "paramName": "value",
+            "desc": "Value for icon"
+          }
+        ]
+      }
+    },
+    "resetIcon": {
+      "type": "function",
+      "name": "resetIcon",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "property": "reset",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Resets the user value of the property <code>icon</code>.\n\nThe computed value falls back to the next available value e.g. appearance, init or inheritance value depending on the property configuration and value availability.\n\nFor further details take a look at the property definition: {@link #icon}."
+          }
+        ]
+      }
+    },
+    "getModel": {
+      "type": "function",
+      "name": "getModel",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "property": "get",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>model</code>.\n\nFor further details take a look at the property definition: {@link #model}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "any",
+            "desc": "Returns the value for model"
+          }
+        ]
+      }
+    },
+    "setModel": {
+      "type": "function",
+      "name": "setModel",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "property": "set",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Sets the user value of the property <code>model</code>.\n\nFor further details take a look at the property definition: {@link #model}."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "type": "any",
+            "paramName": "value",
+            "desc": "Value for model"
+          }
+        ]
+      }
+    },
+    "resetModel": {
+      "type": "function",
+      "name": "resetModel",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "property": "reset",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Resets the user value of the property <code>model</code>.\n\nThe computed value falls back to the next available value e.g. appearance, init or inheritance value depending on the property configuration and value availability.\n\nFor further details take a look at the property definition: {@link #model}."
+          }
+        ]
+      }
+    },
+    "getTitle": {
+      "type": "function",
+      "name": "getTitle",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "property": "get",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>title</code>.\n\nFor further details take a look at the property definition: {@link #title}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "any",
+            "desc": "Returns the value for title"
+          }
+        ]
+      }
+    },
+    "setTitle": {
+      "type": "function",
+      "name": "setTitle",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "property": "set",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Sets the user value of the property <code>title</code>.\n\nFor further details take a look at the property definition: {@link #title}."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "type": "any",
+            "paramName": "value",
+            "desc": "Value for title"
+          }
+        ]
+      }
+    },
+    "resetTitle": {
+      "type": "function",
+      "name": "resetTitle",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "property": "reset",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Resets the user value of the property <code>title</code>.\n\nThe computed value falls back to the next available value e.g. appearance, init or inheritance value depending on the property configuration and value availability.\n\nFor further details take a look at the property definition: {@link #title}."
+          }
+        ]
+      }
+    },
+    "getValid": {
+      "type": "function",
+      "name": "getValid",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "property": "get",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>valid</code>.\n\nFor further details take a look at the property definition: {@link #valid}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "any",
+            "desc": "Returns the value for valid"
+          }
+        ]
+      }
+    },
+    "isValid": {
+      "type": "function",
+      "name": "isValid",
+      "abstract": false,
+      "mixin": false,
+      "inherited": false,
+      "access": "public",
+      "property": "is",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>valid</code>.\n\nFor further details take a look at the property definition: {@link #valid}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "Boolean",
+            "desc": "Returns the value for valid"
+          }
+        ]
+      }
+    },
+    "setValid": {
+      "type": "function",
+      "name": "setValid",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "property": "set",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Sets the user value of the property <code>valid</code>.\n\nFor further details take a look at the property definition: {@link #valid}."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "type": "any",
+            "paramName": "value",
+            "desc": "Value for valid"
+          }
+        ]
+      }
+    },
+    "resetValid": {
+      "type": "function",
+      "name": "resetValid",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "property": "reset",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Resets the user value of the property <code>valid</code>.\n\nThe computed value falls back to the next available value e.g. appearance, init or inheritance value depending on the property configuration and value availability.\n\nFor further details take a look at the property definition: {@link #valid}."
+          }
+        ]
+      }
+    },
+    "getQxOwner": {
+      "type": "function",
+      "name": "getQxOwner",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.CompositeComponent",
+      "property": "get",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>qxOwner</code>.\n\nFor further details take a look at the property definition: {@link #qxOwner}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "qx.core.Object",
+            "desc": "Returns the value for qxOwner"
+          }
+        ]
+      }
+    },
+    "setQxOwner": {
+      "type": "function",
+      "name": "setQxOwner",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.CompositeComponent",
+      "property": "set",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Sets the user value of the property <code>qxOwner</code>.\n\nFor further details take a look at the property definition: {@link #qxOwner}."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "type": "qx.core.Object",
+            "paramName": "value",
+            "desc": "Value for qxOwner"
+          }
+        ]
+      }
+    },
+    "resetQxOwner": {
+      "type": "function",
+      "name": "resetQxOwner",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.CompositeComponent",
+      "property": "reset"
+    },
+    "getQxObjectId": {
+      "type": "function",
+      "name": "getQxObjectId",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.CompositeComponent",
+      "property": "get",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>qxObjectId</code>.\n\nFor further details take a look at the property definition: {@link #qxObjectId}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "desc": "Returns the value for qxObjectId"
+          }
+        ]
+      }
+    },
+    "setQxObjectId": {
+      "type": "function",
+      "name": "setQxObjectId",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.CompositeComponent",
+      "property": "set",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Sets the user value of the property <code>qxObjectId</code>.\n\nFor further details take a look at the property definition: {@link #qxObjectId}."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "paramName": "value",
+            "desc": "Value for qxObjectId"
+          }
+        ]
+      }
+    },
+    "resetQxObjectId": {
+      "type": "function",
+      "name": "resetQxObjectId",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.CompositeComponent",
+      "property": "reset"
+    }
+  },
+  "destruct": {
+    "location": {
+      "start": {
+        "line": 421,
+        "column": 11
+      },
+      "end": {
+        "line": 426,
+        "column": 2
+      }
+    },
+    "jsdoc": {}
+  },
+  "descendants": []
+}

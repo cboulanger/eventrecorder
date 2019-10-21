@@ -1,0 +1,43 @@
+{
+  "version": 3,
+  "sources": [
+    "/home/travis/build/cboulanger/eventrecorder/qx_packages/ergobyte_qookery_892f44d1d1ae5d65c7dd99b18da6876de2f2a920/qookery/source/class/qookery/internal/components/LabelComponent.js"
+  ],
+  "names": [
+    "qx",
+    "Bootstrap",
+    "executePendingDefers",
+    "$$dbClassInfo",
+    "Class",
+    "define",
+    "extend",
+    "qookery",
+    "internal",
+    "components",
+    "Component",
+    "construct",
+    "parentComponent",
+    "members",
+    "getAttributeType",
+    "attributeName",
+    "_createWidgets",
+    "label",
+    "ui",
+    "basic",
+    "Label",
+    "getAttribute",
+    "_applyAttribute",
+    "_applyWidgetAttributes",
+    "getValue",
+    "getMainWidget",
+    "setValue",
+    "value",
+    "getRich",
+    "setRich",
+    "LabelComponent"
+  ],
+  "mappings": ";;;;;;;;;;;;;;AAAAA,EAAAA,EAAE,CAACC,SAAH,CAAaC,oBAAb,CAAkCC,aAAlC;;AAAA;;;;;;;;;;;;;;;;;AAkBAH,EAAAA,EAAE,CAACI,KAAH,CAASC,MAAT,CAAgB,4CAAhB,EAA8D;AAE7DC,IAAAA,MAAM,EAAEC,OAAO,CAACC,QAAR,CAAiBC,UAAjB,CAA4BC,SAFyB;AAI7DC,IAAAA,SAAS,EAAE,mBAASC,eAAT,EAA0B;AACpC,mEAAqBA,eAArB;AACA,KAN4D;AAQ7DC,IAAAA,OAAO,EAAE;AAER;AAEAC,MAAAA,gBAAgB,EAAE,0BAASC,aAAT,EAAwB;AACzC,gBAAOA,aAAP;AACA,eAAK,MAAL;AAAa,mBAAO,SAAP;;AACb,eAAK,MAAL;AAAa,mBAAO,SAAP;AAFb;;AAIA,qGAA4BA,aAA5B;AACA,OAVO;AAYR;AAEAC,MAAAA,cAAc,EAAE,0BAAW;AAC1B,YAAIC,KAAK,GAAG,IAAIjB,EAAE,CAACkB,EAAH,CAAMC,KAAN,CAAYC,KAAhB,CAAsB,KAAKC,YAAL,CAAkB,OAAlB,EAA2B,EAA3B,CAAtB,CAAZ;;AACA,aAAKC,eAAL,CAAqB,MAArB,EAA6BL,KAA7B,EAAoC,MAApC;;AACA,aAAKK,eAAL,CAAqB,MAArB,EAA6BL,KAA7B,EAAoC,MAApC;;AACA,aAAKK,eAAL,CAAqB,YAArB,EAAmCL,KAAnC,EAA0C,WAA1C;;AACA,aAAKM,sBAAL,CAA4BN,KAA5B;;AACA,eAAO,CAAEA,KAAF,CAAP;AACA,OArBO;AAuBRO,MAAAA,QAAQ,EAAE,oBAAW;AACpB,eAAO,KAAKC,aAAL,GAAqBD,QAArB,EAAP;AACA,OAzBO;AA2BRE,MAAAA,QAAQ,EAAE,kBAASC,KAAT,EAAgB;AACzB,aAAKF,aAAL,GAAqBC,QAArB,CAA8BC,KAA9B;AACA,OA7BO;AA+BRC,MAAAA,OAAO,EAAE,mBAAW;AACnB,eAAO,KAAKH,aAAL,GAAqBG,OAArB,EAAP;AACA,OAjCO;AAmCRC,MAAAA,OAAO,EAAE,iBAASF,KAAT,EAAgB;AACxB,aAAKF,aAAL,GAAqBI,OAArB,CAA6BF,KAA7B;AACA;AArCO;AARoD,GAA9D;AAlBApB,EAAAA,OAAO,CAACC,QAAR,CAAiBC,UAAjB,CAA4BqB,cAA5B,CAA2C3B,aAA3C,GAA2DA,aAA3D",
+  "sourcesContent": [
+    "/*\n\tQookery - Declarative UI Building for Qooxdoo\n\n\tCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\n\tLicensed under the Apache License, Version 2.0 (the \"License\");\n\tyou may not use this file except in compliance with the License.\n\tYou may obtain a copy of the License at\n\n\t\thttp://www.apache.org/licenses/LICENSE-2.0\n\n\tUnless required by applicable law or agreed to in writing, software\n\tdistributed under the License is distributed on an \"AS IS\" BASIS,\n\tWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n\tSee the License for the specific language governing permissions and\n\tlimitations under the License.\n*/\n\nqx.Class.define(\"qookery.internal.components.LabelComponent\", {\n\n\textend: qookery.internal.components.Component,\n\n\tconstruct: function(parentComponent) {\n\t\tthis.base(arguments, parentComponent);\n\t},\n\n\tmembers: {\n\n\t\t// Metadata\n\n\t\tgetAttributeType: function(attributeName) {\n\t\t\tswitch(attributeName) {\n\t\t\tcase \"rich\": return \"Boolean\";\n\t\t\tcase \"wrap\": return \"Boolean\";\n\t\t\t}\n\t\t\treturn this.base(arguments, attributeName);\n\t\t},\n\n\t\t// Construction\n\n\t\t_createWidgets: function() {\n\t\t\tvar label = new qx.ui.basic.Label(this.getAttribute(\"label\", \"\"));\n\t\t\tthis._applyAttribute(\"rich\", label, \"rich\");\n\t\t\tthis._applyAttribute(\"wrap\", label, \"wrap\");\n\t\t\tthis._applyAttribute(\"text-align\", label, \"textAlign\");\n\t\t\tthis._applyWidgetAttributes(label);\n\t\t\treturn [ label ];\n\t\t},\n\n\t\tgetValue: function() {\n\t\t\treturn this.getMainWidget().getValue();\n\t\t},\n\n\t\tsetValue: function(value) {\n\t\t\tthis.getMainWidget().setValue(value);\n\t\t},\n\n\t\tgetRich: function() {\n\t\t\treturn this.getMainWidget().getRich();\n\t\t},\n\n\t\tsetRich: function(value) {\n\t\t\tthis.getMainWidget().setRich(value);\n\t\t}\n\t}\n});\n"
+  ]
+}

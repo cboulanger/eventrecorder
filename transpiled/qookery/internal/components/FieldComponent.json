@@ -1,0 +1,955 @@
+{
+  "className": "qookery.internal.components.FieldComponent",
+  "packageName": "qookery.internal.components",
+  "name": "FieldComponent",
+  "superClass": "qookery.internal.components.EditableComponent",
+  "interfaces": [],
+  "mixins": [],
+  "functionName": null,
+  "clazz": {
+    "location": {
+      "start": {
+        "line": 19,
+        "column": 0
+      },
+      "end": {
+        "line": 110,
+        "column": 3
+      }
+    },
+    "jsdoc": {
+      "@description": [
+        {
+          "name": "@description",
+          "body": "Qookery - Declarative UI Building for Qooxdoo\n\nCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\nLicensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\nhttp:\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License."
+        }
+      ]
+    }
+  },
+  "type": "class",
+  "isAbstract": true,
+  "isStatic": false,
+  "isSingleton": false,
+  "construct": {
+    "location": {
+      "start": {
+        "line": 24,
+        "column": 12
+      },
+      "end": {
+        "line": 26,
+        "column": 2
+      }
+    },
+    "jsdoc": {}
+  },
+  "members": {
+    "getAttributeType": {
+      "location": {
+        "start": {
+          "line": 32,
+          "column": 2
+        },
+        "end": {
+          "line": 40,
+          "column": 3
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Metadata"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "attributeName {String} name of the attribute",
+            "paramName": "attributeName",
+            "description": " name of the attribute",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String} attribute's type or <code>null</code> if unknown",
+            "type": "String",
+            "description": " attribute's type or <code>null</code> if unknown"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.EditableComponent",
+      "appearsIn": [
+        "qookery.internal.components.EditableComponent",
+        "qookery.IEditableComponent",
+        "qookery.IComponent",
+        "qookery.internal.components.Component"
+      ]
+    },
+    "create": {
+      "location": {
+        "start": {
+          "line": 44,
+          "column": 2
+        },
+        "end": {
+          "line": 46,
+          "column": 3
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Construction"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "attributes {Map} preprocessed attributes found in the defining XML document",
+            "paramName": "attributes",
+            "description": " preprocessed attributes found in the defining XML document",
+            "type": "Map"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.EditableComponent",
+      "appearsIn": [
+        "qookery.internal.components.EditableComponent",
+        "qookery.IEditableComponent",
+        "qookery.IComponent",
+        "qookery.internal.components.Component"
+      ]
+    },
+    "_setupTextField": {
+      "location": {
+        "start": {
+          "line": 48,
+          "column": 2
+        },
+        "end": {
+          "line": 97,
+          "column": 3
+        }
+      },
+      "type": "function",
+      "access": "protected"
+    },
+    "_updateUI": {
+      "location": {
+        "start": {
+          "line": 99,
+          "column": 2
+        },
+        "end": {
+          "line": 101,
+          "column": 3
+        }
+      },
+      "type": "function",
+      "access": "protected",
+      "overriddenFrom": "qookery.internal.components.EditableComponent",
+      "appearsIn": [
+        "qookery.internal.components.EditableComponent"
+      ]
+    },
+    "_applyReadOnly": {
+      "location": {
+        "start": {
+          "line": 103,
+          "column": 2
+        },
+        "end": {
+          "line": 108,
+          "column": 3
+        }
+      },
+      "type": "function",
+      "access": "protected",
+      "overriddenFrom": "qookery.internal.components.EditableComponent",
+      "appearsIn": [
+        "qookery.internal.components.EditableComponent"
+      ]
+    },
+    "getEnabled": {
+      "type": "function",
+      "name": "getEnabled",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.EditableComponent",
+      "property": "get",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>enabled</code>.\n\nFor further details take a look at the property definition: {@link #enabled}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "any",
+            "desc": "Returns the value for enabled"
+          }
+        ]
+      }
+    },
+    "isEnabled": {
+      "type": "function",
+      "name": "isEnabled",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.EditableComponent",
+      "property": "is",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>enabled</code>.\n\nFor further details take a look at the property definition: {@link #enabled}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "Boolean",
+            "desc": "Returns the value for enabled"
+          }
+        ]
+      }
+    },
+    "setEnabled": {
+      "type": "function",
+      "name": "setEnabled",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.EditableComponent",
+      "property": "set",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Sets the user value of the property <code>enabled</code>.\n\nFor further details take a look at the property definition: {@link #enabled}."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "type": "any",
+            "paramName": "value",
+            "desc": "Value for enabled"
+          }
+        ]
+      }
+    },
+    "resetEnabled": {
+      "type": "function",
+      "name": "resetEnabled",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.EditableComponent",
+      "property": "reset"
+    },
+    "getVisibility": {
+      "type": "function",
+      "name": "getVisibility",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.EditableComponent",
+      "property": "get",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>visibility</code>.\n\nFor further details take a look at the property definition: {@link #visibility}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "any",
+            "desc": "Returns the value for visibility"
+          }
+        ]
+      }
+    },
+    "setVisibility": {
+      "type": "function",
+      "name": "setVisibility",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.EditableComponent",
+      "property": "set",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Sets the user value of the property <code>visibility</code>.\n\nFor further details take a look at the property definition: {@link #visibility}."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "type": "any",
+            "paramName": "value",
+            "desc": "Value for visibility"
+          }
+        ]
+      }
+    },
+    "resetVisibility": {
+      "type": "function",
+      "name": "resetVisibility",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.EditableComponent",
+      "property": "reset"
+    },
+    "getValue": {
+      "type": "function",
+      "name": "getValue",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.EditableComponent",
+      "property": "get",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>value</code>.\n\nFor further details take a look at the property definition: {@link #value}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "any",
+            "desc": "Returns the value for value"
+          }
+        ]
+      }
+    },
+    "setValue": {
+      "type": "function",
+      "name": "setValue",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.EditableComponent",
+      "property": "set",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Sets the user value of the property <code>value</code>.\n\nFor further details take a look at the property definition: {@link #value}."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "type": "any",
+            "paramName": "value",
+            "desc": "Value for value"
+          }
+        ]
+      }
+    },
+    "resetValue": {
+      "type": "function",
+      "name": "resetValue",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.EditableComponent",
+      "property": "reset"
+    },
+    "getLabel": {
+      "type": "function",
+      "name": "getLabel",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.EditableComponent",
+      "property": "get",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>label</code>.\n\nFor further details take a look at the property definition: {@link #label}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "any",
+            "desc": "Returns the value for label"
+          }
+        ]
+      }
+    },
+    "setLabel": {
+      "type": "function",
+      "name": "setLabel",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.EditableComponent",
+      "property": "set",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Sets the user value of the property <code>label</code>.\n\nFor further details take a look at the property definition: {@link #label}."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "type": "any",
+            "paramName": "value",
+            "desc": "Value for label"
+          }
+        ]
+      }
+    },
+    "resetLabel": {
+      "type": "function",
+      "name": "resetLabel",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.EditableComponent",
+      "property": "reset"
+    },
+    "getToolTipText": {
+      "type": "function",
+      "name": "getToolTipText",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.EditableComponent",
+      "property": "get",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>toolTipText</code>.\n\nFor further details take a look at the property definition: {@link #toolTipText}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "any",
+            "desc": "Returns the value for toolTipText"
+          }
+        ]
+      }
+    },
+    "setToolTipText": {
+      "type": "function",
+      "name": "setToolTipText",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.EditableComponent",
+      "property": "set",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Sets the user value of the property <code>toolTipText</code>.\n\nFor further details take a look at the property definition: {@link #toolTipText}."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "type": "any",
+            "paramName": "value",
+            "desc": "Value for toolTipText"
+          }
+        ]
+      }
+    },
+    "resetToolTipText": {
+      "type": "function",
+      "name": "resetToolTipText",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.EditableComponent",
+      "property": "reset"
+    },
+    "getRequired": {
+      "type": "function",
+      "name": "getRequired",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.EditableComponent",
+      "property": "get",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>required</code>.\n\nFor further details take a look at the property definition: {@link #required}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "any",
+            "desc": "Returns the value for required"
+          }
+        ]
+      }
+    },
+    "isRequired": {
+      "type": "function",
+      "name": "isRequired",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.EditableComponent",
+      "property": "is",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>required</code>.\n\nFor further details take a look at the property definition: {@link #required}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "Boolean",
+            "desc": "Returns the value for required"
+          }
+        ]
+      }
+    },
+    "setRequired": {
+      "type": "function",
+      "name": "setRequired",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.EditableComponent",
+      "property": "set",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Sets the user value of the property <code>required</code>.\n\nFor further details take a look at the property definition: {@link #required}."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "type": "any",
+            "paramName": "value",
+            "desc": "Value for required"
+          }
+        ]
+      }
+    },
+    "resetRequired": {
+      "type": "function",
+      "name": "resetRequired",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.EditableComponent",
+      "property": "reset"
+    },
+    "getValid": {
+      "type": "function",
+      "name": "getValid",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.EditableComponent",
+      "property": "get",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>valid</code>.\n\nFor further details take a look at the property definition: {@link #valid}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "any",
+            "desc": "Returns the value for valid"
+          }
+        ]
+      }
+    },
+    "isValid": {
+      "type": "function",
+      "name": "isValid",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.EditableComponent",
+      "property": "is",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>valid</code>.\n\nFor further details take a look at the property definition: {@link #valid}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "Boolean",
+            "desc": "Returns the value for valid"
+          }
+        ]
+      }
+    },
+    "setValid": {
+      "type": "function",
+      "name": "setValid",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.EditableComponent",
+      "property": "set",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Sets the user value of the property <code>valid</code>.\n\nFor further details take a look at the property definition: {@link #valid}."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "type": "any",
+            "paramName": "value",
+            "desc": "Value for valid"
+          }
+        ]
+      }
+    },
+    "resetValid": {
+      "type": "function",
+      "name": "resetValid",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.EditableComponent",
+      "property": "reset"
+    },
+    "getFormat": {
+      "type": "function",
+      "name": "getFormat",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.EditableComponent",
+      "property": "get",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>format</code>.\n\nFor further details take a look at the property definition: {@link #format}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "any",
+            "desc": "Returns the value for format"
+          }
+        ]
+      }
+    },
+    "setFormat": {
+      "type": "function",
+      "name": "setFormat",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.EditableComponent",
+      "property": "set",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Sets the user value of the property <code>format</code>.\n\nFor further details take a look at the property definition: {@link #format}."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "type": "any",
+            "paramName": "value",
+            "desc": "Value for format"
+          }
+        ]
+      }
+    },
+    "resetFormat": {
+      "type": "function",
+      "name": "resetFormat",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.EditableComponent",
+      "property": "reset"
+    },
+    "getReadOnly": {
+      "type": "function",
+      "name": "getReadOnly",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.EditableComponent",
+      "property": "get",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>readOnly</code>.\n\nFor further details take a look at the property definition: {@link #readOnly}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "any",
+            "desc": "Returns the value for readOnly"
+          }
+        ]
+      }
+    },
+    "isReadOnly": {
+      "type": "function",
+      "name": "isReadOnly",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.EditableComponent",
+      "property": "is",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>readOnly</code>.\n\nFor further details take a look at the property definition: {@link #readOnly}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "Boolean",
+            "desc": "Returns the value for readOnly"
+          }
+        ]
+      }
+    },
+    "setReadOnly": {
+      "type": "function",
+      "name": "setReadOnly",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.EditableComponent",
+      "property": "set",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Sets the user value of the property <code>readOnly</code>.\n\nFor further details take a look at the property definition: {@link #readOnly}."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "type": "any",
+            "paramName": "value",
+            "desc": "Value for readOnly"
+          }
+        ]
+      }
+    },
+    "resetReadOnly": {
+      "type": "function",
+      "name": "resetReadOnly",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.EditableComponent",
+      "property": "reset"
+    },
+    "getQxOwner": {
+      "type": "function",
+      "name": "getQxOwner",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.EditableComponent",
+      "property": "get",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>qxOwner</code>.\n\nFor further details take a look at the property definition: {@link #qxOwner}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "qx.core.Object",
+            "desc": "Returns the value for qxOwner"
+          }
+        ]
+      }
+    },
+    "setQxOwner": {
+      "type": "function",
+      "name": "setQxOwner",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.EditableComponent",
+      "property": "set",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Sets the user value of the property <code>qxOwner</code>.\n\nFor further details take a look at the property definition: {@link #qxOwner}."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "type": "qx.core.Object",
+            "paramName": "value",
+            "desc": "Value for qxOwner"
+          }
+        ]
+      }
+    },
+    "resetQxOwner": {
+      "type": "function",
+      "name": "resetQxOwner",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.EditableComponent",
+      "property": "reset"
+    },
+    "getQxObjectId": {
+      "type": "function",
+      "name": "getQxObjectId",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.EditableComponent",
+      "property": "get",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>qxObjectId</code>.\n\nFor further details take a look at the property definition: {@link #qxObjectId}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "desc": "Returns the value for qxObjectId"
+          }
+        ]
+      }
+    },
+    "setQxObjectId": {
+      "type": "function",
+      "name": "setQxObjectId",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.EditableComponent",
+      "property": "set",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Sets the user value of the property <code>qxObjectId</code>.\n\nFor further details take a look at the property definition: {@link #qxObjectId}."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "paramName": "value",
+            "desc": "Value for qxObjectId"
+          }
+        ]
+      }
+    },
+    "resetQxObjectId": {
+      "type": "function",
+      "name": "resetQxObjectId",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.internal.components.EditableComponent",
+      "property": "reset"
+    }
+  },
+  "descendants": [
+    "qookery.internal.components.TextAreaComponent",
+    "qookery.internal.components.TextFieldComponent"
+  ]
+}

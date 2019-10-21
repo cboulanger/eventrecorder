@@ -1,0 +1,46 @@
+{
+  "version": 3,
+  "sources": [
+    "/home/travis/build/cboulanger/eventrecorder/qx_packages/ergobyte_qookery_892f44d1d1ae5d65c7dd99b18da6876de2f2a920/qookery/source/class/qookery/internal/components/SplitPaneComponent.js"
+  ],
+  "names": [
+    "qx",
+    "Bootstrap",
+    "executePendingDefers",
+    "$$dbClassInfo",
+    "Class",
+    "define",
+    "extend",
+    "qookery",
+    "internal",
+    "components",
+    "ContainerComponent",
+    "construct",
+    "parentComponent",
+    "members",
+    "getAttributeType",
+    "attributeName",
+    "_createContainerWidget",
+    "orientation",
+    "getAttribute",
+    "pane",
+    "ui",
+    "splitpane",
+    "Pane",
+    "_applyWidgetAttributes",
+    "defaultValue",
+    "add",
+    "childComponent",
+    "_addChildComponent",
+    "flexes",
+    "flex",
+    "listChildren",
+    "length",
+    "getMainWidget",
+    "SplitPaneComponent"
+  ],
+  "mappings": ";;;;;;;;;;;;;;AAAAA,EAAAA,EAAE,CAACC,SAAH,CAAaC,oBAAb,CAAkCC,aAAlC;;AAAA;;;;;;;;;;;;;;;;;AAkBAH,EAAAA,EAAE,CAACI,KAAH,CAASC,MAAT,CAAgB,gDAAhB,EAAkE;AAEjEC,IAAAA,MAAM,EAAEC,OAAO,CAACC,QAAR,CAAiBC,UAAjB,CAA4BC,kBAF6B;AAIjEC,IAAAA,SAAS,EAAE,mBAASC,eAAT,EAA0B;AACpC,4EAAqBA,eAArB;AACA,KANgE;AAQjEC,IAAAA,OAAO,EAAE;AAER;AAEAC,MAAAA,gBAAgB,EAAE,0BAASC,aAAT,EAAwB;AACzC,gBAAOA,aAAP;AACA,eAAK,QAAL;AAAe,mBAAO,aAAP;AADf;;AAGA,yGAA4BA,aAA5B;AACA,OATO;AAWR;AAEAC,MAAAA,sBAAsB,EAAE,kCAAW;AAClC,YAAIC,WAAW,GAAG,KAAKC,YAAL,CAAkB,aAAlB,EAAiC,YAAjC,CAAlB;AACA,YAAIC,IAAI,GAAG,IAAInB,EAAE,CAACoB,EAAH,CAAMC,SAAN,CAAgBC,IAApB,CAAyBL,WAAzB,CAAX;;AACA,aAAKM,sBAAL,CAA4BJ,IAA5B;;AACA,eAAOA,IAAP;AACA,OAlBO;AAoBRD,MAAAA,YAAY,EAAE,sBAASH,aAAT,EAAwBS,YAAxB,EAAsC;AACnD,YAAGT,aAAa,KAAK,QAArB,EAA+B,OAAO,MAAP;AAC/B,qGAA4BA,aAA5B,EAA2CS,YAA3C;AACA,OAvBO;AAyBRC,MAAAA,GAAG,EAAE,aAASC,cAAT,EAAyB;AAC7B,aAAKC,kBAAL,CAAwBD,cAAxB;;AACA,YAAIE,MAAM,GAAG,KAAKV,YAAL,CAAkB,QAAlB,CAAb;AACA,YAAIW,IAAI,GAAGD,MAAM,GAAGA,MAAM,CAAC,KAAKE,YAAL,GAAoBC,MAApB,GAA6B,CAA9B,CAAT,GAA4C,CAA7D;AACA,aAAKC,aAAL,GAAqBP,GAArB,CAAyBC,cAAc,CAACM,aAAf,EAAzB,EAAyDH,IAAzD;AACA;AA9BO;AARwD,GAAlE;AAlBAtB,EAAAA,OAAO,CAACC,QAAR,CAAiBC,UAAjB,CAA4BwB,kBAA5B,CAA+C9B,aAA/C,GAA+DA,aAA/D",
+  "sourcesContent": [
+    "/*\n\tQookery - Declarative UI Building for Qooxdoo\n\n\tCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\n\tLicensed under the Apache License, Version 2.0 (the \"License\");\n\tyou may not use this file except in compliance with the License.\n\tYou may obtain a copy of the License at\n\n\t\thttp://www.apache.org/licenses/LICENSE-2.0\n\n\tUnless required by applicable law or agreed to in writing, software\n\tdistributed under the License is distributed on an \"AS IS\" BASIS,\n\tWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n\tSee the License for the specific language governing permissions and\n\tlimitations under the License.\n*/\n\nqx.Class.define(\"qookery.internal.components.SplitPaneComponent\", {\n\n\textend: qookery.internal.components.ContainerComponent,\n\n\tconstruct: function(parentComponent) {\n\t\tthis.base(arguments, parentComponent);\n\t},\n\n\tmembers: {\n\n\t\t// Metadata\n\n\t\tgetAttributeType: function(attributeName) {\n\t\t\tswitch(attributeName) {\n\t\t\tcase \"flexes\": return \"IntegerList\";\n\t\t\t}\n\t\t\treturn this.base(arguments, attributeName);\n\t\t},\n\n\t\t// Creation\n\n\t\t_createContainerWidget: function() {\n\t\t\tvar orientation = this.getAttribute(\"orientation\", \"horizontal\");\n\t\t\tvar pane = new qx.ui.splitpane.Pane(orientation);\n\t\t\tthis._applyWidgetAttributes(pane);\n\t\t\treturn pane;\n\t\t},\n\n\t\tgetAttribute: function(attributeName, defaultValue) {\n\t\t\tif(attributeName === \"layout\") return \"none\";\n\t\t\treturn this.base(arguments, attributeName, defaultValue);\n\t\t},\n\n\t\tadd: function(childComponent) {\n\t\t\tthis._addChildComponent(childComponent);\n\t\t\tvar flexes = this.getAttribute(\"flexes\");\n\t\t\tvar flex = flexes ? flexes[this.listChildren().length - 1] : 0;\n\t\t\tthis.getMainWidget().add(childComponent.getMainWidget(), flex);\n\t\t}\n\t}\n});\n"
+  ]
+}

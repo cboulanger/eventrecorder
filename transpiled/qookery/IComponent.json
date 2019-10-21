@@ -1,0 +1,1087 @@
+{
+  "className": "qookery.IComponent",
+  "packageName": "qookery",
+  "name": "IComponent",
+  "superClass": "qookery.IAttributeSet",
+  "interfaces": [],
+  "mixins": [],
+  "functionName": null,
+  "clazz": {
+    "location": {
+      "start": {
+        "line": 22,
+        "column": 0
+      },
+      "end": {
+        "line": 251,
+        "column": 3
+      }
+    },
+    "jsdoc": {
+      "@description": [
+        {
+          "name": "@description",
+          "body": "Qookery - Declarative UI Building for Qooxdoo\n\nCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\nLicensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\nhttp:\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License."
+        },
+        {
+          "name": "@description",
+          "body": "Interface implemented by all Qookery components"
+        }
+      ]
+    }
+  },
+  "type": "interface",
+  "statics": {
+    "A_ID": {
+      "location": {
+        "start": {
+          "line": 31,
+          "column": 2
+        },
+        "end": {
+          "line": 31,
+          "column": 44
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Attribute names"
+          },
+          {
+            "name": "@description",
+            "body": "{String} Symbolic name of component, unique within its containing form"
+          }
+        ]
+      },
+      "type": "variable",
+      "access": "public"
+    },
+    "A_NAMESPACES": {
+      "location": {
+        "start": {
+          "line": 34,
+          "column": 2
+        },
+        "end": {
+          "line": 34,
+          "column": 60
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "{Map} Mapping of prefixes to namespace URIs to associate with component, set by parser after instantiation"
+          }
+        ]
+      },
+      "type": "variable",
+      "access": "public"
+    }
+  },
+  "properties": {
+    "enabled": {
+      "type": "property",
+      "name": "enabled",
+      "abstract": true,
+      "mixin": false,
+      "access": "public"
+    },
+    "visibility": {
+      "type": "property",
+      "name": "visibility",
+      "abstract": true,
+      "mixin": false,
+      "access": "public"
+    }
+  },
+  "members": {
+    "getId": {
+      "location": {
+        "start": {
+          "line": 57,
+          "column": 2
+        },
+        "end": {
+          "line": 57,
+          "column": 23
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Metadata"
+          },
+          {
+            "name": "@description",
+            "body": "Return the component identifier, if any\n\n<p>This identifier is guaranteed to be unique within the defining XML document</p>"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String} unique identifier or <code>null</code>",
+            "type": "String",
+            "description": " unique identifier or <code>null</code>"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "getAttributeType": {
+      "location": {
+        "start": {
+          "line": 66,
+          "column": 2
+        },
+        "end": {
+          "line": 66,
+          "column": 47
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Return the type of an attribute"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "attributeName {String} name of the attribute",
+            "paramName": "attributeName",
+            "description": " name of the attribute",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String} attribute's type or <code>null</code> if unknown",
+            "type": "String",
+            "description": " attribute's type or <code>null</code> if unknown"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "setAttribute": {
+      "location": {
+        "start": {
+          "line": 77,
+          "column": 2
+        },
+        "end": {
+          "line": 77,
+          "column": 50
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Set an attribute's value\n\n<p>NB: Few attributes are expected by implementations to be modified this way - be sure\nto check component documentation for supported changes.</p>"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "attributeName {String} the name of the attribute to change",
+            "paramName": "attributeName",
+            "description": " the name of the attribute to change",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "value {any} the new attribute value, <code>undefined</code> clears attribute",
+            "paramName": "value",
+            "description": " the new attribute value, <code>undefined</code> clears attribute",
+            "type": "any"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "resolveNamespacePrefix": {
+      "location": {
+        "start": {
+          "line": 88,
+          "column": 2
+        },
+        "end": {
+          "line": 88,
+          "column": 46
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Namespaces"
+          },
+          {
+            "name": "@description",
+            "body": "Resolve a URI namespace prefix"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "prefix {String} the prefix to resolve",
+            "paramName": "prefix",
+            "description": " the prefix to resolve",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String?} namespace URI or <code>null</code> if prefix is unknown",
+            "type": "String?",
+            "description": " namespace URI or <code>null</code> if prefix is unknown"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "resolveQName": {
+      "location": {
+        "start": {
+          "line": 100,
+          "column": 2
+        },
+        "end": {
+          "line": 100,
+          "column": 35
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Resolve a QName\n\n<p>The result format is \"{\" + Namespace URI + \"}\" + local part. If the namespace URI is empty,\nonly the local part is returned.</p>"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "qName {String} the QName to resolve",
+            "paramName": "qName",
+            "description": " the QName to resolve",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String} the string representation of the resolved QName",
+            "type": "String",
+            "description": " the string representation of the resolved QName"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "create": {
+      "location": {
+        "start": {
+          "line": 111,
+          "column": 2
+        },
+        "end": {
+          "line": 111,
+          "column": 34
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Lifecycle"
+          },
+          {
+            "name": "@description",
+            "body": "Called by the form parser soon after initialization and attribute parsing\n\n<p>Notice: You must never call this method directly.</p>"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "attributes {Map} preprocessed attributes found in the defining XML document",
+            "paramName": "attributes",
+            "description": " preprocessed attributes found in the defining XML document",
+            "type": "Map"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "parseXmlElement": {
+      "location": {
+        "start": {
+          "line": 123,
+          "column": 2
+        },
+        "end": {
+          "line": 123,
+          "column": 53
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Called by the parser when an unknown XML element is encountered within a component's declaration\n\n<p>Notice: You must never call this method directly.</p>"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "elementName {String} the resolved fully-qualified name of encountered DOM element",
+            "paramName": "elementName",
+            "description": " the resolved fully-qualified name of encountered DOM element",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "element {Element} the DOM element that is not understood by parser",
+            "paramName": "element",
+            "description": " the DOM element that is not understood by parser",
+            "type": "Element"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{Boolean} <code>true</code> in case the component was able to do something with input",
+            "type": "Boolean",
+            "description": " <code>true</code> in case the component was able to do something with input"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "setup": {
+      "location": {
+        "start": {
+          "line": 130,
+          "column": 2
+        },
+        "end": {
+          "line": 130,
+          "column": 23
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Called by the parser after creation of the component and all its children\n\n<p>Notice: You must never call this method directly.</p>"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "getForm": {
+      "location": {
+        "start": {
+          "line": 139,
+          "column": 2
+        },
+        "end": {
+          "line": 139,
+          "column": 25
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Access to other components"
+          },
+          {
+            "name": "@description",
+            "body": "Return the form containing this component"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{qookery.IFormComponent} the form containing this component",
+            "type": "qookery.IFormComponent",
+            "description": " the form containing this component"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "getParent": {
+      "location": {
+        "start": {
+          "line": 146,
+          "column": 2
+        },
+        "end": {
+          "line": 146,
+          "column": 27
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Return the parent component or <code>null</cide> if this is the root component"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{qookery.IComponent} parent component or <code>null</code>",
+            "type": "qookery.IComponent",
+            "description": " parent component or <code>null</code>"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "evaluateExpression": {
+      "location": {
+        "start": {
+          "line": 157,
+          "column": 2
+        },
+        "end": {
+          "line": 157,
+          "column": 46
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Scripting"
+          },
+          {
+            "name": "@description",
+            "body": "Evaluate a Qookery expression within component's scripting context"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "expression {String} a valid JavaScript expression",
+            "paramName": "expression",
+            "description": " a valid JavaScript expression",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{any} the evaluation result",
+            "type": "any",
+            "description": " the evaluation result"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "executeClientCode": {
+      "location": {
+        "start": {
+          "line": 167,
+          "column": 2
+        },
+        "end": {
+          "line": 167,
+          "column": 58
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Execute Qookery scripting code on component"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "clientCode {String} a valid Qookery script",
+            "paramName": "clientCode",
+            "description": " a valid Qookery script",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "argumentMap {Map?} a map to be passed as arguments to the script",
+            "paramName": "argumentMap",
+            "description": " a map to be passed as arguments to the script",
+            "optional": true,
+            "type": "Map"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{any} the script result",
+            "type": "any",
+            "description": " the script result"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "focus": {
+      "location": {
+        "start": {
+          "line": 174,
+          "column": 2
+        },
+        "end": {
+          "line": 174,
+          "column": 23
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "User interface"
+          },
+          {
+            "name": "@description",
+            "body": "Set the focus to this component"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "listWidgets": {
+      "location": {
+        "start": {
+          "line": 183,
+          "column": 2
+        },
+        "end": {
+          "line": 183,
+          "column": 39
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Return a list of widgets that are handled by this component"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "filterName {String} if set, one of 'topMost', 'main' to restrict resulting list",
+            "paramName": "filterName",
+            "description": " if set, one of 'topMost', 'main' to restrict resulting list",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{qx.ui.core.Widget[]} widget list - an empty array if none found",
+            "type": "qx.ui.core.Widget[]",
+            "description": " widget list - an empty array if none found"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "getMainWidget": {
+      "location": {
+        "start": {
+          "line": 192,
+          "column": 2
+        },
+        "end": {
+          "line": 192,
+          "column": 31
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Return the main widget\n\n<p>This method a shorthand for #listWidgets('main')[0]</p>"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{qx.ui.core.Widget} the main widget",
+            "type": "qx.ui.core.Widget",
+            "description": " the main widget"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "addEventHandler": {
+      "location": {
+        "start": {
+          "line": 201,
+          "column": 2
+        },
+        "end": {
+          "line": 201,
+          "column": 61
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Add an event handler to this component"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "eventName {String} the name of the event to listen to",
+            "paramName": "eventName",
+            "description": " the name of the event to listen to",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "handler {Function} a function to execute when the event is triggered",
+            "paramName": "handler",
+            "description": " a function to execute when the event is triggered",
+            "type": "Function"
+          },
+          {
+            "name": "@param",
+            "body": "onlyOnce {Boolean} if <code>true</code>, the listener will be removed as soon as it triggered for the first time",
+            "paramName": "onlyOnce",
+            "description": " if <code>true</code>, the listener will be removed as soon as it triggered for the first time",
+            "type": "Boolean"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "isActionSupported": {
+      "location": {
+        "start": {
+          "line": 211,
+          "column": 2
+        },
+        "end": {
+          "line": 211,
+          "column": 45
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Actions"
+          },
+          {
+            "name": "@description",
+            "body": "Check whether the action exist or not."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "actionName {String} the name of the action",
+            "paramName": "actionName",
+            "description": " the name of the action",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{Boolean} whether the action exists",
+            "type": "Boolean",
+            "description": " whether the action exists"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "executeAction": {
+      "location": {
+        "start": {
+          "line": 224,
+          "column": 2
+        },
+        "end": {
+          "line": 224,
+          "column": 50
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Execute an action provided by this component\n\n<p>It is safe to call this method for undefined actions,\nin which case <code>null</code> is returned.</p>"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "actionName {String} one the actions provided by component",
+            "paramName": "actionName",
+            "description": " one the actions provided by component",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "varargs {any} any number of arguments that will be passed to action's function",
+            "paramName": "varargs",
+            "description": " any number of arguments that will be passed to action's function",
+            "type": "any"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{any} the action's execution result",
+            "type": "any",
+            "description": " the action's execution result"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "validate": {
+      "location": {
+        "start": {
+          "line": 235,
+          "column": 2
+        },
+        "end": {
+          "line": 235,
+          "column": 26
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Miscellaneous"
+          },
+          {
+            "name": "@description",
+            "body": "Request validation of component state and contents\n\n<p>NB: Components should not return errors when disabled, hidden or excluded.</p>"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{qookery.util.ValidationError} discovered validation error or <code>null</code> if component is valid",
+            "type": "qookery.util.ValidationError",
+            "description": " discovered validation error or <code>null</code> if component is valid"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "tr": {
+      "location": {
+        "start": {
+          "line": 242,
+          "column": 2
+        },
+        "end": {
+          "line": 242,
+          "column": 29
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Return a translated message"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "messageId {String} the identifier of the wanted message",
+            "paramName": "messageId",
+            "description": " the identifier of the wanted message",
+            "type": "String"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "addToDisposeList": {
+      "location": {
+        "start": {
+          "line": 249,
+          "column": 2
+        },
+        "end": {
+          "line": 249,
+          "column": 44
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Add a disposable to the list of objects that will be disposed automatically together with component"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "disposable {Object} any object that has a <code>dispose</code> property that is a function",
+            "paramName": "disposable",
+            "description": " any object that has a <code>dispose</code> property that is a function",
+            "type": "Object"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "getAttribute": {
+      "type": "function",
+      "name": "getAttribute",
+      "abstract": true,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qookery.IAttributeSet",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Return an attribute's value if defined, or a default value if missing\n\n<p>You may supply the <code>Error</code> JS build-in object as the default value parameter\nin order to request that a range error is thrown when attribute is missing.</p>"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "name {String} the name of the wanted attribute",
+            "paramName": "name",
+            "description": " the name of the wanted attribute",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "defaultValue {any} optional default value, <code>undefined</code> will be used if not provided",
+            "paramName": "defaultValue",
+            "description": " optional default value, <code>undefined</code> will be used if not provided",
+            "type": "any"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{any} attribute's value or requested default value if attribute is not defined within the set",
+            "type": "any",
+            "description": " attribute's value or requested default value if attribute is not defined within the set"
+          }
+        ],
+        "@throws": [
+          {
+            "name": "@throws",
+            "body": "{RangeError} in case attribute is not part of the set and the default value was set to <code>Error</code>",
+            "type": "RangeError",
+            "description": " in case attribute is not part of the set and the default value was set to <code>Error</code>"
+          }
+        ]
+      }
+    },
+    "getEnabled": {
+      "type": "function",
+      "name": "getEnabled",
+      "abstract": false,
+      "mixin": false,
+      "inherited": false,
+      "access": "public",
+      "property": "get",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>enabled</code>.\n\nFor further details take a look at the property definition: {@link #enabled}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "Boolean",
+            "desc": "Returns the value for enabled"
+          }
+        ]
+      }
+    },
+    "isEnabled": {
+      "type": "function",
+      "name": "isEnabled",
+      "abstract": false,
+      "mixin": false,
+      "inherited": false,
+      "access": "public",
+      "property": "is",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>enabled</code>.\n\nFor further details take a look at the property definition: {@link #enabled}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "Boolean",
+            "desc": "Returns the value for enabled"
+          }
+        ]
+      }
+    },
+    "setEnabled": {
+      "type": "function",
+      "name": "setEnabled",
+      "abstract": false,
+      "mixin": false,
+      "inherited": false,
+      "access": "public",
+      "property": "set",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Sets the user value of the property <code>enabled</code>.\n\nFor further details take a look at the property definition: {@link #enabled}."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "type": "Boolean",
+            "paramName": "value",
+            "desc": "Value for enabled"
+          }
+        ]
+      }
+    },
+    "resetEnabled": {
+      "type": "function",
+      "name": "resetEnabled",
+      "abstract": false,
+      "mixin": false,
+      "inherited": false,
+      "access": "public",
+      "property": "reset",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Resets the user value of the property <code>enabled</code>.\n\nThe computed value falls back to the next available value e.g. appearance, init or inheritance value depending on the property configuration and value availability.\n\nFor further details take a look at the property definition: {@link #enabled}."
+          }
+        ]
+      }
+    },
+    "getVisibility": {
+      "type": "function",
+      "name": "getVisibility",
+      "abstract": false,
+      "mixin": false,
+      "inherited": false,
+      "access": "public",
+      "property": "get",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>visibility</code>.\n\nFor further details take a look at the property definition: {@link #visibility}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "any",
+            "desc": "Returns the value for visibility"
+          }
+        ]
+      }
+    },
+    "setVisibility": {
+      "type": "function",
+      "name": "setVisibility",
+      "abstract": false,
+      "mixin": false,
+      "inherited": false,
+      "access": "public",
+      "property": "set",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Sets the user value of the property <code>visibility</code>.\n\nFor further details take a look at the property definition: {@link #visibility}."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "type": "any",
+            "paramName": "value",
+            "desc": "Value for visibility"
+          }
+        ]
+      }
+    },
+    "resetVisibility": {
+      "type": "function",
+      "name": "resetVisibility",
+      "abstract": false,
+      "mixin": false,
+      "inherited": false,
+      "access": "public",
+      "property": "reset",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Resets the user value of the property <code>visibility</code>.\n\nThe computed value falls back to the next available value e.g. appearance, init or inheritance value depending on the property configuration and value availability.\n\nFor further details take a look at the property definition: {@link #visibility}."
+          }
+        ]
+      }
+    }
+  },
+  "abstract": true,
+  "descendants": [
+    "qookery.IContainerComponent",
+    "qookery.IEditableComponent"
+  ]
+}

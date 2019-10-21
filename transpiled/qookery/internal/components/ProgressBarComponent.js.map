@@ -1,0 +1,43 @@
+{
+  "version": 3,
+  "sources": [
+    "/home/travis/build/cboulanger/eventrecorder/qx_packages/ergobyte_qookery_892f44d1d1ae5d65c7dd99b18da6876de2f2a920/qookery/source/class/qookery/internal/components/ProgressBarComponent.js"
+  ],
+  "names": [
+    "qx",
+    "Bootstrap",
+    "executePendingDefers",
+    "$$dbClassInfo",
+    "Class",
+    "define",
+    "extend",
+    "qookery",
+    "internal",
+    "components",
+    "Component",
+    "construct",
+    "parentComponent",
+    "members",
+    "getAttributeType",
+    "attributeName",
+    "_createWidgets",
+    "progressBar",
+    "ui",
+    "indicator",
+    "ProgressBar",
+    "_applyAttribute",
+    "_applyWidgetAttributes",
+    "getMaximum",
+    "getMainWidget",
+    "setMaximum",
+    "maximum",
+    "getValue",
+    "setValue",
+    "value",
+    "ProgressBarComponent"
+  ],
+  "mappings": ";;;;;;;;;;;;;;AAAAA,EAAAA,EAAE,CAACC,SAAH,CAAaC,oBAAb,CAAkCC,aAAlC;;AAAA;;;;;;;;;;;;;;;;;AAkBAH,EAAAA,EAAE,CAACI,KAAH,CAASC,MAAT,CAAgB,kDAAhB,EAAoE;AAEnEC,IAAAA,MAAM,EAAEC,OAAO,CAACC,QAAR,CAAiBC,UAAjB,CAA4BC,SAF+B;AAInEC,IAAAA,SAAS,EAAE,mBAASC,eAAT,EAA0B;AACpC,mEAAqBA,eAArB;AACA,KANkE;AAQnEC,IAAAA,OAAO,EAAE;AAER;AAEAC,MAAAA,gBAAgB,EAAE,0BAASC,aAAT,EAAwB;AACzC,gBAAOA,aAAP;AACA,eAAK,SAAL;AAAgB,mBAAO,QAAP;AADhB;;AAGA,2GAA4BA,aAA5B;AACA,OATO;AAWR;AAEAC,MAAAA,cAAc,EAAE,0BAAW;AAC1B,YAAIC,WAAW,GAAG,IAAIjB,EAAE,CAACkB,EAAH,CAAMC,SAAN,CAAgBC,WAApB,EAAlB;;AACA,aAAKC,eAAL,CAAqB,SAArB,EAAgCJ,WAAhC,EAA6C,SAA7C;;AACA,aAAKK,sBAAL,CAA4BL,WAA5B;;AACA,eAAO,CAAEA,WAAF,CAAP;AACA,OAlBO;AAoBR;AAEAM,MAAAA,UAAU,EAAE,sBAAW;AACtB,eAAO,KAAKC,aAAL,GAAqBD,UAArB,EAAP;AACA,OAxBO;AA0BRE,MAAAA,UAAU,EAAE,oBAASC,OAAT,EAAkB;AAC7B,aAAKF,aAAL,GAAqBC,UAArB,CAAgCC,OAAhC;AACA,OA5BO;AA8BRC,MAAAA,QAAQ,EAAE,oBAAW;AACpB,eAAO,KAAKH,aAAL,GAAqBG,QAArB,EAAP;AACA,OAhCO;AAkCRC,MAAAA,QAAQ,EAAE,kBAASC,KAAT,EAAgB;AACzB,eAAO,KAAKL,aAAL,GAAqBI,QAArB,CAA8BC,KAA9B,CAAP;AACA;AApCO;AAR0D,GAApE;AAlBAtB,EAAAA,OAAO,CAACC,QAAR,CAAiBC,UAAjB,CAA4BqB,oBAA5B,CAAiD3B,aAAjD,GAAiEA,aAAjE",
+  "sourcesContent": [
+    "/*\n\tQookery - Declarative UI Building for Qooxdoo\n\n\tCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\n\tLicensed under the Apache License, Version 2.0 (the \"License\");\n\tyou may not use this file except in compliance with the License.\n\tYou may obtain a copy of the License at\n\n\t\thttp://www.apache.org/licenses/LICENSE-2.0\n\n\tUnless required by applicable law or agreed to in writing, software\n\tdistributed under the License is distributed on an \"AS IS\" BASIS,\n\tWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n\tSee the License for the specific language governing permissions and\n\tlimitations under the License.\n*/\n\nqx.Class.define(\"qookery.internal.components.ProgressBarComponent\", {\n\n\textend: qookery.internal.components.Component,\n\n\tconstruct: function(parentComponent) {\n\t\tthis.base(arguments, parentComponent);\n\t},\n\n\tmembers: {\n\n\t\t// Metadata\n\n\t\tgetAttributeType: function(attributeName) {\n\t\t\tswitch(attributeName) {\n\t\t\tcase \"maximum\": return \"Number\";\n\t\t\t}\n\t\t\treturn this.base(arguments, attributeName);\n\t\t},\n\n\t\t// Creation\n\n\t\t_createWidgets: function() {\n\t\t\tvar progressBar = new qx.ui.indicator.ProgressBar();\n\t\t\tthis._applyAttribute(\"maximum\", progressBar, \"maximum\");\n\t\t\tthis._applyWidgetAttributes(progressBar);\n\t\t\treturn [ progressBar ];\n\t\t},\n\n\t\t// Public methods\n\n\t\tgetMaximum: function() {\n\t\t\treturn this.getMainWidget().getMaximum();\n\t\t},\n\n\t\tsetMaximum: function(maximum) {\n\t\t\tthis.getMainWidget().setMaximum(maximum);\n\t\t},\n\n\t\tgetValue: function() {\n\t\t\treturn this.getMainWidget().getValue();\n\t\t},\n\n\t\tsetValue: function(value) {\n\t\t\treturn this.getMainWidget().setValue(value);\n\t\t}\n\t}\n});\n"
+  ]
+}

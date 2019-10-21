@@ -1,0 +1,40 @@
+{
+  "version": 3,
+  "sources": [
+    "/home/travis/build/cboulanger/eventrecorder/qx_packages/ergobyte_qookery_892f44d1d1ae5d65c7dd99b18da6876de2f2a920/qookery/source/class/qookery/internal/validators/NotNullValidator.js"
+  ],
+  "names": [
+    "qx",
+    "Bootstrap",
+    "executePendingDefers",
+    "$$dbClassInfo",
+    "Class",
+    "define",
+    "extend",
+    "core",
+    "Object",
+    "implement",
+    "qookery",
+    "IValidator",
+    "type",
+    "construct",
+    "members",
+    "createValidation",
+    "component",
+    "invalidMessage",
+    "options",
+    "value",
+    "locale",
+    "Manager",
+    "tr",
+    "util",
+    "ValidationError",
+    "internal",
+    "validators",
+    "NotNullValidator"
+  ],
+  "mappings": ";;;;;;;;;;;;;;;;;;AAAAA,EAAAA,EAAE,CAACC,SAAH,CAAaC,oBAAb,CAAkCC,aAAlC;;AAAA;;;;;;;;;;;;;;;;;AAkBAH,EAAAA,EAAE,CAACI,KAAH,CAASC,MAAT,CAAgB,8CAAhB,EAAgE;AAE/DC,IAAAA,MAAM,EAAEN,EAAE,CAACO,IAAH,CAAQC,MAF+C;AAG/DC,IAAAA,SAAS,EAAE,CAAEC,OAAO,CAACC,UAAV,CAHoD;AAI/DC,IAAAA,IAAI,EAAE,WAJyD;AAM/DC,IAAAA,SAAS,EAAE,qBAAW;AACrB;AACA,KAR8D;AAU/DC,IAAAA,OAAO,EAAE;AAERC,MAAAA,gBAAgB,EAAE,0BAASC,SAAT,EAAoBC,cAApB,EAAoCC,OAApC,EAA6C;AAC9D,eAAO,UAASC,KAAT,EAAgB;AACtB,cAAGA,KAAK,KAAK,IAAb,EAAmB,OAAO,IAAP;AACnB,cAAG,CAACF,cAAJ,EAAoBA,cAAc,GAAGjB,EAAE,CAACoB,MAAH,CAAUC,OAAV,CAAkBC,EAAlB,CAAqB,6DAArB,CAAjB;AACpB,iBAAO,IAAIZ,OAAO,CAACa,IAAR,CAAaC,eAAjB,CAAiCR,SAAjC,EAA4CC,cAA5C,EAA4D,IAA5D,CAAP;AACA,SAJD;AAKA;AARO;AAVsD,GAAhE;AAlBAP,EAAAA,OAAO,CAACe,QAAR,CAAiBC,UAAjB,CAA4BC,gBAA5B,CAA6CxB,aAA7C,GAA6DA,aAA7D",
+  "sourcesContent": [
+    "/*\n\tQookery - Declarative UI Building for Qooxdoo\n\n\tCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\n\tLicensed under the Apache License, Version 2.0 (the \"License\");\n\tyou may not use this file except in compliance with the License.\n\tYou may obtain a copy of the License at\n\n\t\thttp://www.apache.org/licenses/LICENSE-2.0\n\n\tUnless required by applicable law or agreed to in writing, software\n\tdistributed under the License is distributed on an \"AS IS\" BASIS,\n\tWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n\tSee the License for the specific language governing permissions and\n\tlimitations under the License.\n*/\n\nqx.Class.define(\"qookery.internal.validators.NotNullValidator\", {\n\n\textend: qx.core.Object,\n\timplement: [ qookery.IValidator ],\n\ttype: \"singleton\",\n\n\tconstruct: function() {\n\t\tthis.base(arguments);\n\t},\n\n\tmembers: {\n\n\t\tcreateValidation: function(component, invalidMessage, options) {\n\t\t\treturn function(value) {\n\t\t\t\tif(value !== null) return null;\n\t\t\t\tif(!invalidMessage) invalidMessage = qx.locale.Manager.tr(\"qookery.internal.validators.NotNullValidator.invalidMessage\");\n\t\t\t\treturn new qookery.util.ValidationError(component, invalidMessage, null);\n\t\t\t};\n\t\t}\n\t}\n});\n"
+  ]
+}

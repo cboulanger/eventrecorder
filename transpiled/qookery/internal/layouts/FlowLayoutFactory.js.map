@@ -1,0 +1,52 @@
+{
+  "version": 3,
+  "sources": [
+    "/home/travis/build/cboulanger/eventrecorder/qx_packages/ergobyte_qookery_892f44d1d1ae5d65c7dd99b18da6876de2f2a920/qookery/source/class/qookery/internal/layouts/FlowLayoutFactory.js"
+  ],
+  "names": [
+    "qx",
+    "Bootstrap",
+    "executePendingDefers",
+    "$$dbClassInfo",
+    "Class",
+    "define",
+    "extend",
+    "core",
+    "Object",
+    "implement",
+    "qookery",
+    "ILayoutFactory",
+    "type",
+    "members",
+    "createLayout",
+    "attributes",
+    "defaultSpacingX",
+    "Qookery",
+    "getOption",
+    "OPTION_DEFAULT_LAYOUT_SPACING_X",
+    "defaultSpacingY",
+    "OPTION_DEFAULT_LAYOUT_SPACING_Y",
+    "layout",
+    "ui",
+    "Flow",
+    "alignX",
+    "getAttribute",
+    "setAlignX",
+    "alignY",
+    "setAlignY",
+    "reversed",
+    "setReversed",
+    "spacing",
+    "setSpacingX",
+    "setSpacingY",
+    "spacingX",
+    "spacingY",
+    "internal",
+    "layouts",
+    "FlowLayoutFactory"
+  ],
+  "mappings": ";;;;;;;;;;;;;;;;;AAAAA,EAAAA,EAAE,CAACC,SAAH,CAAaC,oBAAb,CAAkCC,aAAlC;;AAAA;;;;;;;;;;;;;;;;;AAkBAH,EAAAA,EAAE,CAACI,KAAH,CAASC,MAAT,CAAgB,4CAAhB,EAA8D;AAE7DC,IAAAA,MAAM,EAAEN,EAAE,CAACO,IAAH,CAAQC,MAF6C;AAG7DC,IAAAA,SAAS,EAAE,CAAEC,OAAO,CAACC,cAAV,CAHkD;AAI7DC,IAAAA,IAAI,EAAE,WAJuD;AAM7DC,IAAAA,OAAO,EAAE;AAERC,MAAAA,YAAY,EAAE,sBAASC,UAAT,EAAqB;AAClC,YAAIC,eAAe,GAAGN,OAAO,CAACO,OAAR,CAAgBC,SAAhB,CAA0BR,OAAO,CAACO,OAAR,CAAgBE,+BAA1C,EAA2E,CAA3E,CAAtB;AACA,YAAIC,eAAe,GAAGV,OAAO,CAACO,OAAR,CAAgBC,SAAhB,CAA0BR,OAAO,CAACO,OAAR,CAAgBI,+BAA1C,EAA2E,CAA3E,CAAtB;AACA,YAAIC,MAAM,GAAG,IAAItB,EAAE,CAACuB,EAAH,CAAMD,MAAN,CAAaE,IAAjB,CAAsBR,eAAtB,EAAuCI,eAAvC,EAAwD,MAAxD,CAAb;AACA,YAAIK,MAAM,GAAGV,UAAU,CAACW,YAAX,CAAwB,gBAAxB,CAAb;AACA,YAAGD,MAAM,IAAI,IAAb,EACCH,MAAM,CAACK,SAAP,CAAiBF,MAAjB;AACD,YAAIG,MAAM,GAAGb,UAAU,CAACW,YAAX,CAAwB,gBAAxB,CAAb;AACA,YAAGE,MAAM,IAAI,IAAb,EACCN,MAAM,CAACO,SAAP,CAAiBD,MAAjB;AACD,YAAIE,QAAQ,GAAGf,UAAU,CAACW,YAAX,CAAwB,UAAxB,CAAf;AACA,YAAGI,QAAQ,IAAI,IAAf,EACCR,MAAM,CAACS,WAAP,CAAmBD,QAAnB;AACD,YAAIE,OAAO,GAAGjB,UAAU,CAACW,YAAX,CAAwB,SAAxB,CAAd;;AACA,YAAGM,OAAO,IAAI,IAAd,EAAoB;AACnBV,UAAAA,MAAM,CAACW,WAAP,CAAmBD,OAAnB;AACAV,UAAAA,MAAM,CAACY,WAAP,CAAmBF,OAAnB;AACA;;AACD,YAAIG,QAAQ,GAAGpB,UAAU,CAACW,YAAX,CAAwB,WAAxB,CAAf;AACA,YAAGS,QAAQ,IAAI,IAAf,EACCb,MAAM,CAACW,WAAP,CAAmBE,QAAnB;AACD,YAAIC,QAAQ,GAAGrB,UAAU,CAACW,YAAX,CAAwB,WAAxB,CAAf;AACA,YAAGU,QAAQ,IAAI,IAAf,EACCd,MAAM,CAACY,WAAP,CAAmBE,QAAnB;AACD,eAAOd,MAAP;AACA;AA3BO;AANoD,GAA9D;AAlBAZ,EAAAA,OAAO,CAAC2B,QAAR,CAAiBC,OAAjB,CAAyBC,iBAAzB,CAA2CpC,aAA3C,GAA2DA,aAA3D",
+  "sourcesContent": [
+    "/*\n\tQookery - Declarative UI Building for Qooxdoo\n\n\tCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\n\tLicensed under the Apache License, Version 2.0 (the \"License\");\n\tyou may not use this file except in compliance with the License.\n\tYou may obtain a copy of the License at\n\n\t\thttp://www.apache.org/licenses/LICENSE-2.0\n\n\tUnless required by applicable law or agreed to in writing, software\n\tdistributed under the License is distributed on an \"AS IS\" BASIS,\n\tWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n\tSee the License for the specific language governing permissions and\n\tlimitations under the License.\n*/\n\nqx.Class.define(\"qookery.internal.layouts.FlowLayoutFactory\", {\n\n\textend: qx.core.Object,\n\timplement: [ qookery.ILayoutFactory ],\n\ttype: \"singleton\",\n\n\tmembers: {\n\n\t\tcreateLayout: function(attributes) {\n\t\t\tvar defaultSpacingX = qookery.Qookery.getOption(qookery.Qookery.OPTION_DEFAULT_LAYOUT_SPACING_X, 0);\n\t\t\tvar defaultSpacingY = qookery.Qookery.getOption(qookery.Qookery.OPTION_DEFAULT_LAYOUT_SPACING_Y, 0);\n\t\t\tvar layout = new qx.ui.layout.Flow(defaultSpacingX, defaultSpacingY, \"left\");\n\t\t\tvar alignX = attributes.getAttribute(\"layout-align-x\");\n\t\t\tif(alignX != null)\n\t\t\t\tlayout.setAlignX(alignX);\n\t\t\tvar alignY = attributes.getAttribute(\"layout-align-y\");\n\t\t\tif(alignY != null)\n\t\t\t\tlayout.setAlignY(alignY);\n\t\t\tvar reversed = attributes.getAttribute(\"reversed\");\n\t\t\tif(reversed != null)\n\t\t\t\tlayout.setReversed(reversed);\n\t\t\tvar spacing = attributes.getAttribute(\"spacing\");\n\t\t\tif(spacing != null) {\n\t\t\t\tlayout.setSpacingX(spacing);\n\t\t\t\tlayout.setSpacingY(spacing);\n\t\t\t}\n\t\t\tvar spacingX = attributes.getAttribute(\"spacing-x\");\n\t\t\tif(spacingX != null)\n\t\t\t\tlayout.setSpacingX(spacingX);\n\t\t\tvar spacingY = attributes.getAttribute(\"spacing-y\");\n\t\t\tif(spacingY != null)\n\t\t\t\tlayout.setSpacingY(spacingY);\n\t\t\treturn layout;\n\t\t}\n\t}\n});\n"
+  ]
+}

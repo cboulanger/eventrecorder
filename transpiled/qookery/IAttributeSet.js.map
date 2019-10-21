@@ -1,0 +1,24 @@
+{
+  "version": 3,
+  "sources": [
+    "/home/travis/build/cboulanger/eventrecorder/qx_packages/ergobyte_qookery_892f44d1d1ae5d65c7dd99b18da6876de2f2a920/qookery/source/class/qookery/IAttributeSet.js"
+  ],
+  "names": [
+    "qx",
+    "Bootstrap",
+    "executePendingDefers",
+    "$$dbClassInfo",
+    "Interface",
+    "define",
+    "members",
+    "getAttribute",
+    "name",
+    "defaultValue",
+    "qookery",
+    "IAttributeSet"
+  ],
+  "mappings": ";;;;;;;;;AAAAA,EAAAA,EAAE,CAACC,SAAH,CAAaC,oBAAb,CAAkCC,aAAlC;;AAAA;;;;;;;;;;;;;;;;;;AAkBA;;;AAGAH,EAAAA,EAAE,CAACI,SAAH,CAAaC,MAAb,CAAoB,uBAApB,EAA6C;AAE5CC,IAAAA,OAAO,EAAE;AAER;;;;;;;;;;;;;AAaAC,MAAAA,YAAY,EAAE,sBAASC,IAAT,EAAeC,YAAf,EAA6B,CAAG;AAftC;AAFmC,GAA7C;AArBAC,EAAAA,OAAO,CAACC,aAAR,CAAsBR,aAAtB,GAAsCA,aAAtC",
+  "sourcesContent": [
+    "/*\n\tQookery - Declarative UI Building for Qooxdoo\n\n\tCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\n\tLicensed under the Apache License, Version 2.0 (the \"License\");\n\tyou may not use this file except in compliance with the License.\n\tYou may obtain a copy of the License at\n\n\t\thttp://www.apache.org/licenses/LICENSE-2.0\n\n\tUnless required by applicable law or agreed to in writing, software\n\tdistributed under the License is distributed on an \"AS IS\" BASIS,\n\tWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n\tSee the License for the specific language governing permissions and\n\tlimitations under the License.\n*/\n\n/**\n * Represents a supplier of attributes\n */\nqx.Interface.define(\"qookery.IAttributeSet\", {\n\n\tmembers: {\n\n\t\t/**\n\t\t * Return an attribute's value if defined, or a default value if missing\n\t\t *\n\t\t * <p>You may supply the <code>Error</code> JS build-in object as the default value parameter\n\t\t * in order to request that a range error is thrown when attribute is missing.</p>\n\t\t *\n\t\t * @param name {String} the name of the wanted attribute\n\t\t * @param defaultValue {any} optional default value, <code>undefined</code> will be used if not provided\n\t\t *\n\t\t * @return {any} attribute's value or requested default value if attribute is not defined within the set\n\t\t *\n\t\t * @throws {RangeError} in case attribute is not part of the set and the default value was set to <code>Error</code>\n\t\t */\n\t\tgetAttribute: function(name, defaultValue) { }\n\t}\n});\n"
+  ]
+}

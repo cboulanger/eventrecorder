@@ -1,0 +1,93 @@
+{
+  "className": "qookery.util.Debug",
+  "packageName": "qookery.util",
+  "name": "Debug",
+  "superClass": null,
+  "interfaces": [],
+  "mixins": [],
+  "functionName": null,
+  "clazz": {
+    "location": {
+      "start": {
+        "line": 22,
+        "column": 0
+      },
+      "end": {
+        "line": 59,
+        "column": 3
+      }
+    },
+    "jsdoc": {
+      "@description": [
+        {
+          "name": "@description",
+          "body": "Qookery - Declarative UI Building for Qooxdoo\n\nCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\nLicensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\nhttp:\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License."
+        },
+        {
+          "name": "@description",
+          "body": "Useful debug capabilities"
+        }
+      ]
+    }
+  },
+  "type": "class",
+  "isAbstract": false,
+  "isStatic": true,
+  "isSingleton": false,
+  "statics": {
+    "logScriptError": {
+      "location": {
+        "start": {
+          "line": 38,
+          "column": 2
+        },
+        "end": {
+          "line": 57,
+          "column": 3
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Attempt to log a warning about an error that occurred inside a script\n\n<p>Implementation is browser-specific and can be improved to handle more browsers</p>"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "object {any} an object that is the context of the log message",
+            "paramName": "object",
+            "description": " an object that is the context of the log message",
+            "type": "any"
+          },
+          {
+            "name": "@param",
+            "body": "sourceCode {String} the script's source code",
+            "paramName": "sourceCode",
+            "description": " the script's source code",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "error {Error} exception thrown while running script",
+            "paramName": "error",
+            "description": " exception thrown while running script",
+            "type": "Error"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{undefined}",
+            "type": "undefined",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    }
+  },
+  "descendants": []
+}

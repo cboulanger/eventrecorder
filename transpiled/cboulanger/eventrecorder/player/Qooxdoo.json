@@ -1,0 +1,2659 @@
+{
+  "className": "cboulanger.eventrecorder.player.Qooxdoo",
+  "packageName": "cboulanger.eventrecorder.player",
+  "name": "Qooxdoo",
+  "superClass": "cboulanger.eventrecorder.player.Abstract",
+  "interfaces": [
+    "cboulanger.eventrecorder.IPlayer"
+  ],
+  "mixins": [],
+  "functionName": null,
+  "clazz": {
+    "location": {
+      "start": {
+        "line": 20,
+        "column": 0
+      },
+      "end": {
+        "line": 414,
+        "column": 3
+      }
+    },
+    "jsdoc": {
+      "@description": [
+        {
+          "name": "@description",
+          "body": "***********************************************************************\n\nUI Event Recorder\n\nCopyright:\n2018 Christian Boulanger\n\nLicense:\nMIT license\nSee the LICENSE file in the project's top-level directory for details.\n\nAuthors: Christian Boulanger\n\n\n***********************************************************************"
+        },
+        {
+          "name": "@description",
+          "body": "This is an event player that works in the client"
+        }
+      ]
+    }
+  },
+  "type": "class",
+  "properties": {
+    "canReplayInBrowser": {
+      "location": {
+        "start": {
+          "line": 26,
+          "column": 4
+        },
+        "end": {
+          "line": 29,
+          "column": 5
+        }
+      },
+      "name": "canReplayInBrowser",
+      "propertyType": "new",
+      "refine": true,
+      "init": true,
+      "defaultValue": true,
+      "overriddenFrom": "cboulanger.eventrecorder.player.Abstract",
+      "appearsIn": {
+        "cboulanger.eventrecorder.player.Abstract": "class"
+      }
+    }
+  },
+  "members": {
+    "getType": {
+      "location": {
+        "start": {
+          "line": 39,
+          "column": 4
+        },
+        "end": {
+          "line": 41,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Returns the player type"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.IPlayer",
+      "appearsIn": [
+        "cboulanger.eventrecorder.IPlayer",
+        "cboulanger.eventrecorder.player.Abstract"
+      ]
+    },
+    "getExportFileExtension": {
+      "location": {
+        "start": {
+          "line": 47,
+          "column": 4
+        },
+        "end": {
+          "line": 49,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": ""
+          }
+        ],
+        "@inheritDoc": [
+          {
+            "name": "@inheritDoc",
+            "body": ""
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{string}",
+            "type": "string",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.IPlayer",
+      "appearsIn": [
+        "cboulanger.eventrecorder.IPlayer",
+        "cboulanger.eventrecorder.player.Abstract"
+      ]
+    },
+    "translate": {
+      "location": {
+        "start": {
+          "line": 56,
+          "column": 4
+        },
+        "end": {
+          "line": 65,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Translates the intermediate code into the target language"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "script",
+            "paramName": "script",
+            "type": ""
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{string} executable code",
+            "type": "string",
+            "description": " executable code"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.IPlayer",
+      "appearsIn": [
+        "cboulanger.eventrecorder.IPlayer",
+        "cboulanger.eventrecorder.player.Abstract"
+      ]
+    },
+    "cmd_info": {
+      "location": {
+        "start": {
+          "line": 76,
+          "column": 4
+        },
+        "end": {
+          "line": 82,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "============================================================================\nCOMMANDS\n============================================================================"
+          },
+          {
+            "name": "@description",
+            "body": ""
+          }
+        ],
+        "@inheritDoc": [
+          {
+            "name": "@inheritDoc",
+            "body": ""
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "text {String} The text to display",
+            "paramName": "text",
+            "description": " The text to display",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.IPlayer",
+      "appearsIn": [
+        "cboulanger.eventrecorder.IPlayer"
+      ]
+    },
+    "cmd_hide_info": {
+      "location": {
+        "start": {
+          "line": 87,
+          "column": 4
+        },
+        "end": {
+          "line": 92,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": ""
+          }
+        ],
+        "@inheritDoc": [
+          {
+            "name": "@inheritDoc",
+            "body": ""
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.IPlayer",
+      "appearsIn": [
+        "cboulanger.eventrecorder.IPlayer"
+      ]
+    },
+    "cmd_widget_info": {
+      "location": {
+        "start": {
+          "line": 97,
+          "column": 4
+        },
+        "end": {
+          "line": 103,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": ""
+          }
+        ],
+        "@inheritDoc": [
+          {
+            "name": "@inheritDoc",
+            "body": ""
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String} The id of the widget",
+            "paramName": "id",
+            "description": " The id of the widget",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "text {String} The text to display",
+            "paramName": "text",
+            "description": " The text to display",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.IPlayer",
+      "appearsIn": [
+        "cboulanger.eventrecorder.IPlayer"
+      ]
+    },
+    "cmd_delay": {
+      "location": {
+        "start": {
+          "line": 112,
+          "column": 4
+        },
+        "end": {
+          "line": 115,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that causes the given delay (in milliseconds).\nThe delay is capped by the {@link #cboulanger.eventrecorder.player.Abstract#maxDelay} property\nand will only be caused in presentation mode"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "delayInMs {Number}"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{string}",
+            "type": "string",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.IPlayer",
+      "appearsIn": [
+        "cboulanger.eventrecorder.IPlayer"
+      ]
+    },
+    "cmd_wait": {
+      "location": {
+        "start": {
+          "line": 122,
+          "column": 4
+        },
+        "end": {
+          "line": 124,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that waits the given time in milliseconds, regardless of player mode"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "timeInMs {Number}"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{string}",
+            "type": "string",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.IPlayer",
+      "appearsIn": [
+        "cboulanger.eventrecorder.IPlayer"
+      ]
+    },
+    "cmd_await_property_value": {
+      "location": {
+        "start": {
+          "line": 129,
+          "column": 4
+        },
+        "end": {
+          "line": 131,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": ""
+          }
+        ],
+        "@inheritDoc": [
+          {
+            "name": "@inheritDoc",
+            "body": ""
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String} The id of the object",
+            "paramName": "id",
+            "description": " The id of the object",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "property {String} The name of the property",
+            "paramName": "property",
+            "description": " The name of the property",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "value {*} The value, must be serializable to JSON",
+            "paramName": "value",
+            "description": " The value, must be serializable to JSON",
+            "type": "*"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{*|string}",
+            "type": "*|string",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.IPlayer",
+      "appearsIn": [
+        "cboulanger.eventrecorder.IPlayer"
+      ]
+    },
+    "cmd_await_property_match_json": {
+      "location": {
+        "start": {
+          "line": 136,
+          "column": 4
+        },
+        "end": {
+          "line": 144,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": ""
+          }
+        ],
+        "@inheritDoc": [
+          {
+            "name": "@inheritDoc",
+            "body": ""
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String} The id of the object",
+            "paramName": "id",
+            "description": " The id of the object",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "property {String} The name of the property",
+            "paramName": "property",
+            "description": " The name of the property",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "json {String} A json expression",
+            "paramName": "json",
+            "description": " A json expression",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{*|string}",
+            "type": "*|string",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.IPlayer",
+      "appearsIn": [
+        "cboulanger.eventrecorder.IPlayer"
+      ]
+    },
+    "cmd_await_event": {
+      "location": {
+        "start": {
+          "line": 153,
+          "column": 4
+        },
+        "end": {
+          "line": 158,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that returns a promise which resolves when the object with\nthe given id fires an event with the given name."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String} The id of the object",
+            "paramName": "id",
+            "description": " The id of the object",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "type {String} The type of the event",
+            "paramName": "type",
+            "description": " The type of the event",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{*|string}",
+            "type": "*|string",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.IPlayer",
+      "appearsIn": [
+        "cboulanger.eventrecorder.IPlayer"
+      ]
+    },
+    "cmd_await_event_data": {
+      "location": {
+        "start": {
+          "line": 163,
+          "column": 4
+        },
+        "end": {
+          "line": 175,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": ""
+          }
+        ],
+        "@inheritDoc": [
+          {
+            "name": "@inheritDoc",
+            "body": ""
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String} The id of the object",
+            "paramName": "id",
+            "description": " The id of the object",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "type {String} The type of the event",
+            "paramName": "type",
+            "description": " The type of the event",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "data {*} The data to expect. Must be serializable to JSON",
+            "paramName": "data",
+            "description": " The data to expect. Must be serializable to JSON",
+            "type": "*"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{*|string}",
+            "type": "*|string",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.IPlayer",
+      "appearsIn": [
+        "cboulanger.eventrecorder.IPlayer"
+      ]
+    },
+    "cmd_await_event_match_json": {
+      "location": {
+        "start": {
+          "line": 180,
+          "column": 4
+        },
+        "end": {
+          "line": 185,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": ""
+          }
+        ],
+        "@inheritDoc": [
+          {
+            "name": "@inheritDoc",
+            "body": ""
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String} The id of the object",
+            "paramName": "id",
+            "description": " The id of the object",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "type {String} The type of the event",
+            "paramName": "type",
+            "description": " The type of the event",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "json {*} A JSON expression that can contain regular expressions\nembedded in <! and !>",
+            "paramName": "json",
+            "description": " A JSON expression that can contain regular expressions\nembedded in <! and !>",
+            "type": "*"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{*|string}",
+            "type": "*|string",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.IPlayer",
+      "appearsIn": [
+        "cboulanger.eventrecorder.IPlayer"
+      ]
+    },
+    "cmd_assert_appeared": {
+      "location": {
+        "start": {
+          "line": 193,
+          "column": 4
+        },
+        "end": {
+          "line": 195,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that returns a promise with resolves when the object with the given id becomes visible and rejects\nif the timeout is reached before that happens."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String}"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.IPlayer",
+      "appearsIn": [
+        "cboulanger.eventrecorder.IPlayer"
+      ]
+    },
+    "cmd_check_appear": {
+      "location": {
+        "start": {
+          "line": 200,
+          "column": 4
+        },
+        "end": {
+          "line": 200,
+          "column": 46
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": ""
+          }
+        ],
+        "@deprecated": [
+          {
+            "name": "@deprecated",
+            "body": ""
+          }
+        ]
+      },
+      "type": "variable",
+      "access": "public"
+    },
+    "cmd_assert_disappeared": {
+      "location": {
+        "start": {
+          "line": 208,
+          "column": 4
+        },
+        "end": {
+          "line": 210,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that returns a promise with resolves when the object with the given id disappears and rejects\nif the timeout is reached before that happens."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String}"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.IPlayer",
+      "appearsIn": [
+        "cboulanger.eventrecorder.IPlayer"
+      ]
+    },
+    "cmd_check_disappear": {
+      "location": {
+        "start": {
+          "line": 215,
+          "column": 4
+        },
+        "end": {
+          "line": 215,
+          "column": 52
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": ""
+          }
+        ],
+        "@deprecated": [
+          {
+            "name": "@deprecated",
+            "body": ""
+          }
+        ]
+      },
+      "type": "variable",
+      "access": "public"
+    },
+    "cmd_execute": {
+      "location": {
+        "start": {
+          "line": 221,
+          "column": 4
+        },
+        "end": {
+          "line": 223,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": ""
+          }
+        ],
+        "@inheritDoc": [
+          {
+            "name": "@inheritDoc",
+            "body": ""
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.IPlayer",
+      "appearsIn": [
+        "cboulanger.eventrecorder.IPlayer"
+      ]
+    },
+    "cmd_contextmenu": {
+      "location": {
+        "start": {
+          "line": 229,
+          "column": 4
+        },
+        "end": {
+          "line": 231,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": ""
+          }
+        ],
+        "@inheritDoc": [
+          {
+            "name": "@inheritDoc",
+            "body": ""
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.IPlayer",
+      "appearsIn": [
+        "cboulanger.eventrecorder.IPlayer"
+      ]
+    },
+    "cmd_fire": {
+      "location": {
+        "start": {
+          "line": 240,
+          "column": 4
+        },
+        "end": {
+          "line": 248,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that fires an event with the given payload on the object with the given id (Button, Command)"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String}"
+          },
+          {
+            "name": "@param",
+            "body": "event {String}"
+          },
+          {
+            "name": "@param",
+            "body": "json {*}"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.IPlayer",
+      "appearsIn": [
+        "cboulanger.eventrecorder.IPlayer"
+      ]
+    },
+    "cmd_tap": {
+      "location": {
+        "start": {
+          "line": 255,
+          "column": 4
+        },
+        "end": {
+          "line": 259,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that fires an `tap` event on the object with the given id (Button, Command)"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String}"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.IPlayer",
+      "appearsIn": [
+        "cboulanger.eventrecorder.IPlayer"
+      ]
+    },
+    "cmd_dbltap": {
+      "location": {
+        "start": {
+          "line": 266,
+          "column": 4
+        },
+        "end": {
+          "line": 270,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that fires an `dbltap` event on the object with the given id (Button, Command)"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String}"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.IPlayer",
+      "appearsIn": [
+        "cboulanger.eventrecorder.IPlayer"
+      ]
+    },
+    "cmd_set_value": {
+      "location": {
+        "start": {
+          "line": 275,
+          "column": 4
+        },
+        "end": {
+          "line": 277,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": ""
+          }
+        ],
+        "@inheritDoc": [
+          {
+            "name": "@inheritDoc",
+            "body": ""
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String}"
+          },
+          {
+            "name": "@param",
+            "body": "data {String} A JSON expression",
+            "paramName": "data",
+            "description": " A JSON expression",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{string}",
+            "type": "string",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.IPlayer",
+      "appearsIn": [
+        "cboulanger.eventrecorder.IPlayer"
+      ]
+    },
+    "cmd_await_value": {
+      "location": {
+        "start": {
+          "line": 282,
+          "column": 4
+        },
+        "end": {
+          "line": 284,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": ""
+          }
+        ],
+        "@inheritDoc": [
+          {
+            "name": "@inheritDoc",
+            "body": ""
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String} The id of the object",
+            "paramName": "id",
+            "description": " The id of the object",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "value {String} The value, must be serializable to JSON",
+            "paramName": "value",
+            "description": " The value, must be serializable to JSON",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{*|string}",
+            "type": "*|string",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.IPlayer",
+      "appearsIn": [
+        "cboulanger.eventrecorder.IPlayer"
+      ]
+    },
+    "cmd_open_tree_node": {
+      "location": {
+        "start": {
+          "line": 292,
+          "column": 4
+        },
+        "end": {
+          "line": 294,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that opens a the node with the given node id on the {@link qx.ui.tree.VirtualTree} with the given id"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String} The id of the {@link qx.ui.tree.VirtualTree}",
+            "paramName": "id",
+            "description": " The id of the {@link qx.ui.tree.VirtualTree}",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "nodeIndex {String|Number} The index of the node in the tree data model",
+            "paramName": "nodeIndex",
+            "description": " The index of the node in the tree data model",
+            "type": [
+              "String",
+              "Number"
+            ]
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.IPlayer",
+      "appearsIn": [
+        "cboulanger.eventrecorder.IPlayer"
+      ]
+    },
+    "cmd_close_tree_node": {
+      "location": {
+        "start": {
+          "line": 302,
+          "column": 4
+        },
+        "end": {
+          "line": 304,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that closes a the node with the given node id on the {@link qx.ui.tree.VirtualTree} with the given id"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String} Id of the {@link qx.ui.treevirtual.TreeVirtual}",
+            "paramName": "id",
+            "description": " Id of the {@link qx.ui.treevirtual.TreeVirtual}",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "nodeIndex {String|Number} The index of the node in the tree data model",
+            "paramName": "nodeIndex",
+            "description": " The index of the node in the tree data model",
+            "type": [
+              "String",
+              "Number"
+            ]
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.IPlayer",
+      "appearsIn": [
+        "cboulanger.eventrecorder.IPlayer"
+      ]
+    },
+    "cmd_open_tree_node_treevirtual": {
+      "location": {
+        "start": {
+          "line": 312,
+          "column": 4
+        },
+        "end": {
+          "line": 314,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that opens a the node with the given node id on the {@link qx.ui.treevirtual.TreeVirtual} with the given id"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String} Id of the {@link qx.ui.treevirtual.TreeVirtual}",
+            "paramName": "id",
+            "description": " Id of the {@link qx.ui.treevirtual.TreeVirtual}",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "nodeIndex {String|Number} The index of the node in the tree data model",
+            "paramName": "nodeIndex",
+            "description": " The index of the node in the tree data model",
+            "type": [
+              "String",
+              "Number"
+            ]
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.IPlayer",
+      "appearsIn": [
+        "cboulanger.eventrecorder.IPlayer"
+      ]
+    },
+    "cmd_close_tree_node_treevirtual": {
+      "location": {
+        "start": {
+          "line": 322,
+          "column": 4
+        },
+        "end": {
+          "line": 324,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that closes a the node with the given node id on the {@link qx.ui.treevirtual.TreeVirtual} with the given id"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String} Id of the {@link qx.ui.treevirtual.TreeVirtual}",
+            "paramName": "id",
+            "description": " Id of the {@link qx.ui.treevirtual.TreeVirtual}",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "nodeIndex {String|Number} The index of the node in the tree data model",
+            "paramName": "nodeIndex",
+            "description": " The index of the node in the tree data model",
+            "type": [
+              "String",
+              "Number"
+            ]
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.IPlayer",
+      "appearsIn": [
+        "cboulanger.eventrecorder.IPlayer"
+      ]
+    },
+    "cmd_set_selection": {
+      "location": {
+        "start": {
+          "line": 333,
+          "column": 4
+        },
+        "end": {
+          "line": 335,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that sets a selection for all objects which have a `setSelection` method that\ntakes an array of qooxdoo widgets that should be selected."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String} Id of the object ón which the selection is set",
+            "paramName": "id",
+            "description": " Id of the object ón which the selection is set",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "selectedId {String} The id of the widget that is selected. Only one widget can be selected at this time",
+            "paramName": "selectedId",
+            "description": " The id of the widget that is selected. Only one widget can be selected at this time",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.IPlayer",
+      "appearsIn": [
+        "cboulanger.eventrecorder.IPlayer"
+      ]
+    },
+    "cmd_await_selection": {
+      "location": {
+        "start": {
+          "line": 344,
+          "column": 4
+        },
+        "end": {
+          "line": 347,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that awaits a selection for all objects which have a `setSelection` method that\ntakes an array of qooxdoo widgets that should be selected within the timeout"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String} Id of the object ón which the selection is set",
+            "paramName": "id",
+            "description": " Id of the object ón which the selection is set",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "selectedId {String} The id of the widget that should be selected",
+            "paramName": "selectedId",
+            "description": " The id of the widget that should be selected",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.IPlayer",
+      "appearsIn": [
+        "cboulanger.eventrecorder.IPlayer"
+      ]
+    },
+    "cmd_set_model_selection": {
+      "location": {
+        "start": {
+          "line": 355,
+          "column": 4
+        },
+        "end": {
+          "line": 357,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that sets a selection for all (virtual) widgets that have a data model"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String} The id of the widget on which the selection is set",
+            "paramName": "id",
+            "description": " The id of the widget on which the selection is set",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "indexArray {Array} An array containing the indexes of the models",
+            "paramName": "indexArray",
+            "description": " An array containing the indexes of the models",
+            "type": "Array"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.IPlayer",
+      "appearsIn": [
+        "cboulanger.eventrecorder.IPlayer"
+      ]
+    },
+    "cmd_set_selection_from_selectables": {
+      "location": {
+        "start": {
+          "line": 374,
+          "column": 4
+        },
+        "end": {
+          "line": 376,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that awaits a selection for all (virtual) widgets that have a data model"
+          },
+          {
+            "name": "@description",
+            "body": "cmd_await_model_selection(id, indexArray) {"
+          },
+          {
+            "name": "@description",
+            "body": ""
+          },
+          {
+            "name": "@description",
+            "body": "return `let o = qx.core.Id.getQxObject(\"${id}\"); o.setSelection(new qx.data.Array(${JSON.stringify(indexArray)}.map(i => o.getModel().getItem(i))))`;"
+          },
+          {
+            "name": "@description",
+            "body": "return `(waitForEvent(qx.core.Id.getQxObject(\"${id}\").getSelection(), \"change\",${data}, ${this.getTimeout()}, \"${timeoutmsg||\"Timeout waiting for event '\"+type+\"'\"}\"))`;"
+          },
+          {
+            "name": "@description",
+            "body": "},"
+          },
+          {
+            "name": "@description",
+            "body": ""
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String} The id of the widget on which the selection is set",
+            "paramName": "id",
+            "description": " The id of the widget on which the selection is set",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "indexArray {Array} An array containing the indexes of the models",
+            "paramName": "indexArray",
+            "description": " An array containing the indexes of the models",
+            "type": "Array"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ],
+        "@inheritDoc": [
+          {
+            "name": "@inheritDoc",
+            "body": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.IPlayer",
+      "appearsIn": [
+        "cboulanger.eventrecorder.IPlayer"
+      ]
+    },
+    "cmd_await_selection_from_selectables": {
+      "location": {
+        "start": {
+          "line": 381,
+          "column": 4
+        },
+        "end": {
+          "line": 383,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": ""
+          }
+        ],
+        "@inheritDoc": [
+          {
+            "name": "@inheritDoc",
+            "body": ""
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String} The id of the widget on which the selection is set",
+            "paramName": "id",
+            "description": " The id of the widget on which the selection is set",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "index {String|Number} The index of the selection in the selectables",
+            "paramName": "index",
+            "description": " The index of the selection in the selectables",
+            "type": [
+              "String",
+              "Number"
+            ]
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.IPlayer",
+      "appearsIn": [
+        "cboulanger.eventrecorder.IPlayer"
+      ]
+    },
+    "cmd_reset_selection": {
+      "location": {
+        "start": {
+          "line": 390,
+          "column": 4
+        },
+        "end": {
+          "line": 392,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Resets the selection of a widget that has a `selection` property or a `resetSelection` method."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String} The id of the widget",
+            "paramName": "id",
+            "description": " The id of the widget",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{string}",
+            "type": "string",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.IPlayer",
+      "appearsIn": [
+        "cboulanger.eventrecorder.IPlayer"
+      ]
+    },
+    "cmd_set_table_selection": {
+      "location": {
+        "start": {
+          "line": 400,
+          "column": 4
+        },
+        "end": {
+          "line": 402,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that sets an selection interval on a {@link qx.ui.table.Table}"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String} The id of a {@link qx.ui.table.Table}",
+            "paramName": "id",
+            "description": " The id of a {@link qx.ui.table.Table}",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "interval {String} The first and the last row to be selected, separated by comma.",
+            "paramName": "interval",
+            "description": " The first and the last row to be selected, separated by comma.",
+            "type": "String"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.IPlayer",
+      "appearsIn": [
+        "cboulanger.eventrecorder.IPlayer"
+      ]
+    },
+    "cmd_set_row_selection": {
+      "location": {
+        "start": {
+          "line": 410,
+          "column": 4
+        },
+        "end": {
+          "line": 412,
+          "column": 5
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Generates code that set the selection on a {@link qx.ui.virtual.selection.Row} object"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "id {String} The id of a qx.ui.virtual.selection.Row object",
+            "paramName": "id",
+            "description": " The id of a qx.ui.virtual.selection.Row object",
+            "type": "String"
+          },
+          {
+            "name": "@param",
+            "body": "rowIndex {String|Number} The index of the row to be selected",
+            "paramName": "rowIndex",
+            "description": " The index of the row to be selected",
+            "type": [
+              "String",
+              "Number"
+            ]
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.IPlayer",
+      "appearsIn": [
+        "cboulanger.eventrecorder.IPlayer"
+      ]
+    },
+    "getRunning": {
+      "type": "function",
+      "name": "getRunning",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.player.Abstract",
+      "property": "get",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>running</code>.\n\nFor further details take a look at the property definition: {@link #running}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "Boolean",
+            "desc": "Returns the value for running"
+          }
+        ]
+      }
+    },
+    "isRunning": {
+      "type": "function",
+      "name": "isRunning",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.player.Abstract",
+      "property": "is",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>running</code>.\n\nFor further details take a look at the property definition: {@link #running}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "Boolean",
+            "desc": "Returns the value for running"
+          }
+        ]
+      }
+    },
+    "setRunning": {
+      "type": "function",
+      "name": "setRunning",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.player.Abstract",
+      "property": "set",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Sets the user value of the property <code>running</code>.\n\nFor further details take a look at the property definition: {@link #running}."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "type": "Boolean",
+            "paramName": "value",
+            "desc": "Value for running"
+          }
+        ]
+      }
+    },
+    "resetRunning": {
+      "type": "function",
+      "name": "resetRunning",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.player.Abstract",
+      "property": "reset"
+    },
+    "getPaused": {
+      "type": "function",
+      "name": "getPaused",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.player.Abstract",
+      "property": "get",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>paused</code>.\n\nFor further details take a look at the property definition: {@link #paused}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "Boolean",
+            "desc": "Returns the value for paused"
+          }
+        ]
+      }
+    },
+    "isPaused": {
+      "type": "function",
+      "name": "isPaused",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.player.Abstract",
+      "property": "is",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>paused</code>.\n\nFor further details take a look at the property definition: {@link #paused}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "Boolean",
+            "desc": "Returns the value for paused"
+          }
+        ]
+      }
+    },
+    "setPaused": {
+      "type": "function",
+      "name": "setPaused",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.player.Abstract",
+      "property": "set",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Sets the user value of the property <code>paused</code>.\n\nFor further details take a look at the property definition: {@link #paused}."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "type": "Boolean",
+            "paramName": "value",
+            "desc": "Value for paused"
+          }
+        ]
+      }
+    },
+    "resetPaused": {
+      "type": "function",
+      "name": "resetPaused",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.player.Abstract",
+      "property": "reset"
+    },
+    "getQxOwner": {
+      "type": "function",
+      "name": "getQxOwner",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.player.Abstract",
+      "property": "get",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>qxOwner</code>.\n\nFor further details take a look at the property definition: {@link #qxOwner}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "qx.core.Object",
+            "desc": "Returns the value for qxOwner"
+          }
+        ]
+      }
+    },
+    "setQxOwner": {
+      "type": "function",
+      "name": "setQxOwner",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.player.Abstract",
+      "property": "set",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Sets the user value of the property <code>qxOwner</code>.\n\nFor further details take a look at the property definition: {@link #qxOwner}."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "type": "qx.core.Object",
+            "paramName": "value",
+            "desc": "Value for qxOwner"
+          }
+        ]
+      }
+    },
+    "resetQxOwner": {
+      "type": "function",
+      "name": "resetQxOwner",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.player.Abstract",
+      "property": "reset"
+    },
+    "getQxObjectId": {
+      "type": "function",
+      "name": "getQxObjectId",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.player.Abstract",
+      "property": "get",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>qxObjectId</code>.\n\nFor further details take a look at the property definition: {@link #qxObjectId}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "desc": "Returns the value for qxObjectId"
+          }
+        ]
+      }
+    },
+    "setQxObjectId": {
+      "type": "function",
+      "name": "setQxObjectId",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.player.Abstract",
+      "property": "set",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Sets the user value of the property <code>qxObjectId</code>.\n\nFor further details take a look at the property definition: {@link #qxObjectId}."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "paramName": "value",
+            "desc": "Value for qxObjectId"
+          }
+        ]
+      }
+    },
+    "resetQxObjectId": {
+      "type": "function",
+      "name": "resetQxObjectId",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.player.Abstract",
+      "property": "reset"
+    },
+    "getMode": {
+      "type": "function",
+      "name": "getMode",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.player.Abstract",
+      "property": "get",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>mode</code>.\n\nFor further details take a look at the property definition: {@link #mode}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "any",
+            "desc": "Returns the value for mode"
+          }
+        ]
+      }
+    },
+    "setMode": {
+      "type": "function",
+      "name": "setMode",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.player.Abstract",
+      "property": "set",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Sets the user value of the property <code>mode</code>.\n\nFor further details take a look at the property definition: {@link #mode}."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "type": "any",
+            "paramName": "value",
+            "desc": "Value for mode"
+          }
+        ]
+      }
+    },
+    "resetMode": {
+      "type": "function",
+      "name": "resetMode",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.player.Abstract",
+      "property": "reset"
+    },
+    "getTimeout": {
+      "type": "function",
+      "name": "getTimeout",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.player.Abstract",
+      "property": "get",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>timeout</code>.\n\nFor further details take a look at the property definition: {@link #timeout}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "Number",
+            "desc": "Returns the value for timeout"
+          }
+        ]
+      }
+    },
+    "setTimeout": {
+      "type": "function",
+      "name": "setTimeout",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.player.Abstract",
+      "property": "set",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Sets the user value of the property <code>timeout</code>.\n\nFor further details take a look at the property definition: {@link #timeout}."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "type": "Number",
+            "paramName": "value",
+            "desc": "Value for timeout"
+          }
+        ]
+      }
+    },
+    "resetTimeout": {
+      "type": "function",
+      "name": "resetTimeout",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.player.Abstract",
+      "property": "reset"
+    },
+    "getInterval": {
+      "type": "function",
+      "name": "getInterval",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.player.Abstract",
+      "property": "get",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>interval</code>.\n\nFor further details take a look at the property definition: {@link #interval}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "Number",
+            "desc": "Returns the value for interval"
+          }
+        ]
+      }
+    },
+    "setInterval": {
+      "type": "function",
+      "name": "setInterval",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.player.Abstract",
+      "property": "set",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Sets the user value of the property <code>interval</code>.\n\nFor further details take a look at the property definition: {@link #interval}."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "type": "Number",
+            "paramName": "value",
+            "desc": "Value for interval"
+          }
+        ]
+      }
+    },
+    "resetInterval": {
+      "type": "function",
+      "name": "resetInterval",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.player.Abstract",
+      "property": "reset"
+    },
+    "getUseDefaultDelay": {
+      "type": "function",
+      "name": "getUseDefaultDelay",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.player.Abstract",
+      "property": "get",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>useDefaultDelay</code>.\n\nFor further details take a look at the property definition: {@link #useDefaultDelay}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "Boolean",
+            "desc": "Returns the value for useDefaultDelay"
+          }
+        ]
+      }
+    },
+    "isUseDefaultDelay": {
+      "type": "function",
+      "name": "isUseDefaultDelay",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.player.Abstract",
+      "property": "is",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>useDefaultDelay</code>.\n\nFor further details take a look at the property definition: {@link #useDefaultDelay}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "Boolean",
+            "desc": "Returns the value for useDefaultDelay"
+          }
+        ]
+      }
+    },
+    "setUseDefaultDelay": {
+      "type": "function",
+      "name": "setUseDefaultDelay",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.player.Abstract",
+      "property": "set",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Sets the user value of the property <code>useDefaultDelay</code>.\n\nFor further details take a look at the property definition: {@link #useDefaultDelay}."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "type": "Boolean",
+            "paramName": "value",
+            "desc": "Value for useDefaultDelay"
+          }
+        ]
+      }
+    },
+    "resetUseDefaultDelay": {
+      "type": "function",
+      "name": "resetUseDefaultDelay",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.player.Abstract",
+      "property": "reset"
+    },
+    "getMaxDelay": {
+      "type": "function",
+      "name": "getMaxDelay",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.player.Abstract",
+      "property": "get",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>maxDelay</code>.\n\nFor further details take a look at the property definition: {@link #maxDelay}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "Number",
+            "desc": "Returns the value for maxDelay"
+          }
+        ]
+      }
+    },
+    "setMaxDelay": {
+      "type": "function",
+      "name": "setMaxDelay",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.player.Abstract",
+      "property": "set",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Sets the user value of the property <code>maxDelay</code>.\n\nFor further details take a look at the property definition: {@link #maxDelay}."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "type": "Number",
+            "paramName": "value",
+            "desc": "Value for maxDelay"
+          }
+        ]
+      }
+    },
+    "resetMaxDelay": {
+      "type": "function",
+      "name": "resetMaxDelay",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.player.Abstract",
+      "property": "reset"
+    },
+    "getCanReplayInBrowser": {
+      "type": "function",
+      "name": "getCanReplayInBrowser",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.player.Abstract",
+      "property": "get",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>canReplayInBrowser</code>.\n\nFor further details take a look at the property definition: {@link #canReplayInBrowser}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "Boolean",
+            "desc": "Returns the value for canReplayInBrowser"
+          }
+        ]
+      }
+    },
+    "isCanReplayInBrowser": {
+      "type": "function",
+      "name": "isCanReplayInBrowser",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.player.Abstract",
+      "property": "is",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>canReplayInBrowser</code>.\n\nFor further details take a look at the property definition: {@link #canReplayInBrowser}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "Boolean",
+            "desc": "Returns the value for canReplayInBrowser"
+          }
+        ]
+      }
+    },
+    "setCanReplayInBrowser": {
+      "type": "function",
+      "name": "setCanReplayInBrowser",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.player.Abstract",
+      "property": "set",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Sets the user value of the property <code>canReplayInBrowser</code>.\n\nFor further details take a look at the property definition: {@link #canReplayInBrowser}."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "type": "Boolean",
+            "paramName": "value",
+            "desc": "Value for canReplayInBrowser"
+          }
+        ]
+      }
+    },
+    "resetCanReplayInBrowser": {
+      "type": "function",
+      "name": "resetCanReplayInBrowser",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.player.Abstract",
+      "property": "reset"
+    },
+    "getCanExportExecutableCode": {
+      "type": "function",
+      "name": "getCanExportExecutableCode",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.player.Abstract",
+      "property": "get",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>canExportExecutableCode</code>.\n\nFor further details take a look at the property definition: {@link #canExportExecutableCode}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "Boolean",
+            "desc": "Returns the value for canExportExecutableCode"
+          }
+        ]
+      }
+    },
+    "isCanExportExecutableCode": {
+      "type": "function",
+      "name": "isCanExportExecutableCode",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.player.Abstract",
+      "property": "is",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>canExportExecutableCode</code>.\n\nFor further details take a look at the property definition: {@link #canExportExecutableCode}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "Boolean",
+            "desc": "Returns the value for canExportExecutableCode"
+          }
+        ]
+      }
+    },
+    "setCanExportExecutableCode": {
+      "type": "function",
+      "name": "setCanExportExecutableCode",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.player.Abstract",
+      "property": "set",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Sets the user value of the property <code>canExportExecutableCode</code>.\n\nFor further details take a look at the property definition: {@link #canExportExecutableCode}."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "type": "Boolean",
+            "paramName": "value",
+            "desc": "Value for canExportExecutableCode"
+          }
+        ]
+      }
+    },
+    "resetCanExportExecutableCode": {
+      "type": "function",
+      "name": "resetCanExportExecutableCode",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.player.Abstract",
+      "property": "reset"
+    },
+    "getMacros": {
+      "type": "function",
+      "name": "getMacros",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.player.Abstract",
+      "property": "get",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>macros</code>.\n\nFor further details take a look at the property definition: {@link #macros}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "qx.core.Object",
+            "desc": "Returns the value for macros"
+          }
+        ]
+      }
+    },
+    "setMacros": {
+      "type": "function",
+      "name": "setMacros",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.player.Abstract",
+      "property": "set",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Sets the user value of the property <code>macros</code>.\n\nFor further details take a look at the property definition: {@link #macros}."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "type": "qx.core.Object",
+            "paramName": "value",
+            "desc": "Value for macros"
+          }
+        ]
+      }
+    }
+  },
+  "descendants": [
+    "cboulanger.eventrecorder.player.Testcafe"
+  ]
+}

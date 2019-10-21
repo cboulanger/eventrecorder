@@ -1,0 +1,45 @@
+{
+  "version": 3,
+  "sources": [
+    "/home/travis/build/cboulanger/eventrecorder/qx_packages/ergobyte_qookery_892f44d1d1ae5d65c7dd99b18da6876de2f2a920/qookeryace/source/class/qookery/ace/internal/AceWidget.js"
+  ],
+  "names": [
+    "qx",
+    "Bootstrap",
+    "executePendingDefers",
+    "$$dbClassInfo",
+    "Class",
+    "define",
+    "extend",
+    "ui",
+    "core",
+    "Widget",
+    "construct",
+    "component",
+    "__component",
+    "addListener",
+    "event",
+    "Timer",
+    "once",
+    "isDisposed",
+    "editor",
+    "getEditor",
+    "resize",
+    "members",
+    "_createContentElement",
+    "element",
+    "html",
+    "Element",
+    "overflowX",
+    "overflowY",
+    "setSelectable",
+    "qookery",
+    "ace",
+    "internal",
+    "AceWidget"
+  ],
+  "mappings": ";;;;;;;;;;;;;;;;;AAAAA,EAAAA,EAAE,CAACC,SAAH,CAAaC,oBAAb,CAAkCC,aAAlC;;AAAA;;;;;;;;;;;;;;;;;AAkBAH,EAAAA,EAAE,CAACI,KAAH,CAASC,MAAT,CAAgB,gCAAhB,EAAkD;AAEjDC,IAAAA,MAAM,EAAEN,EAAE,CAACO,EAAH,CAAMC,IAAN,CAAWC,MAF8B;AAIjDC,IAAAA,SAAS,EAAE,mBAASC,SAAT,EAAoB;AAC9B;AACA,WAAKC,WAAL,GAAmBD,SAAnB;AACA,WAAKE,WAAL,CAAiB,QAAjB,EAA2B,YAAW;AACrCb,QAAAA,EAAE,CAACc,KAAH,CAASC,KAAT,CAAeC,IAAf,CAAoB,YAAW;AAC9B,cAAG,KAAKC,UAAL,EAAH,EAAsB;;AACtB,cAAIC,MAAM,GAAG,KAAKN,WAAL,CAAiBO,SAAjB,EAAb;;AACA,cAAGD,MAAM,IAAI,IAAb,EAAmB;AACnBA,UAAAA,MAAM,CAACE,MAAP;AACA,SALD,EAKG,IALH,EAKS,CALT;AAMA,OAPD,EAOG,IAPH;AAQA,KAfgD;AAiBjDC,IAAAA,OAAO,EAAE;AAERT,MAAAA,WAAW,EAAE,IAFL;AAIRU,MAAAA,qBAAqB,EAAE,iCAAW;AACjC;AACA,YAAIC,OAAO,GAAG,IAAIvB,EAAE,CAACwB,IAAH,CAAQC,OAAZ,CAAoB,KAApB,EAA2B;AACxCC,UAAAA,SAAS,EAAE,QAD6B;AAExCC,UAAAA,SAAS,EAAE;AAF6B,SAA3B,CAAd;AAIAJ,QAAAA,OAAO,CAACK,aAAR,CAAsB,IAAtB;AACA,eAAOL,OAAP;AACA;AAZO;AAjBwC,GAAlD;AAlBAM,EAAAA,OAAO,CAACC,GAAR,CAAYC,QAAZ,CAAqBC,SAArB,CAA+B7B,aAA/B,GAA+CA,aAA/C",
+  "sourcesContent": [
+    "/*\n\tQookery - Declarative UI Building for Qooxdoo\n\n\tCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\n\tLicensed under the Apache License, Version 2.0 (the \"License\");\n\tyou may not use this file except in compliance with the License.\n\tYou may obtain a copy of the License at\n\n\t\thttp://www.apache.org/licenses/LICENSE-2.0\n\n\tUnless required by applicable law or agreed to in writing, software\n\tdistributed under the License is distributed on an \"AS IS\" BASIS,\n\tWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n\tSee the License for the specific language governing permissions and\n\tlimitations under the License.\n*/\n\nqx.Class.define(\"qookery.ace.internal.AceWidget\", {\n\n\textend: qx.ui.core.Widget,\n\n\tconstruct: function(component) {\n\t\tthis.base(arguments);\n\t\tthis.__component = component;\n\t\tthis.addListener(\"resize\", function() {\n\t\t\tqx.event.Timer.once(function() {\n\t\t\t\tif(this.isDisposed()) return;\n\t\t\t\tvar editor = this.__component.getEditor();\n\t\t\t\tif(editor == null) return;\n\t\t\t\teditor.resize();\n\t\t\t}, this, 0);\n\t\t}, this);\n\t},\n\n\tmembers: {\n\n\t\t__component: null,\n\n\t\t_createContentElement: function() {\n\t\t\t// Create a selectable and overflow disabled <div>\n\t\t\tvar element = new qx.html.Element(\"div\", {\n\t\t\t\toverflowX: \"hidden\",\n\t\t\t\toverflowY: \"hidden\"\n\t\t\t});\n\t\t\telement.setSelectable(true);\n\t\t\treturn element;\n\t\t}\n\t}\n});\n"
+  ]
+}

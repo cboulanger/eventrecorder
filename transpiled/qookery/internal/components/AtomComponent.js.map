@@ -1,0 +1,48 @@
+{
+  "version": 3,
+  "sources": [
+    "/home/travis/build/cboulanger/eventrecorder/qx_packages/ergobyte_qookery_892f44d1d1ae5d65c7dd99b18da6876de2f2a920/qookery/source/class/qookery/internal/components/AtomComponent.js"
+  ],
+  "names": [
+    "qx",
+    "Bootstrap",
+    "executePendingDefers",
+    "$$dbClassInfo",
+    "Class",
+    "define",
+    "type",
+    "extend",
+    "qookery",
+    "internal",
+    "components",
+    "Component",
+    "construct",
+    "parentComponent",
+    "members",
+    "getAttributeType",
+    "attributeName",
+    "_createWidgets",
+    "atom",
+    "_createAtomWidget",
+    "Error",
+    "_applyAtomAttributes",
+    "_applyAttribute",
+    "textAlign",
+    "getChildControl",
+    "setAllowGrowX",
+    "setTextAlign",
+    "_applyWidgetAttributes",
+    "getLabel",
+    "getMainWidget",
+    "setLabel",
+    "label",
+    "getIcon",
+    "setIcon",
+    "icon",
+    "AtomComponent"
+  ],
+  "mappings": ";;;;;;;;;;;;;AAAAA,EAAAA,EAAE,CAACC,SAAH,CAAaC,oBAAb,CAAkCC,aAAlC;;AAAA;;;;;;;;;;;;;;;;;AAkBAH,EAAAA,EAAE,CAACI,KAAH,CAASC,MAAT,CAAgB,2CAAhB,EAA6D;AAE5DC,IAAAA,IAAI,EAAG,UAFqD;AAG5DC,IAAAA,MAAM,EAAEC,OAAO,CAACC,QAAR,CAAiBC,UAAjB,CAA4BC,SAHwB;AAK5DC,IAAAA,SAAS,EAAE,mBAASC,eAAT,EAA0B;AACpC,mEAAqBA,eAArB;AACA,KAP2D;AAS5DC,IAAAA,OAAO,EAAE;AAER;AAEAC,MAAAA,gBAAgB,EAAE,0BAASC,aAAT,EAAwB;AACzC,gBAAOA,aAAP;AACA,eAAK,QAAL;AAAe,mBAAO,SAAP;;AACf,eAAK,KAAL;AAAY,mBAAO,QAAP;;AACZ,eAAK,MAAL;AAAa,mBAAO,SAAP;;AACb,eAAK,MAAL;AAAa,mBAAO,QAAP;AAJb;;AAMA,oGAA4BA,aAA5B;AACA,OAZO;AAcR;AAEAC,MAAAA,cAAc,EAAE,0BAAW;AAC1B,YAAIC,IAAI,GAAG,KAAKC,iBAAL,EAAX;;AACA,eAAO,CAAED,IAAF,CAAP;AACA,OAnBO;AAqBRC,MAAAA,iBAAiB,EAAE,6BAAW;AAC7B,cAAM,IAAIC,KAAJ,CAAU,sEAAV,CAAN;AACA,OAvBO;AAyBRC,MAAAA,oBAAoB,EAAE,8BAASH,IAAT,EAAe;AACpC,aAAKI,eAAL,CAAqB,QAArB,EAA+BJ,IAA/B,EAAqC,QAArC;;AACA,aAAKI,eAAL,CAAqB,KAArB,EAA4BJ,IAA5B,EAAkC,KAAlC;;AACA,aAAKI,eAAL,CAAqB,MAArB,EAA6BJ,IAA7B,EAAmC,MAAnC;;AACA,aAAKI,eAAL,CAAqB,eAArB,EAAsCJ,IAAtC,EAA4C,cAA5C;;AACA,aAAKI,eAAL,CAAqB,OAArB,EAA8BJ,IAA9B,EAAoC,OAApC;;AACA,aAAKI,eAAL,CAAqB,MAArB,EAA6BJ,IAA7B,EAAmC,MAAnC;;AACA,aAAKI,eAAL,CAAqB,MAArB,EAA6BJ,IAA7B,EAAmC,MAAnC;;AACA,aAAKI,eAAL,CAAqB,YAArB,EAAmC,IAAnC,EAAyC,UAASC,SAAT,EAAoB;AAC5DL,UAAAA,IAAI,CAACM,eAAL,CAAqB,OAArB,EAA8BC,aAA9B,CAA4C,IAA5C;AACAP,UAAAA,IAAI,CAACM,eAAL,CAAqB,OAArB,EAA8BE,YAA9B,CAA2CH,SAA3C;AACA,SAHD;;AAIA,aAAKI,sBAAL,CAA4BT,IAA5B;AACA,OAtCO;AAwCRU,MAAAA,QAAQ,EAAE,oBAAW;AACpB,eAAO,KAAKC,aAAL,GAAqBD,QAArB,EAAP;AACA,OA1CO;AA4CRE,MAAAA,QAAQ,EAAE,kBAASC,KAAT,EAAgB;AACzB,aAAKF,aAAL,GAAqBC,QAArB,CAA8BC,KAA9B;AACA,OA9CO;AAgDRC,MAAAA,OAAO,EAAE,mBAAW;AACnB,eAAO,KAAKH,aAAL,GAAqBG,OAArB,EAAP;AACA,OAlDO;AAoDRC,MAAAA,OAAO,EAAE,iBAASC,IAAT,EAAe;AACvB,aAAKL,aAAL,GAAqBI,OAArB,CAA6BC,IAA7B;AACA;AAtDO;AATmD,GAA7D;AAlBA1B,EAAAA,OAAO,CAACC,QAAR,CAAiBC,UAAjB,CAA4ByB,aAA5B,CAA0ChC,aAA1C,GAA0DA,aAA1D",
+  "sourcesContent": [
+    "/*\n\tQookery - Declarative UI Building for Qooxdoo\n\n\tCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\n\tLicensed under the Apache License, Version 2.0 (the \"License\");\n\tyou may not use this file except in compliance with the License.\n\tYou may obtain a copy of the License at\n\n\t\thttp://www.apache.org/licenses/LICENSE-2.0\n\n\tUnless required by applicable law or agreed to in writing, software\n\tdistributed under the License is distributed on an \"AS IS\" BASIS,\n\tWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n\tSee the License for the specific language governing permissions and\n\tlimitations under the License.\n*/\n\nqx.Class.define(\"qookery.internal.components.AtomComponent\", {\n\n\ttype : \"abstract\",\n\textend: qookery.internal.components.Component,\n\n\tconstruct: function(parentComponent) {\n\t\tthis.base(arguments, parentComponent);\n\t},\n\n\tmembers: {\n\n\t\t// Metadata\n\n\t\tgetAttributeType: function(attributeName) {\n\t\t\tswitch(attributeName) {\n\t\t\tcase \"center\": return \"Boolean\";\n\t\t\tcase \"gap\": return \"Number\";\n\t\t\tcase \"rich\": return \"Boolean\";\n\t\t\tcase \"show\": return \"String\";\n\t\t\t}\n\t\t\treturn this.base(arguments, attributeName);\n\t\t},\n\n\t\t// Construction\n\n\t\t_createWidgets: function() {\n\t\t\tvar atom = this._createAtomWidget();\n\t\t\treturn [ atom ];\n\t\t},\n\n\t\t_createAtomWidget: function() {\n\t\t\tthrow new Error(\"Override _createAtomWidget() to provide implementation specific code\");\n\t\t},\n\n\t\t_applyAtomAttributes: function(atom) {\n\t\t\tthis._applyAttribute(\"center\", atom, \"center\");\n\t\t\tthis._applyAttribute(\"gap\", atom, \"gap\");\n\t\t\tthis._applyAttribute(\"icon\", atom, \"icon\");\n\t\t\tthis._applyAttribute(\"icon-position\", atom, \"iconPosition\");\n\t\t\tthis._applyAttribute(\"label\", atom, \"label\");\n\t\t\tthis._applyAttribute(\"rich\", atom, \"rich\");\n\t\t\tthis._applyAttribute(\"show\", atom, \"show\");\n\t\t\tthis._applyAttribute(\"text-align\", this, function(textAlign) {\n\t\t\t\tatom.getChildControl(\"label\").setAllowGrowX(true);\n\t\t\t\tatom.getChildControl(\"label\").setTextAlign(textAlign);\n\t\t\t});\n\t\t\tthis._applyWidgetAttributes(atom);\n\t\t},\n\n\t\tgetLabel: function() {\n\t\t\treturn this.getMainWidget().getLabel();\n\t\t},\n\n\t\tsetLabel: function(label) {\n\t\t\tthis.getMainWidget().setLabel(label);\n\t\t},\n\n\t\tgetIcon: function() {\n\t\t\treturn this.getMainWidget().getIcon();\n\t\t},\n\n\t\tsetIcon: function(icon) {\n\t\t\tthis.getMainWidget().setIcon(icon);\n\t\t}\n\t}\n});\n"
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "className": "qookery.ILayoutFactory",
+  "packageName": "qookery",
+  "name": "ILayoutFactory",
+  "superClass": null,
+  "interfaces": [],
+  "mixins": [],
+  "functionName": null,
+  "clazz": {
+    "location": {
+      "start": {
+        "line": 22,
+        "column": 0
+      },
+      "end": {
+        "line": 38,
+        "column": 3
+      }
+    },
+    "jsdoc": {
+      "@description": [
+        {
+          "name": "@description",
+          "body": "Qookery - Declarative UI Building for Qooxdoo\n\nCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\nLicensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\nhttp:\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License."
+        },
+        {
+          "name": "@description",
+          "body": "Implementations of this interface create layout managers according to input arguments"
+        }
+      ]
+    }
+  },
+  "type": "interface",
+  "members": {
+    "createLayout": {
+      "location": {
+        "start": {
+          "line": 33,
+          "column": 2
+        },
+        "end": {
+          "line": 36,
+          "column": 3
+        }
+      },
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Create a new layout"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "attributes {qookery.IAttributeSet} set of attributes that may be of use for configuring new layout",
+            "paramName": "attributes",
+            "description": " set of attributes that may be of use for configuring new layout",
+            "type": "qookery.IAttributeSet"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{qx.ui.layout.Abstract} created layout",
+            "type": "qx.ui.layout.Abstract",
+            "description": " created layout"
+          }
+        ]
+      },
+      "type": "function",
+      "access": "public"
+    }
+  },
+  "descendants": []
+}

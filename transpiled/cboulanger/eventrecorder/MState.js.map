@@ -1,0 +1,39 @@
+{
+  "version": 3,
+  "sources": [
+    "/home/travis/build/cboulanger/eventrecorder/source/class/cboulanger/eventrecorder/MState.js"
+  ],
+  "names": [
+    "qx",
+    "Bootstrap",
+    "executePendingDefers",
+    "$$dbClassInfo",
+    "Mixin",
+    "define",
+    "properties",
+    "running",
+    "check",
+    "nullable",
+    "init",
+    "event",
+    "paused",
+    "members",
+    "start",
+    "beforeStart",
+    "setRunning",
+    "setPaused",
+    "pause",
+    "resume",
+    "getPaused",
+    "Error",
+    "stop",
+    "afterStop",
+    "cboulanger",
+    "eventrecorder",
+    "MState"
+  ],
+  "mappings": ";;;;;;;;;AAAAA,EAAAA,EAAE,CAACC,SAAH,CAAaC,oBAAb,CAAkCC,aAAlC;AAAAH,EAAAA,EAAE,CAACI,KAAH,CAASC,MAAT,CAAgB,iCAAhB,EAAmD;AAEjDC,IAAAA,UAAU,EAAE;AACV;;;AAGAC,MAAAA,OAAO,EAAE;AACPC,QAAAA,KAAK,EAAE,SADA;AAEPC,QAAAA,QAAQ,EAAE,KAFH;AAGPC,QAAAA,IAAI,EAAE,KAHC;AAIPC,QAAAA,KAAK,EAAE;AAJA,OAJC;;AAWV;;;AAGAC,MAAAA,MAAM,EAAE;AACNJ,QAAAA,KAAK,EAAE,SADD;AAENC,QAAAA,QAAQ,EAAE,KAFJ;AAGNC,QAAAA,IAAI,EAAE,KAHA;AAINC,QAAAA,KAAK,EAAE;AAJD;AAdE,KAFqC;AAwBjDE,IAAAA,OAAO,EAAE;AAEP;;;AAGAC,MAAAA,KAAK,GAAG;AACN,YAAI,OAAO,KAAKC,WAAZ,IAA2B,UAA/B,EAA2C;AACzC,eAAKA,WAAL;AACD;;AACD,aAAKC,UAAL,CAAgB,IAAhB;AACA,aAAKC,SAAL,CAAe,KAAf;AACD,OAXM;;AAaP;;;AAGAC,MAAAA,KAAK,GAAG;AACN,aAAKF,UAAL,CAAgB,KAAhB;AACA,aAAKC,SAAL,CAAe,IAAf;AACD,OAnBM;;AAqBP;;;AAGAE,MAAAA,MAAM,GAAG;AACP,YAAI,CAAC,KAAKC,SAAL,EAAL,EAAuB;AACrB,gBAAM,IAAIC,KAAJ,CAAU,6BAAV,CAAN;AACD;;AACD,aAAKL,UAAL,CAAgB,IAAhB;AACA,aAAKC,SAAL,CAAe,KAAf;AACD,OA9BM;;AAgCP;;;AAGAK,MAAAA,IAAI,GAAG;AACL,aAAKN,UAAL,CAAgB,KAAhB;AACA,aAAKC,SAAL,CAAe,KAAf;;AACA,YAAI,OAAO,KAAKM,SAAZ,IAAyB,UAA7B,EAAyC;AACvC,eAAKA,SAAL;AACD;AACF;;AAzCM;AAxBwC,GAAnD;AAAAC,EAAAA,UAAU,CAACC,aAAX,CAAyBC,MAAzB,CAAgCvB,aAAhC,GAAgDA,aAAhD",
+  "sourcesContent": [
+    "qx.Mixin.define(\"cboulanger.eventrecorder.MState\", {\n\n  properties: {\n    /**\n     * Whether the recorder/player is recording/playing\n     */\n    running: {\n      check: \"Boolean\",\n      nullable: false,\n      init: false,\n      event: \"changeRunning\"\n    },\n\n    /**\n     * Whether the recorder/player is put in paused mode\n     */\n    paused: {\n      check: \"Boolean\",\n      nullable: false,\n      init: false,\n      event: \"changePaused\"\n    }\n  },\n\n  members: {\n\n    /**\n     * Starts the recorder/player\n     */\n    start() {\n      if (typeof this.beforeStart == \"function\") {\n        this.beforeStart();\n      }\n      this.setRunning(true);\n      this.setPaused(false);\n    },\n\n    /**\n     * Pauses the recorder/player\n     */\n    pause() {\n      this.setRunning(false);\n      this.setPaused(true);\n    },\n\n    /**\n     * Resumes recording/playing.\n     */\n    resume() {\n      if (!this.getPaused()) {\n        throw new Error(\"Cannot resume if not paused\");\n      }\n      this.setRunning(true);\n      this.setPaused(false);\n    },\n\n    /**\n     * Stops the recording.\n     */\n    stop() {\n      this.setRunning(false);\n      this.setPaused(false);\n      if (typeof this.afterStop == \"function\") {\n        this.afterStop();\n      }\n    }\n  }\n});\n"
+  ]
+}

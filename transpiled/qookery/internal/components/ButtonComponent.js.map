@@ -1,0 +1,47 @@
+{
+  "version": 3,
+  "sources": [
+    "/home/travis/build/cboulanger/eventrecorder/qx_packages/ergobyte_qookery_892f44d1d1ae5d65c7dd99b18da6876de2f2a920/qookery/source/class/qookery/internal/components/ButtonComponent.js"
+  ],
+  "names": [
+    "qx",
+    "Bootstrap",
+    "executePendingDefers",
+    "$$dbClassInfo",
+    "Class",
+    "define",
+    "extend",
+    "qookery",
+    "internal",
+    "components",
+    "AtomComponent",
+    "construct",
+    "parentComponent",
+    "members",
+    "_createAtomWidget",
+    "button",
+    "_createButton",
+    "_applyAttribute",
+    "commandName",
+    "command",
+    "Qookery",
+    "getRegistry",
+    "getCommand",
+    "Error",
+    "setCommand",
+    "_applyAtomAttributes",
+    "ui",
+    "form",
+    "Button",
+    "setValue",
+    "buttonLabelValue",
+    "getMainWidget",
+    "setLabel",
+    "execute",
+    "ButtonComponent"
+  ],
+  "mappings": ";;;;;;;;;;;;;;;AAAAA,EAAAA,EAAE,CAACC,SAAH,CAAaC,oBAAb,CAAkCC,aAAlC;;AAAA;;;;;;;;;;;;;;;;;AAkBAH,EAAAA,EAAE,CAACI,KAAH,CAASC,MAAT,CAAgB,6CAAhB,EAA+D;AAE9DC,IAAAA,MAAM,EAAEC,OAAO,CAACC,QAAR,CAAiBC,UAAjB,CAA4BC,aAF0B;AAI9DC,IAAAA,SAAS,EAAE,mBAASC,eAAT,EAA0B;AACpC,uEAAqBA,eAArB;AACA,KAN6D;AAQ9DC,IAAAA,OAAO,EAAE;AAERC,MAAAA,iBAAiB,EAAE,6BAAW;AAC7B,YAAIC,MAAM,GAAG,KAAKC,aAAL,EAAb;;AACA,aAAKC,eAAL,CAAqB,SAArB,EAAgC,IAAhC,EAAsC,UAASC,WAAT,EAAsB;AAC3D,cAAIC,OAAO,GAAGZ,OAAO,CAACa,OAAR,CAAgBC,WAAhB,GAA8BC,UAA9B,CAAyCJ,WAAzC,CAAd;AACA,cAAGC,OAAO,IAAI,IAAd,EACC,MAAM,IAAII,KAAJ,CAAU,uBAAuBL,WAAjC,CAAN;AACDH,UAAAA,MAAM,CAACS,UAAP,CAAkBL,OAAlB;AACA,SALD;;AAMA,aAAKM,oBAAL,CAA0BV,MAA1B;;AACA,eAAOA,MAAP;AACA,OAZO;AAcRC,MAAAA,aAAa,EAAE,yBAAW;AACzB,eAAO,IAAIhB,EAAE,CAAC0B,EAAH,CAAMC,IAAN,CAAWC,MAAf,EAAP;AACA,OAhBO;AAkBRC,MAAAA,QAAQ,EAAE,kBAASC,gBAAT,EAA2B;AACpC;AACA,aAAKC,aAAL,GAAqBC,QAArB,CAA8BF,gBAA9B;AACA,OArBO;AAuBRR,MAAAA,UAAU,EAAE,sBAAW;AACtB,eAAO,KAAKS,aAAL,GAAqBT,UAArB,EAAP;AACA,OAzBO;AA2BRE,MAAAA,UAAU,EAAE,oBAASL,OAAT,EAAkB;AAC7B,aAAKY,aAAL,GAAqBP,UAArB,CAAgCL,OAAhC;AACA,OA7BO;AA+BRc,MAAAA,OAAO,EAAE,mBAAW;AACnB,aAAKF,aAAL,GAAqBE,OAArB;AACA;AAjCO;AARqD,GAA/D;AAlBA1B,EAAAA,OAAO,CAACC,QAAR,CAAiBC,UAAjB,CAA4ByB,eAA5B,CAA4C/B,aAA5C,GAA4DA,aAA5D",
+  "sourcesContent": [
+    "/*\n\tQookery - Declarative UI Building for Qooxdoo\n\n\tCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\n\tLicensed under the Apache License, Version 2.0 (the \"License\");\n\tyou may not use this file except in compliance with the License.\n\tYou may obtain a copy of the License at\n\n\t\thttp://www.apache.org/licenses/LICENSE-2.0\n\n\tUnless required by applicable law or agreed to in writing, software\n\tdistributed under the License is distributed on an \"AS IS\" BASIS,\n\tWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n\tSee the License for the specific language governing permissions and\n\tlimitations under the License.\n*/\n\nqx.Class.define(\"qookery.internal.components.ButtonComponent\", {\n\n\textend: qookery.internal.components.AtomComponent,\n\n\tconstruct: function(parentComponent) {\n\t\tthis.base(arguments, parentComponent);\n\t},\n\n\tmembers: {\n\n\t\t_createAtomWidget: function() {\n\t\t\tvar button = this._createButton();\n\t\t\tthis._applyAttribute(\"command\", this, function(commandName) {\n\t\t\t\tvar command = qookery.Qookery.getRegistry().getCommand(commandName);\n\t\t\t\tif(command == null)\n\t\t\t\t\tthrow new Error(\"Undefined command \" + commandName);\n\t\t\t\tbutton.setCommand(command);\n\t\t\t});\n\t\t\tthis._applyAtomAttributes(button);\n\t\t\treturn button;\n\t\t},\n\n\t\t_createButton: function() {\n\t\t\treturn new qx.ui.form.Button();\n\t\t},\n\n\t\tsetValue: function(buttonLabelValue) {\n\t\t\t// BCC Qookery: Method kept for compatibilty with former way of setting label\n\t\t\tthis.getMainWidget().setLabel(buttonLabelValue);\n\t\t},\n\n\t\tgetCommand: function() {\n\t\t\treturn this.getMainWidget().getCommand();\n\t\t},\n\n\t\tsetCommand: function(command) {\n\t\t\tthis.getMainWidget().setCommand(command);\n\t\t},\n\n\t\texecute: function() {\n\t\t\tthis.getMainWidget().execute();\n\t\t}\n\t}\n});\n"
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "version": 3,
+  "sources": [
+    "/home/travis/build/cboulanger/eventrecorder/source/class/cboulanger/eventrecorder/SplitToggleButton.js"
+  ],
+  "names": [
+    "qx",
+    "Bootstrap",
+    "executePendingDefers",
+    "$$dbClassInfo",
+    "Class",
+    "define",
+    "extend",
+    "ui",
+    "form",
+    "SplitButton",
+    "implement",
+    "IBooleanForm",
+    "IExecutable",
+    "properties",
+    "value",
+    "check",
+    "nullable",
+    "event",
+    "init",
+    "members",
+    "_createChildControlImpl",
+    "id",
+    "hash",
+    "control",
+    "ToggleButton",
+    "setFocusable",
+    "bind",
+    "addListener",
+    "_onButtonExecute",
+    "_addAt",
+    "flex",
+    "cboulanger",
+    "eventrecorder",
+    "SplitToggleButton"
+  ],
+  "mappings": ";;;;;;;;;;;;;;;;;;;AAAAA,EAAAA,EAAE,CAACC,SAAH,CAAaC,oBAAb,CAAkCC,aAAlC;;AAAA;;;;;;;;;;;;;;AAcA;;;;;;AAMAH,EAAAA,EAAE,CAACI,KAAH,CAASC,MAAT,CAAgB,4CAAhB,EACA;AACEC,IAAAA,MAAM,EAAEN,EAAE,CAACO,EAAH,CAAMC,IAAN,CAAWC,WADrB;AAEEC,IAAAA,SAAS,EAAE,CACTV,EAAE,CAACO,EAAH,CAAMC,IAAN,CAAWG,YADF,EAETX,EAAE,CAACO,EAAH,CAAMC,IAAN,CAAWI,WAFF,CAFb;;AAOE;;;;;AAMAC,IAAAA,UAAU,EAAE;AACV;AACAC,MAAAA,KAAK,EAAE;AACLC,QAAAA,KAAK,EAAG,SADH;AAELC,QAAAA,QAAQ,EAAG,IAFN;AAGLC,QAAAA,KAAK,EAAG,aAHH;AAILC,QAAAA,IAAI,EAAG;AAJF;AAFG,KAbd;;AAuBE;;;;;AAMAC,IAAAA,OAAO,EAAE;AACP;AACAC,MAAAA,uBAAuB,EAAE,iCAAUC,EAAV,EAAcC,IAAd,EAAoB;AAC3C,YAAIC,OAAJ;;AAEA,gBAAQF,EAAR;AACE,eAAK,QAAL;AACEE,YAAAA,OAAO,GAAG,IAAIvB,EAAE,CAACO,EAAH,CAAMC,IAAN,CAAWgB,YAAf,EAAV;AACAD,YAAAA,OAAO,CAACE,YAAR,CAAqB,KAArB;AACAF,YAAAA,OAAO,CAACG,IAAR,CAAa,OAAb,EAAsB,IAAtB,EAA4B,OAA5B;AACAH,YAAAA,OAAO,CAACI,WAAR,CAAoB,SAApB,EAA+B,KAAKC,gBAApC,EAAsD,IAAtD;AACA,iBAAKF,IAAL,CAAU,OAAV,EAAmBH,OAAnB,EAA4B,OAA5B;;AACA,iBAAKM,MAAL,CAAYN,OAAZ,EAAqB,CAArB,EAAwB;AAACO,cAAAA,IAAI,EAAE;AAAP,aAAxB;;AACA;AARJ;;AAUA,eAAOP,OAAO,iGAAyBF,EAAzB,CAAd;AACD;AAhBM;AA7BX,GADA;AApBAU,EAAAA,UAAU,CAACC,aAAX,CAAyBC,iBAAzB,CAA2C9B,aAA3C,GAA2DA,aAA3D",
+  "sourcesContent": [
+    "/* ************************************************************************\n\n Copyright:\n   2019 Christian Boulanger\n\n License:\n   MIT: https://opensource.org/licenses/MIT\n   See the LICENSE file in the project's top-level directory for details.\n\n Authors:\n   * Christian Boulanger\n\n************************************************************************ */\n\n/**\n * A split button which also acts as a toggle button\n *\n * @childControl button {qx.ui.form.Button} button to execute action\n * @childControl arrow {qx.ui.form.MenuButton} arrow to open the popup\n */\nqx.Class.define(\"cboulanger.eventrecorder.SplitToggleButton\",\n{\n  extend: qx.ui.form.SplitButton,\n  implement: [\n    qx.ui.form.IBooleanForm,\n    qx.ui.form.IExecutable\n  ],\n\n  /*\n  *****************************************************************************\n     PROPERTIES\n  *****************************************************************************\n  */\n\n  properties: {\n    /** The value of the widget. True, if the widget is checked. */\n    value: {\n      check : \"Boolean\",\n      nullable : true,\n      event : \"changeValue\",\n      init : false\n    }\n  },\n\n  /*\n  *****************************************************************************\n     MEMBERS\n  *****************************************************************************\n  */\n\n  members: {\n    // overridden\n    _createChildControlImpl: function (id, hash) {\n      var control;\n\n      switch (id) {\n        case \"button\":\n          control = new qx.ui.form.ToggleButton();\n          control.setFocusable(false);\n          control.bind(\"value\", this, \"value\");\n          control.addListener(\"execute\", this._onButtonExecute, this);\n          this.bind(\"value\", control, \"value\");\n          this._addAt(control, 0, {flex: 1});\n          break;\n      }\n      return control || this.base(arguments, id);\n    }\n  }\n});\n"
+  ]
+}

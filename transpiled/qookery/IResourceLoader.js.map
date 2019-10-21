@@ -1,0 +1,27 @@
+{
+  "version": 3,
+  "sources": [
+    "/home/travis/build/cboulanger/eventrecorder/qx_packages/ergobyte_qookery_892f44d1d1ae5d65c7dd99b18da6876de2f2a920/qookery/source/class/qookery/IResourceLoader.js"
+  ],
+  "names": [
+    "qx",
+    "Bootstrap",
+    "executePendingDefers",
+    "$$dbClassInfo",
+    "Interface",
+    "define",
+    "members",
+    "resolveResourceUri",
+    "name",
+    "loadResource",
+    "thisArg",
+    "successCallback",
+    "failCallback",
+    "qookery",
+    "IResourceLoader"
+  ],
+  "mappings": ";;;;;;;;;AAAAA,EAAAA,EAAE,CAACC,SAAH,CAAaC,oBAAb,CAAkCC,aAAlC;;AAAA;;;;;;;;;;;;;;;;;;AAkBA;;;AAGAH,EAAAA,EAAE,CAACI,SAAH,CAAaC,MAAb,CAAoB,yBAApB,EAA+C;AAE9CC,IAAAA,OAAO,EAAE;AAER;;;;;;;;;;AAUAC,MAAAA,kBAAkB,EAAE,4BAASC,IAAT,EAAe,CAAG,CAZ9B;;AAcR;;;;;;;;;;;AAWAC,MAAAA,YAAY,EAAE,sBAASD,IAAT,EAAeE,OAAf,EAAwBC,eAAxB,EAAyCC,YAAzC,EAAuD,CAAG;AAzBhE;AAFqC,GAA/C;AArBAC,EAAAA,OAAO,CAACC,eAAR,CAAwBX,aAAxB,GAAwCA,aAAxC",
+  "sourcesContent": [
+    "/*\n\tQookery - Declarative UI Building for Qooxdoo\n\n\tCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\n\tLicensed under the Apache License, Version 2.0 (the \"License\");\n\tyou may not use this file except in compliance with the License.\n\tYou may obtain a copy of the License at\n\n\t\thttp://www.apache.org/licenses/LICENSE-2.0\n\n\tUnless required by applicable law or agreed to in writing, software\n\tdistributed under the License is distributed on an \"AS IS\" BASIS,\n\tWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n\tSee the License for the specific language governing permissions and\n\tlimitations under the License.\n*/\n\n/**\n * Implementations of this interface provide resources requested by Qookery\n */\nqx.Interface.define(\"qookery.IResourceLoader\", {\n\n\tmembers: {\n\n\t\t/**\n\t\t * Return the URI of a named resource\n\t\t *\n\t\t * <p>This method allows applications to extend or replace default resolution performed\n\t\t * by qx.util.ResourceManager</p>\n\t\t *\n\t\t * @param name {String} the name of the resource\n\t\t *\n\t\t * @return {String} a URI that can be used to load the resource\n\t\t */\n\t\tresolveResourceUri: function(name) { },\n\n\t\t/**\n\t\t * Load a remote resource (sync or async)\n\t\t *\n\t\t * <p>Calls to this method imply synchronous loading when no success\n\t\t * callback has been set</p>\n\t\t *\n\t\t * @param name {String} name of the wanted resource\n\t\t * @param thisArg {Object ? null} optional context for callbacks, may be <code>null</code>\n\t\t * @param successCallback {Function} optional function to be called on asynchronous load success\n\t\t * @param failCallback {Function} optional function to be called on asynchronous load failure\n\t\t */\n\t\tloadResource: function(name, thisArg, successCallback, failCallback) { }\n\t}\n});\n"
+  ]
+}

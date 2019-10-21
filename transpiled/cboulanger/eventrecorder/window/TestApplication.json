@@ -1,0 +1,894 @@
+{
+  "className": "cboulanger.eventrecorder.window.TestApplication",
+  "packageName": "cboulanger.eventrecorder.window",
+  "name": "TestApplication",
+  "superClass": "qx.application.Standalone",
+  "interfaces": [],
+  "mixins": [
+    "cboulanger.eventrecorder.window.MRemoteBinding"
+  ],
+  "functionName": null,
+  "clazz": {
+    "location": {
+      "start": {
+        "line": 14,
+        "column": 0
+      },
+      "end": {
+        "line": 117,
+        "column": 3
+      }
+    },
+    "jsdoc": {
+      "@description": [
+        {
+          "name": "@description",
+          "body": "***********************************************************************\n\nCopyright: 2018 Christian Boulanger\n\nLicense: MIT license\n\nAuthors: Christian Boulanger (cboulanger) info@bibliograph.org\n\n***********************************************************************"
+        },
+        {
+          "name": "@description",
+          "body": "This is the main application class of \"UI Event Recorder\""
+        }
+      ]
+    }
+  },
+  "type": "class",
+  "properties": {
+    "chatMessage": {
+      "location": {
+        "start": {
+          "line": 18,
+          "column": 4
+        },
+        "end": {
+          "line": 22,
+          "column": 5
+        }
+      },
+      "name": "chatMessage",
+      "propertyType": "new",
+      "event": "changeChatMessage",
+      "init": "",
+      "check": "String",
+      "defaultValue": ""
+    },
+    "listModel": {
+      "location": {
+        "start": {
+          "line": 23,
+          "column": 4
+        },
+        "end": {
+          "line": 27,
+          "column": 5
+        }
+      },
+      "name": "listModel",
+      "propertyType": "new",
+      "event": "changeListModel",
+      "nullable": true,
+      "allowNull": true,
+      "check": "qx.data.Array"
+    },
+    "qxOwner": {
+      "type": "property",
+      "name": "qxOwner",
+      "abstract": false,
+      "mixin": true,
+      "access": "public",
+      "overriddenFrom": "qx.core.MObjectId"
+    },
+    "qxObjectId": {
+      "type": "property",
+      "name": "qxObjectId",
+      "abstract": false,
+      "mixin": true,
+      "access": "public",
+      "overriddenFrom": "qx.core.MObjectId"
+    }
+  },
+  "members": {
+    "main": {
+      "location": {
+        "start": {
+          "line": 31,
+          "column": 4
+        },
+        "end": {
+          "line": 92,
+          "column": 5
+        }
+      },
+      "type": "function",
+      "access": "public",
+      "overriddenFrom": "qx.application.AbstractGui",
+      "appearsIn": [
+        "qx.application.AbstractGui",
+        "qx.application.IApplication"
+      ]
+    },
+    "__createList": {
+      "location": {
+        "start": {
+          "line": 94,
+          "column": 4
+        },
+        "end": {
+          "line": 115,
+          "column": 5
+        }
+      },
+      "type": "function",
+      "access": "private"
+    },
+    "syncProperties": {
+      "type": "function",
+      "name": "syncProperties",
+      "abstract": false,
+      "mixin": true,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.window.MRemoteBinding",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Initializes property synchronization with the remote window"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "win {Window|cboulanger.eventrecorder.window.RemoteApplication}"
+          }
+        ]
+      }
+    },
+    "createUuid": {
+      "type": "function",
+      "name": "createUuid",
+      "abstract": false,
+      "mixin": true,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "cboulanger.eventrecorder.window.MRemoteBinding",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Create a pseudo-UUID to avoid name clashes"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{string}",
+            "type": "string",
+            "description": ""
+          }
+        ]
+      }
+    },
+    "_getPropertyNamesToSync": {
+      "type": "function",
+      "name": "_getPropertyNamesToSync",
+      "abstract": false,
+      "mixin": true,
+      "inherited": true,
+      "access": "protected",
+      "overriddenFrom": "cboulanger.eventrecorder.window.MRemoteBinding",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Returns an array with all the property names to synchronize. Override\nto refine behavior."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{Array}",
+            "type": "Array",
+            "description": ""
+          }
+        ]
+      }
+    },
+    "__initialize": {
+      "type": "function",
+      "name": "__initialize",
+      "abstract": false,
+      "mixin": true,
+      "inherited": true,
+      "access": "private",
+      "overriddenFrom": "cboulanger.eventrecorder.window.MRemoteBinding"
+    },
+    "__handleLocalPropertyChangeEvent": {
+      "type": "function",
+      "name": "__handleLocalPropertyChangeEvent",
+      "abstract": false,
+      "mixin": true,
+      "inherited": true,
+      "access": "private",
+      "overriddenFrom": "cboulanger.eventrecorder.window.MRemoteBinding",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Handles the property change events of the instance"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "e {qx.event.type.Data}"
+          }
+        ],
+        "@private": [
+          {
+            "name": "@private",
+            "body": ""
+          }
+        ]
+      }
+    },
+    "__computePropertyNameFromEventType": {
+      "type": "function",
+      "name": "__computePropertyNameFromEventType",
+      "abstract": false,
+      "mixin": true,
+      "inherited": true,
+      "access": "private",
+      "overriddenFrom": "cboulanger.eventrecorder.window.MRemoteBinding",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Given a property change event name, return the name of the property"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "type {String}"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{String}",
+            "type": "String",
+            "description": ""
+          }
+        ],
+        "@private": [
+          {
+            "name": "@private",
+            "body": ""
+          }
+        ]
+      }
+    },
+    "__handleLocalChangeBubbleEvent": {
+      "type": "function",
+      "name": "__handleLocalChangeBubbleEvent",
+      "abstract": false,
+      "mixin": true,
+      "inherited": true,
+      "access": "private",
+      "overriddenFrom": "cboulanger.eventrecorder.window.MRemoteBinding",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Broadcasts the 'changeBubble' events of the instance properties"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "e {qx.event.type.Data}"
+          },
+          {
+            "name": "@param",
+            "body": "prop {String} the name of the property that fired the event",
+            "paramName": "prop",
+            "description": " the name of the property that fired the event",
+            "type": "String"
+          }
+        ],
+        "@private": [
+          {
+            "name": "@private",
+            "body": ""
+          }
+        ]
+      }
+    },
+    "__broadcastEvent": {
+      "type": "function",
+      "name": "__broadcastEvent",
+      "abstract": false,
+      "mixin": true,
+      "inherited": true,
+      "access": "private",
+      "overriddenFrom": "cboulanger.eventrecorder.window.MRemoteBinding",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Broadcast a message with the given parameters"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "type {String}"
+          },
+          {
+            "name": "@param",
+            "body": "data {*|undefined}"
+          },
+          {
+            "name": "@param",
+            "body": "oldData {*|undefined}"
+          }
+        ],
+        "@private": [
+          {
+            "name": "@private",
+            "body": ""
+          }
+        ]
+      }
+    },
+    "__sendEventMessage": {
+      "type": "function",
+      "name": "__sendEventMessage",
+      "abstract": false,
+      "mixin": true,
+      "inherited": true,
+      "access": "private",
+      "overriddenFrom": "cboulanger.eventrecorder.window.MRemoteBinding",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Sends a event message to the given window."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "win {Window}"
+          },
+          {
+            "name": "@param",
+            "body": "type {String}"
+          },
+          {
+            "name": "@param",
+            "body": "data {*|undefined}"
+          },
+          {
+            "name": "@param",
+            "body": "oldData {*|undefined}"
+          }
+        ],
+        "@private": [
+          {
+            "name": "@private",
+            "body": ""
+          }
+        ]
+      }
+    },
+    "__sendMessage": {
+      "type": "function",
+      "name": "__sendMessage",
+      "abstract": false,
+      "mixin": true,
+      "inherited": true,
+      "access": "private",
+      "overriddenFrom": "cboulanger.eventrecorder.window.MRemoteBinding",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Send a message to the peer using the postMessage API"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "win {Window}"
+          },
+          {
+            "name": "@param",
+            "body": "message {String}"
+          }
+        ],
+        "@private": [
+          {
+            "name": "@private",
+            "body": ""
+          }
+        ]
+      }
+    },
+    "__handleIncomingMessage": {
+      "type": "function",
+      "name": "__handleIncomingMessage",
+      "abstract": false,
+      "mixin": true,
+      "inherited": true,
+      "access": "private",
+      "overriddenFrom": "cboulanger.eventrecorder.window.MRemoteBinding",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "If the incoming message is a property change event sent by the peer,\napply the new value"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "message {Object}"
+          }
+        ],
+        "@private": [
+          {
+            "name": "@private",
+            "body": ""
+          }
+        ]
+      }
+    },
+    "__handleRemoteReadyEvent": {
+      "type": "function",
+      "name": "__handleRemoteReadyEvent",
+      "abstract": false,
+      "mixin": true,
+      "inherited": true,
+      "access": "private",
+      "overriddenFrom": "cboulanger.eventrecorder.window.MRemoteBinding",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "When receiving the \"ready\" event from a window, send property state"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "message {Object}"
+          }
+        ]
+      }
+    },
+    "__sendReadyEvent": {
+      "type": "function",
+      "name": "__sendReadyEvent",
+      "abstract": false,
+      "mixin": true,
+      "inherited": true,
+      "access": "private",
+      "overriddenFrom": "cboulanger.eventrecorder.window.MRemoteBinding",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Send the ready event to another window, usually the opener"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "win {Window}"
+          }
+        ],
+        "@private": [
+          {
+            "name": "@private",
+            "body": ""
+          }
+        ]
+      }
+    },
+    "__handleRemotePropertyChangeEvent": {
+      "type": "function",
+      "name": "__handleRemotePropertyChangeEvent",
+      "abstract": false,
+      "mixin": true,
+      "inherited": true,
+      "access": "private",
+      "overriddenFrom": "cboulanger.eventrecorder.window.MRemoteBinding",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Handle the change event for normal property values"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "message {Object}"
+          }
+        ],
+        "@private": [
+          {
+            "name": "@private",
+            "body": ""
+          }
+        ]
+      }
+    },
+    "__handleRemoteChangeBubbleEvent": {
+      "type": "function",
+      "name": "__handleRemoteChangeBubbleEvent",
+      "abstract": false,
+      "mixin": true,
+      "inherited": true,
+      "access": "private",
+      "overriddenFrom": "cboulanger.eventrecorder.window.MRemoteBinding",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Handle the changeBubble event for qooxdoo data objects"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "message {Object}"
+          }
+        ],
+        "@private": [
+          {
+            "name": "@private",
+            "body": ""
+          }
+        ]
+      }
+    },
+    "__serialize": {
+      "type": "function",
+      "name": "__serialize",
+      "abstract": false,
+      "mixin": true,
+      "inherited": true,
+      "access": "private",
+      "overriddenFrom": "cboulanger.eventrecorder.window.MRemoteBinding",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Serialize an arbitrary value, including many qooxdoo objects,\nto a JSON value that can be sent to a remote target"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "object {qx.core.Object|*}"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{*|Array|String|Object}",
+            "type": "*|Array|String|Object",
+            "description": ""
+          }
+        ],
+        "@private": [
+          {
+            "name": "@private",
+            "body": ""
+          }
+        ]
+      }
+    },
+    "__unserialize": {
+      "type": "function",
+      "name": "__unserialize",
+      "abstract": false,
+      "mixin": true,
+      "inherited": true,
+      "access": "private",
+      "overriddenFrom": "cboulanger.eventrecorder.window.MRemoteBinding",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Unserialize a JSON object, creating suitable qooxdoo objects from the\nmetadata in the JSON"
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "body": "object {Object|Array|*}\n   The json object which will be unserialized into a qooxdoo object if\n   it has been serialized from a qooxdoo object. Normal object and\n   primitive values will be used as-is.",
+            "paramName": "object",
+            "description": "\n   The json object which will be unserialized into a qooxdoo object if\n   it has been serialized from a qooxdoo object. Normal object and\n   primitive values will be used as-is.",
+            "type": [
+              "Object",
+              "Array",
+              "*"
+            ]
+          },
+          {
+            "name": "@param",
+            "body": "includeBubbleEvents {Boolean} Defaults to true",
+            "paramName": "includeBubbleEvents",
+            "description": " Defaults to true",
+            "type": "Boolean"
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "body": "{qx.core.Object|*}",
+            "type": "qx.core.Object|*",
+            "description": ""
+          }
+        ]
+      }
+    },
+    "getQxOwner": {
+      "type": "function",
+      "name": "getQxOwner",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qx.application.Standalone",
+      "property": "get",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>qxOwner</code>.\n\nFor further details take a look at the property definition: {@link #qxOwner}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "qx.core.Object",
+            "desc": "Returns the value for qxOwner"
+          }
+        ]
+      }
+    },
+    "setQxOwner": {
+      "type": "function",
+      "name": "setQxOwner",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qx.application.Standalone",
+      "property": "set",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Sets the user value of the property <code>qxOwner</code>.\n\nFor further details take a look at the property definition: {@link #qxOwner}."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "type": "qx.core.Object",
+            "paramName": "value",
+            "desc": "Value for qxOwner"
+          }
+        ]
+      }
+    },
+    "resetQxOwner": {
+      "type": "function",
+      "name": "resetQxOwner",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qx.application.Standalone",
+      "property": "reset"
+    },
+    "getQxObjectId": {
+      "type": "function",
+      "name": "getQxObjectId",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qx.application.Standalone",
+      "property": "get",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>qxObjectId</code>.\n\nFor further details take a look at the property definition: {@link #qxObjectId}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "desc": "Returns the value for qxObjectId"
+          }
+        ]
+      }
+    },
+    "setQxObjectId": {
+      "type": "function",
+      "name": "setQxObjectId",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qx.application.Standalone",
+      "property": "set",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Sets the user value of the property <code>qxObjectId</code>.\n\nFor further details take a look at the property definition: {@link #qxObjectId}."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "paramName": "value",
+            "desc": "Value for qxObjectId"
+          }
+        ]
+      }
+    },
+    "resetQxObjectId": {
+      "type": "function",
+      "name": "resetQxObjectId",
+      "abstract": false,
+      "mixin": false,
+      "inherited": true,
+      "access": "public",
+      "overriddenFrom": "qx.application.Standalone",
+      "property": "reset"
+    },
+    "getChatMessage": {
+      "type": "function",
+      "name": "getChatMessage",
+      "abstract": false,
+      "mixin": false,
+      "inherited": false,
+      "access": "public",
+      "property": "get",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>chatMessage</code>.\n\nFor further details take a look at the property definition: {@link #chatMessage}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "String",
+            "desc": "Returns the value for chatMessage"
+          }
+        ]
+      }
+    },
+    "setChatMessage": {
+      "type": "function",
+      "name": "setChatMessage",
+      "abstract": false,
+      "mixin": false,
+      "inherited": false,
+      "access": "public",
+      "property": "set",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Sets the user value of the property <code>chatMessage</code>.\n\nFor further details take a look at the property definition: {@link #chatMessage}."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "type": "String",
+            "paramName": "value",
+            "desc": "Value for chatMessage"
+          }
+        ]
+      }
+    },
+    "resetChatMessage": {
+      "type": "function",
+      "name": "resetChatMessage",
+      "abstract": false,
+      "mixin": false,
+      "inherited": false,
+      "access": "public",
+      "property": "reset",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Resets the user value of the property <code>chatMessage</code>.\n\nThe computed value falls back to the next available value e.g. appearance, init or inheritance value depending on the property configuration and value availability.\n\nFor further details take a look at the property definition: {@link #chatMessage}."
+          }
+        ]
+      }
+    },
+    "getListModel": {
+      "type": "function",
+      "name": "getListModel",
+      "abstract": false,
+      "mixin": false,
+      "inherited": false,
+      "access": "public",
+      "property": "get",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Gets the (computed) value of the property <code>listModel</code>.\n\nFor further details take a look at the property definition: {@link #listModel}."
+          }
+        ],
+        "@return": [
+          {
+            "name": "@return",
+            "type": "qx.data.Array",
+            "desc": "Returns the value for listModel"
+          }
+        ]
+      }
+    },
+    "setListModel": {
+      "type": "function",
+      "name": "setListModel",
+      "abstract": false,
+      "mixin": false,
+      "inherited": false,
+      "access": "public",
+      "property": "set",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Sets the user value of the property <code>listModel</code>.\n\nFor further details take a look at the property definition: {@link #listModel}."
+          }
+        ],
+        "@param": [
+          {
+            "name": "@param",
+            "type": "qx.data.Array",
+            "paramName": "value",
+            "desc": "Value for listModel"
+          }
+        ]
+      }
+    },
+    "resetListModel": {
+      "type": "function",
+      "name": "resetListModel",
+      "abstract": false,
+      "mixin": false,
+      "inherited": false,
+      "access": "public",
+      "property": "reset",
+      "jsdoc": {
+        "@description": [
+          {
+            "name": "@description",
+            "body": "Resets the user value of the property <code>listModel</code>.\n\nThe computed value falls back to the next available value e.g. appearance, init or inheritance value depending on the property configuration and value availability.\n\nFor further details take a look at the property definition: {@link #listModel}."
+          }
+        ]
+      }
+    }
+  },
+  "descendants": []
+}

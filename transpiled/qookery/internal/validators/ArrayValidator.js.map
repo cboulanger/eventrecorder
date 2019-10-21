@@ -1,0 +1,43 @@
+{
+  "version": 3,
+  "sources": [
+    "/home/travis/build/cboulanger/eventrecorder/qx_packages/ergobyte_qookery_892f44d1d1ae5d65c7dd99b18da6876de2f2a920/qookery/source/class/qookery/internal/validators/ArrayValidator.js"
+  ],
+  "names": [
+    "qx",
+    "Bootstrap",
+    "executePendingDefers",
+    "$$dbClassInfo",
+    "Class",
+    "define",
+    "extend",
+    "core",
+    "Object",
+    "implement",
+    "qookery",
+    "IValidator",
+    "type",
+    "construct",
+    "members",
+    "createValidation",
+    "component",
+    "invalidMessage",
+    "options",
+    "value",
+    "message",
+    "length",
+    "parseInt",
+    "locale",
+    "Manager",
+    "tr",
+    "util",
+    "ValidationError",
+    "internal",
+    "validators",
+    "ArrayValidator"
+  ],
+  "mappings": ";;;;;;;;;;;;;;;;;;AAAAA,EAAAA,EAAE,CAACC,SAAH,CAAaC,oBAAb,CAAkCC,aAAlC;;AAAA;;;;;;;;;;;;;;;;;AAkBAH,EAAAA,EAAE,CAACI,KAAH,CAASC,MAAT,CAAgB,4CAAhB,EAA8D;AAE7DC,IAAAA,MAAM,EAAEN,EAAE,CAACO,IAAH,CAAQC,MAF6C;AAG7DC,IAAAA,SAAS,EAAE,CAAEC,OAAO,CAACC,UAAV,CAHkD;AAI7DC,IAAAA,IAAI,EAAE,WAJuD;AAM7DC,IAAAA,SAAS,EAAE,qBAAY;AACtB;AACA,KAR4D;AAU7DC,IAAAA,OAAO,EAAE;AAERC,MAAAA,gBAAgB,EAAE,0BAASC,SAAT,EAAoBC,cAApB,EAAoCC,OAApC,EAA6C;AAC9D,eAAO,UAASC,KAAT,EAAgB;AACtB,cAAGA,KAAK,KAAK,IAAb,EAAmB,OAAO,IAAP;AACnB,cAAIC,OAAO,GAAG,IAAd;;AACA,cAAGF,OAAO,CAAC,eAAD,CAAP,IAA4BC,KAAK,CAACE,MAAN,GAAeC,QAAQ,CAACJ,OAAO,CAAC,eAAD,CAAR,EAA2B,EAA3B,CAAtD,EAAsF;AACrFE,YAAAA,OAAO,GAAGH,cAAc,IAAIjB,EAAE,CAACuB,MAAH,CAAUC,OAAV,CAAkBC,EAAlB,CAAqB,0DAArB,EAAiFP,OAAO,CAAC,eAAD,CAAxF,CAA5B;AACA,WAFD,MAGK,IAAGA,OAAO,CAAC,eAAD,CAAP,IAA4BC,KAAK,CAACE,MAAN,GAAeC,QAAQ,CAACJ,OAAO,CAAC,eAAD,CAAR,EAA2B,EAA3B,CAAtD,EAAsF;AAC1FE,YAAAA,OAAO,GAAGH,cAAc,IAAIjB,EAAE,CAACuB,MAAH,CAAUC,OAAV,CAAkBC,EAAlB,CAAqB,0DAArB,EAAiFP,OAAO,CAAC,eAAD,CAAxF,CAA5B;AACA;;AACD,cAAG,CAACE,OAAJ,EAAa,OAAO,IAAP;AACb,iBAAO,IAAIV,OAAO,CAACgB,IAAR,CAAaC,eAAjB,CAAiCX,SAAjC,EAA4CI,OAA5C,EAAqD,IAArD,CAAP;AACA,SAXD;AAYA;AAfO;AAVoD,GAA9D;AAlBAV,EAAAA,OAAO,CAACkB,QAAR,CAAiBC,UAAjB,CAA4BC,cAA5B,CAA2C3B,aAA3C,GAA2DA,aAA3D",
+  "sourcesContent": [
+    "/*\n\tQookery - Declarative UI Building for Qooxdoo\n\n\tCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\n\tLicensed under the Apache License, Version 2.0 (the \"License\");\n\tyou may not use this file except in compliance with the License.\n\tYou may obtain a copy of the License at\n\n\t\thttp://www.apache.org/licenses/LICENSE-2.0\n\n\tUnless required by applicable law or agreed to in writing, software\n\tdistributed under the License is distributed on an \"AS IS\" BASIS,\n\tWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n\tSee the License for the specific language governing permissions and\n\tlimitations under the License.\n*/\n\nqx.Class.define(\"qookery.internal.validators.ArrayValidator\", {\n\n\textend: qx.core.Object,\n\timplement: [ qookery.IValidator ],\n\ttype: \"singleton\",\n\n\tconstruct: function () {\n\t\tthis.base(arguments);\n\t},\n\n\tmembers: {\n\n\t\tcreateValidation: function(component, invalidMessage, options) {\n\t\t\treturn function(value) {\n\t\t\t\tif(value === null) return null;\n\t\t\t\tvar message = null;\n\t\t\t\tif(options[\"minimumLength\"] && value.length < parseInt(options[\"minimumLength\"], 10)) {\n\t\t\t\t\tmessage = invalidMessage || qx.locale.Manager.tr(\"qookery.internal.validators.ArrayValidator.minimumLength\", options[\"minimumLength\"]);\n\t\t\t\t}\n\t\t\t\telse if(options[\"maximumLength\"] && value.length > parseInt(options[\"maximumLength\"], 10)) {\n\t\t\t\t\tmessage = invalidMessage || qx.locale.Manager.tr(\"qookery.internal.validators.ArrayValidator.maximumLength\", options[\"maximumLength\"]);\n\t\t\t\t}\n\t\t\t\tif(!message) return null;\n\t\t\t\treturn new qookery.util.ValidationError(component, message, null);\n\t\t\t};\n\t\t}\n\t}\n});\n"
+  ]
+}

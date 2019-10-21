@@ -1,0 +1,34 @@
+{
+  "version": 3,
+  "sources": [
+    "/home/travis/build/cboulanger/eventrecorder/qx_packages/ergobyte_qookery_892f44d1d1ae5d65c7dd99b18da6876de2f2a920/qookery/source/class/qookery/internal/components/TextFieldComponent.js"
+  ],
+  "names": [
+    "qx",
+    "Bootstrap",
+    "executePendingDefers",
+    "$$dbClassInfo",
+    "Class",
+    "define",
+    "extend",
+    "qookery",
+    "internal",
+    "components",
+    "FieldComponent",
+    "construct",
+    "parentComponent",
+    "members",
+    "_createMainWidget",
+    "widget",
+    "ui",
+    "form",
+    "TextField",
+    "_setupTextField",
+    "_applyWidgetAttributes",
+    "TextFieldComponent"
+  ],
+  "mappings": ";;;;;;;;;;;;;;AAAAA,EAAAA,EAAE,CAACC,SAAH,CAAaC,oBAAb,CAAkCC,aAAlC;;AAAA;;;;;;;;;;;;;;;;;AAkBAH,EAAAA,EAAE,CAACI,KAAH,CAASC,MAAT,CAAgB,gDAAhB,EAAkE;AAEjEC,IAAAA,MAAM,EAAEC,OAAO,CAACC,QAAR,CAAiBC,UAAjB,CAA4BC,cAF6B;AAIjEC,IAAAA,SAAS,EAAE,mBAASC,eAAT,EAA0B;AACpC,wEAAqBA,eAArB;AACA,KANgE;AAQjEC,IAAAA,OAAO,EAAE;AAERC,MAAAA,iBAAiB,EAAE,6BAAW;AAC7B,YAAIC,MAAM,GAAG,IAAIf,EAAE,CAACgB,EAAH,CAAMC,IAAN,CAAWC,SAAf,EAAb;;AACA,aAAKC,eAAL,CAAqBJ,MAArB;;AACA,aAAKK,sBAAL,CAA4BL,MAA5B;;AACA,eAAOA,MAAP;AACA;AAPO;AARwD,GAAlE;AAlBAR,EAAAA,OAAO,CAACC,QAAR,CAAiBC,UAAjB,CAA4BY,kBAA5B,CAA+ClB,aAA/C,GAA+DA,aAA/D",
+  "sourcesContent": [
+    "/*\n\tQookery - Declarative UI Building for Qooxdoo\n\n\tCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\n\tLicensed under the Apache License, Version 2.0 (the \"License\");\n\tyou may not use this file except in compliance with the License.\n\tYou may obtain a copy of the License at\n\n\t\thttp://www.apache.org/licenses/LICENSE-2.0\n\n\tUnless required by applicable law or agreed to in writing, software\n\tdistributed under the License is distributed on an \"AS IS\" BASIS,\n\tWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n\tSee the License for the specific language governing permissions and\n\tlimitations under the License.\n*/\n\nqx.Class.define(\"qookery.internal.components.TextFieldComponent\", {\n\n\textend: qookery.internal.components.FieldComponent,\n\n\tconstruct: function(parentComponent) {\n\t\tthis.base(arguments, parentComponent);\n\t},\n\n\tmembers: {\n\n\t\t_createMainWidget: function() {\n\t\t\tvar widget = new qx.ui.form.TextField();\n\t\t\tthis._setupTextField(widget);\n\t\t\tthis._applyWidgetAttributes(widget);\n\t\t\treturn widget;\n\t\t}\n\t}\n});\n"
+  ]
+}

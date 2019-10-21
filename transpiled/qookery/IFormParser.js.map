@@ -1,0 +1,24 @@
+{
+  "version": 3,
+  "sources": [
+    "/home/travis/build/cboulanger/eventrecorder/qx_packages/ergobyte_qookery_892f44d1d1ae5d65c7dd99b18da6876de2f2a920/qookery/source/class/qookery/IFormParser.js"
+  ],
+  "names": [
+    "qx",
+    "Bootstrap",
+    "executePendingDefers",
+    "$$dbClassInfo",
+    "Interface",
+    "define",
+    "members",
+    "parseXmlDocument",
+    "xmlDocument",
+    "parentComponent",
+    "qookery",
+    "IFormParser"
+  ],
+  "mappings": ";;;;;;;;;AAAAA,EAAAA,EAAE,CAACC,SAAH,CAAaC,oBAAb,CAAkCC,aAAlC;;AAAA;;;;;;;;;;;;;;;;;;AAkBA;;;AAGAH,EAAAA,EAAE,CAACI,SAAH,CAAaC,MAAb,CAAoB,qBAApB,EAA2C;AAE1CC,IAAAA,OAAO,EAAE;AAER;;;;;;;;AAQAC,MAAAA,gBAAgB,EAAE,0BAASC,WAAT,EAAsBC,eAAtB,EAAuC,CAAG;AAVpD;AAFiC,GAA3C;AArBAC,EAAAA,OAAO,CAACC,WAAR,CAAoBR,aAApB,GAAoCA,aAApC",
+  "sourcesContent": [
+    "/*\n\tQookery - Declarative UI Building for Qooxdoo\n\n\tCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\n\tLicensed under the Apache License, Version 2.0 (the \"License\");\n\tyou may not use this file except in compliance with the License.\n\tYou may obtain a copy of the License at\n\n\t\thttp://www.apache.org/licenses/LICENSE-2.0\n\n\tUnless required by applicable law or agreed to in writing, software\n\tdistributed under the License is distributed on an \"AS IS\" BASIS,\n\tWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n\tSee the License for the specific language governing permissions and\n\tlimitations under the License.\n*/\n\n/**\n * Interface providing access to some internals of the Qookery XML parser\n */\nqx.Interface.define(\"qookery.IFormParser\", {\n\n\tmembers: {\n\n\t\t/**\n\t\t * Parse and generate a Qookery form\n\t\t *\n\t\t * @param xmlDocument {qx.xml.Document} input DOM XML document structured according to the form.xsd schema\n\t\t * @param parentComponent {qookery.IContainerComponent} an optional parent component that will hold generated results or <code>null</code>\n\t\t *\n\t\t * @return {qookery.IComponent} the root of the generated component hierarchy - typically a form component\n\t\t */\n\t\tparseXmlDocument: function(xmlDocument, parentComponent) { }\n\t}\n});\n"
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "version": 3,
+  "sources": [
+    "/home/travis/build/cboulanger/eventrecorder/qx_packages/ergobyte_qookery_892f44d1d1ae5d65c7dd99b18da6876de2f2a920/qookery/source/class/qookery/IModelProvider.js"
+  ],
+  "names": [
+    "qx",
+    "Bootstrap",
+    "executePendingDefers",
+    "$$dbClassInfo",
+    "Interface",
+    "define",
+    "members",
+    "identityOf",
+    "object",
+    "areEqual",
+    "object1",
+    "object2",
+    "compare",
+    "convertFrom",
+    "value",
+    "className",
+    "convertTo",
+    "getLabel",
+    "labelType",
+    "connectComponent",
+    "component",
+    "specification",
+    "clone",
+    "qookery",
+    "IModelProvider"
+  ],
+  "mappings": ";;;;;;;;;AAAAA,EAAAA,EAAE,CAACC,SAAH,CAAaC,oBAAb,CAAkCC,aAAlC;;AAAA;;;;;;;;;;;;;;;;;;AAkBA;;;AAGAH,EAAAA,EAAE,CAACI,SAAH,CAAaC,MAAb,CAAoB,wBAApB,EAA8C;AAE7CC,IAAAA,OAAO,EAAE;AAER;;;;;;;;;;AAUAC,MAAAA,UAAU,EAAE,oBAASC,MAAT,EAAiB,CAAG,CAZxB;;AAcR;;;;;;;;;;;;AAYAC,MAAAA,QAAQ,EAAE,kBAASC,OAAT,EAAkBC,OAAlB,EAA2B,CAAG,CA1BhC;;AA4BR;;;;;;;;;;;;;AAaAC,MAAAA,OAAO,EAAE,iBAASF,OAAT,EAAkBC,OAAlB,EAA2B,CAAG,CAzC/B;;AA2CR;;;;;;;;;;AAUAE,MAAAA,WAAW,EAAE,qBAASC,KAAT,EAAgBC,SAAhB,EAA2B,CAAG,CArDnC;;AAuDR;;;;;;;;;;AAUAC,MAAAA,SAAS,EAAE,mBAASR,MAAT,EAAiBO,SAAjB,EAA4B,CAAG,CAjElC;;AAmER;;;;;;;;AAQAE,MAAAA,QAAQ,EAAE,kBAAST,MAAT,EAAiBU,SAAjB,EAA4B,CAAG,CA3EjC;;AA6ER;;;;;;;;AAQAC,MAAAA,gBAAgB,EAAE,0BAASC,SAAT,EAAoBC,aAApB,EAAmC,CAAG,CArFhD;;AAuFR;;;;;AAKAC,MAAAA,KAAK,EAAE,eAASd,MAAT,EAAiB,CAAG;AA5FnB;AAFoC,GAA9C;AArBAe,EAAAA,OAAO,CAACC,cAAR,CAAuBrB,aAAvB,GAAuCA,aAAvC",
+  "sourcesContent": [
+    "/*\n\tQookery - Declarative UI Building for Qooxdoo\n\n\tCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\n\tLicensed under the Apache License, Version 2.0 (the \"License\");\n\tyou may not use this file except in compliance with the License.\n\tYou may obtain a copy of the License at\n\n\t\thttp://www.apache.org/licenses/LICENSE-2.0\n\n\tUnless required by applicable law or agreed to in writing, software\n\tdistributed under the License is distributed on an \"AS IS\" BASIS,\n\tWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n\tSee the License for the specific language governing permissions and\n\tlimitations under the License.\n*/\n\n/**\n * Model providers bridge user-provided data functionality with Qookery interfaces\n */\nqx.Interface.define(\"qookery.IModelProvider\", {\n\n\tmembers: {\n\n\t\t/**\n\t\t * Return a JavaScript primitive or array of primitives that uniquely identifies model object\n\t\t *\n\t\t * <p>The result must be such so that if a == b, then identityOf(a) == identityOf(b) and vice-versa.</p>\n\t\t * <p>The result must be <code>null</code> when no input was passed.</p>\n\t\t *\n\t\t * @param object {any} model object - it may be <code>null</code>\n\t\t *\n\t\t * @return {any} any JavaScript primitive or array of primitives\n\t\t */\n\t\tidentityOf: function(object) { },\n\n\t\t/**\n\t\t * Test two model objects for equality\n\t\t *\n\t\t * <p>Method must be null-safe:\n\t\t *\t\tequals(null, null) -> true and\n\t\t *\t\tequals(null, non-null) -> false</p>\n\t\t *\n\t\t * @param object1 {any} model object, may be <code>null</code>\n\t\t * @param object2 {any} model object, may be <code>null</code>\n\t\t *\n\t\t * @return {Boolean} <code>true</code> if objects are equal or both <code>null</code>\n\t\t */\n\t\tareEqual: function(object1, object2) { },\n\n\t\t/**\n\t\t * Returns a negative number, zero, or a positive number as object1 is less than, equal to, or greater than object2\n\t\t *\n\t\t * <p>Method must be null-safe:\n\t\t *\t\tcompare(null, null) -> 0,\n\t\t *\t\tcompare(null, non-null) -> -1 and\n\t\t *\t\tcompare(non-null, null) -> 1</p>\n\t\t *\n\t\t * @param object1 {any} model object, may be <code>null</code>\n\t\t * @param object2 {any} model object, may be <code>null</code>\n\t\t *\n\t\t * @return {Number} negative number, positive number or zero according to comparison result\n\t\t */\n\t\tcompare: function(object1, object2) { },\n\n\t\t/**\n\t\t * Convert values from component specific to model objects\n\t\t *\n\t\t * <p>Provider is expected to convert given component specific value to a model object.</p>\n\t\t *\n\t\t * @param value {any} component-specific value\n\t\t * @param className {String} the name of the value's class\n\t\t *\n\t\t * @return {any} value if no conversion needed, conversion result, or <code>null</code> if conversion was attempted but failed\n\t\t */\n\t\tconvertFrom: function(value, className) { },\n\n\t\t/**\n\t\t * Convert values from model objects to component specific values\n\t\t *\n\t\t * <p>Provider is expected to convert given model object into an object of the required class for component specific needs.</p>\n\t\t *\n\t\t * @param object {any} model object\n\t\t * @param className {String} the name of the wanted value's class\n\t\t *\n\t\t * @return {any} input if no conversion needed, conversion result, or <code>null</code> if conversion was attempted but failed\n\t\t */\n\t\tconvertTo: function(object, className) { },\n\n\t\t/**\n\t\t * Return a human-friendly label for a model object\n\t\t *\n\t\t * @param object {any} model object - it may not be <code>null</code>\n\t\t * @param labelType {String?} optional symbolic name of needed label type\n\t\t *\n\t\t * @return {String} any textual label or <code>null</code> if none available\n\t\t */\n\t\tgetLabel: function(object, labelType) { },\n\n\t\t/**\n\t\t * Connect a component to the form's underlying model, in a way specified by second argument\n\t\t *\n\t\t * @param component {qookery.IEditableComponent} editable component that will receive connection\n\t\t * @param specification {String} an implementation specific text that will be parsed by the model provider\n\t\t *\n\t\t * @return {qookery.internal.util.Connection} new connection instance\n\t\t */\n\t\tconnectComponent: function(component, specification) { },\n\n\t\t/**\n\t\t * Clone an object\n\t\t *\n\t\t * @param object {any} model object to clone\n\t\t */\n\t\tclone: function(object) { }\n\t}\n});\n"
+  ]
+}

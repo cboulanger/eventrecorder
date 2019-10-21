@@ -1,0 +1,44 @@
+{
+  "version": 3,
+  "sources": [
+    "/home/travis/build/cboulanger/eventrecorder/qx_packages/ergobyte_qookery_892f44d1d1ae5d65c7dd99b18da6876de2f2a920/qookery/source/class/qookery/util/Debug.js"
+  ],
+  "names": [
+    "qx",
+    "Bootstrap",
+    "executePendingDefers",
+    "$$dbClassInfo",
+    "Class",
+    "define",
+    "type",
+    "statics",
+    "logScriptError",
+    "object",
+    "sourceCode",
+    "error",
+    "stackTraceLines",
+    "dev",
+    "StackTrace",
+    "getStackTraceFromError",
+    "lineNumber",
+    "match",
+    "i",
+    "length",
+    "stackTraceLine",
+    "parseInt",
+    "startIndex",
+    "newLineIndex",
+    "indexOf",
+    "log",
+    "Logger",
+    "warn",
+    "substr",
+    "qookery",
+    "util",
+    "Debug"
+  ],
+  "mappings": ";;;;;;;;;;;AAAAA,EAAAA,EAAE,CAACC,SAAH,CAAaC,oBAAb,CAAkCC,aAAlC;;AAAA;;;;;;;;;;;;;;;;;;AAkBA;;;AAGAH,EAAAA,EAAE,CAACI,KAAH,CAASC,MAAT,CAAgB,oBAAhB,EAAsC;AAErCC,IAAAA,IAAI,EAAE,QAF+B;AAIrCC,IAAAA,OAAO,EAAE;AAER;;;;;;;;;;AAUAC,MAAAA,cAAc,EAAE,wBAASC,MAAT,EAAiBC,UAAjB,EAA6BC,KAA7B,EAAoC;AACnD,YAAIC,eAAe,GAAGZ,EAAE,CAACa,GAAH,CAAOC,UAAP,CAAkBC,sBAAlB,CAAyCJ,KAAzC,CAAtB;AACA,YAAGC,eAAe,IAAI,IAAtB,EAA4B;AAC5B,YAAII,UAAU,GAAG,IAAjB;AAAA,YAAuBC,KAAvB;;AACA,aAAI,IAAIC,CAAC,GAAG,CAAZ,EAAeA,CAAC,GAAGN,eAAe,CAACO,MAAnC,EAA2CD,CAAC,EAA5C,EAAgD;AAC/C,cAAIE,cAAc,GAAGR,eAAe,CAACM,CAAD,CAApC;AACAD,UAAAA,KAAK,GAAGG,cAAc,CAACH,KAAf,CAAqB,6BAArB,CAAR;AACA,cAAGA,KAAK,IAAI,IAAZ,EAAkB;AAClBD,UAAAA,UAAU,GAAGK,QAAQ,CAACJ,KAAK,CAAC,CAAD,CAAN,CAArB;AACA;AACA;;AACD,YAAGD,UAAU,IAAI,IAAjB,EAAuB;AACvB,YAAIM,UAAU,GAAG,CAAjB;;AACA,aAAI,IAAIJ,CAAC,GAAG,CAAZ,EAAeA,CAAC,GAAGF,UAAnB,EAA+BE,CAAC,EAAhC,EAAoC;AACnC,cAAIK,YAAY,GAAGb,UAAU,CAACc,OAAX,CAAmB,IAAnB,EAAyBF,UAAzB,CAAnB;AACA,cAAGC,YAAY,KAAK,CAAC,CAArB,EAAwB;AACxBD,UAAAA,UAAU,GAAGC,YAAY,GAAG,CAA5B;AACA;;AACDvB,QAAAA,EAAE,CAACyB,GAAH,CAAOC,MAAP,CAAcC,IAAd,CAAmBlB,MAAnB,EAA2B,sBAA3B,EAAmDQ,KAAK,CAAC,CAAD,CAAxD,EAA6D,GAA7D,EAAkEN,KAAK,CAAC,SAAD,CAAvE,EAAoF,MAApF,EAA4FD,UAAU,CAACkB,MAAX,CAAkBN,UAAlB,EAA8B,GAA9B,CAA5F;AACA;AA/BO;AAJ4B,GAAtC;AArBAO,EAAAA,OAAO,CAACC,IAAR,CAAaC,KAAb,CAAmB5B,aAAnB,GAAmCA,aAAnC",
+  "sourcesContent": [
+    "/*\n\tQookery - Declarative UI Building for Qooxdoo\n\n\tCopyright (c) Ergobyte Informatics S.A., www.ergobyte.gr\n\n\tLicensed under the Apache License, Version 2.0 (the \"License\");\n\tyou may not use this file except in compliance with the License.\n\tYou may obtain a copy of the License at\n\n\t\thttp://www.apache.org/licenses/LICENSE-2.0\n\n\tUnless required by applicable law or agreed to in writing, software\n\tdistributed under the License is distributed on an \"AS IS\" BASIS,\n\tWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n\tSee the License for the specific language governing permissions and\n\tlimitations under the License.\n*/\n\n/**\n * Useful debug capabilities\n */\nqx.Class.define(\"qookery.util.Debug\", {\n\n\ttype: \"static\",\n\n\tstatics: {\n\n\t\t/**\n\t\t * Attempt to log a warning about an error that occurred inside a script\n\t\t *\n\t\t * <p>Implementation is browser-specific and can be improved to handle more browsers</p>\n\t\t *\n\t\t * @param object {any} an object that is the context of the log message\n\t\t * @param sourceCode {String} the script's source code\n\t\t * @param error {Error} exception thrown while running script\n\t\t * @return {undefined}\n\t\t */\n\t\tlogScriptError: function(object, sourceCode, error) {\n\t\t\tvar stackTraceLines = qx.dev.StackTrace.getStackTraceFromError(error);\n\t\t\tif(stackTraceLines == null) return;\n\t\t\tvar lineNumber = null, match;\n\t\t\tfor(var i = 0; i < stackTraceLines.length; i++) {\n\t\t\t\tvar stackTraceLine = stackTraceLines[i];\n\t\t\t\tmatch = stackTraceLine.match(/<anonymous>:([\\d]+):([\\d+])/);\n\t\t\t\tif(match == null) continue;\n\t\t\t\tlineNumber = parseInt(match[1]);\n\t\t\t\tbreak;\n\t\t\t}\n\t\t\tif(lineNumber == null) return;\n\t\t\tvar startIndex = 0;\n\t\t\tfor(var i = 3; i < lineNumber; i++) {\n\t\t\t\tvar newLineIndex = sourceCode.indexOf(\"\\n\", startIndex);\n\t\t\t\tif(newLineIndex === -1) break;\n\t\t\t\tstartIndex = newLineIndex + 1;\n\t\t\t}\n\t\t\tqx.log.Logger.warn(object, \"Script error at line\", match[1], \":\", error[\"message\"], \"\\n\\n\", sourceCode.substr(startIndex, 250));\n\t\t}\n\t}\n});\n"
+  ]
+}
