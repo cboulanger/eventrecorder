@@ -23,7 +23,28 @@ qx.Mixin.define("cboulanger.eventrecorder.editor.MEditor", {
 
   members: {
 
-    __players: null,
+    /**
+     * create the editor and add it to the given container with a flex of 1.
+     * @return {qx.ui.core.Widget}
+     * @private
+     */
+    async _createEditor() {
+      let control;
+      const formUrl = qx.util.ResourceManager.getInstance().toUri("cboulanger/eventrecorder/forms/editor.xml");
+      const formComponent = await cboulanger.eventrecorder.Utils.createQookeryComponent(formUrl);
+      this.addOwnedQxObject(formComponent, "editor");
+      const editorWidget = formComponent.getMainWidget();
+      editorWidget.addListener("appear", this._updateEditor, this);
+      editorWidget.set({allowStretchX: true, allowStretchY: true});
+      // bind to state
+      const formModel = formComponent.getModel();
+      this.getState().bind("script", formModel, "leftEditorContent");
+      formModel.bind("leftEditorContent", this.getState(), "script");
+      // re-translate when parameters change
+      formModel.addListener("changeTargetScriptType", () => this.__translate());
+      formModel.addListener("changeTargetMode", () => this.__translate());
+      return editorWidget;
+    },
 
     /**
      * Returns the editor component
@@ -31,6 +52,13 @@ qx.Mixin.define("cboulanger.eventrecorder.editor.MEditor", {
      */
     getEditorObject() {
       return this.getQxObject("editor");
+    },
+
+    async __translate() {
+      const formModel = this.getEditorObject().getModel();
+      const playerType = formModel.getTargetScriptType();
+      const targetMode = formModel.getTargetMode();
+      this.translateTo(playerType, targetMode);
     },
 
     /**
@@ -41,8 +69,8 @@ qx.Mixin.define("cboulanger.eventrecorder.editor.MEditor", {
      * @return {String|false}
      */
     async translateTo(playerType, mode) {
-      const exporter = this.getPlayerByType(playerType);
-      const model = this.getQxObject("editor").getModel();
+      const exporter = cboulanger.eventrecorder.Utils.getPlayerByType(playerType);
+      const model = this.getEditorObject().getModel();
       if (mode) {
         exporter.setMode(mode);
       }
@@ -65,63 +93,41 @@ qx.Mixin.define("cboulanger.eventrecorder.editor.MEditor", {
      * @return {Boolean}
      */
     async exportTo(playerType, mode) {
-      const exporter = this.getPlayerByType(playerType);
+      const exporter = cboulanger.eventrecorder.Utils.getPlayerByType(playerType);
       if (mode) {
         exporter.setMode(mode);
       }
-      let translatedScript = this.getQxObject("editor").getModel().getRightEditorContent();
+      let translatedScript = this.getEditorObject().getModel().getRightEditorContent();
       if (!translatedScript) {
-        if (!this.getScript()) {
+        if (!this.getState().getScript()) {
           qxl.dialog.Dialog.error("No script to export!");
           return false;
         }
         translatedScript = await this.translateTo(playerType);
       }
       qx.event.Timer.once(() => {
-        let filename = this._getApplicationName();
+        let filename = this.getApplicationName();
         this._download(`${filename}.${exporter.getExportFileExtension()}`, translatedScript);
       }, null, 0);
       return true;
     },
 
-    _applyPlayerType(playerType, old) {
-      if (old) {
-        old = this.getPlayerByType(old);
-      }
-      this.setPlayer(this.getPlayerByType(playerType));
-    },
-
-    _applyPlayer(player, old) {
-      if (old) {
-        old.removeAllBindings();
-        formModel.removeAllBindings();
-      }
-      if (!player) {
-        return;
-      }
-      if (!this.getEditorObject()) {
-        console.debug("Cannot apply player since editor is not ready...");
-        // editor hasn't been loaded and rendered yet
-        return;
-      }
-      const formModel = this.getEditorObject().getModel();
-      formModel.bind("targetMode", player, "mode");
-      player.bind("mode", formModel, "targetMode");
-      formModel.setTargetScriptType(player.getType());
-    },
-
     __initializedEditor: false,
 
+    /**
+     * Updates the editor content with the recorded script
+     * @private
+     */
     _updateEditor() {
       try {
-        this.getEditorObject().getModel().setLeftEditorContent(this.getScript());
+        this.getEditorObject().getModel().setLeftEditorContent(this.getState().getScript());
         const leftEditor = this.getEditorObject().getComponent("leftEditor").getEditor();
         leftEditor.resize();
         // the following should not be necessary
         if (!this.__initializedEditor) {
           leftEditor.getSession().on("change", () => {
-            if (leftEditor.getValue() !== this.getScript()) {
-              this.setScript(leftEditor.getValue());
+            if (leftEditor.getValue() !== this.getState().getScript()) {
+              this.getState().setScript(leftEditor.getValue());
             }
           });
           this.__initializedEditor = true;
@@ -134,7 +140,7 @@ qx.Mixin.define("cboulanger.eventrecorder.editor.MEditor", {
     },
 
     /**
-     * Configures the autocomplete feature in the editor(s)
+     * Configures the autocomplete feature in the editor
      * @private
      */
     _setupAutocomplete() {
@@ -162,7 +168,7 @@ qx.Mixin.define("cboulanger.eventrecorder.editor.MEditor", {
           tokens.push({caption, type: "command", snippet, meta, value});
         }
       }
-      for (let id of this.getObjectIds()) {
+      for (let id of this.getState().getObjectIds()) {
         tokens.push({caption: id, type: "id", value: id});
       }
       const completer = {

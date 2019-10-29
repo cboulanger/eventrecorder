@@ -39,7 +39,7 @@
     "qx.debug": true,
     "module.objectid": true,
     "eventrecorder.enabled": true,
-    "eventrecorder.scriptable": false,
+    "eventrecorder.editor.scriptable": false,
     "eventrecorder.hidden": false,
     "eventrecorder.player_type": "qooxdoo",
     "eventrecorder.player_mode": "presentation",
@@ -60,7 +60,7 @@
         "cboulanger.eventrecorder.UiController"
       ],
       "environment": {
-        "eventrecorder.scriptable": true,
+        "eventrecorder.editor.scriptable": true,
         "eventrecorder.gist_id": "64ed4149a27d48de38d9cb176907355e",
         "eventrecorder.autoplay": true
       }
@@ -160,6 +160,10 @@
         }
       }
     },
+
+
+
+
     {
       "class": "qxl.widgetbrowser.Application",
       "theme": "qx.theme.Indigo",
@@ -168,7 +172,7 @@
       "description": "This is the exmperimental new code architecture that tries to completely decouple UI and event recording. Work in progress!",
       "include": [
         "qx.theme.Modern",
-        "cboulanger.eventrecorder.Engine",
+        "cboulanger.eventrecorder.connector.OnPage",
         "cboulanger.eventrecorder.ObjectIdGenerator"
       ],
       "exclude": ["cboulanger.eventrecorder.UiController"],
@@ -177,10 +181,53 @@
           "Tango"
         ],
         "eventrecorder.show_progress": true,
-        "eventrecorder.editor.placement": "inside",
-        "eventrecorder.uicontroller.placement": "inside"
+        "eventrecorder.editor.placement": "inside"
       }
     },
+
+
+
+
+    {
+      "class": "cboulanger.eventrecorder.demo.Application",
+      "theme": "cboulanger.eventrecorder.theme.Theme",
+      "name": "demo_with_external_ui",
+      "title": "Demo app with external UI",
+      "include": [
+        "qx.theme.Modern",
+        "qx.data.marshal.Json",
+        "cboulanger.eventrecorder.connector.NativeWindow",
+        "cboulanger.eventrecorder.ObjectIdGenerator"
+      ],
+      "environment": {
+        "qx.icontheme": [
+          "Tango"
+        ]
+      }
+    },
+
+    {
+      "class": "cboulanger.eventrecorder.uicontroller.Application",
+      "theme": "cboulanger.eventrecorder.theme.Theme",
+      "name": "eventrecorder_application",
+      "title": "Eventrecorder running in a separate native window",
+      "publish": false,
+      "standalone": false,
+      "include": [
+        "qx.theme.Modern",
+        "cboulanger.eventrecorder.player.*"
+      ],
+      "environment": {
+        "qx.icontheme": [
+          "Tango"
+        ]
+      }
+    },
+
+
+
+
+
     {
       "class": "qxl.apiviewer.Application",
       "theme": "qxl.apiviewer.Theme",
@@ -199,19 +246,6 @@
         "qx.test.*",
         "qx.module.Blocker",
         "qx.module.Placement"
-      ]
-    },
-    {
-      "class": "cboulanger.eventrecorder.window.TestApplication",
-      "theme": "cboulanger.eventrecorder.theme.Theme",
-      "name": "remote_binding_test",
-      "title": "Application for testing remote binding",
-      "description": "This is another experiment that is not part of the eventrecorder but tests new code for the framework that will be used in it.",
-      "environment": {
-        "qx.icontheme": "Tango"
-      },
-      "include": [
-        "cboulanger.eventrecorder.window.*"
       ]
     }
   ]

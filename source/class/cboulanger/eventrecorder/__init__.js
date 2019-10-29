@@ -38,16 +38,19 @@
  *     <td>If true, start any preloaded script.</td>
  *   </tr>
  *   <tr>
- *     <td>"eventrecorder.scriptable": {Boolean}</td>
- *     <td>Whether the UI events of the recorder itself should be recorded</td>
+ *     <td>"eventrecorder.editor.scriptable": {Boolean}</td>
+ *     <td>
+ *       When using {@link cboulanger.eventrecorder.uicontroller.OnPage}, this
+ *       setting determines Whether the UI events of the recorder itself should be recorded
+ *     </td>
  *   </tr>
  *   <tr>
  *     <td>"eventrecorder.editor.placement": {String}</td>
- *     <td>Whether the script editor should be displayed "inside" (default) or "outside" of the application window</td>
- *   </tr>
- *   <tr>
- *     <td>"eventrecorder.uicontroller.placement": {String}</td>
- *     <td>Whether the buttons to control the eventrecorder should be displayed "inside" (default) or "outside" of the application window</td>
+ *     <td>
+ *       When using {@link cboulanger.eventrecorder.uicontroller.OnPage}, this
+ *       setting determines whether the script editor should be displayed "inside"
+ *       (default) or "outside" of the application window.
+ *     </td>
  *   </tr>
  * </table>
  *

@@ -21,7 +21,7 @@ qx.Class.define("cboulanger.eventrecorder.recorder.Recorder", {
   extend : qx.core.Object,
   include : [
     cboulanger.eventrecorder.MHelperMethods,
-    cboulanger.eventrecorder.MState
+    cboulanger.eventrecorder.MRunningState
   ],
 
   /**
@@ -110,40 +110,6 @@ qx.Class.define("cboulanger.eventrecorder.recorder.Recorder", {
      */
     getExcludedIds() {
       return this.__excludeIds;
-    },
-
-    /**
-     * Return an array of object ids that have been assigned in the current application
-     * @return {[]}
-     */
-    getObjectIds() {
-      let ids = [];
-      let traverseObjectTree = function (obj) {
-        if (typeof obj.getQxObjectId !== "function") {
-          return;
-        }
-        let id = obj.getQxObjectId();
-        if (id) {
-          try {
-            ids.push(qx.core.Id.getAbsoluteIdOf(obj));
-          } catch (e) {
-            this.error(`Cannot get absolute ID for object with id ${id}.`);
-          }
-        }
-        for (let owned of obj.getOwnedQxObjects()) {
-          traverseObjectTree(owned);
-        }
-      };
-      try {
-        let registeredObjects = qx.core.Id.getInstance().getRegisteredObjects() || {};
-        for (let obj of Object.values(registeredObjects)) {
-          traverseObjectTree(obj);
-        }
-        return ids;
-      } catch (e) {
-        this.error(e.message);
-        return [];
-      }
     },
 
     /**

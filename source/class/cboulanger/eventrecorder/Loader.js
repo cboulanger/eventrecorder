@@ -22,7 +22,7 @@
  */
 qx.Class.define("cboulanger.eventrecorder.Loader", {
  defer: function() {
-   var loader =  qx.io.PartLoader.getInstance();
+   var loader = qx.io.PartLoader.getInstance();
    if (loader.hasPart("eventrecorder")) {
      loader.require(["eventrecorder"]);
    }

@@ -37,7 +37,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
       GIST_ID:      "eventrecorder.gist_id",
       AUTOPLAY:     "eventrecorder.autoplay",
       SHOW_PROGRESS:"eventrecorder.show_progress",
-      SCRIPTABLE:   "eventrecorder.scriptable",
+      SCRIPTABLE:   "eventrecorder.editor.scriptable",
       RELOAD_BEFORE_REPLAY: "eventrecorder.reload_before_replay",
       SCRIPT_URL:   "eventrecorder.script_url"
     },
@@ -432,7 +432,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
             toolTipText: "Edit script",
             menu: editMenu
           });
-          control.addOwnedQxObject(editMenu,"menu");
+          control.addOwnedQxObject(editMenu, "menu");
           control.addListener("execute", () => this.edit());
           this.bind("recorder.running", control, "enabled", {
             converter: v => !v
@@ -483,44 +483,6 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
         });
         macroMenu.add(menuButton);
       }
-    },
-
-    /**
-     * Returns a map with object providing persistence
-     * @return {{env: qx.core.Environment, storage: qx.bom.storage.Web, uri_params: {}}}
-     * @private
-     */
-    _getPersistenceProviders() {
-      return {
-        env: qx.core.Environment,
-        storage: qx.bom.storage.Web.getSession(),
-        uri_params: qx.util.Uri.parseUri(window.location.href)
-      };
-    },
-
-    /**
-     * Get application parameters from from environment, which can be query params,
-     * local storage, or qooxdoo environment variables
-     * @private
-     * @ignore(env)
-     * @ignore(storage)
-     * @ignore(uri_params)
-     */
-    _getParamsFromEnvironment() {
-      let {env, storage, uri_params} = this._getPersistenceProviders();
-      let script = storage.getItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.SCRIPT) || "";
-      let autoplay = uri_params.queryKey.eventrecorder_autoplay ||
-        storage.getItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.AUTOPLAY) ||
-        env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.AUTOPLAY) ||
-        false;
-      let reloadBeforeReplay = storage.getItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.RELOAD_BEFORE_REPLAY);
-      let gistId = uri_params.queryKey.eventrecorder_gist_id || env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.GIST_ID) || null;
-      let scriptable = Boolean(uri_params.queryKey.eventrecorder_scriptable) || qx.core.Environment.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.SCRIPTABLE) || false;
-      let playerType = uri_params.queryKey.eventrecorder_type || env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.PLAYER_TYPE) || "qooxdoo";
-      let playerMode = uri_params.queryKey.eventrecorder_player_mode || storage.getItem(cboulanger.eventrecorder.UiController.CONFIG_KEY.PLAYER_MODE) || env.get(cboulanger.eventrecorder.UiController.CONFIG_KEY.PLAYER_MODE) || "presentation";
-      let info = {script, autoplay, reloadBeforeReplay, gistId, scriptable, scriptUrl : this._getScriptUrl(), playerType, playerMode };
-      //console.debug(info);
-      return info;
     },
 
     _applyRecorderMode(value, old) {
@@ -662,7 +624,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
      * @private
      */
     _getApplicationName() {
-      return window.document.location.pathname.split("/").slice(-2, -1).join("");
+      return location.pathname.split("/").slice(-2, -1).join("");
     },
 
 
@@ -675,7 +637,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
 
     /**
      * Return an array of object ids that have been assigned in the recorded application
-     * @return {[]}
+     * @return {Array}
      */
     getObjectIds() {
       return this.getRecorder().getObjectIds();
@@ -1022,7 +984,7 @@ qx.Class.define("cboulanger.eventrecorder.UiController", {
      return;
     }
     let qookeryExternalLibsUrl = qx.util.ResourceManager.getInstance().toUri("cboulanger/eventrecorder/js");
-    qookery.Qookery.setOption( qookery.Qookery.OPTION_EXTERNAL_LIBRARIES, qookeryExternalLibsUrl);
+    qookery.Qookery.setOption(qookery.Qookery.OPTION_EXTERNAL_LIBRARIES, qookeryExternalLibsUrl);
 
     // called when application is ready
     qx.bom.Lifecycle.onReady(async function onReady() {

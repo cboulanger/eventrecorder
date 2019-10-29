@@ -112,7 +112,6 @@ qx.Class.define("cboulanger.eventrecorder.ObjectIdGenerator", {
         return;
       }
       for (let child of children) {
-
        // ignore tooltipps
        if (child instanceof qx.ui.tooltip.ToolTip) {
          continue;

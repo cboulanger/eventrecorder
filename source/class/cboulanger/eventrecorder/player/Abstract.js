@@ -20,7 +20,7 @@
 qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
   extend : qx.core.Object,
   include : [
-    cboulanger.eventrecorder.MState,
+    cboulanger.eventrecorder.MRunningState,
     cboulanger.eventrecorder.MHelperMethods
   ],
 
@@ -704,7 +704,8 @@ qx.Class.define("cboulanger.eventrecorder.player.Abstract", {
           continue;
         }
 
-        let result, code;
+        let result;
+        let code;
 
         try {
           // translate

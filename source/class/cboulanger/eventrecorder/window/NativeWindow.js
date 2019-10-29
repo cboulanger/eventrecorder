@@ -17,12 +17,14 @@
 ************************************************************************ */
 
 /**
- * A proxy for an application running in a different browser window or tab
+ * A Native Window as a qooxdoo object
  *
  */
-qx.Class.define("cboulanger.eventrecorder.window.RemoteApplication", {
+qx.Class.define("cboulanger.eventrecorder.window.NativeWindow", {
   extend: qx.core.Object,
-  include: [cboulanger.eventrecorder.window.MRemoteBinding],
+  statics: {
+    windowIndex : 0
+  },
 
   /**
    * Constructor
@@ -32,7 +34,7 @@ qx.Class.define("cboulanger.eventrecorder.window.RemoteApplication", {
   construct: function(uri, config) {
     this.base(arguments);
     var url = this._computeApplicationUrl(uri);
-    var window_name = "window-" + this.createUuid();
+    var window_name = "window-" + this.self(arguments).windowIndex++;
     config = this._computeWindowConfig(config);
     this.__window = qx.bom.Window.open(url, window_name, config);
     window.addEventListener("beforeunload", () => {
@@ -65,7 +67,7 @@ qx.Class.define("cboulanger.eventrecorder.window.RemoteApplication", {
      * Exposes the internal window object
      * @return {Window}
      */
-    _getWindow: function() {
+    getWindowObject: function() {
       return this.__window;
     },
 
