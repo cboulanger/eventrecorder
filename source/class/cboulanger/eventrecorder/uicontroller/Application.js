@@ -47,22 +47,33 @@ qx.Class.define("cboulanger.eventrecorder.uicontroller.Application", {
         this.alert(msg);
         return;
       }
+      const debug = true;
+      if (debug) {
+        let btn = new qx.ui.form.Button("Start");
+        btn.addListener("execute", () => {
+          this.getRoot().remove(btn);
+          this._main();
+        });
+        this.getRoot().add(btn, {left:10, top: 10});
+      } else {
+        this._main();
+      }
+    },
+
+    async _main() {
       let datasource = new qx.io.remote.NetworkDataSource();
       let ctlr = new qx.io.remote.NetworkController(datasource);
       let endpoint = new qx.io.remote.WindowEndPoint(ctlr, window.opener);
       datasource.addEndPoint(endpoint);
-      endpoint.open()
-        .then( async ()=> {
-          let state = ctlr.getUriMapping("state");
-          this.setState(state);
-          console.warn("Initiated connection with the main window!");
-          console.log(state);
-
-          this._setupAliases();
-          await this._setupUi();
-          await this._setupAutocomplete();
-          state.addListener("changeObjectIds", () => this._setupAutocomplete());
-        });
+      await endpoint.open();
+      let state = ctlr.getUriMapping("state");
+      this.setState(state);
+      console.warn("Initiated connection with the main window!");
+      console.log(state);
+      this._setupAliases();
+      await this._setupUi();
+      await this._setupAutocomplete();
+      state.addListener("changeObjectIds", () => this._setupAutocomplete());
     },
 
     async _setupUi() {
