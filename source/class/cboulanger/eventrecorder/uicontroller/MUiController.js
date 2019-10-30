@@ -225,22 +225,6 @@ qx.Mixin.define("cboulanger.eventrecorder.uicontroller.MUiController", {
     },
 
     /**
-     * Donwload content
-     * @param filename
-     * @param text
-     * @private
-     */
-    _download(filename, text) {
-      var element = document.createElement("a");
-      element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(text));
-      element.setAttribute("download", filename);
-      element.style.display = "none";
-      document.body.appendChild(element);
-      element.click();
-      document.body.removeChild(element);
-    },
-
-    /**
      * Stops recording/replaying
      */
     stop() {
@@ -256,7 +240,7 @@ qx.Mixin.define("cboulanger.eventrecorder.uicontroller.MUiController", {
     save() {
       qx.event.Timer.once(() => {
         let filename = this.getState().getApplicationName() + ".eventrecorder";
-        this._download(filename, this.getState().getScript());
+        cboulanger.eventrecorder.Utils.download(filename, this.getState().getScript());
       }, null, 0);
     },
 

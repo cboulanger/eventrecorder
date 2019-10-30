@@ -19,6 +19,12 @@
  */
 qx.Mixin.define("cboulanger.eventrecorder.Utils", {
   statics: {
+
+    /**
+     * Given an url of an xml filex, create the qookery component declared in that file
+     * @param formUrl
+     * @return {Promise<qookery.IFormComponent>}
+     */
     async createQookeryComponent(formUrl) {
       return new Promise((resolve, reject) => {
         qookery.contexts.Qookery.loadResource(formUrl, this, xmlSource => {
@@ -194,6 +200,60 @@ qx.Mixin.define("cboulanger.eventrecorder.Utils", {
         evtMonitor(target, event);
         fn(target, event);
       }) : fn);
+    },
+
+    /**
+     * Given a function and a timeout in ms, return a promise.
+     * The function will be called in the given interval, with a default of 100 milliseconds.
+     * If the function returns true within the given timeout (default: 10 sec),
+     * the Promise resolves. Otherwise, it is and rejected with an Error, having
+     * the given error message.
+     * @param {Function} fn Condition function
+     * @param {Number?} timeout
+     * @param {String} timeoutMsg
+     * @param {Number?} interval
+     * @return {Promise<void>}
+     */
+    conditionalTimeout(fn, timeout=10000, timeoutMsg="Timeout", interval=100) {
+      qx.core.Assert.assertFunction(fn, "first argument must be a function");
+      return new Promise((resolve, reject) => {
+        const checkCondition = new qx.event.Timer(interval);
+        const checkTimeout = new qx.event.Timer(timeout);
+        const disposeTimers = () => {
+          checkCondition.stop();
+          checkCondition.dispose();
+          checkTimeout.stop();
+          checkTimeout.dispose();
+        };
+        // check condition
+        checkCondition.addListener("interval", () => {
+          if (fn()) {
+            disposeTimers();
+            resolve();
+          }
+        });
+        // timeout has been reached
+        checkTimeout.addListener("interval", () => {
+          disposeTimers();
+          reject(new Error(timeoutMsg));
+        });
+      });
+    },
+
+    /**
+     * Donwload content
+     * @param filename
+     * @param text
+     * @private
+     */
+    download(filename, text) {
+      var element = document.createElement("a");
+      element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(text));
+      element.setAttribute("download", filename);
+      element.style.display = "none";
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
     },
 
     /**

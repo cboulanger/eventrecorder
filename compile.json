@@ -12,6 +12,11 @@
           "qx.*",
           "qxl.*",
           "qookery.*"
+        ],
+        "exclude": [
+          "qx.io.persistence.*",
+          "qx.io.remote.*",
+          "qx.util.*"
         ]
       }
     },

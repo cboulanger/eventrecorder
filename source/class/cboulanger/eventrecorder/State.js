@@ -77,7 +77,7 @@ qx.Class.define("cboulanger.eventrecorder.State", {
       check: "Boolean",
       nullable: true,
       init: null,
-      event: "changeRecord",
+      event: "changeLogEvents",
       "@": qx.io.persistence.anno.Property.DEFAULT
     },
 

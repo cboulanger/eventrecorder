@@ -18,8 +18,8 @@
  * The UI Controller for the recorder in its own window, including the script editor
  * @asset(cboulanger/eventrecorder/*)
  * @asset(qxl/dialog/*)
- * @require(cboulanger.eventrecorder.player.*)
  * @require(cboulanger.eventrecorder.InfoPane)
+ * @require(cboulanger.eventrecorder.player.*)
  * @require(qookery.ace.internal.AceComponent)
  * @ignore(ace)
  */
@@ -28,7 +28,6 @@ qx.Class.define("cboulanger.eventrecorder.uicontroller.Application", {
   include: [
     cboulanger.eventrecorder.MState,
     cboulanger.eventrecorder.uicontroller.MUiController,
-    cboulanger.eventrecorder.editor.MEditor
   ],
 
   members:
@@ -68,11 +67,12 @@ qx.Class.define("cboulanger.eventrecorder.uicontroller.Application", {
       await endpoint.open();
       let state = ctlr.getUriMapping("state");
       this.setState(state);
-      console.warn("Initiated connection with the main window!");
-      console.log(state);
+      this.info("Initiated connection with the main window!");
       this._setupAliases();
       await this._setupUi();
+      this.info("Created UI");
       await this._setupAutocomplete();
+      this.info("Autocomplete setup done.");
       state.addListener("changeObjectIds", () => this._setupAutocomplete());
     },
 
@@ -88,7 +88,10 @@ qx.Class.define("cboulanger.eventrecorder.uicontroller.Application", {
       toolBar.add(this._createChildControlImpl("stop"));
       toolBar.add(this._createChildControlImpl("save"));
       vbox.add(toolBar);
-      vbox.add(await this._createEditor(), {flex:1});
+      const editor = new cboulanger.eventrecorder.editor.Editor(this);
+      this.addOwnedQxObject(editor, "editor");
+      await editor.init();
+      vbox.add(await editor.createWidget(), {flex:1});
       this.getRoot().add(vbox, {edge:0});
     }
   },

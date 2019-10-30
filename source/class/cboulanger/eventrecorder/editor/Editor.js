@@ -16,25 +16,45 @@
 
 
 /**
- * This mixin contains methods that are used by script editor widgets
+ * The editor class
  * @ignore(ace)
  */
-qx.Mixin.define("cboulanger.eventrecorder.editor.MEditor", {
+qx.Class.define("cboulanger.eventrecorder.editor.Editor", {
+  extend: qx.core.Object,
+
+  /**
+   * @param {qx.application.Standalone} app
+   */
+  construct: function(app) {
+    this.base(arguments);
+    this.__app = app;
+  },
 
   members: {
+
+    __app: null,
+    __formComponent: null,
+
+    /**
+     * Initializes the editor, this waits for all needed components to be
+     * loaded
+     * @return {Promise<void>}
+     */
+    async init() {
+      await cboulanger.eventrecorder.Utils.conditionalTimeout(() => window.ace && ace.require("ace/ext/language_tools"));
+    },
 
     /**
      * create the editor and add it to the given container with a flex of 1.
      * @return {qx.ui.core.Widget}
      * @private
      */
-    async _createEditor() {
+    async createWidget() {
       let control;
       const formUrl = qx.util.ResourceManager.getInstance().toUri("cboulanger/eventrecorder/forms/editor.xml");
-      const formComponent = await cboulanger.eventrecorder.Utils.createQookeryComponent(formUrl);
-      this.addOwnedQxObject(formComponent, "editor");
+      const formComponent = this.__formComponent = await cboulanger.eventrecorder.Utils.createQookeryComponent(formUrl);
       const editorWidget = formComponent.getMainWidget();
-      editorWidget.addListener("appear", this._updateEditor, this);
+      editorWidget.addListener("appear", () => this.update());
       editorWidget.set({allowStretchX: true, allowStretchY: true});
       // bind to state
       const formModel = formComponent.getModel();
@@ -47,15 +67,50 @@ qx.Mixin.define("cboulanger.eventrecorder.editor.MEditor", {
     },
 
     /**
+     * Updates the editor content with the recorded script
+     * @private
+     */
+    update() {
+      this.getModel().setLeftEditorContent(this.getState().getScript());
+      const leftEditor = this.getEditorObject().getComponent("leftEditor").getEditor();
+      leftEditor.resize();
+      // the following should not be necessary
+      if (!this.__initializedEditor) {
+        leftEditor.getSession().on("change", () => {
+          if (leftEditor.getValue() !== this.getState().getScript()) {
+            this.getState().setScript(leftEditor.getValue());
+          }
+        });
+        this.__initializedEditor = true;
+      }
+    },
+
+    /**
+     * Proxy method to get the state of the app
+     * @return {cboulanger.eventrecorder.State}
+     */
+    getState() {
+      return this.__app.getState();
+    },
+
+    /**
      * Returns the editor component
      * @return {qookery.IFormComponent}
      */
     getEditorObject() {
-      return this.getQxObject("editor");
+      return this.__formComponent;
+    },
+
+    /**
+     * Returns the qookery form model
+     * @return {qx.core.Object}
+     */
+    getModel() {
+      return this.__formComponent.getModel();
     },
 
     async __translate() {
-      const formModel = this.getEditorObject().getModel();
+      const formModel = this.getModel();
       const playerType = formModel.getTargetScriptType();
       const targetMode = formModel.getTargetMode();
       this.translateTo(playerType, targetMode);
@@ -70,7 +125,7 @@ qx.Mixin.define("cboulanger.eventrecorder.editor.MEditor", {
      */
     async translateTo(playerType, mode) {
       const exporter = cboulanger.eventrecorder.Utils.getPlayerByType(playerType);
-      const model = this.getEditorObject().getModel();
+      const model = this.getModel();
       if (mode) {
         exporter.setMode(mode);
       }
@@ -97,7 +152,7 @@ qx.Mixin.define("cboulanger.eventrecorder.editor.MEditor", {
       if (mode) {
         exporter.setMode(mode);
       }
-      let translatedScript = this.getEditorObject().getModel().getRightEditorContent();
+      let translatedScript = this.getModel().getRightEditorContent();
       if (!translatedScript) {
         if (!this.getState().getScript()) {
           qxl.dialog.Dialog.error("No script to export!");
@@ -106,49 +161,22 @@ qx.Mixin.define("cboulanger.eventrecorder.editor.MEditor", {
         translatedScript = await this.translateTo(playerType);
       }
       qx.event.Timer.once(() => {
-        let filename = this.getApplicationName();
-        this._download(`${filename}.${exporter.getExportFileExtension()}`, translatedScript);
+        let filename = this.getState().getApplicationName();
+        cboulanger.eventrecorder.Utils.download(`${filename}.${exporter.getExportFileExtension()}`, translatedScript);
       }, null, 0);
       return true;
     },
 
     __initializedEditor: false,
 
-    /**
-     * Updates the editor content with the recorded script
-     * @private
-     */
-    _updateEditor() {
-      try {
-        this.getEditorObject().getModel().setLeftEditorContent(this.getState().getScript());
-        const leftEditor = this.getEditorObject().getComponent("leftEditor").getEditor();
-        leftEditor.resize();
-        // the following should not be necessary
-        if (!this.__initializedEditor) {
-          leftEditor.getSession().on("change", () => {
-            if (leftEditor.getValue() !== this.getState().getScript()) {
-              this.getState().setScript(leftEditor.getValue());
-            }
-          });
-          this.__initializedEditor = true;
-        }
-      } catch (e) {
-        //console.warn(e.message);
-        console.debug("Waiting for ACE editor to become available...");
-        qx.event.Timer.once(() => this._updateEditor(), this, 500);
-      }
-    },
+
 
     /**
      * Configures the autocomplete feature in the editor
      * @private
      */
-    _setupAutocomplete() {
-      let  langTools = ace.require("ace/ext/language_tools");
-      if (!langTools) {
-        throw new Error("language_tools not available");
-      }
-
+    async setupAutocomplete() {
+      let langTools = ace.require("ace/ext/language_tools");
       let tokens = [];
       let iface = qx.Interface.getByName("cboulanger.eventrecorder.IPlayer").$$members;
       for (let key of Object.getOwnPropertyNames(iface)) {

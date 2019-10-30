@@ -50,15 +50,12 @@ qx.Class.define("cboulanger.eventrecorder.connector.NativeWindow", {
       }
       // create ui controller
       let recorderWindow = new cboulanger.eventrecorder.window.NativeWindow("eventrecorder_application", {
-        width: 500,
+        width: 1000,
         height: 500
       });
 
-      // Data source represents the transport (but is transport agnostic)
       let datasource = new qx.io.remote.NetworkDataSource();
-      // Controller manages the objects and their serialisation across the DataSource
       let ctlr = new qx.io.remote.NetworkController(datasource);
-      // Listener is specific to a given platform (postMessage, Xhr, etc)
       new qx.io.remote.WindowListener(ctlr);
 
       // create engine and initialize state
