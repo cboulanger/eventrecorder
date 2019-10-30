@@ -56,9 +56,7 @@ qx.Class.define("cboulanger.eventrecorder.State", {
       nullable: true,
       event: "changeMacros",
       transform: "_transformArray",
-      "@": [
-        qx.io.persistence.anno.Property.DEFAULT
-      ]
+      "@": qx.io.persistence.anno.Property.DEFAULT
     },
 
     /**
@@ -138,9 +136,7 @@ qx.Class.define("cboulanger.eventrecorder.State", {
       check: "qx.data.Array",
       event: "changeObjectIds",
       transform: "_transformArray",
-      "@": [
-        qx.io.persistence.anno.Property.DEFAULT
-      ]
+      "@": qx.io.persistence.anno.Property.DEFAULT
     }
   },
   members: {

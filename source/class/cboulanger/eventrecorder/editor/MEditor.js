@@ -144,17 +144,11 @@ qx.Mixin.define("cboulanger.eventrecorder.editor.MEditor", {
      * @private
      */
     _setupAutocomplete() {
-      let langTools;
-      try {
-        langTools = ace.require("ace/ext/language_tools");
-        if (!langTools) {
-          throw new Error("language_tools not available");
-        }
-      } catch (e) {
-        console.log("Deferring setup of autocomplete...");
-        qx.event.Timer.once(() => this._setupAutocomplete(), this, 1000);
-        return;
+      let  langTools = ace.require("ace/ext/language_tools");
+      if (!langTools) {
+        throw new Error("language_tools not available");
       }
+
       let tokens = [];
       let iface = qx.Interface.getByName("cboulanger.eventrecorder.IPlayer").$$members;
       for (let key of Object.getOwnPropertyNames(iface)) {

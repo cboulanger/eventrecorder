@@ -66,6 +66,11 @@
       "library_name": "incubator.qx.io.persistence",
       "library_version": "1.0.0",
       "path": "../incubator.qx.io.persistence"
+    },
+    {
+      "library_name": "incubator.qx.util",
+      "library_version": "1.0.0",
+      "path": "../incubator.qx.util"
     }
   ]
 }

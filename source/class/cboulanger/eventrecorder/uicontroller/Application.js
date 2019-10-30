@@ -28,8 +28,7 @@ qx.Class.define("cboulanger.eventrecorder.uicontroller.Application", {
   include: [
     cboulanger.eventrecorder.MState,
     cboulanger.eventrecorder.uicontroller.MUiController,
-    cboulanger.eventrecorder.editor.MEditor,
-    cboulanger.eventrecorder.window.MRemoteBinding
+    cboulanger.eventrecorder.editor.MEditor
   ],
 
   members:
@@ -42,8 +41,6 @@ qx.Class.define("cboulanger.eventrecorder.uicontroller.Application", {
       if (qx.core.Environment.get("qx.debug")) {
         qx.log.appender.Native;
       }
-      this._setupAliases();
-      this._setupUi(); // async
 
       if (!window.opener) {
         let msg = "The event recorder cannot be used as a standalone application yet. Please add \"cboulanger.eventrecorder.uicontroller.NativeWindow\" in your compile.json's application \"include\" config.";
@@ -52,15 +49,18 @@ qx.Class.define("cboulanger.eventrecorder.uicontroller.Application", {
       }
       let datasource = new qx.io.remote.NetworkDataSource();
       let ctlr = new qx.io.remote.NetworkController(datasource);
-      this.setStateController(ctlr);
-      let endpoint = new qx.io.remote.WindowEndPoint(ctlr, recorderWindow.getWindowObject());
+      let endpoint = new qx.io.remote.WindowEndPoint(ctlr, window.opener);
       datasource.addEndPoint(endpoint);
       endpoint.open()
-        .then(()=> {
+        .then( async ()=> {
           let state = ctlr.getUriMapping("state");
           this.setState(state);
           console.warn("Initiated connection with the main window!");
           console.log(state);
+
+          this._setupAliases();
+          await this._setupUi();
+          await this._setupAutocomplete();
           state.addListener("changeObjectIds", () => this._setupAutocomplete());
         });
     },
